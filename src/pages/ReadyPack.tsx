@@ -381,7 +381,17 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
 };
 
 // === DOCUMENTS TAB ===
-const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => (
+const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => {
+  const [declarationCopied, setDeclarationCopied] = useState(false);
+  const hasHost = data.stayingWithFriend && data.hostName.trim().length > 2;
+  
+  const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  const declaration = hasHost ? (() => {
+    const now = new Date();
+    return `DECLARAÇÃO DE RESIDÊNCIA\n\nEu, ${data.hostName}, portador(a) do CPF nº ${data.hostCpf || "[CPF do anfitrião]"}, residente à ${data.hostAddress}, ${data.hostCity}, ${data.state}, declaro para os devidos fins que ${data.fullName}, portador(a) do passaporte nº ${data.passportNumber}, nacionalidade ${data.nationality}, reside temporariamente em meu endereço acima mencionado.\n\nPor ser verdade, firmo a presente declaração.\n\n${data.hostCity}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}\n\n_______________________________\n${data.hostName}\nCPF: ${data.hostCpf || "[CPF do anfitrião]"}`;
+  })() : null;
+
+  return (
   <div className="space-y-6 animate-slide-in">
     {/* Visual checklist */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -495,8 +505,45 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         </div>
       </div>
     </section>
+
+    {/* Host declaration letter */}
+    {hasHost && declaration && (
+      <section className="bg-card border border-border rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-border bg-primary/5 flex items-center justify-between">
+          <h2 className="font-bold">📝 Host declaration letter</h2>
+          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md font-semibold">Generated ✓</span>
+        </div>
+        <div className="p-6">
+          <p className="text-xs text-muted-foreground mb-3">This letter serves as your proof of address. Your host prints it, signs it, and gives you a copy of their ID.</p>
+          <div className="bg-secondary rounded-lg p-4">
+            <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
+          </div>
+          <div className="flex gap-2 mt-3">
+            <button
+              onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2000); }}
+              className="flex-1 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
+            >
+              {declarationCopied ? "✓ Copied!" : "📋 Copy declaration"}
+            </button>
+            <button
+              onClick={() => {
+                const blob = new Blob([declaration], { type: "text/plain" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = "declaracao-residencia.txt"; a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="flex-1 bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
+            >
+              ⬇️ Download
+            </button>
+          </div>
+        </div>
+      </section>
+    )}
   </div>
-);
+  );
+};
 
 // === GUIDE TAB ===
 const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
@@ -830,15 +877,17 @@ const PARTNERS = [
     icon: "🏥",
     name: "SafetyWing",
     category: "Health & Travel Insurance",
-    desc: "Global insurance for travelers and nomads. From $45/month, cancel anytime.",
+    desc: "The go-to insurance for digital nomads in Brazil. Covers hospitals, clinics, and emergencies across Latin America. Month-to-month, cancel anytime. From $45/month.",
+    why: "Brazil's public healthcare (SUS) is free but crowded. Private hospitals can cost thousands. SafetyWing covers you without the bureaucracy.",
     cta: "Get covered →",
-    url: "#", // affiliate link placeholder
+    url: "#",
   },
   {
     icon: "📱",
     name: "Airalo",
-    category: "Stay Connected",
-    desc: "Get a Brazil eSIM in 2 minutes. Works instantly. From $5.",
+    category: "SIM Card / eSIM",
+    desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. Data plans from $5.",
+    why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo, you get data immediately while you sort your CPF out.",
     cta: "Get an eSIM →",
     url: "#",
   },
@@ -846,15 +895,17 @@ const PARTNERS = [
     icon: "🏦",
     name: "Nubank",
     category: "Bank Account",
-    desc: "Zero fees. Instant Pix access. Apply with CPF + passport.",
+    desc: "Brazil's most popular digital bank. Zero fees, instant Pix payments, and a debit/credit card — all from the app. Apply with CPF + passport.",
+    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere (restaurants, shops, Uber, everything).",
     cta: "Open Nubank →",
     url: "#",
   },
   {
     icon: "💸",
     name: "Wise",
-    category: "Send Money",
-    desc: "Real exchange rate. Minimal fees. Send money to/from Brazil.",
+    category: "International Transfers",
+    desc: "Send money to and from Brazil at the real exchange rate with minimal fees. Way cheaper than bank transfers or Western Union.",
+    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad or sending money home.",
     cta: "Try Wise →",
     url: "#",
   },
@@ -862,7 +913,8 @@ const PARTNERS = [
     icon: "🗣️",
     name: "iTalki",
     category: "Learn Portuguese",
-    desc: "1-on-1 lessons with native speakers. Even 5 lessons helps.",
+    desc: "1-on-1 video lessons with native Brazilian Portuguese speakers. Even 5 lessons makes a massive difference at the Receita Federal office.",
+    why: "Portuguese is different from Spanish. Even basic phrases will change how people treat you. R$30-60/hour for a private tutor.",
     cta: "Start learning →",
     url: "#",
   },
@@ -872,33 +924,36 @@ const PartnersTab = () => (
   <div className="space-y-6 animate-slide-in">
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6 text-center">
       <h2 className="text-2xl font-bold">🎉 Your CPF is ready — here's what it unlocks</h2>
-      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Trusted services from our partners to help you settle into Brazil.</p>
+      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Trusted services from our partners to help you settle into Brazil. These are the tools most expats and nomads actually use.</p>
     </section>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="space-y-4">
       {PARTNERS.map((p) => (
-        <div key={p.name} className="bg-card border border-border rounded-2xl p-6 flex flex-col">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">{p.icon}</span>
-            <div>
-              <h3 className="font-bold text-sm">{p.name}</h3>
-              <p className="text-[10px] uppercase tracking-wider text-primary font-bold">{p.category}</p>
+        <div key={p.name} className="bg-card border border-border rounded-2xl p-6">
+          <div className="flex items-start gap-4">
+            <span className="text-3xl mt-1">{p.icon}</span>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-bold">{p.name}</h3>
+                <span className="text-[10px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{p.category}</span>
+              </div>
+              <p className="text-sm text-foreground mb-2">{p.desc}</p>
+              <p className="text-xs text-muted-foreground italic">💡 {p.why}</p>
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+              >
+                {p.cta}
+              </a>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground flex-1">{p.desc}</p>
-          <a
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center justify-center bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
-          >
-            {p.cta}
-          </a>
         </div>
       ))}
     </div>
 
-    <p className="text-xs text-muted-foreground text-center">Questions about any of these? Message us.</p>
+    <p className="text-xs text-muted-foreground text-center">Questions about any of these services? Message us.</p>
   </div>
 );
 
