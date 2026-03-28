@@ -105,6 +105,7 @@ const GetStarted = () => {
             <AddressStep
               street={data.streetAddress}
               city={data.city}
+              state={data.state}
               onStreetChange={(v) => update("streetAddress", v)}
               onCityChange={(v) => update("city", v)}
             />
