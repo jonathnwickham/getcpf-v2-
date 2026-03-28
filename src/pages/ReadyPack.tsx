@@ -61,7 +61,7 @@ const ReadyPack = () => {
                 <div className="text-[10px] font-semibold opacity-70 uppercase">Expected CPF</div>
               </div>
               <div className="bg-primary-foreground/15 rounded-xl px-4 py-3 text-center">
-                <div className="text-2xl font-bold">{data.state}</div>
+                <div className="text-2xl font-bold">{stateName}</div>
                 <div className="text-[10px] font-semibold opacity-70 uppercase">Your state</div>
               </div>
             </div>
