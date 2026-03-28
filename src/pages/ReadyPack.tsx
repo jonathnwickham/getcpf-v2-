@@ -4,6 +4,7 @@ import { BRAZILIAN_STATES, STATE_OFFICES, type OnboardingData, type OfficeInfo }
 import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
+import DocumentScanner from "@/components/DocumentScanner";
 
 type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners";
 
@@ -541,6 +542,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         </div>
       </section>
     )}
+
+    {/* AI Document Scanner */}
+    <DocumentScanner />
   </div>
   );
 };
