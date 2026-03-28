@@ -341,13 +341,44 @@ const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) =
   </div>
 );
 
+const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+const generateDeclaration = (hostName: string, hostCpf: string, hostAddress: string, hostCity: string, state: string, guestName: string, passportNumber: string, nationality: string) => {
+  const now = new Date();
+  const day = now.getDate();
+  const month = MONTHS_PT[now.getMonth()];
+  const year = now.getFullYear();
+  return `DECLARAÇÃO DE RESIDÊNCIA
+
+Eu, ${hostName}, portador(a) do CPF nº ${hostCpf || "[CPF do anfitrião]"}, residente à ${hostAddress}, ${hostCity}, ${state}, declaro para os devidos fins que ${guestName}, portador(a) do passaporte nº ${passportNumber}, nacionalidade ${nationality}, reside temporariamente em meu endereço acima mencionado.
+
+Por ser verdade, firmo a presente declaração.
+
+${hostCity}, ${day} de ${month} de ${year}
+
+_______________________________
+${hostName}
+CPF: ${hostCpf || "[CPF do anfitrião]"}`;
+};
+
 const AddressStep = ({
   street, city, state, onStreetChange, onCityChange,
+  stayingWithFriend, onToggleStaying,
+  hostName, onHostNameChange, hostCpf, onHostCpfChange,
+  hostAddress, onHostAddressChange, hostCity, onHostCityChange,
+  guestName, passportNumber, nationality,
 }: {
   street: string; city: string; state: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
+  stayingWithFriend: boolean; onToggleStaying: (v: boolean) => void;
+  hostName: string; onHostNameChange: (v: string) => void;
+  hostCpf: string; onHostCpfChange: (v: string) => void;
+  hostAddress: string; onHostAddressChange: (v: string) => void;
+  hostCity: string; onHostCityChange: (v: string) => void;
+  guestName: string; passportNumber: string; nationality: string;
 }) => {
   const [citySearch, setCitySearch] = useState("");
   const [isCityOpen, setIsCityOpen] = useState(false);
+  const [showDeclaration, setShowDeclaration] = useState(false);
   const cityDropdownRef = useRef<HTMLDivElement>(null);
   const cityInputRef = useRef<HTMLInputElement>(null);
 
@@ -367,11 +398,14 @@ const AddressStep = ({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const declaration = generateDeclaration(hostName, hostCpf, hostAddress, hostCity, state, guestName, passportNumber, nationality);
+  const canGenerate = hostName.trim().length > 2 && hostAddress.trim().length > 3;
+
   return (
     <div>
       <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-muted-foreground text-sm mb-6">
         The street address where you're staying. This goes on the application form.
       </p>
       <div className="space-y-4">
@@ -406,7 +440,6 @@ const AddressStep = ({
               onChange={(e) => {
                 setCitySearch(e.target.value);
                 setIsCityOpen(true);
-                // Also update the actual city value for custom entries
                 onCityChange(e.target.value);
               }}
               onFocus={() => setIsCityOpen(true)}
@@ -435,6 +468,84 @@ const AddressStep = ({
             </div>
           )}
         </div>
+
+        {/* Staying with friend toggle */}
+        <label className="flex items-center gap-3 mt-2 cursor-pointer group">
+          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${stayingWithFriend ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
+            {stayingWithFriend && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+          </div>
+          <input
+            type="checkbox"
+            checked={stayingWithFriend}
+            onChange={(e) => onToggleStaying(e.target.checked)}
+            className="sr-only"
+          />
+          <span className="text-sm text-muted-foreground">I'm staying with a friend or family (no formal address proof)</span>
+        </label>
+
+        {stayingWithFriend && (
+          <div className="mt-3 bg-secondary rounded-xl p-5 space-y-3 animate-slide-in">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Host details — for the declaration letter</p>
+            <input
+              type="text"
+              value={hostName}
+              onChange={(e) => onHostNameChange(e.target.value)}
+              placeholder="Host's full name"
+              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+            <input
+              type="text"
+              value={hostCpf}
+              onChange={(e) => onHostCpfChange(e.target.value)}
+              placeholder="Host's CPF number (if known)"
+              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+            <input
+              type="text"
+              value={hostAddress}
+              onChange={(e) => onHostAddressChange(e.target.value)}
+              placeholder="Host's full address"
+              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+            <input
+              type="text"
+              value={hostCity}
+              onChange={(e) => onHostCityChange(e.target.value)}
+              placeholder="Host's city"
+              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+
+            {canGenerate && (
+              <button
+                type="button"
+                onClick={() => setShowDeclaration(!showDeclaration)}
+                className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+              >
+                {showDeclaration ? "Hide declaration letter" : "📄 Generate host declaration letter"}
+              </button>
+            )}
+
+            {showDeclaration && canGenerate && (
+              <div className="mt-3 space-y-3">
+                <div className="bg-card border border-border rounded-lg p-4">
+                  <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { navigator.clipboard.writeText(declaration); }}
+                    className="flex-1 bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
+                  >
+                    📋 Copy text
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  💡 Your host prints this, signs it, and gives you a copy of their ID. This serves as your proof of address.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
