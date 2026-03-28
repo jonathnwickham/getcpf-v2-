@@ -477,7 +477,9 @@ const ContactStep = ({
             onChange={(e) => onEmailChange(e.target.value)}
             placeholder="you@example.com"
             autoFocus
+            autoComplete="email"
             className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
           />
         </div>
         <div ref={dropdownRef} className="relative">
