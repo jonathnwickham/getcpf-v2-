@@ -14,7 +14,176 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          address_proof_url: string | null
+          city: string | null
+          cpf_number: string | null
+          created_at: string | null
+          email: string | null
+          father_name: string | null
+          full_name: string | null
+          host_address: string | null
+          host_city: string | null
+          host_cpf: string | null
+          host_name: string | null
+          id: string
+          mother_alternative: string | null
+          mother_name: string | null
+          nationality: string | null
+          no_mother: boolean | null
+          notes: string | null
+          passport_number: string | null
+          passport_photo_url: string | null
+          protocol_number: string | null
+          received_at: string | null
+          selfie_url: string | null
+          state_code: string | null
+          state_name: string | null
+          status: string | null
+          staying_with_friend: boolean | null
+          street_address: string | null
+          submitted_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address_proof_url?: string | null
+          city?: string | null
+          cpf_number?: string | null
+          created_at?: string | null
+          email?: string | null
+          father_name?: string | null
+          full_name?: string | null
+          host_address?: string | null
+          host_city?: string | null
+          host_cpf?: string | null
+          host_name?: string | null
+          id?: string
+          mother_alternative?: string | null
+          mother_name?: string | null
+          nationality?: string | null
+          no_mother?: boolean | null
+          notes?: string | null
+          passport_number?: string | null
+          passport_photo_url?: string | null
+          protocol_number?: string | null
+          received_at?: string | null
+          selfie_url?: string | null
+          state_code?: string | null
+          state_name?: string | null
+          status?: string | null
+          staying_with_friend?: boolean | null
+          street_address?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address_proof_url?: string | null
+          city?: string | null
+          cpf_number?: string | null
+          created_at?: string | null
+          email?: string | null
+          father_name?: string | null
+          full_name?: string | null
+          host_address?: string | null
+          host_city?: string | null
+          host_cpf?: string | null
+          host_name?: string | null
+          id?: string
+          mother_alternative?: string | null
+          mother_name?: string | null
+          nationality?: string | null
+          no_mother?: boolean | null
+          notes?: string | null
+          passport_number?: string | null
+          passport_photo_url?: string | null
+          protocol_number?: string | null
+          received_at?: string | null
+          selfie_url?: string | null
+          state_code?: string | null
+          state_name?: string | null
+          status?: string | null
+          staying_with_friend?: boolean | null
+          street_address?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          application_id: string
+          content: string
+          created_at: string | null
+          id: string
+          read: boolean | null
+          sender_id: string | null
+          sender_type: string
+        }
+        Insert: {
+          application_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          read?: boolean | null
+          sender_id?: string | null
+          sender_type: string
+        }
+        Update: {
+          application_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          read?: boolean | null
+          sender_id?: string | null
+          sender_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          country_code: string | null
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          location: string | null
+          plan: string | null
+          stripe_customer_id: string | null
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          location?: string | null
+          plan?: string | null
+          stripe_customer_id?: string | null
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          location?: string | null
+          plan?: string | null
+          stripe_customer_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
