@@ -374,7 +374,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             {data.fatherName && <FormFieldDisplay label="Nome do Pai" value={data.fatherName} />}
             <FormFieldDisplay label="Tipo de Documento" value="Passaporte" />
             <FormFieldDisplay label="Número do Documento" value={data.passportNumber} />
-            <FormFieldDisplay label="Nacionalidade" value={data.nationality} />
+            <FormFieldDisplay label="Nacionalidade" value={getNationalityPt(data.nationality)} />
             <FormFieldDisplay label="Endereço" value={data.streetAddress} />
             <FormFieldDisplay label="Cidade / UF" value={`${data.city}, ${data.state}`} />
             <FormFieldDisplay label="E-mail" value={data.email} />
