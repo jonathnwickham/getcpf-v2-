@@ -5,7 +5,7 @@ import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 
-type Tab = "overview" | "office" | "documents" | "guide" | "phrases";
+type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners";
 
 // Portuguese nationality translations for common nationalities
 const NATIONALITY_PT: Record<string, string> = {
