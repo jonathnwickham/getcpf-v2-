@@ -379,19 +379,29 @@ const AddressStep = ({
   const [citySearch, setCitySearch] = useState("");
   const [isCityOpen, setIsCityOpen] = useState(false);
   const [showDeclaration, setShowDeclaration] = useState(false);
+  const [hostCitySearch, setHostCitySearch] = useState("");
+  const [isHostCityOpen, setIsHostCityOpen] = useState(false);
   const cityDropdownRef = useRef<HTMLDivElement>(null);
   const cityInputRef = useRef<HTMLInputElement>(null);
+  const hostCityDropdownRef = useRef<HTMLDivElement>(null);
+  const hostCityInputRef = useRef<HTMLInputElement>(null);
 
   const cities = getCitiesForState(state);
   const selectedCity = city;
   const filteredCities = cities.filter((c) =>
     c.toLowerCase().includes(citySearch.toLowerCase())
   );
+  const filteredHostCities = cities.filter((c) =>
+    c.toLowerCase().includes(hostCitySearch.toLowerCase())
+  );
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (cityDropdownRef.current && !cityDropdownRef.current.contains(e.target as Node)) {
         setIsCityOpen(false);
+      }
+      if (hostCityDropdownRef.current && !hostCityDropdownRef.current.contains(e.target as Node)) {
+        setIsHostCityOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
