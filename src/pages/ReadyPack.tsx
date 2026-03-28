@@ -335,15 +335,15 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <div className="bg-secondary rounded-xl p-5">
           <h3 className="font-bold text-sm mb-3">Your data for the form fields</h3>
           <div className="bg-card rounded-lg p-4 font-mono text-xs space-y-2 border border-border">
-            <FormField label="Nome Completo" value={data.fullName} />
-            <FormField label="Nome da Mãe" value={motherDisplay} />
-            {data.fatherName && <FormField label="Nome do Pai" value={data.fatherName} />}
-            <FormField label="Tipo de Documento" value="Passaporte" />
-            <FormField label="Número do Documento" value={data.passportNumber} />
-            <FormField label="Nacionalidade" value={data.nationality} />
-            <FormField label="Endereço" value={data.streetAddress} />
-            <FormField label="Cidade / UF" value={`${data.city}, ${data.state}`} />
-            <FormField label="E-mail" value={data.email} />
+            <FormFieldDisplay label="Nome Completo" value={data.fullName} />
+            <FormFieldDisplay label="Nome da Mãe" value={motherDisplay} />
+            {data.fatherName && <FormFieldDisplay label="Nome do Pai" value={data.fatherName} />}
+            <FormFieldDisplay label="Tipo de Documento" value="Passaporte" />
+            <FormFieldDisplay label="Número do Documento" value={data.passportNumber} />
+            <FormFieldDisplay label="Nacionalidade" value={data.nationality} />
+            <FormFieldDisplay label="Endereço" value={data.streetAddress} />
+            <FormFieldDisplay label="Cidade / UF" value={`${data.city}, ${data.state}`} />
+            <FormFieldDisplay label="E-mail" value={data.email} />
           </div>
           <p className="text-xs text-muted-foreground mt-3">
             💡 Copy these values exactly as shown into the Portuguese form fields. "Nome da Mãe" means "Mother's name."
