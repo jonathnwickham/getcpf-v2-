@@ -381,7 +381,17 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
 };
 
 // === DOCUMENTS TAB ===
-const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => (
+const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => {
+  const [declarationCopied, setDeclarationCopied] = useState(false);
+  const hasHost = data.stayingWithFriend && data.hostName.trim().length > 2;
+  
+  const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  const declaration = hasHost ? (() => {
+    const now = new Date();
+    return `DECLARAÇÃO DE RESIDÊNCIA\n\nEu, ${data.hostName}, portador(a) do CPF nº ${data.hostCpf || "[CPF do anfitrião]"}, residente à ${data.hostAddress}, ${data.hostCity}, ${data.state}, declaro para os devidos fins que ${data.fullName}, portador(a) do passaporte nº ${data.passportNumber}, nacionalidade ${data.nationality}, reside temporariamente em meu endereço acima mencionado.\n\nPor ser verdade, firmo a presente declaração.\n\n${data.hostCity}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}\n\n_______________________________\n${data.hostName}\nCPF: ${data.hostCpf || "[CPF do anfitrião]"}`;
+  })() : null;
+
+  return (
   <div className="space-y-6 animate-slide-in">
     {/* Visual checklist */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
