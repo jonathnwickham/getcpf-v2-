@@ -118,7 +118,7 @@ const ReadyPack = () => {
           <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} />
         )}
         {activeTab === "office" && (
-          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} />
+          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} data={data} />
         )}
         {activeTab === "documents" && (
           <DocumentsTab data={data} motherDisplay={motherDisplay} />
