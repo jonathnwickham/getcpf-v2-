@@ -5,7 +5,7 @@ import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 
-type Tab = "overview" | "office" | "documents" | "guide" | "phrases";
+type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners";
 
 // Portuguese nationality translations for common nationalities
 const NATIONALITY_PT: Record<string, string> = {
@@ -57,6 +57,7 @@ const ReadyPack = () => {
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
+    { id: "partners", label: "Partners", icon: "🤝" },
   ];
 
   return (
@@ -117,7 +118,7 @@ const ReadyPack = () => {
           <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} />
         )}
         {activeTab === "office" && (
-          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} />
+          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} data={data} />
         )}
         {activeTab === "documents" && (
           <DocumentsTab data={data} motherDisplay={motherDisplay} />
@@ -127,6 +128,9 @@ const ReadyPack = () => {
         )}
         {activeTab === "phrases" && (
           <PhrasesTab data={data} />
+        )}
+        {activeTab === "partners" && (
+          <PartnersTab />
         )}
       </div>
     </div>
@@ -212,10 +216,50 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice }: {
 );
 
 // === OFFICE TAB ===
-const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName }: {
-  recommendedOffice?: OfficeInfo; alternativeOffices: OfficeInfo[]; stateName: string;
-}) => (
+const CITY_TIPS: Record<string, string> = {
+  SP: "Go to CAC Bela Vista (Rua Avanhandava, 55). Multiple foreigners confirm fast processing (10-15 min). Avoid the Praça Ramos location — foreigners report being turned away.",
+  SC: "Centro office confirmed foreigner-friendly.",
+  RJ: "Main offices handle foreigners regularly.",
+};
+
+const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
+  recommendedOffice?: OfficeInfo; alternativeOffices: OfficeInfo[]; stateName: string; data: OnboardingData;
+}) => {
+  const [troubleOpen, setTroubleOpen] = useState<string | null>(null);
+  const cityTip = CITY_TIPS[data.state] || "Walk-in should work. Arrive early.";
+
+  return (
   <div className="space-y-6 animate-slide-in">
+    {/* Walk-in is default */}
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
+      <h3 className="font-bold text-lg flex items-center gap-2">🚶 Walk-in is the default</h3>
+      <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+        <li>• Most Receita Federal offices process CPF for foreigners <strong>without an appointment</strong></li>
+        <li>• The online booking system requires a CPF to use (which you don't have yet) — so walk-in is the only option</li>
+        <li>• Just go in, take a queue number at reception, and wait</li>
+      </ul>
+      <div className="mt-4 bg-card border border-border rounded-xl p-4">
+        <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">⏰ Best times to visit</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+          <div className="flex items-center gap-2"><span className="text-primary">✓</span> Tuesday to Thursday, 8:00–10:00 AM</div>
+          <div className="flex items-center gap-2"><span className="text-primary">✓</span> Arrive when the office opens</div>
+          <div className="flex items-center gap-2"><span className="text-destructive">✕</span> Avoid Mondays & first week of month</div>
+          <div className="flex items-center gap-2"><span className="text-destructive">✕</span> Avoid afternoons</div>
+        </div>
+      </div>
+      <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
+        <p className="text-xs text-amber-800 dark:text-amber-200">
+          <strong>The appointment catch-22:</strong> You may see an option to book online, but it requires a CPF — which you don't have yet. Don't worry about this. Walk-in works for CPF registration.
+        </p>
+      </div>
+    </section>
+
+    {/* City-specific tip */}
+    <section className="bg-card border border-border rounded-2xl p-5">
+      <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">📍 Tip for {stateName}</p>
+      <p className="text-sm text-muted-foreground">{cityTip}</p>
+    </section>
+
     {recommendedOffice && (
       <>
         <div className="text-xs uppercase tracking-[2px] text-primary font-bold">Recommended office</div>
@@ -235,7 +279,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName }: {
           </div>
         </section>
 
-        {/* How to get there */}
+        {/* How to prepare */}
         <section className="bg-card border border-border rounded-2xl p-6">
           <h3 className="font-bold mb-3">How to prepare for this office</h3>
           <ul className="space-y-3 text-sm">
@@ -253,7 +297,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName }: {
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-md flex items-center justify-center shrink-0 text-xs font-bold">4</span>
-              <span><strong>Present your documents.</strong> Hand over your passport + copies, proof of address, and say you want a CPF (use the Portuguese script from the Phrases tab).</span>
+              <span><strong>Present your documents.</strong> Hand over your passport + copies, proof of address, and say you want a CPF.</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-md flex items-center justify-center shrink-0 text-xs font-bold">5</span>
@@ -275,13 +319,66 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName }: {
       </>
     )}
 
-    {alternativeOffices.length === 0 && (
-      <div className="bg-secondary rounded-xl p-5 text-center">
-        <p className="text-sm text-muted-foreground">This is the only Receita Federal office in {stateName}. No alternatives available.</p>
+    {/* Correios backup */}
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-3 border-b border-border bg-amber-50 dark:bg-amber-950/20 flex items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">🟡 Alternative — R$7 fee</span>
+        <h3 className="font-bold text-sm">Correios (Post Office)</h3>
       </div>
-    )}
+      <div className="p-6">
+        <p className="text-sm text-muted-foreground mb-3">If Receita Federal is busy or redirects you, any Correios can process your CPF for R$7. Walk-in, no appointment needed.</p>
+        <a
+          href={`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+        >
+          📍 Find nearest Correios
+        </a>
+        <div className="mt-4 bg-secondary rounded-xl p-4">
+          <p className="text-xs text-muted-foreground">
+            <strong>Note about banks:</strong> Some Banco do Brasil and Caixa branches can process CPF, but availability for foreigners is inconsistent. We recommend Receita Federal or Correios instead.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Troubleshooting */}
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h3 className="font-bold">🔧 Having trouble?</h3>
+        <p className="text-xs text-muted-foreground mt-1">Common problems and what to do</p>
+      </div>
+      <div className="p-4 space-y-1">
+        {[
+          { q: "They said they can't do CPF here", a: "This sometimes happens at smaller branches. Go to a larger Receita Federal office, or try the nearest Correios (post office) instead." },
+          { q: "They asked for an appointment", a: "CPF registration for foreigners is usually handled as a walk-in. Ask: 'Posso fazer a inscrição no CPF sem agendamento?' (Can I do CPF registration without an appointment?) If they insist, use the email method — your pre-written email is in the dashboard." },
+          { q: "They asked for a document I don't have", a: "The only required documents are your passport and the signed FCPF form. Show them these. If they ask for a birth certificate, it's optional — explain that you have your mother's name on the form already." },
+          { q: "They refused because I'm a foreigner", a: "Any foreigner can register for CPF — this is your legal right under IN RFB 2.172/2024. Try another Receita Federal office or the nearest Correios." },
+          { q: "The system was offline", a: "This happens occasionally. Come back the next day, or use the email method. Your pre-written email is ready to send from your dashboard." },
+          { q: "I sent the email but got no response", a: "Wait 7 business days. If no response, resend to the same address. If still nothing, try a different regional office email or go in person." },
+        ].map(({ q, a }) => (
+          <button
+            key={q}
+            onClick={() => setTroubleOpen(troubleOpen === q ? null : q)}
+            className="w-full text-left"
+          >
+            <div className={`rounded-xl p-4 transition-all ${troubleOpen === q ? "bg-primary/5 border border-primary/10" : "hover:bg-secondary"}`}>
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-sm">"{q}"</p>
+                <span className="text-muted-foreground text-xs shrink-0 ml-2">{troubleOpen === q ? "▲" : "▼"}</span>
+              </div>
+              {troubleOpen === q && (
+                <p className="text-sm text-muted-foreground mt-2">{a}</p>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
   </div>
-);
+  );
+};
 
 // === DOCUMENTS TAB ===
 const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => (
@@ -382,6 +479,19 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
           <p className="text-xs text-muted-foreground mt-3">
             💡 Copy these values exactly as shown into the Portuguese form fields. "Nome da Mãe" means "Mother's name."
           </p>
+        </div>
+
+        {/* Protocol clarification */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+          <h4 className="font-bold text-sm mb-2">⚠️ Important: About the message after submitting</h4>
+          <p className="text-sm text-muted-foreground mb-2">
+            After submitting the form, you'll see a message in Portuguese saying you need to go to a Receita Federal office. This appears for everyone. You have <strong>two options</strong>:
+          </p>
+          <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+            <li><strong>Go in person</strong> (recommended — faster, usually same-day)</li>
+            <li><strong>Send everything by email</strong> (the email template is ready for you below)</li>
+          </ol>
+          <p className="text-xs text-muted-foreground mt-2">Both options work. In-person is faster. Email takes 3-7 business days.</p>
         </div>
       </div>
     </section>
@@ -505,7 +615,9 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
           <PhraseCard pt="Formulário preenchido" en="Filled-out form" category="Documents" />
           <PhraseCard pt="Quanto tempo demora?" en="How long does it take?" category="Questions" />
           <PhraseCard pt="Preciso de mais algum documento?" en="Do I need any other document?" category="Questions" />
-          <PhraseCard pt="Posso agendar um horário?" en="Can I schedule an appointment?" category="Questions" />
+          <PhraseCard pt="Não tenho agendamento, posso fazer mesmo assim?" en="I don't have an appointment, can I do it anyway?" category="Questions" />
+          <PhraseCard pt="Posso receber por email?" en="Can I receive it by email?" category="Questions" />
+          <PhraseCard pt="Preciso de um comprovante" en="I need a receipt/proof" category="Questions" />
           <PhraseCard pt="Onde fica o banheiro?" en="Where is the bathroom?" category="Practical" />
           <PhraseCard pt="Não falo português muito bem" en="I don't speak Portuguese very well" category="Helpful" />
           <PhraseCard pt="Pode me ajudar, por favor?" en="Can you help me, please?" category="Helpful" />
@@ -594,7 +706,10 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
   return (
     <div className={`bg-card border rounded-2xl overflow-hidden ${isRecommended ? "border-primary shadow-lg shadow-primary/5" : "border-border"}`}>
       {isRecommended && (
-        <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold">⭐ Recommended — best for foreigners</div>
+        <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold flex items-center gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-primary-foreground"></span>
+          🟢 Recommended — walk-in, free, same-day
+        </div>
       )}
       <div className="p-6">
         <h3 className="font-bold text-lg">{office.name}</h3>
@@ -687,11 +802,103 @@ const TimelineStep = ({ time, title, items }: { time: string; title: string; ite
   </div>
 );
 
-const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: string }) => (
-  <div className="bg-secondary rounded-lg p-3">
-    <div className="text-[9px] uppercase tracking-wider text-primary font-bold mb-1">{category}</div>
-    <div className="font-semibold text-sm">{pt}</div>
-    <div className="text-xs text-muted-foreground mt-0.5">{en}</div>
+const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: string }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(pt);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <div className="bg-secondary rounded-lg p-3 group relative">
+      <div className="text-[9px] uppercase tracking-wider text-primary font-bold mb-1">{category}</div>
+      <div className="font-semibold text-sm font-mono">{pt}</div>
+      <div className="text-xs text-muted-foreground mt-0.5">{en}</div>
+      <button
+        onClick={copy}
+        className="absolute top-2 right-2 bg-card border border-border px-2 py-1 rounded-md text-[10px] font-bold opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-primary hover:text-primary-foreground"
+      >
+        {copied ? "✓" : "Copy"}
+      </button>
+    </div>
+  );
+};
+
+// === PARTNERS TAB ===
+const PARTNERS = [
+  {
+    icon: "🏥",
+    name: "SafetyWing",
+    category: "Health & Travel Insurance",
+    desc: "Global insurance for travelers and nomads. From $45/month, cancel anytime.",
+    cta: "Get covered →",
+    url: "#", // affiliate link placeholder
+  },
+  {
+    icon: "📱",
+    name: "Airalo",
+    category: "Stay Connected",
+    desc: "Get a Brazil eSIM in 2 minutes. Works instantly. From $5.",
+    cta: "Get an eSIM →",
+    url: "#",
+  },
+  {
+    icon: "🏦",
+    name: "Nubank",
+    category: "Bank Account",
+    desc: "Zero fees. Instant Pix access. Apply with CPF + passport.",
+    cta: "Open Nubank →",
+    url: "#",
+  },
+  {
+    icon: "💸",
+    name: "Wise",
+    category: "Send Money",
+    desc: "Real exchange rate. Minimal fees. Send money to/from Brazil.",
+    cta: "Try Wise →",
+    url: "#",
+  },
+  {
+    icon: "🗣️",
+    name: "iTalki",
+    category: "Learn Portuguese",
+    desc: "1-on-1 lessons with native speakers. Even 5 lessons helps.",
+    cta: "Start learning →",
+    url: "#",
+  },
+];
+
+const PartnersTab = () => (
+  <div className="space-y-6 animate-slide-in">
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6 text-center">
+      <h2 className="text-2xl font-bold">🎉 Your CPF is ready — here's what it unlocks</h2>
+      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Trusted services from our partners to help you settle into Brazil.</p>
+    </section>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {PARTNERS.map((p) => (
+        <div key={p.name} className="bg-card border border-border rounded-2xl p-6 flex flex-col">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">{p.icon}</span>
+            <div>
+              <h3 className="font-bold text-sm">{p.name}</h3>
+              <p className="text-[10px] uppercase tracking-wider text-primary font-bold">{p.category}</p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground flex-1">{p.desc}</p>
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center justify-center bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            {p.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <p className="text-xs text-muted-foreground text-center">Questions about any of these? Message us.</p>
   </div>
 );
 
