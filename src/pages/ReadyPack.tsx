@@ -318,7 +318,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
       <div className="p-6 space-y-4">
         <a
-          href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCPF/default.asp"
+          href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-4 bg-secondary rounded-xl p-4 hover:bg-secondary/80 transition-all group"
