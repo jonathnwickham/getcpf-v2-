@@ -1,16 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import PainPoints from "@/components/PainPoints";
+import HowItWorks from "@/components/HowItWorks";
+import Pricing from "@/components/Pricing";
+import TrustBar from "@/components/TrustBar";
+import FAQ from "@/components/FAQ";
+import FinalCTA from "@/components/FinalCTA";
+import Footer from "@/components/Footer";
+import SignupModal from "@/components/SignupModal";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="overflow-x-hidden">
+      <Navbar onOpenModal={() => setModalOpen(true)} />
+      <Hero onOpenModal={() => setModalOpen(true)} />
+      <PainPoints />
+      <HowItWorks />
+      <Pricing onOpenModal={() => setModalOpen(true)} />
+      <TrustBar />
+      <FAQ />
+      <FinalCTA onOpenModal={() => setModalOpen(true)} />
+      <Footer />
+      <SignupModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
