@@ -87,7 +87,7 @@ const GetStarted = () => {
           className="max-w-[520px] w-full animate-slide-in"
         >
           {step === 0 && <WelcomeStep />}
-          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} />}
+          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} />}
           {step === 2 && (
             <MotherStep
               value={data.motherName}
