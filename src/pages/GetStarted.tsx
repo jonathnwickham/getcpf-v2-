@@ -169,21 +169,41 @@ const WelcomeStep = () => (
   </div>
 );
 
-const NameStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
-    <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="e.g. John Michael Smith"
-      autoFocus
-      className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-    />
-  </div>
-);
+const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: string; onChange: (v: string) => void; forceFullName: boolean; onForceFullName: (v: boolean) => void }) => {
+  const words = value.trim().split(/\s+/).filter(Boolean);
+  const isFullName = words.length >= 2;
+  const showWarning = value.trim().length > 2 && !isFullName && !forceFullName;
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
+      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => { onChange(e.target.value); onForceFullName(false); }}
+        placeholder="e.g. John Michael Smith"
+        autoFocus
+        autoComplete="name"
+        className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+      />
+      {showWarning && (
+        <div className="mt-3 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
+          <p className="text-sm font-semibold text-amber-700 dark:text-amber-400 mb-1">⚠️ This looks like a single name</p>
+          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) as it appears on your passport. CPF applications require a complete name.</p>
+          <button
+            type="button"
+            onClick={() => onForceFullName(true)}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            This is my full legal name — continue anyway →
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MotherStep = ({
   value, onChange, noMother, onToggleNoMother, alternative, onAlternativeChange,
