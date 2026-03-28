@@ -629,7 +629,7 @@ const DocCheck = ({ title, desc, critical }: { title: string; desc: string; crit
   </div>
 );
 
-const FormField = ({ label, value }: { label: string; value: string }) => (
+const FormFieldDisplay = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-baseline gap-2">
     <span className="text-muted-foreground shrink-0 w-36">{label}:</span>
     <span className="text-foreground font-semibold">{value}</span>
