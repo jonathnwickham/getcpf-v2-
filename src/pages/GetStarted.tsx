@@ -194,8 +194,8 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
         className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
       />
       {showWarning && (
-        <div className="mt-3 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
-          <p className="text-sm font-semibold text-amber-700 dark:text-amber-400 mb-1">⚠️ This looks like a single name</p>
+        <div className="mt-3 bg-destructive/10 border border-destructive/20 rounded-xl p-4">
+          <p className="text-sm font-semibold text-destructive mb-1">⚠️ This looks like a single name</p>
           <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) as it appears on your passport. CPF applications require a complete name.</p>
           <button
             type="button"
