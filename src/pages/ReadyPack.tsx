@@ -784,11 +784,103 @@ const TimelineStep = ({ time, title, items }: { time: string; title: string; ite
   </div>
 );
 
-const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: string }) => (
-  <div className="bg-secondary rounded-lg p-3">
-    <div className="text-[9px] uppercase tracking-wider text-primary font-bold mb-1">{category}</div>
-    <div className="font-semibold text-sm">{pt}</div>
-    <div className="text-xs text-muted-foreground mt-0.5">{en}</div>
+const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: string }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(pt);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <div className="bg-secondary rounded-lg p-3 group relative">
+      <div className="text-[9px] uppercase tracking-wider text-primary font-bold mb-1">{category}</div>
+      <div className="font-semibold text-sm font-mono">{pt}</div>
+      <div className="text-xs text-muted-foreground mt-0.5">{en}</div>
+      <button
+        onClick={copy}
+        className="absolute top-2 right-2 bg-card border border-border px-2 py-1 rounded-md text-[10px] font-bold opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-primary hover:text-primary-foreground"
+      >
+        {copied ? "✓" : "Copy"}
+      </button>
+    </div>
+  );
+};
+
+// === PARTNERS TAB ===
+const PARTNERS = [
+  {
+    icon: "🏥",
+    name: "SafetyWing",
+    category: "Health & Travel Insurance",
+    desc: "Global insurance for travelers and nomads. From $45/month, cancel anytime.",
+    cta: "Get covered →",
+    url: "#", // affiliate link placeholder
+  },
+  {
+    icon: "📱",
+    name: "Airalo",
+    category: "Stay Connected",
+    desc: "Get a Brazil eSIM in 2 minutes. Works instantly. From $5.",
+    cta: "Get an eSIM →",
+    url: "#",
+  },
+  {
+    icon: "🏦",
+    name: "Nubank",
+    category: "Bank Account",
+    desc: "Zero fees. Instant Pix access. Apply with CPF + passport.",
+    cta: "Open Nubank →",
+    url: "#",
+  },
+  {
+    icon: "💸",
+    name: "Wise",
+    category: "Send Money",
+    desc: "Real exchange rate. Minimal fees. Send money to/from Brazil.",
+    cta: "Try Wise →",
+    url: "#",
+  },
+  {
+    icon: "🗣️",
+    name: "iTalki",
+    category: "Learn Portuguese",
+    desc: "1-on-1 lessons with native speakers. Even 5 lessons helps.",
+    cta: "Start learning →",
+    url: "#",
+  },
+];
+
+const PartnersTab = () => (
+  <div className="space-y-6 animate-slide-in">
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6 text-center">
+      <h2 className="text-2xl font-bold">🎉 Your CPF is ready — here's what it unlocks</h2>
+      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Trusted services from our partners to help you settle into Brazil.</p>
+    </section>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {PARTNERS.map((p) => (
+        <div key={p.name} className="bg-card border border-border rounded-2xl p-6 flex flex-col">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">{p.icon}</span>
+            <div>
+              <h3 className="font-bold text-sm">{p.name}</h3>
+              <p className="text-[10px] uppercase tracking-wider text-primary font-bold">{p.category}</p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground flex-1">{p.desc}</p>
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center justify-center bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            {p.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <p className="text-xs text-muted-foreground text-center">Questions about any of these? Message us.</p>
   </div>
 );
 
