@@ -108,6 +108,19 @@ const GetStarted = () => {
               state={data.state}
               onStreetChange={(v) => update("streetAddress", v)}
               onCityChange={(v) => update("city", v)}
+              stayingWithFriend={data.stayingWithFriend}
+              onToggleStaying={(v) => update("stayingWithFriend", v)}
+              hostName={data.hostName}
+              onHostNameChange={(v) => update("hostName", v)}
+              hostCpf={data.hostCpf}
+              onHostCpfChange={(v) => update("hostCpf", v)}
+              hostAddress={data.hostAddress}
+              onHostAddressChange={(v) => update("hostAddress", v)}
+              hostCity={data.hostCity}
+              onHostCityChange={(v) => update("hostCity", v)}
+              guestName={data.fullName}
+              passportNumber={data.passportNumber}
+              nationality={data.nationality}
             />
           )}
           {step === 7 && (
