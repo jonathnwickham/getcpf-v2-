@@ -615,7 +615,9 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
           <PhraseCard pt="Formulário preenchido" en="Filled-out form" category="Documents" />
           <PhraseCard pt="Quanto tempo demora?" en="How long does it take?" category="Questions" />
           <PhraseCard pt="Preciso de mais algum documento?" en="Do I need any other document?" category="Questions" />
-          <PhraseCard pt="Posso agendar um horário?" en="Can I schedule an appointment?" category="Questions" />
+          <PhraseCard pt="Não tenho agendamento, posso fazer mesmo assim?" en="I don't have an appointment, can I do it anyway?" category="Questions" />
+          <PhraseCard pt="Posso receber por email?" en="Can I receive it by email?" category="Questions" />
+          <PhraseCard pt="Preciso de um comprovante" en="I need a receipt/proof" category="Questions" />
           <PhraseCard pt="Onde fica o banheiro?" en="Where is the bathroom?" category="Practical" />
           <PhraseCard pt="Não falo português muito bem" en="I don't speak Portuguese very well" category="Helpful" />
           <PhraseCard pt="Pode me ajudar, por favor?" en="Can you help me, please?" category="Helpful" />
