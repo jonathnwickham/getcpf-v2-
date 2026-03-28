@@ -40,6 +40,11 @@ export interface OnboardingData {
   city: string;
   nationality: string;
   email: string;
+  stayingWithFriend: boolean;
+  hostName: string;
+  hostCpf: string;
+  hostAddress: string;
+  hostCity: string;
 }
 
 export const INITIAL_DATA: OnboardingData = {
@@ -54,6 +59,11 @@ export const INITIAL_DATA: OnboardingData = {
   city: "",
   nationality: "",
   email: "",
+  stayingWithFriend: false,
+  hostName: "",
+  hostCpf: "",
+  hostAddress: "",
+  hostCity: "",
 };
 
 export interface OfficeInfo {
