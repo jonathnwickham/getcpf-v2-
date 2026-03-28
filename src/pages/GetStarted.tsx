@@ -328,41 +328,103 @@ const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) =
 );
 
 const AddressStep = ({
-  street, city, onStreetChange, onCityChange,
+  street, city, state, onStreetChange, onCityChange,
 }: {
-  street: string; city: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
-}) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      The street address where you're staying. This goes on the application form.
-    </p>
-    <div className="space-y-4">
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">Street address</label>
-        <input
-          type="text"
-          value={street}
-          onChange={(e) => onStreetChange(e.target.value)}
-          placeholder="e.g. Rua Augusta, 1234 — Apt 501"
-          autoFocus
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
-      </div>
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">City</label>
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => onCityChange(e.target.value)}
-          placeholder="e.g. São Paulo"
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
+  street: string; city: string; state: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
+}) => {
+  const [citySearch, setCitySearch] = useState("");
+  const [isCityOpen, setIsCityOpen] = useState(false);
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+  const cityInputRef = useRef<HTMLInputElement>(null);
+
+  const cities = getCitiesForState(state);
+  const selectedCity = city;
+  const filteredCities = cities.filter((c) =>
+    c.toLowerCase().includes(citySearch.toLowerCase())
+  );
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (cityDropdownRef.current && !cityDropdownRef.current.contains(e.target as Node)) {
+        setIsCityOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        The street address where you're staying. This goes on the application form.
+      </p>
+      <div className="space-y-4">
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Street address</label>
+          <input
+            type="text"
+            value={street}
+            onChange={(e) => onStreetChange(e.target.value)}
+            placeholder="e.g. Rua Augusta, 1234 — Apt 501"
+            autoFocus
+            autoComplete="street-address"
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+        </div>
+        <div ref={cityDropdownRef} className="relative">
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">City</label>
+          {selectedCity && !isCityOpen ? (
+            <button
+              type="button"
+              onClick={() => { setIsCityOpen(true); setTimeout(() => cityInputRef.current?.focus(), 50); }}
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-left flex items-center justify-between hover:border-primary/30 transition-all"
+            >
+              <span className="font-medium">{selectedCity}</span>
+              <span className="text-muted-foreground text-sm">Change</span>
+            </button>
+          ) : (
+            <input
+              ref={cityInputRef}
+              type="text"
+              value={isCityOpen ? citySearch : city}
+              onChange={(e) => {
+                setCitySearch(e.target.value);
+                setIsCityOpen(true);
+                // Also update the actual city value for custom entries
+                onCityChange(e.target.value);
+              }}
+              onFocus={() => setIsCityOpen(true)}
+              placeholder="Search city… e.g. São Paulo"
+              autoComplete="address-level2"
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+          )}
+          {isCityOpen && filteredCities.length > 0 && (
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+              {filteredCities.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => { onCityChange(c); setCitySearch(""); setIsCityOpen(false); }}
+                  className="w-full px-5 py-3 hover:bg-primary/5 transition-colors text-left text-sm font-medium"
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
+          {isCityOpen && filteredCities.length === 0 && citySearch && (
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl p-4">
+              <p className="text-sm text-muted-foreground">No match — your typed city will be used</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ContactStep = ({
   email, nationality, onEmailChange, onNationalityChange,
