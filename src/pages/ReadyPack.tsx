@@ -480,6 +480,19 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             💡 Copy these values exactly as shown into the Portuguese form fields. "Nome da Mãe" means "Mother's name."
           </p>
         </div>
+
+        {/* Protocol clarification */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+          <h4 className="font-bold text-sm mb-2">⚠️ Important: About the message after submitting</h4>
+          <p className="text-sm text-muted-foreground mb-2">
+            After submitting the form, you'll see a message in Portuguese saying you need to go to a Receita Federal office. This appears for everyone. You have <strong>two options</strong>:
+          </p>
+          <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+            <li><strong>Go in person</strong> (recommended — faster, usually same-day)</li>
+            <li><strong>Send everything by email</strong> (the email template is ready for you below)</li>
+          </ol>
+          <p className="text-xs text-muted-foreground mt-2">Both options work. In-person is faster. Email takes 3-7 business days.</p>
+        </div>
       </div>
     </section>
   </div>
