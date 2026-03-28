@@ -706,7 +706,10 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
   return (
     <div className={`bg-card border rounded-2xl overflow-hidden ${isRecommended ? "border-primary shadow-lg shadow-primary/5" : "border-border"}`}>
       {isRecommended && (
-        <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold">⭐ Recommended — best for foreigners</div>
+        <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold flex items-center gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-primary-foreground"></span>
+          🟢 Recommended — walk-in, free, same-day
+        </div>
       )}
       <div className="p-6">
         <h3 className="font-bold text-lg">{office.name}</h3>
