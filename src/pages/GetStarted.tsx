@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
+import { COUNTRIES } from "@/lib/countries-data";
 
 const TOTAL_STEPS = 8;
 
@@ -342,37 +343,101 @@ const ContactStep = ({
   email, nationality, onEmailChange, onNationalityChange,
 }: {
   email: string; nationality: string; onEmailChange: (v: string) => void; onNationalityChange: (v: string) => void;
-}) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Final step</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost done!</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      Your email for the Ready Pack download, and your nationality for the application.
-    </p>
-    <div className="space-y-4">
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">Email address</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => onEmailChange(e.target.value)}
-          placeholder="you@example.com"
-          autoFocus
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
-      </div>
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">Nationality</label>
-        <input
-          type="text"
-          value={nationality}
-          onChange={(e) => onNationalityChange(e.target.value)}
-          placeholder="e.g. American, British, French"
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
+}) => {
+  const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const selectedCountry = COUNTRIES.find((c) => c.nationality === nationality || c.name === nationality);
+
+  const filtered = COUNTRIES.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    c.nationality.toLowerCase().includes(search.toLowerCase()) ||
+    c.code.toLowerCase().includes(search.toLowerCase())
+  );
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const selectCountry = (c: typeof COUNTRIES[0]) => {
+    onNationalityChange(c.nationality);
+    setSearch("");
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Final step</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost done!</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        Your email for the Ready Pack download, and your nationality for the application.
+      </p>
+      <div className="space-y-4">
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Email address</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => onEmailChange(e.target.value)}
+            placeholder="you@example.com"
+            autoFocus
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+        </div>
+        <div ref={dropdownRef} className="relative">
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Nationality</label>
+          {selectedCountry && !isOpen ? (
+            <button
+              type="button"
+              onClick={() => { setIsOpen(true); setTimeout(() => inputRef.current?.focus(), 50); }}
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-left flex items-center gap-3 hover:border-primary/30 transition-all"
+            >
+              <span className="text-2xl">{selectedCountry.flag}</span>
+              <span className="font-medium">{selectedCountry.name}</span>
+              <span className="text-muted-foreground text-sm ml-auto">Change</span>
+            </button>
+          ) : (
+            <input
+              ref={inputRef}
+              type="text"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
+              onFocus={() => setIsOpen(true)}
+              placeholder="Search country… e.g. South Africa"
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+          )}
+          {isOpen && (
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+              {filtered.length === 0 && (
+                <div className="px-5 py-4 text-sm text-muted-foreground">No countries found</div>
+              )}
+              {filtered.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  onClick={() => selectCountry(c)}
+                  className="w-full px-5 py-3 flex items-center gap-3 hover:bg-primary/5 transition-colors text-left"
+                >
+                  <span className="text-xl">{c.flag}</span>
+                  <span className="font-medium text-sm">{c.name}</span>
+                  <span className="text-xs text-muted-foreground ml-auto">{c.nationality}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default GetStarted;
