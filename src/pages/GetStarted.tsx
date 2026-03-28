@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
+import { getCitiesForState } from "@/lib/brazilian-cities";
 
 const TOTAL_STEPS = 8;
 
@@ -10,6 +11,7 @@ const GetStarted = () => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
+  const [forceFullName, setForceFullName] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
     setData((prev) => ({ ...prev, [field]: value }));
@@ -36,7 +38,10 @@ const GetStarted = () => {
   const canProceed = (): boolean => {
     switch (step) {
       case 0: return true; // welcome
-      case 1: return data.fullName.trim().length > 2;
+      case 1: {
+        const words = data.fullName.trim().split(/\s+/).filter(Boolean);
+        return words.length >= 2 || (forceFullName && data.fullName.trim().length > 2);
+      }
       case 2: return data.noMotherName ? data.motherAlternative.trim().length > 0 : data.motherName.trim().length > 2;
       case 3: return true; // father is optional
       case 4: return data.passportNumber.trim().length > 4;
@@ -82,7 +87,7 @@ const GetStarted = () => {
           className="max-w-[520px] w-full animate-slide-in"
         >
           {step === 0 && <WelcomeStep />}
-          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} />}
+          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} />}
           {step === 2 && (
             <MotherStep
               value={data.motherName}
@@ -100,6 +105,7 @@ const GetStarted = () => {
             <AddressStep
               street={data.streetAddress}
               city={data.city}
+              state={data.state}
               onStreetChange={(v) => update("streetAddress", v)}
               onCityChange={(v) => update("city", v)}
             />
@@ -168,21 +174,41 @@ const WelcomeStep = () => (
   </div>
 );
 
-const NameStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
-    <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="e.g. John Michael Smith"
-      autoFocus
-      className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-    />
-  </div>
-);
+const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: string; onChange: (v: string) => void; forceFullName: boolean; onForceFullName: (v: boolean) => void }) => {
+  const words = value.trim().split(/\s+/).filter(Boolean);
+  const isFullName = words.length >= 2;
+  const showWarning = value.trim().length > 2 && !isFullName && !forceFullName;
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
+      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => { onChange(e.target.value); onForceFullName(false); }}
+        placeholder="e.g. John Michael Smith"
+        autoFocus
+        autoComplete="name"
+        className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+      />
+      {showWarning && (
+        <div className="mt-3 bg-destructive/10 border border-destructive/20 rounded-xl p-4">
+          <p className="text-sm font-semibold text-destructive mb-1">⚠️ This looks like a single name</p>
+          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) as it appears on your passport. CPF applications require a complete name.</p>
+          <button
+            type="button"
+            onClick={() => onForceFullName(true)}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            This is my full legal name — continue anyway →
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MotherStep = ({
   value, onChange, noMother, onToggleNoMother, alternative, onAlternativeChange,
@@ -303,41 +329,103 @@ const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) =
 );
 
 const AddressStep = ({
-  street, city, onStreetChange, onCityChange,
+  street, city, state, onStreetChange, onCityChange,
 }: {
-  street: string; city: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
-}) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      The street address where you're staying. This goes on the application form.
-    </p>
-    <div className="space-y-4">
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">Street address</label>
-        <input
-          type="text"
-          value={street}
-          onChange={(e) => onStreetChange(e.target.value)}
-          placeholder="e.g. Rua Augusta, 1234 — Apt 501"
-          autoFocus
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
-      </div>
-      <div>
-        <label className="text-xs font-semibold text-muted-foreground mb-2 block">City</label>
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => onCityChange(e.target.value)}
-          placeholder="e.g. São Paulo"
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-        />
+  street: string; city: string; state: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
+}) => {
+  const [citySearch, setCitySearch] = useState("");
+  const [isCityOpen, setIsCityOpen] = useState(false);
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+  const cityInputRef = useRef<HTMLInputElement>(null);
+
+  const cities = getCitiesForState(state);
+  const selectedCity = city;
+  const filteredCities = cities.filter((c) =>
+    c.toLowerCase().includes(citySearch.toLowerCase())
+  );
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (cityDropdownRef.current && !cityDropdownRef.current.contains(e.target as Node)) {
+        setIsCityOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        The street address where you're staying. This goes on the application form.
+      </p>
+      <div className="space-y-4">
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Street address</label>
+          <input
+            type="text"
+            value={street}
+            onChange={(e) => onStreetChange(e.target.value)}
+            placeholder="e.g. Rua Augusta, 1234 — Apt 501"
+            autoFocus
+            autoComplete="street-address"
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+        </div>
+        <div ref={cityDropdownRef} className="relative">
+          <label className="text-xs font-semibold text-muted-foreground mb-2 block">City</label>
+          {selectedCity && !isCityOpen ? (
+            <button
+              type="button"
+              onClick={() => { setIsCityOpen(true); setTimeout(() => cityInputRef.current?.focus(), 50); }}
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-left flex items-center justify-between hover:border-primary/30 transition-all"
+            >
+              <span className="font-medium">{selectedCity}</span>
+              <span className="text-muted-foreground text-sm">Change</span>
+            </button>
+          ) : (
+            <input
+              ref={cityInputRef}
+              type="text"
+              value={isCityOpen ? citySearch : city}
+              onChange={(e) => {
+                setCitySearch(e.target.value);
+                setIsCityOpen(true);
+                // Also update the actual city value for custom entries
+                onCityChange(e.target.value);
+              }}
+              onFocus={() => setIsCityOpen(true)}
+              placeholder="Search city… e.g. São Paulo"
+              autoComplete="address-level2"
+              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            />
+          )}
+          {isCityOpen && filteredCities.length > 0 && (
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+              {filteredCities.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => { onCityChange(c); setCitySearch(""); setIsCityOpen(false); }}
+                  className="w-full px-5 py-3 hover:bg-primary/5 transition-colors text-left text-sm font-medium"
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
+          {isCityOpen && filteredCities.length === 0 && citySearch && (
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl p-4">
+              <p className="text-sm text-muted-foreground">No match — your typed city will be used</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ContactStep = ({
   email, nationality, onEmailChange, onNationalityChange,
@@ -389,6 +477,7 @@ const ContactStep = ({
             onChange={(e) => onEmailChange(e.target.value)}
             placeholder="you@example.com"
             autoFocus
+            autoComplete="email"
             className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
           />
         </div>
