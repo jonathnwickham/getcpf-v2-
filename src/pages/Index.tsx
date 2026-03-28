@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PainPoints from "@/components/PainPoints";
@@ -8,23 +8,25 @@ import TrustBar from "@/components/TrustBar";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-import SignupModal from "@/components/SignupModal";
 
 const Index = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOpenOnboarding = () => {
+    navigate("/get-started");
+  };
 
   return (
     <div className="overflow-x-hidden">
-      <Navbar onOpenModal={() => setModalOpen(true)} />
-      <Hero onOpenModal={() => setModalOpen(true)} />
+      <Navbar onOpenModal={handleOpenOnboarding} />
+      <Hero onOpenModal={handleOpenOnboarding} />
       <PainPoints />
       <HowItWorks />
-      <Pricing onOpenModal={() => setModalOpen(true)} />
+      <Pricing onOpenModal={handleOpenOnboarding} />
       <TrustBar />
       <FAQ />
-      <FinalCTA onOpenModal={() => setModalOpen(true)} />
+      <FinalCTA onOpenModal={handleOpenOnboarding} />
       <Footer />
-      <SignupModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };
