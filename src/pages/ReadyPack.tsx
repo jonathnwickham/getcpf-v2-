@@ -478,7 +478,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
       <div className="p-6">
         <div className="bg-primary/5 border border-primary/15 rounded-xl p-6">
           <p className="text-base leading-relaxed font-medium">
-            "Bom dia. Eu gostaria de fazer a inscrição no CPF, por favor. Meu nome é <strong>{data.fullName}</strong>, sou <strong>{data.nationality.toLowerCase()}</strong>, e estou no Brasil com meu passaporte número <strong>{data.passportNumber}</strong>. Aqui está meu formulário e meus documentos."
+            "Bom dia. Eu gostaria de fazer a inscrição no CPF, por favor. Meu nome é <strong>{data.fullName}</strong>, sou <strong>{getNationalityPt(data.nationality)}</strong>, e estou no Brasil com meu passaporte número <strong>{data.passportNumber}</strong>. Aqui está meu formulário e meus documentos."
           </p>
         </div>
         <div className="mt-4 bg-secondary rounded-xl p-5">
