@@ -11,6 +11,7 @@ const GetStarted = () => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
+  const [forceFullName, setForceFullName] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
     setData((prev) => ({ ...prev, [field]: value }));
