@@ -129,6 +129,9 @@ const ReadyPack = () => {
         {activeTab === "phrases" && (
           <PhrasesTab data={data} />
         )}
+        {activeTab === "partners" && (
+          <PartnersTab />
+        )}
       </div>
     </div>
   );
