@@ -7,6 +7,28 @@ import cpfSuccessImg from "@/assets/cpf-success.jpg";
 
 type Tab = "overview" | "office" | "documents" | "guide" | "phrases";
 
+// Portuguese nationality translations for common nationalities
+const NATIONALITY_PT: Record<string, string> = {
+  "American": "americano(a)", "British": "britânico(a)", "Canadian": "canadense",
+  "Australian": "australiano(a)", "South African": "sul-africano(a)", "Irish": "irlandês/irlandesa",
+  "German": "alemão/alemã", "French": "francês/francesa", "Italian": "italiano(a)",
+  "Spanish": "espanhol(a)", "Portuguese": "português/portuguesa", "Dutch": "holandês/holandesa",
+  "Swedish": "sueco(a)", "Norwegian": "norueguês/norueguesa", "Danish": "dinamarquês/dinamarquesa",
+  "Japanese": "japonês/japonesa", "Chinese": "chinês/chinesa", "South Korean": "sul-coreano(a)",
+  "Indian": "indiano(a)", "Mexican": "mexicano(a)", "Argentine": "argentino(a)",
+  "Chilean": "chileno(a)", "Colombian": "colombiano(a)", "Peruvian": "peruano(a)",
+  "New Zealander": "neozelandês/neozelandesa", "Israeli": "israelense", "Polish": "polonês/polonesa",
+  "Russian": "russo(a)", "Swiss": "suíço(a)", "Belgian": "belga", "Austrian": "austríaco(a)",
+  "Nigerian": "nigeriano(a)", "Ghanaian": "ganês/ganesa", "Kenyan": "queniano(a)",
+  "Uruguayan": "uruguaio(a)", "Paraguayan": "paraguaio(a)", "Venezuelan": "venezuelano(a)",
+  "Filipino": "filipino(a)", "Thai": "tailandês/tailandesa", "Vietnamese": "vietnamita",
+  "Turkish": "turco(a)", "Egyptian": "egípcio(a)", "Moroccan": "marroquino(a)",
+};
+
+const getNationalityPt = (nationality: string): string => {
+  return NATIONALITY_PT[nationality] || nationality.toLowerCase();
+};
+
 const ReadyPack = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<OnboardingData | null>(null);
@@ -61,7 +83,7 @@ const ReadyPack = () => {
                 <div className="text-[10px] font-semibold opacity-70 uppercase">Expected CPF</div>
               </div>
               <div className="bg-primary-foreground/15 rounded-xl px-4 py-3 text-center">
-                <div className="text-2xl font-bold">{data.state}</div>
+                <div className="text-2xl font-bold">{stateName}</div>
                 <div className="text-[10px] font-semibold opacity-70 uppercase">Your state</div>
               </div>
             </div>
@@ -158,7 +180,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice }: {
           <InfoField label="Mother's Name" value={motherDisplay} />
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Passport" value={data.passportNumber} />
-          <InfoField label="Nationality" value={data.nationality} />
+          <InfoField label="Nationality" value={`${data.nationality} (${getNationalityPt(data.nationality)})`} />
           <InfoField label="State" value={`${data.state} — ${stateName}`} />
           <InfoField label="Address" value={data.streetAddress} />
           <InfoField label="City" value={data.city} />
@@ -352,7 +374,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             {data.fatherName && <FormFieldDisplay label="Nome do Pai" value={data.fatherName} />}
             <FormFieldDisplay label="Tipo de Documento" value="Passaporte" />
             <FormFieldDisplay label="Número do Documento" value={data.passportNumber} />
-            <FormFieldDisplay label="Nacionalidade" value={data.nationality} />
+            <FormFieldDisplay label="Nacionalidade" value={getNationalityPt(data.nationality)} />
             <FormFieldDisplay label="Endereço" value={data.streetAddress} />
             <FormFieldDisplay label="Cidade / UF" value={`${data.city}, ${data.state}`} />
             <FormFieldDisplay label="E-mail" value={data.email} />
@@ -456,7 +478,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
       <div className="p-6">
         <div className="bg-primary/5 border border-primary/15 rounded-xl p-6">
           <p className="text-base leading-relaxed font-medium">
-            "Bom dia. Eu gostaria de fazer a inscrição no CPF, por favor. Meu nome é <strong>{data.fullName}</strong>, sou <strong>{data.nationality.toLowerCase()}</strong>, e estou no Brasil com meu passaporte número <strong>{data.passportNumber}</strong>. Aqui está meu formulário e meus documentos."
+            "Bom dia. Eu gostaria de fazer a inscrição no CPF, por favor. Meu nome é <strong>{data.fullName}</strong>, sou <strong>{getNationalityPt(data.nationality)}</strong>, e estou no Brasil com meu passaporte número <strong>{data.passportNumber}</strong>. Aqui está meu formulário e meus documentos."
           </p>
         </div>
         <div className="mt-4 bg-secondary rounded-xl p-5">
