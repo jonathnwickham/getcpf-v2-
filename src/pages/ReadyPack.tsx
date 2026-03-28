@@ -57,6 +57,7 @@ const ReadyPack = () => {
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
+    { id: "partners", label: "Partners", icon: "🤝" },
   ];
 
   return (
