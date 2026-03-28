@@ -500,20 +500,79 @@ const AddressStep = ({
               placeholder="Host's CPF number (if known)"
               className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
             />
-            <input
-              type="text"
-              value={hostAddress}
-              onChange={(e) => onHostAddressChange(e.target.value)}
-              placeholder="Host's full address"
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-            />
-            <input
-              type="text"
-              value={hostCity}
-              onChange={(e) => onHostCityChange(e.target.value)}
-              placeholder="Host's city"
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-            />
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-semibold text-muted-foreground">Host's address</label>
+                {street && !hostAddress && (
+                  <button
+                    type="button"
+                    onClick={() => onHostAddressChange(street)}
+                    className="text-[10px] text-primary font-bold hover:underline"
+                  >
+                    Use my address ↗
+                  </button>
+                )}
+              </div>
+              <input
+                type="text"
+                value={hostAddress}
+                onChange={(e) => onHostAddressChange(e.target.value)}
+                placeholder="Host's full address"
+                className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+              />
+            </div>
+            <div ref={hostCityDropdownRef} className="relative">
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-semibold text-muted-foreground">Host's city</label>
+                {city && !hostCity && (
+                  <button
+                    type="button"
+                    onClick={() => onHostCityChange(city)}
+                    className="text-[10px] text-primary font-bold hover:underline"
+                  >
+                    Use my city ↗
+                  </button>
+                )}
+              </div>
+              {hostCity && !isHostCityOpen ? (
+                <button
+                  type="button"
+                  onClick={() => { setIsHostCityOpen(true); setTimeout(() => hostCityInputRef.current?.focus(), 50); }}
+                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm text-left flex items-center justify-between hover:border-primary/30 transition-all"
+                >
+                  <span className="font-medium">{hostCity}</span>
+                  <span className="text-muted-foreground text-xs">Change</span>
+                </button>
+              ) : (
+                <input
+                  ref={hostCityInputRef}
+                  type="text"
+                  value={isHostCityOpen ? hostCitySearch : hostCity}
+                  onChange={(e) => {
+                    setHostCitySearch(e.target.value);
+                    setIsHostCityOpen(true);
+                    onHostCityChange(e.target.value);
+                  }}
+                  onFocus={() => setIsHostCityOpen(true)}
+                  placeholder="Search city…"
+                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+                />
+              )}
+              {isHostCityOpen && filteredHostCities.length > 0 && (
+                <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
+                  {filteredHostCities.slice(0, 30).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => { onHostCityChange(c); setHostCitySearch(""); setIsHostCityOpen(false); }}
+                      className="w-full px-4 py-2.5 hover:bg-primary/5 transition-colors text-left text-sm"
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {canGenerate && (
               <button
