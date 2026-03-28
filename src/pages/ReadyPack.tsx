@@ -542,6 +542,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         </div>
       </section>
     )}
+
+    {/* AI Document Scanner */}
+    <DocumentScanner />
   </div>
   );
 };
