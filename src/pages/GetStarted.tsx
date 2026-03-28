@@ -480,7 +480,6 @@ const ContactStep = ({
             autoComplete="email"
             className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
           />
-          />
         </div>
         <div ref={dropdownRef} className="relative">
           <label className="text-xs font-semibold text-muted-foreground mb-2 block">Nationality</label>
