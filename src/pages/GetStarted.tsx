@@ -38,7 +38,10 @@ const GetStarted = () => {
   const canProceed = (): boolean => {
     switch (step) {
       case 0: return true; // welcome
-      case 1: return data.fullName.trim().length > 2;
+      case 1: {
+        const words = data.fullName.trim().split(/\s+/).filter(Boolean);
+        return words.length >= 2 || (forceFullName && data.fullName.trim().length > 2);
+      }
       case 2: return data.noMotherName ? data.motherAlternative.trim().length > 0 : data.motherName.trim().length > 2;
       case 3: return true; // father is optional
       case 4: return data.passportNumber.trim().length > 4;
