@@ -9,21 +9,20 @@ const painCards = [
 
 const PainPoints = () => {
   return (
-    <section className="py-24 px-8 relative">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+    <section className="py-24 px-8 relative bg-secondary">
       <div className="max-w-[1100px] mx-auto">
-        <div className="text-xs uppercase tracking-[3px] text-primary font-semibold mb-4">The problem</div>
-        <div className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[600px]">
+        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
+        <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[600px]">
           Without a CPF, Brazil locks you out
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
           {painCards.map((card) => (
-            <div key={card.title} className="bg-card border border-foreground/[0.06] rounded-lg p-6 hover:border-primary/20 hover:-translate-y-0.5 transition-all">
+            <div key={card.title} className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="text-2xl mb-3">{card.icon}</div>
-              <h3 className="font-semibold mb-2">
-                <span className="text-destructive font-bold mr-1">✕</span> {card.title}
+              <h3 className="font-semibold mb-2 flex items-center gap-1.5">
+                <span className="text-destructive font-bold text-sm">✕</span> {card.title}
               </h3>
-              <p className="text-sm text-text-secondary leading-relaxed">{card.desc}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
             </div>
           ))}
         </div>
