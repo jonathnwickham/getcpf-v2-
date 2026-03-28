@@ -13,7 +13,8 @@ export default {
       },
     },
     fontFamily: {
-      outfit: ["Outfit", "sans-serif"],
+      jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
+      serif: ['"Instrument Serif"', "Georgia", "serif"],
     },
     extend: {
       colors: {
