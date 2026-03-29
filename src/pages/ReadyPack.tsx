@@ -1019,7 +1019,7 @@ Atenciosamente,
 ${data.fullName}`;
 
   const subject = `Solicitação de Inscrição no CPF — ${data.fullName}`;
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${rfEmail}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+  const mailtoUrl = `mailto:${rfEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
 
   return (
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
