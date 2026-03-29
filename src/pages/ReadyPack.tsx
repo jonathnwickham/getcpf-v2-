@@ -1073,10 +1073,66 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
           </div>
         )}
 
+        {/* Bike / Scooter details */}
+        {activeTransport === "bike" && (
+          <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
+            <h4 className="font-bold text-sm mb-2">🚲 Bikes & Scooters</h4>
+            <p className="text-sm text-muted-foreground">Great for short distances (5–10 minutes). Available in most major cities.</p>
+            <div className="space-y-3">
+              {bikeApps.map((app) => (
+                <div key={app.name} className="bg-card border border-border rounded-xl p-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{app.icon}</span>
+                    <div>
+                      <p className="font-semibold text-sm">{app.name}</p>
+                      <p className="text-xs text-muted-foreground">{app.desc}</p>
+                    </div>
+                  </div>
+                  <ExternalLink
+                    href={app.link}
+                    className="shrink-0 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-all"
+                    showHint={false}
+                  >
+                    Open →
+                  </ExternalLink>
+                </div>
+              ))}
+            </div>
+            <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+              <p className="text-xs text-muted-foreground">
+                <strong>💡 Tip:</strong> Download the app and register before you need it. Payment is by credit/debit card in the app. Itaú Bikes are the orange bikes you see at docking stations across major cities.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Moovit — transit planning app */}
+        <div className="bg-card border border-border rounded-xl p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">📱</span>
+              <div>
+                <p className="font-semibold text-sm">Moovit — must-have transit app</p>
+                <p className="text-xs text-muted-foreground">Real-time bus/metro arrivals, walking directions, best routes. Very popular in Brazil.</p>
+              </div>
+            </div>
+            <ExternalLink
+              href="https://moovitapp.com"
+              className="shrink-0 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg text-xs font-bold hover:opacity-90 transition-all"
+              showHint={false}
+            >
+              Get Moovit →
+            </ExternalLink>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3 bg-secondary rounded-lg p-2.5">
+            Shows live departure times ("next bus in 3 min"), walking distance to stops, and multiple route options including metro + bus combos. Much more reliable than Google Maps for Brazilian transit.
+          </p>
+        </div>
+
         {/* General transport tip */}
         <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
           <p className="text-xs text-muted-foreground">
-            <strong>🇧🇷 General tip:</strong> In most Brazilian cities, public transport does <strong>not</strong> accept cash. You'll need either a local transit card or a contactless bank card. Uber/99 is the easiest option for visitors — just make sure to set up the app with a credit card before your trip.
+            <strong>🇧🇷 General tip:</strong> On buses, <strong>cash is the standard</strong> — bring exact change (coins and small bills). Most cities also accept transit cards. Uber/99 is the easiest option for visitors — just make sure to set up the app with a credit card before your trip.
           </p>
         </div>
       </div>
