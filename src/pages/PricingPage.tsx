@@ -202,8 +202,8 @@ const PricingPage = () => {
         {flowStep === "plan" && (
           <div>
             <div className="text-center mb-10">
-              <h1 className="text-3xl font-extrabold tracking-tight mb-3">Choose your plan</h1>
-              <p className="text-muted-foreground text-sm">The CPF itself is free — you're paying for expert guidance that makes it work first time.</p>
+              <h1 className="text-3xl font-extrabold tracking-tight mb-3">Choose how you want to do this</h1>
+              <p className="text-muted-foreground text-sm">The CPF itself is free. You're paying for preparation that makes it work first time.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {tiers.map((tier) => (
