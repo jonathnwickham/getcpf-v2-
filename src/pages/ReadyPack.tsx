@@ -186,16 +186,23 @@ const ReadyPack = () => {
   );
 };
 
-// === MY CPF TAB (Celebration + Reference) ===
-const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; stateName: string; motherDisplay: string }) => {
+// === MY CPF TAB ===
+const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
+  data: OnboardingData; stateName: string; motherDisplay: string; onOpenGuide: () => void;
+}) => {
   const [cpfNumber, setCpfNumber] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [cpfCopied, setCpfCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [animateCard, setAnimateCard] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("cpf-saved-number");
-    if (stored) setCpfNumber(stored);
+    if (stored) {
+      setCpfNumber(stored);
+      setTimeout(() => setAnimateCard(true), 300);
+    }
     const storedPhoto = localStorage.getItem("cpf-saved-photo");
     if (storedPhoto) setPhotoPreview(storedPhoto);
   }, []);
@@ -208,23 +215,156 @@ const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; st
     return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
   };
 
-  const firstName = data.fullName.split(" ")[0];
+  const handleSaveCpf = () => {
+    if (cpfNumber.replace(/\D/g, "").length >= 11) {
+      localStorage.setItem("cpf-saved-number", cpfNumber.replace(/\D/g, ""));
+      setSaving(true);
+      setTimeout(() => {
+        setSaving(false);
+        setAnimateCard(true);
+      }, 1000);
+    }
+  };
 
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPhotoPreview(result);
+      localStorage.setItem("cpf-saved-photo", result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const firstName = data.fullName.split(" ")[0];
+  const hasCpf = cpfNumber.replace(/\D/g, "").length >= 11 && animateCard;
+
+  // No CPF yet — waiting state
+  if (!hasCpf) {
+    return (
+      <div className="space-y-8 animate-slide-in">
+        <section className="bg-card border border-border rounded-3xl p-8 text-center">
+          <div className="text-5xl mb-4">⏳</div>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            We're waiting for you, {firstName}!
+          </h1>
+          <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+            Once you've visited the office and received your CPF number, come back here and enter it below. This will be your safe place to keep it.
+          </p>
+        </section>
+
+        <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
+          <h3 className="font-bold text-lg mb-4">🔐 Enter your CPF number</h3>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={formatCpf(cpfNumber)}
+              onChange={(e) => setCpfNumber(e.target.value.replace(/\D/g, ""))}
+              placeholder="000.000.000-00"
+              className="w-full bg-card border border-border rounded-xl px-4 py-4 text-2xl font-mono tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-primary/30"
+              maxLength={14}
+            />
+            <button
+              onClick={handleSaveCpf}
+              disabled={cpfNumber.replace(/\D/g, "").length < 11 || saving}
+              className="w-full bg-primary text-primary-foreground px-4 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {saving ? "⏳ Saving..." : "💾 Save my CPF number"}
+            </button>
+          </div>
+          {/* Photo upload */}
+          <div className="mt-4 pt-4 border-t border-primary/10">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">📸 Photo of your CPF printout</p>
+            {photoPreview ? (
+              <div className="space-y-2">
+                <img src={photoPreview} alt="CPF printout" className="w-full max-w-xs rounded-xl border border-border" />
+                <p className="text-xs text-primary font-semibold">✓ Photo saved</p>
+              </div>
+            ) : (
+              <label className="flex items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
+                <span className="text-2xl">📷</span>
+                <span className="text-sm font-semibold">Take or upload a photo</span>
+                <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
+              </label>
+            )}
+          </div>
+        </section>
+
+        <button
+          onClick={onOpenGuide}
+          className="w-full bg-secondary text-foreground px-4 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
+        >
+          📋 Open application guide — prepare for your visit →
+        </button>
+      </div>
+    );
+  }
+
+  // CPF saved — celebration + animated card
   const slides = [
     {
-      id: "cpf",
-      title: "My CPF Number",
+      id: "card",
+      title: "My CPF",
       content: (
-        <div className="text-center py-8">
-          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🎉</div>
-          <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold mb-2">Your CPF</p>
-          <p className="text-4xl md:text-5xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
-          <button
-            onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
-            className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
-          >
-            {cpfCopied ? "✓ Text copied!" : "📋 Copy CPF"}
-          </button>
+        <div className="py-6">
+          {/* Animated CPF Card */}
+          <div className={`mx-auto max-w-sm transition-all duration-700 ${animateCard ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}>
+            <div className="relative bg-gradient-to-br from-[hsl(var(--primary)/0.9)] via-[hsl(var(--primary)/0.7)] to-[hsl(var(--primary)/0.5)] rounded-2xl p-6 shadow-2xl shadow-primary/20 text-primary-foreground overflow-hidden">
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-2 right-2 text-[120px] font-bold leading-none">🇧🇷</div>
+              </div>
+              
+              {/* Header */}
+              <div className="relative">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <p className="text-[9px] uppercase tracking-[3px] opacity-70 font-bold">REPÚBLICA FEDERATIVA DO BRASIL</p>
+                    <p className="text-[8px] uppercase tracking-[2px] opacity-50 mt-0.5">CADASTRO DE PESSOAS FÍSICAS</p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center text-lg font-bold">
+                    CPF
+                  </div>
+                </div>
+
+                {/* CPF Number */}
+                <div className="mb-6">
+                  <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-1">Nº DO CPF</p>
+                  <p className="text-3xl font-bold font-mono tracking-[4px]">{formatCpf(cpfNumber.replace(/\D/g, ""))}</p>
+                </div>
+
+                {/* Name */}
+                <div className="mb-4">
+                  <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-1">NOME</p>
+                  <p className="text-sm font-bold uppercase tracking-wider">{data.fullName}</p>
+                </div>
+
+                {/* Bottom details */}
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">NASCIMENTO</p>
+                    <p className="text-xs font-semibold">{data.nationality}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">SITUAÇÃO</p>
+                    <p className="text-xs font-bold">REGULAR ✓</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Copy button */}
+          <div className="text-center mt-6">
+            <button
+              onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+            >
+              {cpfCopied ? "✓ Text copied!" : "📋 Copy CPF number"}
+            </button>
+          </div>
         </div>
       ),
     },
@@ -239,35 +379,25 @@ const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; st
           <InfoField label="Mother's Name" value={motherDisplay} />
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Email" value={data.email} />
-        </div>
-      ),
-    },
-    {
-      id: "address",
-      title: "My Address",
-      content: (
-        <div className="py-6 space-y-3">
-          <InfoField label="Street" value={data.streetAddress} />
-          <InfoField label="City" value={data.city} />
-          <InfoField label="State" value={`${data.state} — ${stateName}`} />
-          {data.stayingWithFriend && data.hostName && (
-            <>
-              <InfoField label="Host" value={data.hostName} />
-              {data.hostCpf && <InfoField label="Host CPF" value={data.hostCpf} />}
-            </>
-          )}
+          <InfoField label="Address" value={`${data.streetAddress}, ${data.city}, ${data.state}`} />
         </div>
       ),
     },
     {
       id: "photo",
-      title: "CPF Document",
+      title: "Document",
       content: (
         <div className="py-6 text-center">
           {photoPreview ? (
             <img src={photoPreview} alt="CPF printout" className="max-w-sm mx-auto rounded-xl border border-border" />
           ) : (
-            <div className="text-muted-foreground text-sm">No photo saved yet</div>
+            <div className="space-y-3">
+              <div className="text-muted-foreground text-sm">No photo saved yet</div>
+              <label className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer hover:bg-secondary/80">
+                📷 Upload photo
+                <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
+              </label>
+            </div>
           )}
         </div>
       ),
@@ -280,10 +410,10 @@ const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; st
       <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-3xl p-8 text-center">
         <div className="text-5xl mb-4">🇧🇷</div>
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-          Well done, {firstName}!
+          Well done, {firstName}! 🎉
         </h1>
         <p className="text-lg text-muted-foreground mt-2 max-w-md mx-auto">
-          You did it — your CPF is registered. Welcome to Brazil, officially. 🎉
+          You did it — your CPF is registered. Welcome to Brazil, officially.
         </p>
       </section>
 
@@ -307,7 +437,6 @@ const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; st
         <div className="p-6">
           {slides[activeSlide].content}
         </div>
-        {/* Dot indicators */}
         <div className="flex justify-center gap-2 pb-4">
           {slides.map((_, i) => (
             <button
@@ -323,9 +452,9 @@ const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; st
 
       {/* Quick reference */}
       <section className="bg-secondary rounded-2xl p-6">
-        <h3 className="font-bold mb-3">Quick reference</h3>
+        <h3 className="font-bold mb-2">Your safe space</h3>
         <p className="text-sm text-muted-foreground">
-          This is your safe space. Come back anytime to find your CPF number, your details, and everything you submitted. It's all saved here.
+          Come back anytime to find your CPF number, your details, and everything you submitted. It's all saved here on this device.
         </p>
       </section>
     </div>
