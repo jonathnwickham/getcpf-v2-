@@ -355,7 +355,7 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
       autoFocus
       className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
     />
-    <p className="text-xs text-muted-foreground mt-3 italic">Press Continue to skip →</p>
+    <p className="text-xs text-muted-foreground mt-3 italic">Don't have it? Just hit next →</p>
   </div>
 );
 
