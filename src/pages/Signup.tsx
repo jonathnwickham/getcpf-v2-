@@ -84,9 +84,24 @@ const Signup = () => {
             <p className="text-xs text-muted-foreground mt-1">At least 6 characters</p>
           </div>
 
+          <label className="flex items-start gap-2.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-border accent-primary"
+            />
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              I have read and agree to the{" "}
+              <Link to="/terms" className="text-primary hover:underline font-semibold">Terms of Service</Link>{" "}
+              and{" "}
+              <Link to="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</Link>.
+            </span>
+          </label>
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !agreed}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
             {loading ? "Setting things up..." : "Create my account"}

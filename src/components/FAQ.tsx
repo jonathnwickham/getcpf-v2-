@@ -6,7 +6,7 @@ const faqs = [
   { q: "Is it really free to get a CPF?", a: "Yes. The government charges nothing at Receita Federal offices. Some partner agencies (post offices, banks) charge a small R$7 fee. Our fee is for the preparation that saves you hours of research and avoids rejected applications." },
   { q: "How long does the whole thing take?", a: "The questionnaire takes about 5 minutes. Then you visit the office — most people walk out with their CPF number the same day, usually within an hour. If you can't go in person, the email method works too but takes 3–7 business days." },
   { q: "I'm not in Brazil yet — can I start now?", a: "Absolutely. Start the questionnaire now and have everything ready before you land. When you arrive, you just print your documents and visit the office. Some people even do it through their local Brazilian consulate before travelling." },
-  { q: "Is my data safe?", a: "We use your information only to generate your Ready Pack. Passport numbers and personal details are used to pre-fill your forms — that's it. We don't store sensitive data after your session and we never sell or share your information." },
+  { q: "Is my data safe?", a: "Your data is stored securely in your account so you can access your Ready Pack anytime. We use encryption at rest and in transit, and we never sell or share your personal information. See our Privacy Policy for full details." },
   { q: "What if I get rejected?", a: "We've built a full rejection troubleshooter into the app. Tell us what happened and we'll give you the exact fix — whether it's a mother's name abbreviation, a wrong proof of address, or an office that doesn't process foreigners. Most rejections have a one-visit fix." },
 ];
 
