@@ -309,7 +309,7 @@ const PricingPage = () => {
                 className="w-full bg-[hsl(48,100%,50%)] text-[hsl(220,20%,20%)] py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <span className="animate-pulse">Processing...</span>
+                  <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
                     <span className="font-extrabold text-base tracking-tight">Pay</span>
