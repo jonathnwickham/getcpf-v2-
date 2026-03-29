@@ -1324,7 +1324,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
       <h3 className="text-xl font-bold">Got your CPF?</h3>
       <p className="text-sm text-muted-foreground mt-1 mb-4">Save it in your personal CPF section — it's your safe space.</p>
       <button
-        onClick={() => setActiveTab("overview")}
+        onClick={() => setActiveTab("mycpf")}
         className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
       >
         🔐 Go to my CPF section →
