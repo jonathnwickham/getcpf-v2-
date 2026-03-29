@@ -1104,6 +1104,11 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
     setCompiling(true);
     try {
       const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+      // Sanitize text for WinAnsi encoding (standard PDF fonts)
+      const safe = (text: string) => text.replace(/[^\x20-\x7E\xA0-\xFF]/g, (ch) => {
+        const map: Record<string, string> = { "\u2713": "[x]", "\u2714": "[x]", "\u2717": "[!]", "\u2718": "[!]", "\u2019": "'", "\u2018": "'", "\u201C": '"', "\u201D": '"', "\u2026": "...", "\u2014": "--", "\u2013": "-" };
+        return map[ch] || "";
+      });
       const mergedPdf = await PDFDocument.create();
       const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
       const fontBold = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
