@@ -299,7 +299,7 @@ const MotherStep = ({
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      No abbreviations. In Brazil, your identity is tied to your mother's name — this is required by the Receita Federal.
+      No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
     </p>
     {!noMother ? (
       <input
