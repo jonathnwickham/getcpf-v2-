@@ -23,7 +23,7 @@ const Login = () => {
       return;
     }
 
-    toast({ title: "Welcome back!" });
+    toast({ title: "Good to see you again 👋" });
 
     // Check if user has a completed application → ready-pack, otherwise → get-started
     try {
