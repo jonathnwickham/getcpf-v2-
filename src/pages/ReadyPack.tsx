@@ -404,13 +404,22 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             </div>
           </div>
 
-          {/* Copy button */}
-          <div className="text-center mt-6">
+          {/* Copy & Edit buttons */}
+          <div className="text-center mt-6 flex items-center justify-center gap-3">
             <button
               onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
             >
               {cpfCopied ? "✓ Text copied!" : "📋 Copy CPF number"}
+            </button>
+            <button
+              onClick={() => {
+                setAnimateCard(false);
+                localStorage.removeItem("cpf-saved-number");
+              }}
+              className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+            >
+              ✏️ Edit
             </button>
           </div>
         </div>
