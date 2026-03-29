@@ -830,19 +830,50 @@ const ExpectCard = ({ icon, title, value }: { icon: string; title: string; value
   </div>
 );
 
-const DocCheck = ({ title, desc, critical }: { title: string; desc: string; critical?: boolean }) => (
-  <div className={`flex items-start gap-3 p-3 rounded-xl ${critical ? "bg-primary/5 border border-primary/10" : "bg-secondary"}`}>
-    <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold border-2 ${
-      critical ? "border-primary text-primary" : "border-border text-muted-foreground"
-    }`}>
-      {critical ? "!" : "○"}
+const DocCheck = ({ title, desc, critical, uploadable }: { title: string; desc: string; critical?: boolean; uploadable?: boolean }) => {
+  const [checked, setChecked] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      setChecked(true);
+    }
+  };
+
+  return (
+    <div
+      onClick={() => !uploadable && setChecked(!checked)}
+      className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+        checked ? "bg-primary/5 border border-primary/10" : critical ? "bg-primary/5 border border-primary/10" : "bg-secondary"
+      }`}
+    >
+      <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold border-2 transition-all ${
+        checked ? "border-primary bg-primary text-primary-foreground" : critical ? "border-primary text-primary" : "border-border text-muted-foreground"
+      }`}>
+        {checked ? "✓" : critical ? "!" : "○"}
+      </div>
+      <div className="flex-1">
+        <h4 className={`font-semibold text-sm ${checked ? "line-through opacity-60" : ""}`}>{title}</h4>
+        <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
+        {uploadable && (
+          <div className="mt-2">
+            {fileName ? (
+              <span className="text-xs text-primary font-semibold">📎 {fileName}</span>
+            ) : (
+              <label className="inline-flex items-center gap-1.5 text-xs text-primary font-semibold cursor-pointer hover:underline">
+                📤 Upload this document
+                <input type="file" accept="image/*,.pdf" onChange={handleUpload} className="hidden" />
+              </label>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-    <div>
-      <h4 className="font-semibold text-sm">{title}</h4>
-      <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const FormFieldDisplay = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-baseline gap-2">
