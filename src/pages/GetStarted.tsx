@@ -386,9 +386,9 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
 const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 5</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Which Brazilian state are you in?</h2>
+    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Which state are you in?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      We'll find the nearest Receita Federal office for your in-person visit.
+      This tells us which office to send you to — we'll find the best one nearby.
     </p>
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[320px] overflow-y-auto pr-2">
       {BRAZILIAN_STATES.map((s) => (
