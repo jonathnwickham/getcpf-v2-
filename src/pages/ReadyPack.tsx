@@ -1382,7 +1382,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
     <section className="bg-card border border-destructive/20 rounded-2xl p-6 text-center">
       <div className="text-3xl mb-3">😟</div>
       <h3 className="text-lg font-bold">Got rejected?</h3>
-      <p className="text-sm text-muted-foreground mt-1 mb-4">Don't stress — most rejections have a simple fix. We'll tell you exactly what to do.</p>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">It happens — and it's usually one small thing. We'll tell you exactly what to fix.</p>
       <button
         onClick={() => setActiveTab("rejected")}
         className="bg-secondary text-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
