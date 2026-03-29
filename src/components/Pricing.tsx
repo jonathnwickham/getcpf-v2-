@@ -7,29 +7,33 @@ interface PricingProps {
 const tiers = [
   {
     name: "Self-Service",
-    price: "$29",
-    description: "Everything automated. No human involved.",
-    highlighted: false,
-    badge: null,
+    price: "$49",
+    description: "Everything automated. AI-powered, instant access.",
+    highlighted: true,
+    badge: "Available now",
+    comingSoon: false,
     features: [
       "AI-powered consultation for your situation",
       "Pre-filled form data with copy buttons",
       "Portuguese email template with your details",
       "Document storage (passport, address proof)",
+      "AI document scanner — checks your docs are correct",
       "Correct Receita Federal office for your state",
       "Document checklist with quality tips",
       "Portuguese cheat sheet for office visits",
+      "Host declaration letter generator",
       "Post-CPF partner recommendations",
       "Application status tracking",
     ],
-    cta: "Choose Self-Service",
+    cta: "Get started — $49",
   },
   {
     name: "Concierge",
-    price: "$49",
-    description: "Everything in Self-Service plus real human support.",
-    highlighted: true,
-    badge: "Most popular",
+    price: "$97",
+    description: "Everything in Self-Service plus real human support via WhatsApp.",
+    highlighted: false,
+    badge: "Coming soon",
+    comingSoon: true,
     features: [
       "Everything in Self-Service",
       "WhatsApp / in-app messaging support",
@@ -38,14 +42,15 @@ const tiers = [
       "Advice specific to your nationality & visa",
       "Response within a few hours (Brazil time)",
     ],
-    cta: "Choose Concierge",
+    cta: "Join waitlist",
   },
   {
     name: "Full Assist",
-    price: "$99",
-    description: "A real person guides you through every single step.",
+    price: "$197",
+    description: "A real person guides you through every single step until you have your CPF.",
     highlighted: false,
-    badge: null,
+    badge: "Coming soon",
+    comingSoon: true,
     features: [
       "Everything in Concierge",
       "Personal guide through each step",
@@ -54,7 +59,7 @@ const tiers = [
       "Follow-up until CPF is confirmed",
       "Priority response time",
     ],
-    cta: "Choose Full Assist",
+    cta: "Join waitlist",
   },
 ];
 
@@ -84,7 +89,11 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             }`}
           >
             {tier.badge && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-bold">
+              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold ${
+                tier.comingSoon
+                  ? "bg-muted text-muted-foreground border border-border"
+                  : "bg-primary text-primary-foreground"
+              }`}>
                 {tier.badge}
               </div>
             )}
@@ -93,7 +102,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
               {tier.price} <span className="text-base font-normal text-muted-foreground">USD</span>
             </div>
             <div className="text-sm text-muted-foreground mt-3 mb-6 leading-relaxed">{tier.description}</div>
-            <ul className="mb-8 space-y-2.5">
+            <ul className={`mb-8 space-y-2.5 ${tier.comingSoon ? "opacity-60" : ""}`}>
               {tier.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-foreground">
                   <span className="text-primary font-bold shrink-0 mt-0.5">✓</span> {f}
@@ -101,14 +110,17 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
               ))}
             </ul>
             <button
-              onClick={handleCTA}
+              onClick={tier.comingSoon ? undefined : handleCTA}
+              disabled={tier.comingSoon}
               className={`w-full py-3.5 rounded-xl font-semibold transition-all ${
-                tier.highlighted
-                  ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
-                  : "border border-border text-foreground hover:bg-secondary"
+                tier.comingSoon
+                  ? "border border-border text-muted-foreground cursor-not-allowed opacity-60"
+                  : tier.highlighted
+                    ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
+                    : "border border-border text-foreground hover:bg-secondary"
               }`}
             >
-              {tier.cta} →
+              {tier.cta} {tier.comingSoon ? "" : "→"}
             </button>
           </div>
         ))}
