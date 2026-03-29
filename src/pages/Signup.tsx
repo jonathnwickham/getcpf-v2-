@@ -40,7 +40,7 @@ const Signup = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/" className="text-2xl font-bold tracking-tight">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Let's set you up</h1>
           <p className="text-muted-foreground mt-2 text-sm">Create an account so your progress is saved — pick up anytime</p>

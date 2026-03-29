@@ -66,7 +66,7 @@ const Dashboard = () => {
       <div className="bg-primary text-primary-foreground">
         <div className="max-w-[960px] mx-auto px-6 py-8 flex items-center justify-between">
           <div>
-            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
+            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← GET CPF</a>
             <h1 className="text-2xl font-extrabold mt-2">Hey {firstName} 👋</h1>
             <p className="opacity-80 text-sm mt-1">Here's where you left off</p>
           </div>

@@ -112,7 +112,7 @@ const ReadyPack = () => {
       <div className="bg-primary text-primary-foreground">
         <div className="max-w-[960px] mx-auto px-6 py-12 pt-16">
           <div className="flex items-center justify-between">
-            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
+            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← GET CPF</a>
             {user && (
               <button
                 onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}
