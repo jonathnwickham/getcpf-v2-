@@ -737,25 +737,15 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
 };
 
 // === REVIEWS SECTION ===
-const OFFICE_REVIEWS = [
-  { name: "Sarah M.", country: "🇺🇸", rating: 5, text: "Super easy! Walked in at 8am, was out by 8:30 with my CPF. The staff were helpful even though I don't speak Portuguese.", date: "2 weeks ago" },
-  { name: "James T.", country: "🇬🇧", rating: 5, text: "Had everything printed thanks to this app. The lady at the counter smiled when she saw I had everything ready. 15 minutes total.", date: "1 month ago" },
-  { name: "Mika K.", country: "🇩🇪", rating: 4, text: "Waited about 40 minutes because I went on a Monday. But the process itself was painless. Bring a book!", date: "3 weeks ago" },
-  { name: "Lena R.", country: "🇫🇷", rating: 5, text: "I was nervous but it was nothing. Show passport, show address proof, get CPF. The hardest part was finding the building.", date: "1 month ago" },
-  { name: "Carlos P.", country: "🇦🇷", rating: 4, text: "Fui na terça de manhã, peguei senha e em 20 min já tinha meu CPF. Recomendo ir cedo.", date: "2 months ago" },
-  { name: "Aisha N.", country: "🇳🇬", rating: 5, text: "Third time was the charm — first two offices said they couldn't do it. This one did it in 10 minutes. Go to the recommended office!", date: "3 weeks ago" },
-];
-
 const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
-  const [showAll, setShowAll] = useState(false);
-  const displayReviews = showAll ? OFFICE_REVIEWS : OFFICE_REVIEWS.slice(0, 3);
+  const googleReviewsUrl = `https://www.google.com/maps/search/${encodeURIComponent(office.name + " " + office.address)}`;
 
   return (
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary flex items-center justify-between">
         <div>
-          <h3 className="font-bold">⭐ Reviews from visitors</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">{office.reviewCount} reviews · {office.rating}/5 average</p>
+          <h3 className="font-bold">⭐ Google Maps reviews</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">{office.reviewCount} reviews · {office.rating}/5 average on Google</p>
         </div>
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -764,29 +754,25 @@ const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
         </div>
       </div>
       <div className="p-6 space-y-4">
-        {displayReviews.map((review, i) => (
-          <div key={i} className="bg-secondary rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{review.country}</span>
-                <span className="font-semibold text-sm">{review.name}</span>
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span key={star} className={`text-xs ${star <= review.rating ? "text-amber-400" : "text-border"}`}>★</span>
-                  ))}
-                </div>
-              </div>
-              <span className="text-[10px] text-muted-foreground">{review.date}</span>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
-          </div>
-        ))}
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className="w-full py-3 text-sm font-semibold text-primary hover:bg-primary/5 rounded-xl transition-all"
-        >
-          {showAll ? "Show fewer reviews ▲" : `View all ${OFFICE_REVIEWS.length} reviews ▼`}
-        </button>
+        <div className="bg-secondary rounded-xl p-5 text-center space-y-3">
+          <div className="text-3xl">🗺️</div>
+          <h4 className="font-bold">See what real visitors say</h4>
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+            Read verified reviews from people who visited this office on Google Maps — including wait times, staff helpfulness, and tips.
+          </p>
+          <ExternalLink
+            href={googleReviewsUrl}
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            ⭐ Read {office.reviewCount} reviews on Google Maps →
+          </ExternalLink>
+        </div>
+
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
+          <p className="text-xs text-amber-800 dark:text-amber-200">
+            <strong>💡 Pro tip:</strong> Search for "CPF" or "estrangeiro" in the reviews to find experiences from other foreigners who registered their CPF at this office.
+          </p>
+        </div>
       </div>
     </section>
   );
