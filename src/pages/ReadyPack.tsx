@@ -549,7 +549,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               💬 Send via WhatsApp
             </a>
           </div>
+          <p className="text-xs text-muted-foreground mt-3">💡 <strong>Save for later:</strong> Download the .txt file and print it, or copy the text and paste into a Word document for your host to sign.</p>
         </div>
+        <div className="pb-8" />
       </section>
     )}
 
