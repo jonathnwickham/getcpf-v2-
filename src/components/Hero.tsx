@@ -25,12 +25,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       {/* Radial glow */}
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
-      {/* Brazilian stencil background */}
+      {/* Brazilian stencil background — full width, very faint */}
       <img
         src={brazilStencil}
         alt=""
         aria-hidden="true"
-        className="absolute bottom-0 right-0 w-[600px] md:w-[800px] opacity-[0.07] pointer-events-none select-none"
+        className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-[100em] max-w-none opacity-[0.04] pointer-events-none select-none"
         width={1200}
         height={800}
       />
