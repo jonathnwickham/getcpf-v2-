@@ -82,7 +82,7 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">📋</div>
             <div>
-              <h2 className="font-bold text-lg">Your application</h2>
+              <h2 className="font-bold text-lg">Your CPF application</h2>
               <p className="text-xs text-muted-foreground">
                 Status: <span className="text-primary font-semibold capitalize">{application.status}</span>
               </p>
