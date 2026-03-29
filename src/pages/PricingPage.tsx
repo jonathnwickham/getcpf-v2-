@@ -375,9 +375,9 @@ const PricingPage = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
               <span className="text-3xl">✓</span>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3 animate-fade-in">Payment received!</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3 animate-fade-in">You're in!</h1>
             <p className="text-muted-foreground text-sm mb-8">
-              Set a password to save your progress and access your CPF kit anytime.
+              Set a password so you can come back anytime — your progress will be saved.
             </p>
             <form onSubmit={handleCreateAccount} className="space-y-4 text-left">
               <div>
