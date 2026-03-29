@@ -676,7 +676,7 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
   );
 };
 
-
+const ContactStep = ({
   email, nationality, onEmailChange, onNationalityChange,
 }: {
   email: string; nationality: string; onEmailChange: (v: string) => void; onNationalityChange: (v: string) => void;
