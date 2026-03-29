@@ -132,7 +132,7 @@ const PricingPage = () => {
   const handleWaitlist = (e: React.FormEvent) => {
     e.preventDefault();
     setWaitlistSubmitted(true);
-    toast({ title: "You're on the list!", description: "We'll notify you when this plan launches." });
+    toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
 
   return (
