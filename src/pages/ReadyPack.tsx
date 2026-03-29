@@ -243,6 +243,8 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
   const [saving, setSaving] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [animateCard, setAnimateCard] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [cpfError, setCpfError] = useState("");
 
   useEffect(() => {
     const stored = localStorage.getItem("cpf-saved-number");
