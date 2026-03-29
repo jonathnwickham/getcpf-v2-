@@ -509,6 +509,38 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
           </div>
         </div>
       </section>
+
+      {/* What to do next — quick links to Life in Brazil */}
+      <section className="bg-card border border-border rounded-2xl p-6">
+        <h3 className="font-bold text-lg mb-1">🚀 What to do next with your CPF</h3>
+        <p className="text-sm text-muted-foreground mb-4">You've unlocked a whole new life in Brazil. Here are the first things to set up.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {[
+            { icon: "🏦", title: "Open a bank", desc: "Nubank — fully digital, zero fees", difficulty: "Easy" },
+            { icon: "📱", title: "Get a SIM card", desc: "Vivo, Claro, TIM, or eSIM", difficulty: "Easy" },
+            { icon: "⚡", title: "Set up Pix", desc: "Free instant payments", difficulty: "Easy" },
+            { icon: "🍔", title: "Food delivery", desc: "iFood, Rappi — order anything", difficulty: "Easy" },
+            { icon: "🛍️", title: "Shop online", desc: "Mercado Livre, Amazon BR", difficulty: "Easy" },
+            { icon: "🏠", title: "Rent a place", desc: "QuintoAndar, long-stay Airbnb", difficulty: "Medium" },
+          ].map((item) => (
+            <button
+              key={item.title}
+              onClick={() => onOpenGuide()}
+              className="bg-secondary hover:bg-primary/5 border border-border hover:border-primary/20 rounded-xl p-4 text-left transition-all group"
+            >
+              <div className="text-2xl mb-2">{item.icon}</div>
+              <h4 className="font-bold text-sm">{item.title}</h4>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{item.desc}</p>
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={() => onOpenGuide()}
+          className="mt-4 w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+        >
+          🔓 See full guide — Life in Brazil →
+        </button>
+      </section>
     </div>
   );
 };
