@@ -595,23 +595,7 @@ const AddressStep = ({
             )}
 
             {showDeclaration && canGenerate && (
-              <div className="mt-3 space-y-3">
-                <div className="bg-card border border-border rounded-lg p-4">
-                  <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => { navigator.clipboard.writeText(declaration); }}
-                    className="flex-1 bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
-                  >
-                    📋 Copy text
-                  </button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  💡 Your host prints this, signs it, and gives you a copy of their ID. This serves as your proof of address.
-                </p>
-              </div>
+              <DeclarationPreview declaration={declaration} />
             )}
           </div>
         )}
