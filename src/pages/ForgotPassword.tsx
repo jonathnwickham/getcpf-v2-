@@ -30,8 +30,8 @@ const ForgotPassword = () => {
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-md text-center">
           <div className="text-5xl mb-4">📧</div>
-          <h1 className="text-2xl font-extrabold">Check your email</h1>
-          <p className="text-muted-foreground mt-2 text-sm">We sent a password reset link to <strong>{email}</strong></p>
+          <h1 className="text-2xl font-extrabold">Check your inbox</h1>
+          <p className="text-muted-foreground mt-2 text-sm">We sent a reset link to <strong>{email}</strong> — it'll be there in a minute</p>
           <Link to="/login" className="mt-6 inline-block text-primary font-semibold hover:underline text-sm">
             ← Back to login
           </Link>
