@@ -191,7 +191,7 @@ const PricingPage = () => {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
               >
-                Continue →
+                That's me — let's go →
               </button>
             </form>
             <p className="text-xs text-muted-foreground mt-4">No spam, ever. Just your CPF kit.</p>
