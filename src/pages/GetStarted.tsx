@@ -364,7 +364,7 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      We'll use this to pre-fill the official CPF application form for you.
+      We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
     </p>
     <input
       type="text"
