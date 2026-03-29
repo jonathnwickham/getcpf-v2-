@@ -235,20 +235,20 @@ const WelcomeStep = () => (
     <p className="text-muted-foreground leading-relaxed max-w-[420px] mx-auto">
       We'll ask a few quick questions — takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
     </p>
-    <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">~5 min</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">To complete</div>
+      <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">~5 min</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">That's it</div>
+        </div>
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">100%</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">Ready to go</div>
+        </div>
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">Same day</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">CPF in hand</div>
+        </div>
       </div>
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">100%</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">Prepared</div>
-      </div>
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">Same day</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">CPF issued</div>
-      </div>
-    </div>
   </div>
 );
 
