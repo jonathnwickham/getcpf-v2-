@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     });
 
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
       setSent(true);
     }
