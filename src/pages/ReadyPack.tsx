@@ -486,9 +486,23 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
       {/* Quick reference */}
       <section className="bg-secondary rounded-2xl p-6">
         <h3 className="font-bold mb-2">Your safe space</h3>
-        <p className="text-sm text-muted-foreground">
-          Come back anytime to find your CPF number, your details, and everything you submitted. It's all saved here on this device.
+        <p className="text-sm text-muted-foreground mb-4">
+          Come back anytime to find your CPF number, your details, and your CPF photo in one place. This is your personal reference space.
         </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">My CPF</div>
+            <div className="font-semibold text-sm">Your number, ready to copy</div>
+          </div>
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">My details</div>
+            <div className="font-semibold text-sm">Your submitted info, saved</div>
+          </div>
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">My document</div>
+            <div className="font-semibold text-sm">Your CPF photo stored here</div>
+          </div>
+        </div>
       </section>
     </div>
   );
