@@ -220,8 +220,8 @@ const ReadyPack = () => {
 };
 
 // === MY CPF TAB ===
-const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
-  data: OnboardingData; stateName: string; motherDisplay: string; onOpenGuide: () => void;
+const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide }: {
+  data: OnboardingData; stateName: string; motherDisplay: string; onOpenGuide: () => void; onOpenLifeGuide: () => void;
 }) => {
   const [cpfNumber, setCpfNumber] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
