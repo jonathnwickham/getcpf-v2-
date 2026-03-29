@@ -16,7 +16,7 @@ import {
   readPersistedOnboardingData,
 } from "@/lib/application-storage";
 
-type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf";
+type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf" | "rejected";
 
 // Portuguese nationality translations for common nationalities
 const NATIONALITY_PT: Record<string, string> = {
