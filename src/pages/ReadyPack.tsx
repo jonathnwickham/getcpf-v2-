@@ -311,9 +311,10 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
                 <p className="text-xs text-primary font-semibold">✓ Photo saved</p>
               </div>
             ) : (
-              <label className="flex items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
+              <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
                 <span className="text-2xl">📷</span>
-                <span className="text-sm font-semibold">Take or upload a photo</span>
+                <span className="text-sm font-semibold">Upload a photo of your CPF printout</span>
+                <span className="text-xs text-muted-foreground">It'll be stored safely here so you always have a backup</span>
                 <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
               </label>
             )}
