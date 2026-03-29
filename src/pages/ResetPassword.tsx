@@ -37,8 +37,8 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="text-center">
-          <h1 className="text-xl font-bold">Invalid reset link</h1>
-          <p className="text-muted-foreground mt-2 text-sm">This link may have expired. Please request a new one.</p>
+          <h1 className="text-xl font-bold">This link isn't working</h1>
+          <p className="text-muted-foreground mt-2 text-sm">It may have expired — request a new one and you'll be sorted in a minute.</p>
         </div>
       </div>
     );
