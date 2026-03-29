@@ -730,47 +730,11 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
 
     {/* Host declaration letter */}
     {hasHost && declaration && (
-      <section className="bg-card border border-border rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-border bg-primary/5 flex items-center justify-between">
-          <h2 className="font-bold">📝 Host declaration letter</h2>
-          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md font-semibold">Generated ✓</span>
-        </div>
-        <div className="p-6">
-          <p className="text-xs text-muted-foreground mb-3">This letter serves as your proof of address. Your host prints it, signs it, and gives you a copy of their ID.</p>
-          <div className="bg-secondary rounded-lg p-4">
-            <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <button
-              onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2000); }}
-              className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
-            >
-              {declarationCopied ? "✓ Text copied!" : "📋 Copy letter"}
-            </button>
-            <button
-              onClick={() => {
-                const blob = new Blob([declaration], { type: "text/plain" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url; a.download = "declaracao-residencia.txt"; a.click();
-                URL.revokeObjectURL(url);
-              }}
-              className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
-            >
-              💾 Save to your pack
-            </button>
-            <button
-              onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(declaration)}`)}
-              className="flex-1 min-w-[140px] bg-[#25D366] text-white px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all text-center"
-            >
-              💬 Send via WhatsApp
-            </button>
-          </div>
-          <p className="text-xs text-muted-foreground mt-4">💡 <strong>Keep this for the end of the process.</strong> Download and print the letter, or copy the text and paste into a Word document for your host to sign.</p>
-        </div>
-        <div className="pb-8" />
-      </section>
+      <DeclarationSection declaration={declaration} declarationCopied={declarationCopied} setDeclarationCopied={setDeclarationCopied} data={data} />
     )}
+
+    {/* Upload & compile all documents into one PDF */}
+    <DocumentCompiler data={data} motherDisplay={motherDisplay} hasDeclaration={!!(hasHost && declaration)} declaration={declaration || ""} />
 
     {/* Email template to Receita Federal */}
     <EmailTemplateSection data={data} motherDisplay={motherDisplay} />
