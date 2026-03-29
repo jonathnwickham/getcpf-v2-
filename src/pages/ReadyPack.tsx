@@ -872,8 +872,8 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <h2 className="font-bold">📝 Official CPF application form</h2>
       </div>
       <div className="p-6 space-y-4">
-        <button
-          onClick={() => openExternal("https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp")}
+        <ExternalLink
+          href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
           className="flex items-center gap-4 bg-secondary rounded-xl p-4 hover:bg-secondary/80 transition-all group w-full text-left"
         >
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📄</div>
