@@ -119,12 +119,12 @@ const ReadyPack = () => {
                 </div>
               )}
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-                {isOnMyCpf ? "My CPF" : "CPF Application Guide"}
+                {isOnMyCpf ? "My CPF" : "Your Ready Pack"}
               </h1>
               <p className="mt-2 opacity-80 max-w-[440px]">
                 {isOnMyCpf
                   ? `Your personal CPF space, ${data.fullName.split(" ")[0]}.`
-                  : `Everything is prepared for you, ${data.fullName.split(" ")[0]}. Follow the steps below.`
+                  : `Everything's ready, ${data.fullName.split(" ")[0]}. Follow these steps and you'll walk out with your CPF.`
                 }
               </p>
             </div>
