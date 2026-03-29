@@ -273,8 +273,8 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
       />
       {showWarning && (
         <div className="mt-3 bg-destructive/10 border border-destructive/20 rounded-xl p-4">
-          <p className="text-sm font-semibold text-destructive mb-1">⚠️ This looks like a single name</p>
-          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) as it appears on your passport. CPF applications require a complete name.</p>
+          <p className="text-sm font-semibold text-destructive mb-1">⚠️ Looks like a single name</p>
+          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) exactly as it appears on your passport. CPF applications with incomplete names get rejected.</p>
           <button
             type="button"
             onClick={() => onForceFullName(true)}
