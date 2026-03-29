@@ -726,13 +726,12 @@ const CpfStorageSection = () => {
   const [saved, setSaved] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  // Load from localStorage on mount
-  useState(() => {
+  useEffect(() => {
     const stored = localStorage.getItem("cpf-saved-number");
     if (stored) { setCpfNumber(stored); setSaved(true); }
     const storedPhoto = localStorage.getItem("cpf-saved-photo");
     if (storedPhoto) setPhotoPreview(storedPhoto);
-  });
+  }, []);
 
   const handleSave = () => {
     if (cpfNumber.trim().length >= 11) {
