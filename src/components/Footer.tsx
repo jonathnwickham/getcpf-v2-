@@ -32,7 +32,7 @@ const Footer = () => (
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
-            <li><a href="mailto:support@cpfeasy.ai" className="hover:text-foreground transition-colors">Contact us</a></li>
+            <li><a href="mailto:support@getcpf.com" className="hover:text-foreground transition-colors">Contact us</a></li>
           </ul>
         </div>
       </div>
