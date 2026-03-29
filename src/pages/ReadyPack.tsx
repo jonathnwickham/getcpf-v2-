@@ -734,12 +734,10 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
           </ul>
         </section>
 
-
         {/* Getting There — Transportation */}
         <TransportSection office={recommendedOffice} data={data} />
       </>
-
-    {alternativeOffices.length > 0 && (
+    )}
       <>
         <div className="text-xs uppercase tracking-[2px] text-muted-foreground font-bold mt-8">Alternative offices in {stateName}</div>
         <div className="space-y-4">
