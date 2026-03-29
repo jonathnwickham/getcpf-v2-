@@ -461,9 +461,9 @@ const UnlockGuide = () => {
                           href={item.link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+                          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all group/ext"
                         >
-                          {item.link.label} ↗
+                          {item.link.label} <span className="text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">↗ new tab</span>
                         </a>
                       )}
                       <button
