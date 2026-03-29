@@ -525,7 +525,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
           ].map((item) => (
             <button
               key={item.title}
-              onClick={() => onOpenGuide()}
+              onClick={() => onOpenLifeGuide()}
               className="bg-secondary hover:bg-primary/5 border border-border hover:border-primary/20 rounded-xl p-4 text-left transition-all group"
             >
               <div className="text-2xl mb-2">{item.icon}</div>
