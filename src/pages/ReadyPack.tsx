@@ -1797,7 +1797,38 @@ const PartnersTab = () => (
   <div className="space-y-6 animate-slide-in">
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6 text-center">
       <h2 className="text-2xl font-bold">🎉 Your CPF is ready — here's what it unlocks</h2>
-      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Trusted services from our partners to help you settle into Brazil. These are the tools most expats and nomads actually use.</p>
+      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Now that you have your CPF, these are the first things you can actually do with it in Brazil.</p>
+    </section>
+
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-4">What you can do now with your CPF</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <AfterCard icon="📱" title="Get a SIM card" desc="Claro, Vivo, TIM, Airalo" />
+        <AfterCard icon="🏦" title="Open a bank account" desc="Nubank, Inter, C6" />
+        <AfterCard icon="⚡" title="Use Pix" desc="Send and receive instantly" />
+        <AfterCard icon="🛍️" title="Shop online" desc="Brazilian apps and stores" />
+      </div>
+    </section>
+
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-4">Best next step after your CPF</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-secondary rounded-xl p-4">
+          <div className="text-2xl mb-2">1️⃣</div>
+          <h4 className="font-semibold text-sm mb-1">Open a bank account</h4>
+          <p className="text-xs text-muted-foreground">This unlocks Pix, local payments, and makes life in Brazil much easier.</p>
+        </div>
+        <div className="bg-secondary rounded-xl p-4">
+          <div className="text-2xl mb-2">2️⃣</div>
+          <h4 className="font-semibold text-sm mb-1">Set up your phone</h4>
+          <p className="text-xs text-muted-foreground">Use your CPF to get a local SIM or eSIM and start using Brazilian apps properly.</p>
+        </div>
+        <div className="bg-secondary rounded-xl p-4">
+          <div className="text-2xl mb-2">3️⃣</div>
+          <h4 className="font-semibold text-sm mb-1">Start using local services</h4>
+          <p className="text-xs text-muted-foreground">Shopping, subscriptions, delivery apps, rentals, and more will now make much more sense.</p>
+        </div>
+      </div>
     </section>
 
     <div className="space-y-4">
