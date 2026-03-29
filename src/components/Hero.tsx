@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import brazilStencil from "@/assets/brazil-stencil.png";
 
 interface HeroProps {
   onOpenModal?: () => void;
@@ -21,7 +22,18 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
   return (
     <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-6 pt-32 pb-16 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
+      {/* Radial glow */}
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
+
+      {/* Brazilian stencil background */}
+      <img
+        src={brazilStencil}
+        alt=""
+        aria-hidden="true"
+        className="absolute bottom-0 right-0 w-[600px] md:w-[800px] opacity-[0.07] pointer-events-none select-none"
+        width={1200}
+        height={800}
+      />
 
       <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
         <span className="w-1.5 h-1.5 bg-primary rounded-full" />
@@ -40,7 +52,6 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center">
         <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
-
           Let's get started →
         </button>
         <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
