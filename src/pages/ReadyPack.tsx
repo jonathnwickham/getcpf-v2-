@@ -1047,12 +1047,10 @@ ${data.fullName}`;
             {copied ? "✓ Copied!" : "📋 Copy entire email"}
           </button>
           <a
-            href={gmailUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={mailtoUrl}
             className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all text-center"
           >
-            📨 Open in Gmail
+            📨 Open in email app
           </a>
         </div>
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
