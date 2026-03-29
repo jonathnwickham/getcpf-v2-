@@ -123,7 +123,7 @@ const PricingPage = () => {
       toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
       setLoading(false);
     } else {
-      toast({ title: "Welcome to cpfeasy! 🎉", description: "Let's get your CPF sorted." });
+      toast({ title: "You're in! 🎉", description: "Let's get your CPF sorted." });
       navigate("/get-started");
       setLoading(false);
     }
