@@ -29,8 +29,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/get-started" element={<GetStarted />} />
-            <Route path="/ready-pack" element={<ReadyPack />} />
+            <Route path="/get-started" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
+            <Route path="/ready-pack" element={<ProtectedRoute><ReadyPack /></ProtectedRoute>} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
