@@ -25,9 +25,9 @@ const ResetPassword = () => {
     const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Password updated!" });
+      toast({ title: "All set — your password is updated" });
       navigate("/login");
     }
     setLoading(false);
