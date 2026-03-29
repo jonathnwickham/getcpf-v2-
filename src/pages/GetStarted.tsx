@@ -214,7 +214,7 @@ const GetStarted = () => {
             disabled={!canProceed()}
             className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-primary/20"
           >
-            {step === TOTAL_STEPS - 1 ? "Generate my Ready Pack →" : step === 0 ? "Let's go →" : "Continue →"}
+            {step === TOTAL_STEPS - 1 ? "Build my Ready Pack →" : step === 0 ? "Let's go →" : "Got it — next step →"}
           </button>
         </div>
       </div>
