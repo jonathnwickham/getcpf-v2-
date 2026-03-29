@@ -985,12 +985,12 @@ const DeclarationSection = ({ declaration, declarationCopied, setDeclarationCopi
         </div>
 
         {/* Send to host via WhatsApp */}
-        <button
-          onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(whatsappMsg)}`)}
-          className="w-full bg-[#25D366] text-white px-4 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
+        <ExternalLink
+          href={`https://wa.me/?text=${encodeURIComponent(whatsappMsg)}`}
+          className="w-full block text-center bg-[#25D366] text-white px-4 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
         >
           💬 Send to your host via WhatsApp — get them to sign it
-        </button>
+        </ExternalLink>
 
         {/* Detailed steps */}
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-5 space-y-3">
