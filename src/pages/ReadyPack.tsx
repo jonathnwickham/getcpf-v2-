@@ -389,7 +389,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
   const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
   const declaration = hasHost ? (() => {
     const now = new Date();
-    return `DECLARAÇÃO DE RESIDÊNCIA\n\nEu, ${data.hostName}, portador(a) do CPF nº ${data.hostCpf || "[CPF do anfitrião]"}, residente à ${data.hostAddress}, ${data.hostCity}, ${data.state}, declaro para os devidos fins que ${data.fullName}, portador(a) do passaporte nº ${data.passportNumber}, nacionalidade ${data.nationality}, reside temporariamente em meu endereço acima mencionado.\n\nPor ser verdade, firmo a presente declaração.\n\n${data.hostCity}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}\n\n_______________________________\n${data.hostName}\nCPF: ${data.hostCpf || "[CPF do anfitrião]"}`;
+    const hour = now.getHours();
+    const greeting = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite";
+    return `${greeting}!\n\nEspero que esteja tudo bem. Segue abaixo a declaração de residência conforme solicitado para o registro de CPF.\n\n---\n\nDECLARAÇÃO DE RESIDÊNCIA\n\nEu, ${data.hostName}, portador(a) do CPF nº ${data.hostCpf || "[CPF do anfitrião]"}, residente à ${data.hostAddress}, ${data.hostCity}, ${data.state}, declaro para os devidos fins que ${data.fullName}, portador(a) do passaporte nº ${data.passportNumber}, nacionalidade ${getNationalityPt(data.nationality)}, reside temporariamente em meu endereço acima mencionado.\n\nDeclaro ainda que me responsabilizo pela veracidade das informações aqui prestadas.\n\nPor ser verdade, firmo a presente declaração.\n\n${data.hostCity}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}\n\n_______________________________\n${data.hostName}\nCPF: ${data.hostCpf || "[CPF do anfitrião]"}\n\n---\n\nMuito obrigado(a) pela ajuda!\nAtenciosamente,\n${data.fullName}`;
   })() : null;
 
   return (
@@ -519,12 +521,12 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
           <div className="bg-secondary rounded-lg p-4">
             <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
           </div>
-          <div className="flex gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3">
             <button
               onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2000); }}
-              className="flex-1 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
+              className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
             >
-              {declarationCopied ? "✓ Copied!" : "📋 Copy declaration"}
+              {declarationCopied ? "✓ Copied!" : "📋 Copy letter"}
             </button>
             <button
               onClick={() => {
@@ -534,10 +536,18 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
                 a.href = url; a.download = "declaracao-residencia.txt"; a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="flex-1 bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
+              className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
             >
-              ⬇️ Download
+              ⬇️ Download .txt
             </button>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(declaration)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 min-w-[140px] bg-[#25D366] text-white px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all text-center"
+            >
+              💬 Send via WhatsApp
+            </a>
           </div>
         </div>
       </section>
