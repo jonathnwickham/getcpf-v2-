@@ -37,7 +37,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
           <>
             <button
               onClick={() => navigate("/login")}
-              className="hidden md:inline text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
+              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
             >
               Sign in
             </button>
