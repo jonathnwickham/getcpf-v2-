@@ -404,22 +404,22 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
       <div className="p-6 space-y-3">
         <DocCheck title="Original passport" desc="Not a copy — they need to see the original document. Bring the passport you used to enter Brazil." critical />
-        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical />
-        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical />
+        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical uploadable />
+        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical uploadable />
         
         <div className="border-t border-border pt-3 mt-3">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Proof of address — bring ONE of the following</p>
-          <DocCheck title="Hotel booking confirmation" desc="A printed or digital confirmation showing the hotel name, address, and your name. Most commonly accepted." />
-          <DocCheck title="Airbnb rental confirmation" desc="Your Airbnb booking confirmation with the full address shown. Print it or show on your phone." />
-          <DocCheck title="Rental contract" desc="If you're renting an apartment, bring a copy of the signed contract showing the address." />
-          <DocCheck title="Utility bill with address" desc="An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address." />
-          <DocCheck title="Invitation letter from your host" desc="If staying with family, partner, or friends — a signed letter stating you reside at their address, with their name, CPF, address, and signature. Attach a copy of their ID." />
+          <DocCheck title="Hotel booking confirmation" desc="A printed or digital confirmation showing the hotel name, address, and your name. Most commonly accepted." uploadable />
+          <DocCheck title="Airbnb rental confirmation" desc="Your Airbnb booking confirmation with the full address shown. Print it or show on your phone." uploadable />
+          <DocCheck title="Rental contract" desc="If you're renting an apartment, bring a copy of the signed contract showing the address." uploadable />
+          <DocCheck title="Utility bill with address" desc="An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address." uploadable />
+          <DocCheck title="Invitation letter from your host" desc="If staying with family, partner, or friends — a signed letter stating you reside at their address, with their name, CPF, address, and signature. Attach a copy of their ID." uploadable />
         </div>
 
         <div className="border-t border-border pt-3 mt-3">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Recommended extras</p>
-          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." />
-          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." />
+          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." uploadable />
+          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." uploadable />
           <DocCheck title="Pen" desc="Sounds silly, but bring your own pen. Not all offices provide them." />
         </div>
       </div>
