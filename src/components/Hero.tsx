@@ -20,8 +20,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   ];
 
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-6 pt-32 pb-16 relative overflow-hidden">
-      <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.06)_0%,transparent_70%)] pointer-events-none" />
+    <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-6 pt-32 pb-16 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
+      <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
         <span className="w-1.5 h-1.5 bg-primary rounded-full" />
