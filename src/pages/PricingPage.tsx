@@ -284,7 +284,7 @@ const PricingPage = () => {
                 className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-3"
               >
                 {loading ? (
-                  <span className="animate-pulse">Processing...</span>
+                  <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
