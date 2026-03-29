@@ -1162,7 +1162,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
         const lines = declaration.split("\n");
         for (const line of lines) {
           if (dy < 60) { break; }
-          declPage.drawText(line.slice(0, 85), { x: 50, y: dy, font, size: 10 });
+          declPage.drawText(safe(line.slice(0, 85)), { x: 50, y: dy, font, size: 10 });
           dy -= 16;
         }
       }
