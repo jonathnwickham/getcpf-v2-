@@ -733,8 +733,11 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
             </li>
           </ul>
         </section>
+
+
+        {/* Getting There — Transportation */}
+        <TransportSection office={recommendedOffice} data={data} />
       </>
-    )}
 
     {alternativeOffices.length > 0 && (
       <>
