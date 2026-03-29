@@ -67,8 +67,8 @@ const Dashboard = () => {
         <div className="max-w-[960px] mx-auto px-6 py-8 flex items-center justify-between">
           <div>
             <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
-            <h1 className="text-2xl font-extrabold mt-2">Welcome back, {firstName} 👋</h1>
-            <p className="opacity-80 text-sm mt-1">Your CPF application dashboard</p>
+            <h1 className="text-2xl font-extrabold mt-2">Hey {firstName} 👋</h1>
+            <p className="opacity-80 text-sm mt-1">Here's where you left off</p>
           </div>
           <button onClick={signOut} className="bg-primary-foreground/15 hover:bg-primary-foreground/25 px-4 py-2 rounded-xl text-sm font-semibold transition-all">
             Sign out
