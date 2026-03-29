@@ -1029,36 +1029,118 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
 
   const handleCompile = async () => {
     setCompiling(true);
-    await new Promise(r => setTimeout(r, 2000));
-    
-    let content = `CPF APPLICATION DOCUMENT PACK\n${"=".repeat(40)}\n\n`;
-    content += `Prepared for: ${data.fullName}\n`;
-    content += `Date: ${new Date().toLocaleDateString()}\n\n`;
-    content += `PERSONAL DETAILS\n${"-".repeat(30)}\n`;
-    content += `Full Name: ${data.fullName}\n`;
-    content += `Mother's Name: ${motherDisplay}\n`;
-    if (data.fatherName) content += `Father's Name: ${data.fatherName}\n`;
-    content += `Passport: ${data.passportNumber}\n`;
-    content += `Nationality: ${data.nationality}\n`;
-    content += `Address: ${data.streetAddress}, ${data.city}, ${data.state}\n`;
-    content += `Email: ${data.email}\n\n`;
-    content += `UPLOADED DOCUMENTS\n${"-".repeat(30)}\n`;
-    Object.values(uploads).forEach((doc) => {
-      content += `✓ ${doc.label}: ${doc.name}\n`;
-    });
-    if (hasDeclaration) {
-      content += `\n\nHOST DECLARATION LETTER\n${"-".repeat(30)}\n`;
-      content += declaration;
-    }
+    try {
+      const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+      const mergedPdf = await PDFDocument.create();
+      const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
+      const fontBold = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
 
-    const blob = new Blob([content], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `cpf-document-pack-${data.fullName.replace(/\s+/g, "-").toLowerCase()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-    
+      // Cover page with personal details
+      const coverPage = mergedPdf.addPage([595, 842]); // A4
+      const { height } = coverPage.getSize();
+      let y = height - 60;
+      coverPage.drawText("CPF APPLICATION DOCUMENT PACK", { x: 50, y, font: fontBold, size: 18, color: rgb(0.1, 0.4, 0.2) });
+      y -= 30;
+      coverPage.drawText(`Prepared for: ${data.fullName}`, { x: 50, y, font, size: 12 });
+      y -= 18;
+      coverPage.drawText(`Date: ${new Date().toLocaleDateString()}`, { x: 50, y, font, size: 10, color: rgb(0.4, 0.4, 0.4) });
+      y -= 40;
+      coverPage.drawText("PERSONAL DETAILS", { x: 50, y, font: fontBold, size: 14 });
+      y -= 5;
+      coverPage.drawLine({ start: { x: 50, y }, end: { x: 545, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+      y -= 22;
+      const details = [
+        ["Full Name", data.fullName],
+        ["Mother's Name", motherDisplay],
+        ...(data.fatherName ? [["Father's Name", data.fatherName]] : []),
+        ["Passport", data.passportNumber],
+        ["Nationality", data.nationality],
+        ["Address", `${data.streetAddress}, ${data.city}, ${data.state}`],
+        ["Email", data.email],
+      ];
+      for (const [label, value] of details) {
+        coverPage.drawText(`${label}:`, { x: 50, y, font: fontBold, size: 10 });
+        coverPage.drawText(value, { x: 180, y, font, size: 10 });
+        y -= 18;
+      }
+      y -= 20;
+      coverPage.drawText("DOCUMENTS INCLUDED", { x: 50, y, font: fontBold, size: 14 });
+      y -= 5;
+      coverPage.drawLine({ start: { x: 50, y }, end: { x: 545, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+      y -= 22;
+      Object.values(uploads).forEach((doc) => {
+        coverPage.drawText(`✓  ${doc.label}: ${doc.name}`, { x: 50, y, font, size: 10 });
+        y -= 18;
+      });
+
+      // Host declaration page if available
+      if (hasDeclaration && declaration) {
+        const declPage = mergedPdf.addPage([595, 842]);
+        let dy = 842 - 60;
+        declPage.drawText("HOST DECLARATION LETTER", { x: 50, y: dy, font: fontBold, size: 14, color: rgb(0.1, 0.4, 0.2) });
+        dy -= 5;
+        declPage.drawLine({ start: { x: 50, y: dy }, end: { x: 545, y: dy }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+        dy -= 22;
+        const lines = declaration.split("\n");
+        for (const line of lines) {
+          if (dy < 60) { break; }
+          declPage.drawText(line.slice(0, 85), { x: 50, y: dy, font, size: 10 });
+          dy -= 16;
+        }
+      }
+
+      // Merge each uploaded file
+      for (const upload of Object.values(uploads)) {
+        const arrayBuffer = await upload.file.arrayBuffer();
+
+        if (upload.file.type === "application/pdf") {
+          // Merge PDF pages
+          try {
+            const srcPdf = await PDFDocument.load(arrayBuffer);
+            const copiedPages = await mergedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+          } catch {
+            // If PDF can't be loaded, add a placeholder page
+            const errPage = mergedPdf.addPage([595, 842]);
+            errPage.drawText(`Could not embed: ${upload.name}`, { x: 50, y: 780, font, size: 12, color: rgb(0.8, 0.2, 0.2) });
+          }
+        } else if (upload.file.type.startsWith("image/")) {
+          // Embed image on a new page
+          try {
+            let img;
+            if (upload.file.type === "image/png") {
+              img = await mergedPdf.embedPng(arrayBuffer);
+            } else {
+              img = await mergedPdf.embedJpg(arrayBuffer);
+            }
+            const imgDims = img.scale(1);
+            const maxW = 515;
+            const maxH = 762;
+            const scale = Math.min(maxW / imgDims.width, maxH / imgDims.height, 1);
+            const w = imgDims.width * scale;
+            const h = imgDims.height * scale;
+            const imgPage = mergedPdf.addPage([595, 842]);
+            imgPage.drawText(upload.label, { x: 50, y: 810, font: fontBold, size: 12, color: rgb(0.3, 0.3, 0.3) });
+            imgPage.drawImage(img, { x: (595 - w) / 2, y: (802 - h) / 2 + 20, width: w, height: h });
+          } catch {
+            const errPage = mergedPdf.addPage([595, 842]);
+            errPage.drawText(`Could not embed image: ${upload.name}`, { x: 50, y: 780, font, size: 12, color: rgb(0.8, 0.2, 0.2) });
+          }
+        }
+      }
+
+      const pdfBytes = await mergedPdf.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cpf-document-pack-${data.fullName.replace(/\s+/g, "-").toLowerCase()}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF compilation failed:", err);
+      alert("Something went wrong compiling your PDF. Please try again.");
+    }
     setCompiling(false);
     setCompiled(true);
     setTimeout(() => setCompiled(false), 4000);
