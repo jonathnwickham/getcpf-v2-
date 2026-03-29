@@ -482,9 +482,9 @@ const AddressStep = ({
   return (
     <div>
       <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Where are you staying?</h2>
       <p className="text-muted-foreground text-sm mb-6">
-        The street address where you're staying. This goes on the application form.
+        Your address in Brazil — this goes on the form. Hotel, Airbnb, friend's place — all fine.
       </p>
       <div className="space-y-4">
         <div>
