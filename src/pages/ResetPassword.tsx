@@ -25,9 +25,9 @@ const ResetPassword = () => {
     const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Password updated!" });
+      toast({ title: "All set — your password is updated" });
       navigate("/login");
     }
     setLoading(false);
@@ -37,8 +37,8 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="text-center">
-          <h1 className="text-xl font-bold">Invalid reset link</h1>
-          <p className="text-muted-foreground mt-2 text-sm">This link may have expired. Please request a new one.</p>
+          <h1 className="text-xl font-bold">This link isn't working</h1>
+          <p className="text-muted-foreground mt-2 text-sm">It may have expired — request a new one and you'll be sorted in a minute.</p>
         </div>
       </div>
     );
@@ -48,8 +48,8 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-extrabold">Set new password</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Enter your new password below</p>
+          <h1 className="text-2xl font-extrabold">Pick a new password</h1>
+          <p className="text-muted-foreground mt-2 text-sm">Choose something you'll remember — then you're back in</p>
         </div>
 
         <form onSubmit={handleUpdate} className="space-y-4">
@@ -70,7 +70,7 @@ const ResetPassword = () => {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
-            {loading ? "Updating..." : "Update password"}
+            {loading ? "Updating..." : "Save new password"}
           </button>
         </form>
       </div>

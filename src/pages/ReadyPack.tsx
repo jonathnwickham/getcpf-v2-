@@ -119,12 +119,12 @@ const ReadyPack = () => {
                 </div>
               )}
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-                {isOnMyCpf ? "My CPF" : "CPF Application Guide"}
+                {isOnMyCpf ? "My CPF" : "Your Ready Pack"}
               </h1>
               <p className="mt-2 opacity-80 max-w-[440px]">
                 {isOnMyCpf
                   ? `Your personal CPF space, ${data.fullName.split(" ")[0]}.`
-                  : `Everything is prepared for you, ${data.fullName.split(" ")[0]}. Follow the steps below.`
+                  : `Everything's ready, ${data.fullName.split(" ")[0]}. Follow these steps and you'll walk out with your CPF.`
                 }
               </p>
             </div>
@@ -448,10 +448,10 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
       <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-3xl p-8 text-center">
         <div className="text-5xl mb-4">🇧🇷</div>
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-          Well done, {firstName}! 🎉
+          You did it, {firstName}! 🇧🇷
         </h1>
         <p className="text-lg text-muted-foreground mt-2 max-w-md mx-auto">
-          You did it — your CPF is registered. Welcome to Brazil, officially.
+          Your CPF is live. Brazil just opened up for you.
         </p>
       </section>
 
@@ -553,7 +553,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
     {/* Visual process timeline */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Your CPF journey — 3 simple steps</h2>
+        <h2 className="font-bold">Your CPF journey — three steps and you're done</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:divide-x divide-border">
         <ProcessStep
@@ -1382,7 +1382,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
     <section className="bg-card border border-destructive/20 rounded-2xl p-6 text-center">
       <div className="text-3xl mb-3">😟</div>
       <h3 className="text-lg font-bold">Got rejected?</h3>
-      <p className="text-sm text-muted-foreground mt-1 mb-4">Don't stress — most rejections have a simple fix. We'll tell you exactly what to do.</p>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">It happens — and it's usually one small thing. We'll tell you exactly what to fix.</p>
       <button
         onClick={() => setActiveTab("rejected")}
         className="bg-secondary text-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"

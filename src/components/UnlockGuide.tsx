@@ -363,9 +363,9 @@ const UnlockGuide = () => {
     <div className="space-y-6 animate-slide-in">
       {/* Header + progress */}
       <section className="bg-primary/5 border border-primary/15 rounded-3xl p-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">🔓 What your CPF unlocks</h2>
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">🔓 You're in.</h2>
         <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-          Your CPF is your key to real life in Brazil. Work through this list and you'll be fully set up.
+          Your CPF is active. Here's everything Brazil just unlocked for you.
         </p>
         <div className="mt-6 max-w-sm mx-auto">
           <div className="flex justify-between text-xs font-semibold mb-2">
@@ -382,14 +382,14 @@ const UnlockGuide = () => {
       {allDone && (
         <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
           <div className="text-4xl mb-3">🎉🇧🇷</div>
-          <h3 className="text-xl font-extrabold">You're fully set up in Brazil!</h3>
-          <p className="text-sm text-muted-foreground mt-1">Every single item completed. You're a local now.</p>
+          <h3 className="text-xl font-extrabold">That's everything. You're not a tourist anymore. 🇧🇷</h3>
+          <p className="text-sm text-muted-foreground mt-1">Every single item done. Welcome to Brazil — properly.</p>
         </section>
       )}
       {allEasyDone && !allDone && (
         <section className="bg-primary/5 border border-primary/15 rounded-2xl p-4 text-center">
           <p className="text-sm font-semibold">✅ You've nailed the essentials. You're set up in Brazil.</p>
-          <p className="text-xs text-muted-foreground mt-1">Keep going with the Medium and Hard items when you're ready.</p>
+          <p className="text-xs text-muted-foreground mt-1">The hard part's behind you. Tackle the rest when you're ready.</p>
         </section>
       )}
 

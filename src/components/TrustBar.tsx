@@ -1,8 +1,8 @@
 const items = [
-  { icon: "🔒", text: "Data encrypted & never stored" },
-  { icon: "📋", text: "Based on official Receita Federal rules" },
-  { icon: "🌍", text: "Works from any country" },
-  { icon: "⚡", text: "Available 24/7" },
+  { icon: "🔒", text: "Your data stays private" },
+  { icon: "📋", text: "Based on official government rules" },
+  { icon: "🌍", text: "Works wherever you are" },
+  { icon: "⚡", text: "Ready when you are" },
 ];
 
 const TrustBar = () => (

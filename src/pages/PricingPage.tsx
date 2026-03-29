@@ -93,7 +93,7 @@ const PricingPage = () => {
     // Simulate payment processing
     setTimeout(() => {
       setLoading(false);
-      toast({ title: "Payment successful!", description: `$49 charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
+      toast({ title: "Payment sorted!", description: `$49 charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
       setFlowStep("password");
     }, 1500);
   };
@@ -101,11 +101,11 @@ const PricingPage = () => {
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length < 6) {
-      toast({ title: "Password too short", description: "At least 6 characters required.", variant: "destructive" });
+      toast({ title: "Password too short", description: "Make it at least 6 characters.", variant: "destructive" });
       return;
     }
     if (password !== confirmPassword) {
-      toast({ title: "Passwords don't match", description: "Please make sure your passwords match.", variant: "destructive" });
+      toast({ title: "Those don't match", description: "Check your passwords and try again.", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -120,10 +120,10 @@ const PricingPage = () => {
     });
 
     if (error) {
-      toast({ title: "Account creation failed", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
       setLoading(false);
     } else {
-      toast({ title: "Welcome to cpfeasy! 🎉", description: "Let's get your CPF sorted." });
+      toast({ title: "You're in! 🎉", description: "Let's get your CPF sorted." });
       navigate("/get-started");
       setLoading(false);
     }
@@ -132,7 +132,7 @@ const PricingPage = () => {
   const handleWaitlist = (e: React.FormEvent) => {
     e.preventDefault();
     setWaitlistSubmitted(true);
-    toast({ title: "You're on the list!", description: "We'll notify you when this plan launches." });
+    toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
 
   return (
@@ -175,8 +175,8 @@ const PricingPage = () => {
         {/* STEP 1: Email */}
         {flowStep === "email" && (
           <div className="max-w-md mx-auto text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Get your CPF sorted</h1>
-            <p className="text-muted-foreground text-sm mb-8">Enter your email to get started. We'll use this for your account and payment receipt.</p>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Let's get your CPF sorted</h1>
+            <p className="text-muted-foreground text-sm mb-8">Pop in your email and we'll get you started.</p>
             <form onSubmit={handleEmailSubmit} className="space-y-4">
               <input
                 type="email"
@@ -191,7 +191,7 @@ const PricingPage = () => {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
               >
-                Continue →
+                That's me — let's go →
               </button>
             </form>
             <p className="text-xs text-muted-foreground mt-4">No spam, ever. Just your CPF kit.</p>
@@ -202,8 +202,8 @@ const PricingPage = () => {
         {flowStep === "plan" && (
           <div>
             <div className="text-center mb-10">
-              <h1 className="text-3xl font-extrabold tracking-tight mb-3">Choose your plan</h1>
-              <p className="text-muted-foreground text-sm">The CPF itself is free — you're paying for expert guidance that makes it work first time.</p>
+              <h1 className="text-3xl font-extrabold tracking-tight mb-3">Choose how you want to do this</h1>
+              <p className="text-muted-foreground text-sm">The CPF itself is free. You're paying for preparation that makes it work first time.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {tiers.map((tier) => (
@@ -270,7 +270,7 @@ const PricingPage = () => {
         {/* STEP 3: Payment */}
         {flowStep === "payment" && (
           <div className="max-w-md mx-auto text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Complete payment</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
             <p className="text-muted-foreground text-sm mb-2">
               {selectedPlan} plan — <span className="font-bold text-foreground">$49 USD</span>
             </p>
@@ -284,7 +284,7 @@ const PricingPage = () => {
                 className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-3"
               >
                 {loading ? (
-                  <span className="animate-pulse">Processing...</span>
+                  <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -309,7 +309,7 @@ const PricingPage = () => {
                 className="w-full bg-[hsl(48,100%,50%)] text-[hsl(220,20%,20%)] py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <span className="animate-pulse">Processing...</span>
+                  <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
                     <span className="font-extrabold text-base tracking-tight">Pay</span>
@@ -375,9 +375,9 @@ const PricingPage = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
               <span className="text-3xl">✓</span>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3 animate-fade-in">Payment received!</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3 animate-fade-in">You're in!</h1>
             <p className="text-muted-foreground text-sm mb-8">
-              Set a password to save your progress and access your CPF kit anytime.
+              Set a password so you can come back anytime — your progress will be saved.
             </p>
             <form onSubmit={handleCreateAccount} className="space-y-4 text-left">
               <div>
@@ -417,7 +417,7 @@ const PricingPage = () => {
                 disabled={loading}
                 className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
               >
-                {loading ? "Creating account..." : "Create account & start →"}
+                {loading ? "Setting things up..." : "Create my account →"}
               </button>
             </form>
           </div>
@@ -431,7 +431,7 @@ const PricingPage = () => {
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight mb-3">You're all set!</h1>
             <p className="text-muted-foreground text-sm mb-8">
-              Check your email to verify your account, then sign in to start your CPF application.
+              Check your inbox for a verification link — tap it and you're in.
             </p>
             <button
               onClick={() => navigate("/login")}

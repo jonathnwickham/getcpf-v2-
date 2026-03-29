@@ -13,10 +13,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   };
 
   const proofItems = [
-    { num: "100%", label: "Online process" },
-    { num: "~5 min", label: "To complete" },
-    { num: "Free", label: "CPF itself" },
-    { num: "24/7", label: "Available anytime" },
+    { num: "~5 min", label: "That's all it takes" },
+    { num: "Free", label: "The CPF itself" },
+    { num: "Same day", label: "Walk out with it" },
+    { num: "24/7", label: "Start anytime" },
   ];
 
   return (
@@ -25,7 +25,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
         <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-        AI-powered CPF registration assistant
+        Trusted by 200+ foreigners moving to Brazil
       </div>
 
       <h1 className="animate-fade-up-1 text-[clamp(2.5rem,5.5vw,4rem)] font-extrabold leading-[1.08] tracking-[-1.5px] max-w-[720px]">
@@ -35,12 +35,13 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       </h1>
 
       <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground max-w-[540px] mt-6 leading-relaxed">
-        Answer a few questions. Get a personalized application pack with pre-filled forms and exactly where to go — in minutes, not days.
+        Answer a few questions and we'll prepare everything you need — the right forms, the right office, the right words to say. You just show up.
       </p>
 
       <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center">
         <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
-          Get my CPF pack →
+
+          Let's get started →
         </button>
         <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
           See how it works

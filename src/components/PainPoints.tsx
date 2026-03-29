@@ -11,9 +11,9 @@ const PainPoints = () => {
   return (
     <section className="py-24 px-8 relative bg-secondary">
       <div className="max-w-[1100px] mx-auto">
-        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
+        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The reality</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[600px]">
-          Without a CPF, Brazil locks you out
+          Without a CPF, you can't do much in Brazil
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
           {painCards.map((card) => (

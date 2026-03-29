@@ -68,7 +68,7 @@ const GetStarted = () => {
   if (!ready) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="animate-pulse text-muted-foreground">Getting things ready...</div>
       </div>
     );
   }
@@ -134,7 +134,7 @@ const GetStarted = () => {
             cpf<span className="text-primary">easy</span>.ai
           </a>
           <span className="text-xs text-muted-foreground font-medium">
-            Step {step + 1} of {TOTAL_STEPS}
+            {step + 1} of {TOTAL_STEPS}
           </span>
         </div>
         <div className="h-1 bg-border">
@@ -214,7 +214,7 @@ const GetStarted = () => {
             disabled={!canProceed()}
             className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-primary/20"
           >
-            {step === TOTAL_STEPS - 1 ? "Generate my Ready Pack →" : step === 0 ? "Let's go →" : "Continue →"}
+            {step === TOTAL_STEPS - 1 ? "Build my Ready Pack →" : step === 0 ? "Let's go →" : "Got it — next step →"}
           </button>
         </div>
       </div>
@@ -233,22 +233,22 @@ const WelcomeStep = () => (
       Let's get your <span className="text-primary font-serif italic">CPF</span> sorted
     </h1>
     <p className="text-muted-foreground leading-relaxed max-w-[420px] mx-auto">
-      We'll ask you a few quick questions to prepare your personalized application pack. Everything you need to walk into a Receita Federal office and walk out with your CPF.
+      We'll ask a few quick questions — takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
     </p>
-    <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">~5 min</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">To complete</div>
+      <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">~5 min</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">That's it</div>
+        </div>
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">100%</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">Ready to go</div>
+        </div>
+        <div className="bg-secondary rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">Same day</div>
+          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">CPF in hand</div>
+        </div>
       </div>
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">100%</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">Prepared</div>
-      </div>
-      <div className="bg-secondary rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">Same day</div>
-        <div className="text-[10px] text-muted-foreground font-medium mt-0.5">CPF issued</div>
-      </div>
-    </div>
   </div>
 );
 
@@ -261,7 +261,7 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
     <div>
       <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
-      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
+      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport. No nicknames — the form needs to match.</p>
       <input
         type="text"
         value={value}
@@ -273,8 +273,8 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
       />
       {showWarning && (
         <div className="mt-3 bg-destructive/10 border border-destructive/20 rounded-xl p-4">
-          <p className="text-sm font-semibold text-destructive mb-1">⚠️ This looks like a single name</p>
-          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) as it appears on your passport. CPF applications require a complete name.</p>
+          <p className="text-sm font-semibold text-destructive mb-1">⚠️ Looks like a single name</p>
+          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) exactly as it appears on your passport. CPF applications with incomplete names get rejected.</p>
           <button
             type="button"
             onClick={() => onForceFullName(true)}
@@ -299,7 +299,7 @@ const MotherStep = ({
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      No abbreviations. In Brazil, your identity is tied to your mother's name — this is required by the Receita Federal.
+      No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
     </p>
     {!noMother ? (
       <input
@@ -345,7 +345,7 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 3</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your father's full name?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      Optional — you can skip this if you prefer. Some forms include it but it's not required.
+      This one's optional — skip it if you'd rather not include it. Some forms have a space for it, but it's not required.
     </p>
     <input
       type="text"
@@ -355,7 +355,7 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
       autoFocus
       className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
     />
-    <p className="text-xs text-muted-foreground mt-3 italic">Press Continue to skip →</p>
+    <p className="text-xs text-muted-foreground mt-3 italic">Don't have it? Just hit next →</p>
   </div>
 );
 
@@ -364,7 +364,7 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      We'll use this to pre-fill the official CPF application form for you.
+      We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
     </p>
     <input
       type="text"
@@ -375,7 +375,7 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
       className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50 tracking-wider"
     />
     {value.trim().length > 0 && !/^[A-Z0-9]{5,15}$/i.test(value.trim()) && (
-      <p className="text-xs text-destructive mt-2">⚠️ Passport numbers are 5–15 alphanumeric characters (letters and numbers only).</p>
+      <p className="text-xs text-destructive mt-2">⚠️ That doesn't look right — passport numbers are 5–15 characters, letters and numbers only.</p>
     )}
     <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
       <span>🔒</span> Your passport number is used only to prepare your forms and is never stored.
@@ -386,9 +386,9 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
 const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 5</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Which Brazilian state are you in?</h2>
+    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Which state are you in?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      We'll find the nearest Receita Federal office for your in-person visit.
+      This tells us which office to send you to — we'll find the best one nearby.
     </p>
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[320px] overflow-y-auto pr-2">
       {BRAZILIAN_STATES.map((s) => (
@@ -482,9 +482,9 @@ const AddressStep = ({
   return (
     <div>
       <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your address in Brazil?</h2>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Where are you staying?</h2>
       <p className="text-muted-foreground text-sm mb-6">
-        The street address where you're staying. This goes on the application form.
+        Your address in Brazil — this goes on the form. Hotel, Airbnb, friend's place — all fine.
       </p>
       <div className="space-y-4">
         <div>
@@ -780,10 +780,10 @@ const ContactStep = ({
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Final step</label>
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost done!</h2>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Last step</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost there!</h2>
       <p className="text-muted-foreground text-sm mb-8">
-        Your email for the Ready Pack download, and your nationality for the application.
+        Your email (for your Ready Pack) and your nationality (for the application form).
       </p>
       <div className="space-y-4">
         <div>

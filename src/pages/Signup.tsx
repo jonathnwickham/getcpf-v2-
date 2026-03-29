@@ -25,11 +25,11 @@ const Signup = () => {
     });
 
     if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
       toast({
-        title: "Check your email",
-        description: "We sent you a verification link. Please confirm your email to continue.",
+        title: "Check your inbox 📧",
+        description: "We sent you a quick verification link — tap it and you're in.",
       });
     }
     setLoading(false);
@@ -42,8 +42,8 @@ const Signup = () => {
           <a href="/" className="text-2xl font-bold tracking-tight">
             cpf<span className="text-primary">easy</span>.ai
           </a>
-          <h1 className="text-2xl font-extrabold mt-6">Create your account</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Get your CPF sorted — save your progress along the way</p>
+          <h1 className="text-2xl font-extrabold mt-6">Let's set you up</h1>
+          <p className="text-muted-foreground mt-2 text-sm">Create an account so your progress is saved — pick up anytime</p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-4">
@@ -88,7 +88,7 @@ const Signup = () => {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Create account"}
+            {loading ? "Setting things up..." : "Create my account"}
           </button>
         </form>
 

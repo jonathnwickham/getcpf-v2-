@@ -18,12 +18,12 @@ const Login = () => {
     const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      toast({ title: "That didn't work", description: error.message, variant: "destructive" });
       setLoading(false);
       return;
     }
 
-    toast({ title: "Welcome back!" });
+    toast({ title: "Good to see you again 👋" });
 
     // Check if user has a completed application → ready-pack, otherwise → get-started
     try {
@@ -52,7 +52,7 @@ const Login = () => {
             cpf<span className="text-primary">easy</span>.ai
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Welcome back</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Sign in to access your CPF application</p>
+          <p className="text-muted-foreground mt-2 text-sm">Pick up right where you left off</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -84,7 +84,7 @@ const Login = () => {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "One moment..." : "Sign in"}
           </button>
         </form>
 

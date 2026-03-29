@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     });
 
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
       setSent(true);
     }
@@ -30,8 +30,8 @@ const ForgotPassword = () => {
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-md text-center">
           <div className="text-5xl mb-4">📧</div>
-          <h1 className="text-2xl font-extrabold">Check your email</h1>
-          <p className="text-muted-foreground mt-2 text-sm">We sent a password reset link to <strong>{email}</strong></p>
+          <h1 className="text-2xl font-extrabold">Check your inbox</h1>
+          <p className="text-muted-foreground mt-2 text-sm">We sent a reset link to <strong>{email}</strong> — it'll be there in a minute</p>
           <Link to="/login" className="mt-6 inline-block text-primary font-semibold hover:underline text-sm">
             ← Back to login
           </Link>
@@ -47,8 +47,8 @@ const ForgotPassword = () => {
           <a href="/" className="text-2xl font-bold tracking-tight">
             cpf<span className="text-primary">easy</span>.ai
           </a>
-          <h1 className="text-2xl font-extrabold mt-6">Reset your password</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Enter your email and we'll send you a reset link</p>
+          <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
+          <p className="text-muted-foreground mt-2 text-sm">No worries — enter your email and we'll send you a link to reset it</p>
         </div>
 
         <form onSubmit={handleReset} className="space-y-4">
@@ -69,7 +69,7 @@ const ForgotPassword = () => {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
-            {loading ? "Sending..." : "Send reset link"}
+            {loading ? "Sending..." : "Send me a reset link"}
           </button>
         </form>
 

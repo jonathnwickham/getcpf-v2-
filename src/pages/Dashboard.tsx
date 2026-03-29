@@ -52,7 +52,7 @@ const Dashboard = () => {
 
   if (loading || checking) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="animate-pulse text-muted-foreground">Loading...</div>
+      <div className="animate-pulse text-muted-foreground">Getting your stuff ready...</div>
     </div>
   );
 
@@ -67,8 +67,8 @@ const Dashboard = () => {
         <div className="max-w-[960px] mx-auto px-6 py-8 flex items-center justify-between">
           <div>
             <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
-            <h1 className="text-2xl font-extrabold mt-2">Welcome back, {firstName} 👋</h1>
-            <p className="opacity-80 text-sm mt-1">Your CPF application dashboard</p>
+            <h1 className="text-2xl font-extrabold mt-2">Hey {firstName} 👋</h1>
+            <p className="opacity-80 text-sm mt-1">Here's where you left off</p>
           </div>
           <button onClick={signOut} className="bg-primary-foreground/15 hover:bg-primary-foreground/25 px-4 py-2 rounded-xl text-sm font-semibold transition-all">
             Sign out
@@ -82,7 +82,7 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">📋</div>
             <div>
-              <h2 className="font-bold text-lg">Your application</h2>
+              <h2 className="font-bold text-lg">Your CPF application</h2>
               <p className="text-xs text-muted-foreground">
                 Status: <span className="text-primary font-semibold capitalize">{application.status}</span>
               </p>
@@ -107,7 +107,7 @@ const Dashboard = () => {
               onClick={() => navigate("/ready-pack")}
               className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
             >
-              View full application pack →
+              Open my Ready Pack →
             </button>
           </div>
         </section>
@@ -115,8 +115,8 @@ const Dashboard = () => {
         {/* Partners */}
         <section>
           <div className="mb-6">
-            <h2 className="text-xl font-extrabold">Now that you have your CPF</h2>
-            <p className="text-sm text-muted-foreground mt-1">These are the services most expats set up right after getting their CPF. Each one is trusted and widely used in Brazil.</p>
+            <h2 className="text-xl font-extrabold">What to do next with your CPF</h2>
+            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF — each one is tried and tested by people who've done exactly this.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PARTNERS.map((p) => (
@@ -128,7 +128,7 @@ const Dashboard = () => {
         {/* Share */}
         <section className="bg-card border border-border rounded-2xl p-6 text-center">
           <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
-          <p className="text-sm text-muted-foreground mb-4">Share cpfeasy.ai — it'll save them hours.</p>
+          <p className="text-sm text-muted-foreground mb-4">Send them this — they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText("https://getcpf.lovable.app")}

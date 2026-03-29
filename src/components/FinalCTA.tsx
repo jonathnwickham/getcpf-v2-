@@ -15,14 +15,14 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
   return (
     <section className="py-24 px-8 text-center relative bg-primary/[0.03]">
       <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight">
-        Coming to Brazil?<br />
-        <span className="text-primary font-serif italic">Get your CPF sorted now.</span>
+        Brazil is waiting.<br />
+        <span className="text-primary font-serif italic">Let's get you ready.</span>
       </h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[480px] leading-relaxed">
-        Don't waste your first days in Brazil fighting bureaucracy. Get your CPF application ready before you land.
+        Five minutes now saves you hours later. Get your CPF sorted before you even land.
       </p>
       <button onClick={handleCTA} className="mt-8 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg shadow-primary/20">
-        Start my CPF application →
+        Let's do this →
       </button>
     </section>
   );
