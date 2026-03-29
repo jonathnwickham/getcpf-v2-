@@ -629,6 +629,9 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
       />
     </div>
 
+    {/* CPF Number Storage */}
+    <CpfStorageSection />
+
     {/* Emergency card */}
     <section className="bg-destructive/5 border border-destructive/15 rounded-2xl p-6">
       <h3 className="font-bold flex items-center gap-2 text-destructive">⚠️ If something goes wrong</h3>
