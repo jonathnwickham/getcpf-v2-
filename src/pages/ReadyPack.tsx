@@ -264,15 +264,49 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
     return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
   };
 
+  const validateCpf = (digits: string): boolean => {
+    if (digits.length !== 11) return false;
+    // Check for all same digits
+    if (/^(\d)\1{10}$/.test(digits)) return false;
+    // Validate check digits
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    if (remainder !== parseInt(digits[9])) return false;
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+    remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    return remainder === parseInt(digits[10]);
+  };
+
   const handleSaveCpf = () => {
-    if (cpfNumber.replace(/\D/g, "").length >= 11) {
-      localStorage.setItem("cpf-saved-number", cpfNumber.replace(/\D/g, ""));
-      setSaving(true);
-      setTimeout(() => {
-        setSaving(false);
-        setAnimateCard(true);
-      }, 1000);
+    const digits = cpfNumber.replace(/\D/g, "");
+    if (digits.length !== 11) {
+      setCpfError("CPF must be exactly 11 digits");
+      return;
     }
+    if (!validateCpf(digits)) {
+      setCpfError("This doesn't look like a valid CPF number. Double-check and try again.");
+      return;
+    }
+    setCpfError("");
+    localStorage.setItem("cpf-saved-number", digits);
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setAnimateCard(true);
+    }, 1000);
+  };
+
+  const handleDeleteCpf = () => {
+    localStorage.removeItem("cpf-saved-number");
+    localStorage.removeItem("cpf-saved-photo");
+    setCpfNumber("");
+    setPhotoPreview(null);
+    setAnimateCard(false);
+    setShowDeleteConfirm(false);
   };
 
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
