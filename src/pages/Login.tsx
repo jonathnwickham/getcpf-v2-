@@ -59,7 +59,7 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/" className="text-2xl font-bold tracking-tight inline-block">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Welcome back</h1>
           <p className="text-muted-foreground mt-2 text-sm">Pick up right where you left off</p>

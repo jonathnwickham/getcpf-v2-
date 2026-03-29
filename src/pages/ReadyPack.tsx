@@ -112,7 +112,7 @@ const ReadyPack = () => {
       <div className="bg-primary text-primary-foreground">
         <div className="max-w-[960px] mx-auto px-6 py-12 pt-16">
           <div className="flex items-center justify-between">
-            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
+            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← GET CPF</a>
             {user && (
               <button
                 onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}
@@ -243,6 +243,8 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
   const [saving, setSaving] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [animateCard, setAnimateCard] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [cpfError, setCpfError] = useState("");
 
   useEffect(() => {
     const stored = localStorage.getItem("cpf-saved-number");
@@ -262,15 +264,49 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
     return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
   };
 
+  const validateCpf = (digits: string): boolean => {
+    if (digits.length !== 11) return false;
+    // Check for all same digits
+    if (/^(\d)\1{10}$/.test(digits)) return false;
+    // Validate check digits
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    if (remainder !== parseInt(digits[9])) return false;
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+    remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    return remainder === parseInt(digits[10]);
+  };
+
   const handleSaveCpf = () => {
-    if (cpfNumber.replace(/\D/g, "").length >= 11) {
-      localStorage.setItem("cpf-saved-number", cpfNumber.replace(/\D/g, ""));
-      setSaving(true);
-      setTimeout(() => {
-        setSaving(false);
-        setAnimateCard(true);
-      }, 1000);
+    const digits = cpfNumber.replace(/\D/g, "");
+    if (digits.length !== 11) {
+      setCpfError("CPF must be exactly 11 digits");
+      return;
     }
+    if (!validateCpf(digits)) {
+      setCpfError("This doesn't look like a valid CPF number. Double-check and try again.");
+      return;
+    }
+    setCpfError("");
+    localStorage.setItem("cpf-saved-number", digits);
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setAnimateCard(true);
+    }, 1000);
+  };
+
+  const handleDeleteCpf = () => {
+    localStorage.removeItem("cpf-saved-number");
+    localStorage.removeItem("cpf-saved-photo");
+    setCpfNumber("");
+    setPhotoPreview(null);
+    setAnimateCard(false);
+    setShowDeleteConfirm(false);
   };
 
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -320,6 +356,9 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             >
               {saving ? "⏳ Saving..." : "💾 Save my CPF number"}
             </button>
+            {cpfError && (
+              <p className="text-xs text-destructive font-semibold mt-1">{cpfError}</p>
+            )}
           </div>
           {/* Photo upload */}
           <div className="mt-4 pt-4 border-t border-primary/10">
@@ -396,16 +435,16 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
                     <p className="text-xs font-semibold">{data.nationality}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">SITUAÇÃO</p>
-                    <p className="text-xs font-bold">REGULAR ✓</p>
+                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">STATUS</p>
+                    <p className="text-xs font-bold">SAVED ✓</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Copy & Edit buttons */}
-          <div className="text-center mt-6 flex items-center justify-center gap-3">
+          {/* Copy, Edit & Delete buttons */}
+          <div className="text-center mt-6 flex items-center justify-center gap-3 flex-wrap">
             <button
               onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
@@ -421,7 +460,35 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             >
               ✏️ Edit
             </button>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="inline-flex items-center gap-2 bg-destructive/10 text-destructive px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-destructive/20 transition-all"
+            >
+              🗑️ Delete
+            </button>
           </div>
+
+          {/* Delete confirmation */}
+          {showDeleteConfirm && (
+            <div className="mt-4 bg-destructive/5 border border-destructive/20 rounded-xl p-4 text-center space-y-3">
+              <p className="text-sm font-semibold text-destructive">Are you sure you want to delete your saved CPF number?</p>
+              <p className="text-xs text-muted-foreground">This will remove your CPF number and photo from this device. Your CPF itself is not affected.</p>
+              <div className="flex justify-center gap-3">
+                <button
+                  onClick={handleDeleteCpf}
+                  className="bg-destructive text-destructive-foreground px-5 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
+                >
+                  Yes, delete it
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="bg-secondary text-foreground px-5 py-2 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ),
     },
