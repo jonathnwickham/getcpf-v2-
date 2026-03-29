@@ -38,7 +38,8 @@ const openExternal = (url: string) => {
 const ReadyPack = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<OnboardingData | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [activeTab, setActiveTab] = useState<Tab>("mycpf");
+  const [showGuide, setShowGuide] = useState(false);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("cpf-onboarding");
@@ -47,11 +48,6 @@ const ReadyPack = () => {
       return;
     }
     setData(JSON.parse(stored));
-    // Check if CPF is already saved - show mycpf tab
-    const savedCpf = localStorage.getItem("cpf-saved-number");
-    if (savedCpf) {
-      // Don't auto-switch, but make the tab visible
-    }
   }, [navigate]);
 
   if (!data) return null;
@@ -61,17 +57,27 @@ const ReadyPack = () => {
   const recommendedOffice = offices.find((o) => o.recommended) || offices[0];
   const alternativeOffices = offices.filter((o) => !o.recommended);
   const motherDisplay = data.noMotherName ? data.motherAlternative : data.motherName;
-  const hasSavedCpf = !!localStorage.getItem("cpf-saved-number");
 
-  const tabs: { id: Tab; label: string; icon: string }[] = [
+  const guideTabs: { id: Tab; label: string; icon: string }[] = [
     { id: "overview", label: "Overview", icon: "📋" },
     { id: "office", label: "Where to go", icon: "📍" },
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
     { id: "partners", label: "Partners", icon: "🤝" },
-    ...(hasSavedCpf ? [{ id: "mycpf" as Tab, label: "My CPF", icon: "🎉" }] : []),
   ];
+
+  const isOnMyCpf = activeTab === "mycpf";
+
+  const handleOpenGuide = () => {
+    setShowGuide(true);
+    setActiveTab("overview");
+  };
+
+  const handleBackToCpf = () => {
+    setShowGuide(false);
+    setActiveTab("mycpf");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,10 +91,13 @@ const ReadyPack = () => {
                 ✓ Your pack is ready
               </div>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-                CPF Application Dashboard
+                {isOnMyCpf ? "My CPF" : "CPF Application Guide"}
               </h1>
               <p className="mt-2 opacity-80 max-w-[440px]">
-                Everything is prepared for you, {data.fullName.split(" ")[0]}. Follow the steps below.
+                {isOnMyCpf
+                  ? `Your personal CPF space, ${data.fullName.split(" ")[0]}.`
+                  : `Everything is prepared for you, ${data.fullName.split(" ")[0]}. Follow the steps below.`
+                }
               </p>
             </div>
             <div className="flex gap-3">
@@ -109,24 +118,51 @@ const ReadyPack = () => {
       <div className="sticky top-0 z-40 bg-card border-b border-border">
         <div className="max-w-[960px] mx-auto px-6">
           <div className="flex gap-1 overflow-x-auto py-2 -mx-6 px-6">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                }`}
-              >
-                <span>{tab.icon}</span> {tab.label}
-              </button>
-            ))}
+            {isOnMyCpf ? (
+              <>
+                <button
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground shadow-sm"
+                >
+                  <span>🎉</span> My CPF
+                </button>
+                <button
+                  onClick={handleOpenGuide}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+                >
+                  <span>📋</span> Open application guide →
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleBackToCpf}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+                >
+                  ← Back
+                </button>
+                {guideTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
+                      activeTab === tab.id
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    }`}
+                  >
+                    <span>{tab.icon}</span> {tab.label}
+                  </button>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
 
       <div className="max-w-[960px] mx-auto px-6 py-8">
+        {activeTab === "mycpf" && (
+          <MyCpfTab data={data} stateName={stateName} motherDisplay={motherDisplay} onOpenGuide={handleOpenGuide} />
+        )}
         {activeTab === "overview" && (
           <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} setActiveTab={setActiveTab} />
         )}
@@ -144,9 +180,6 @@ const ReadyPack = () => {
         )}
         {activeTab === "partners" && (
           <PartnersTab />
-        )}
-        {activeTab === "mycpf" && (
-          <MyCpfTab data={data} stateName={stateName} motherDisplay={motherDisplay} />
         )}
       </div>
     </div>
