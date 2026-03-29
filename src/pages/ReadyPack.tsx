@@ -1147,7 +1147,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       coverPage.drawLine({ start: { x: 50, y }, end: { x: 545, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
       y -= 22;
       Object.values(uploads).forEach((doc) => {
-        coverPage.drawText(`[x]  ${doc.label}: ${doc.name}`, { x: 50, y, font, size: 10 });
+        coverPage.drawText(safe(`[x]  ${doc.label}: ${doc.name}`), { x: 50, y, font, size: 10 });
         y -= 18;
       });
 
