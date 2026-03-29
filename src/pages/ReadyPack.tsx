@@ -111,6 +111,11 @@ const ReadyPack = () => {
               <div className="inline-flex items-center gap-2 bg-primary-foreground/15 px-3 py-1 rounded-full text-xs font-bold mb-3">
                 ✓ Your pack is ready
               </div>
+              {user && (
+                <div className="inline-flex items-center gap-2 bg-primary-foreground/10 px-3 py-1 rounded-full text-xs font-medium mb-3 ml-2">
+                  ☁️ Progress saved to your account
+                </div>
+              )}
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
                 {isOnMyCpf ? "My CPF" : "CPF Application Guide"}
               </h1>
