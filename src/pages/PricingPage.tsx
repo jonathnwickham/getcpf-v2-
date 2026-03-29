@@ -336,11 +336,46 @@ const PricingPage = () => {
 
         {/* STEP 4: Set Password (create account) */}
         {flowStep === "password" && (
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="max-w-md mx-auto text-center relative">
+            {/* Confetti burst */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              {Array.from({ length: 30 }).map((_, i) => {
+                const colors = ["hsl(var(--primary))", "#f59e0b", "#ef4444", "#3b82f6", "#10b981", "#8b5cf6"];
+                const color = colors[i % colors.length];
+                const left = Math.random() * 100;
+                const delay = Math.random() * 0.8;
+                const size = 6 + Math.random() * 6;
+                const duration = 1.5 + Math.random() * 1.5;
+                const drift = (Math.random() - 0.5) * 120;
+                return (
+                  <div
+                    key={i}
+                    className="absolute rounded-sm"
+                    style={{
+                      left: `${left}%`,
+                      top: "-10px",
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: color,
+                      animation: `confetti-fall ${duration}s ease-out ${delay}s forwards`,
+                      opacity: 0,
+                      transform: `translateX(0px) rotate(0deg)`,
+                      ["--drift" as string]: `${drift}px`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+            <style>{`
+              @keyframes confetti-fall {
+                0% { opacity: 1; transform: translateY(0) translateX(0) rotate(0deg); }
+                100% { opacity: 0; transform: translateY(420px) translateX(var(--drift)) rotate(720deg); }
+              }
+            `}</style>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in">
               <span className="text-3xl">✓</span>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Payment received!</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3 animate-fade-in">Payment received!</h1>
             <p className="text-muted-foreground text-sm mb-8">
               Set a password to save your progress and access your CPF kit anytime.
             </p>
