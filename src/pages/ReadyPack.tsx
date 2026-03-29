@@ -874,12 +874,57 @@ const METRO_INFO: Record<string, { lines: string[]; fare: string; cardRequired: 
     cardName: "cartão de passagem",
     tip: "Buy a card at metro stations. Cash is not accepted on the metro.",
   },
+  MG: {
+    lines: ["Line 1 — Estação Central to Vilarinho", "Line 2 (expansion) — Calafate"],
+    fare: "R$4.25 per trip",
+    cardRequired: true,
+    cardName: "BHBUS card",
+    tip: "Buy a BHBUS card at stations. Limited coverage — check if the office is near a station.",
+  },
+  RS: {
+    lines: ["Trensurb — Mercado to Novo Hamburgo (via Sapucaia/São Leopoldo)"],
+    fare: "R$4.50 per trip",
+    cardRequired: true,
+    cardName: "TRI card",
+    tip: "The Trensurb train connects Porto Alegre to the metropolitan area. Buy a TRI card at any station.",
+  },
+  PE: {
+    lines: ["South Line — Recife to Cajueiro Seco", "Center Line — Recife to Camaragibe"],
+    fare: "R$3.70 per trip",
+    cardRequired: true,
+    cardName: "VEM card",
+    tip: "Buy a VEM card at stations. The metro connects the city center to surrounding areas.",
+  },
+  CE: {
+    lines: ["South Line — José de Alencar to Messejana", "West Line — Vila das Flores"],
+    fare: "R$3.50 per trip",
+    cardRequired: true,
+    cardName: "Bilhete Único Fortaleza",
+    tip: "Buy a Bilhete Único at stations. Coverage is limited — check proximity to the office.",
+  },
+  BA: {
+    lines: ["Line 1 — Lapa to Aeroporto", "Line 2 — Acesso Norte to Pituaçu"],
+    fare: "R$4.00 per trip",
+    cardRequired: true,
+    cardName: "Salvador Card",
+    tip: "Buy a Salvador Card at stations. The metro connects main areas of the city.",
+  },
 };
 
 const BUS_INFO: Record<string, { fare: string; cashAccepted: boolean; tip: string }> = {
-  SP: { fare: "R$4.40", cashAccepted: false, tip: "You need a Bilhete Único card or contactless bank card. Cash is NOT accepted on buses in São Paulo." },
-  RJ: { fare: "R$4.30", cashAccepted: true, tip: "Some buses accept cash (exact change only). A Giro card or contactless card is much easier." },
-  DF: { fare: "R$5.50", cashAccepted: false, tip: "Only cards accepted. Buy a transit card at a station." },
+  SP: { fare: "R$4.40", cashAccepted: true, tip: "Cash is accepted on buses — bring exact change. A Bilhete Único card or contactless bank card also works." },
+  RJ: { fare: "R$4.30", cashAccepted: true, tip: "Cash is accepted — bring exact change. A Giro card or contactless card also works." },
+  DF: { fare: "R$5.50", cashAccepted: true, tip: "Cash is accepted on most buses — bring exact change. Transit cards also work." },
+  MG: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted — bring exact change. BHBUS card also works." },
+  BA: { fare: "R$4.40", cashAccepted: true, tip: "Cash accepted — bring exact change. Salvador Card also works." },
+  PR: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted — bring exact change. Cartão Transporte also works." },
+  CE: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted — bring exact change. Bilhete Único Fortaleza also works." },
+  PE: { fare: "R$3.85", cashAccepted: true, tip: "Cash accepted — bring exact change. VEM card also works." },
+  RS: { fare: "R$4.80", cashAccepted: true, tip: "Cash accepted — bring exact change. TRI card also works." },
+  SC: { fare: "R$4.75", cashAccepted: true, tip: "Cash accepted — bring exact change. Local transit cards also work." },
+  GO: { fare: "R$4.30", cashAccepted: true, tip: "Cash accepted — bring exact change. Sit Pass card also works." },
+  PA: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted — bring exact change." },
+  ES: { fare: "R$3.90", cashAccepted: true, tip: "Cash accepted — bring exact change. GV Bus card also works." },
 };
 
 const TransportSection = ({ office, data }: { office: OfficeInfo; data: OnboardingData }) => {
