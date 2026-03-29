@@ -105,7 +105,7 @@ const PricingPage = () => {
       return;
     }
     if (password !== confirmPassword) {
-      toast({ title: "Passwords don't match", description: "Please make sure your passwords match.", variant: "destructive" });
+      toast({ title: "Those don't match", description: "Check your passwords and try again.", variant: "destructive" });
       return;
     }
     setLoading(true);
