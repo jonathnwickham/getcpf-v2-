@@ -1901,6 +1901,65 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
         </div>
       </div>
     </section>
+
+    {/* Learn Portuguese — Affiliate Recommendations */}
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h2 className="font-bold">📚 Want to actually learn Portuguese?</h2>
+        <p className="text-xs text-muted-foreground mt-1">Even a few lessons before your visit makes a huge difference. These are our top picks.</p>
+      </div>
+      <div className="p-6 space-y-4">
+        {[
+          {
+            name: "Preply",
+            desc: "1-on-1 video lessons with native Brazilian Portuguese tutors. Pick your teacher, schedule, and budget. Most students see real progress in 5-10 lessons.",
+            price: "From ~$10/hour",
+            why: "Best for: Getting conversation-ready fast with a real tutor",
+            url: "https://www.preply.com/?pref=MTc3NDcwMDcwMw==&sc=portuguese",
+            color: "hsl(var(--primary))",
+          },
+          {
+            name: "Babbel",
+            desc: "Structured app-based courses with speech recognition. Great for learning on the go — covers grammar, vocab, and pronunciation in bite-sized lessons.",
+            price: "From ~$7/month",
+            why: "Best for: Self-paced daily practice on your phone",
+            url: "https://try.babbel.com/affiliate-evergreen-prices/?bsc=engmag&btp=default&utm_medium=affiliate",
+            color: "hsl(var(--primary))",
+          },
+          {
+            name: "italki",
+            desc: "Find affordable community tutors or professional teachers for Brazilian Portuguese. Book individual lessons that fit your schedule.",
+            price: "From ~$6/hour",
+            why: "Best for: Budget-friendly 1-on-1 practice sessions",
+            url: "https://www.italki.com/en/teachers/portuguese?ref=getcpf",
+            color: "hsl(var(--primary))",
+          },
+        ].map((platform) => (
+          <a
+            key={platform.name}
+            href={platform.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-secondary/50 border border-border rounded-xl p-5 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-bold text-sm">{platform.name}</h3>
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">{platform.price}</span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{platform.desc}</p>
+                <p className="text-xs text-primary font-semibold mt-2">✦ {platform.why}</p>
+              </div>
+              <span className="text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1">↗</span>
+            </div>
+          </a>
+        ))}
+        <p className="text-xs text-muted-foreground text-center pt-2">
+          🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend platforms we'd actually use.
+        </p>
+      </div>
+    </section>
   </div>
 );
 
