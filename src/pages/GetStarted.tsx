@@ -233,7 +233,7 @@ const WelcomeStep = () => (
       Let's get your <span className="text-primary font-serif italic">CPF</span> sorted
     </h1>
     <p className="text-muted-foreground leading-relaxed max-w-[420px] mx-auto">
-      We'll ask you a few quick questions to prepare your personalized application pack. Everything you need to walk into a Receita Federal office and walk out with your CPF.
+      We'll ask a few quick questions — takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
     </p>
     <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
       <div className="bg-secondary rounded-xl p-3 text-center">
