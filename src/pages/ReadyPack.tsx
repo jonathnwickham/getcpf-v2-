@@ -851,6 +851,186 @@ const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
   );
 };
 
+// === TRANSPORT SECTION ===
+const METRO_INFO: Record<string, { lines: string[]; fare: string; cardRequired: boolean; cardName?: string; tip: string }> = {
+  SP: {
+    lines: ["Line 1 (Blue) — Sé station", "Line 3 (Red) — República station", "Line 4 (Yellow) — Luz station"],
+    fare: "R$5.00 per trip",
+    cardRequired: true,
+    cardName: "Bilhete Único",
+    tip: "Buy a Bilhete Único card at any station (R$4.40 for the card). You can also tap a contactless credit/debit card at the turnstile.",
+  },
+  RJ: {
+    lines: ["Line 1 — Carioca station", "Line 2 — Central station", "Line 4 — General Osório station"],
+    fare: "R$6.90 per trip",
+    cardRequired: true,
+    cardName: "Giro card",
+    tip: "Buy a Giro card at any station. Contactless bank cards also work at turnstiles.",
+  },
+  DF: {
+    lines: ["Green Line — Central station", "Orange Line — Águas Claras station"],
+    fare: "R$5.50 per trip",
+    cardRequired: true,
+    cardName: "cartão de passagem",
+    tip: "Buy a card at metro stations. Cash is not accepted on the metro.",
+  },
+};
+
+const BUS_INFO: Record<string, { fare: string; cashAccepted: boolean; tip: string }> = {
+  SP: { fare: "R$4.40", cashAccepted: false, tip: "You need a Bilhete Único card or contactless bank card. Cash is NOT accepted on buses in São Paulo." },
+  RJ: { fare: "R$4.30", cashAccepted: true, tip: "Some buses accept cash (exact change only). A Giro card or contactless card is much easier." },
+  DF: { fare: "R$5.50", cashAccepted: false, tip: "Only cards accepted. Buy a transit card at a station." },
+};
+
+const TransportSection = ({ office, data }: { office: OfficeInfo; data: OnboardingData }) => {
+  const [activeTransport, setActiveTransport] = useState<"uber" | "metro" | "bus" | null>(null);
+  const destination = encodeURIComponent(office.address);
+  const uberLink = `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${destination}&dropoff[nickname]=${encodeURIComponent(office.name)}`;
+  const metro = METRO_INFO[data.state];
+  const bus = BUS_INFO[data.state] || { fare: "R$4–6", cashAccepted: false, tip: "Check locally. Most cities require a transit card — cash is rarely accepted on public transport." };
+
+  const transportOptions = [
+    { id: "uber" as const, icon: "🚗", label: "Uber / 99", desc: "Door-to-door, ~R$15–40", badge: "Easiest" },
+    { id: "metro" as const, icon: "🚇", label: "Metro / Train", desc: metro ? metro.fare : "Check locally", badge: metro ? "Available" : "Limited" },
+    { id: "bus" as const, icon: "🚌", label: "City Bus", desc: bus.fare, badge: "Cheapest" },
+  ];
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h3 className="font-bold">🚀 Getting there</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">Choose how you want to get to {office.name}</p>
+      </div>
+
+      <div className="p-6 space-y-4">
+        {/* Transport option cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {transportOptions.map((opt) => (
+            <button
+              key={opt.id}
+              onClick={() => setActiveTransport(activeTransport === opt.id ? null : opt.id)}
+              className={`text-left rounded-xl border p-4 transition-all ${activeTransport === opt.id ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:border-primary/40 hover:bg-secondary"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-2xl">{opt.icon}</span>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${opt.id === "uber" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{opt.badge}</span>
+              </div>
+              <p className="font-semibold text-sm">{opt.label}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{opt.desc}</p>
+            </button>
+          ))}
+        </div>
+
+        {/* Uber details */}
+        {activeTransport === "uber" && (
+          <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
+            <div>
+              <h4 className="font-bold text-sm mb-2">🚗 Uber / 99 — Ride-hailing</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>• <strong>Estimated cost:</strong> R$15–40 depending on distance and time of day</p>
+                <p>• <strong>Payment:</strong> Credit/debit card in the app — no cash needed</p>
+                <p>• <strong>Time:</strong> Usually arrives in 3–8 minutes</p>
+                <p>• <strong>Tip:</strong> 99 (local alternative) is often cheaper. Both apps work the same way.</p>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">📍 Destination pre-filled</p>
+              <p className="text-sm text-muted-foreground mb-3">{office.name} — {office.address}</p>
+              <ExternalLink
+                href={uberLink}
+                className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
+              >
+                🚗 Open Uber & book ride →
+              </ExternalLink>
+            </div>
+
+            <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+              <p className="text-xs text-muted-foreground">
+                <strong>💡 Don't have Uber?</strong> Download it from the{" "}
+                <ExternalLink href="https://apps.apple.com/app/uber/id368677368" className="text-primary font-semibold" showHint={false}>App Store</ExternalLink>{" "}or{" "}
+                <ExternalLink href="https://play.google.com/store/apps/details?id=com.ubercab" className="text-primary font-semibold" showHint={false}>Google Play</ExternalLink>.{" "}
+                Also consider <ExternalLink href="https://99app.com" className="text-primary font-semibold" showHint={false}>99</ExternalLink> — Brazil's local ride-hailing app, often cheaper.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Metro details */}
+        {activeTransport === "metro" && (
+          <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
+            <h4 className="font-bold text-sm mb-2">🚇 Metro / Train</h4>
+            {metro ? (
+              <>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p>• <strong>Fare:</strong> {metro.fare}</p>
+                  <p>• <strong>Payment:</strong> {metro.cardRequired ? `Requires a ${metro.cardName} — buy at any station` : "Cash or card at station"}</p>
+                  <p>• <strong>Cash accepted?</strong> {metro.cardRequired ? "❌ No — card only at turnstiles" : "✅ Yes, at ticket counters"}</p>
+                </div>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">🗺️ Nearest lines</p>
+                  <ul className="space-y-1.5 text-sm text-muted-foreground">
+                    {metro.lines.map((line, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-primary rounded-full shrink-0" />
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+                  <p className="text-xs text-muted-foreground"><strong>💡 Tip:</strong> {metro.tip}</p>
+                </div>
+              </>
+            ) : (
+              <div className="text-sm text-muted-foreground space-y-2">
+                <p>Metro/train service is limited in your area. We recommend Uber or a city bus instead.</p>
+                <p>Check <ExternalLink href={`https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=transit`} className="text-primary font-semibold" showHint={false}>Google Maps transit directions</ExternalLink> for the best route.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Bus details */}
+        {activeTransport === "bus" && (
+          <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
+            <h4 className="font-bold text-sm mb-2">🚌 City Bus</h4>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>• <strong>Fare:</strong> {bus.fare} per trip</p>
+              <p>• <strong>Cash accepted?</strong> {bus.cashAccepted ? "✅ Yes — exact change only" : "❌ No — transit card or contactless card only"}</p>
+              <p>• <strong>Tip:</strong> {bus.tip}</p>
+            </div>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">🗺️ Find your bus route</p>
+              <p className="text-sm text-muted-foreground mb-3">Use Google Maps to find the best bus route from your location to the office.</p>
+              <ExternalLink
+                href={`https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=transit`}
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+              >
+                🚌 Get bus directions on Google Maps →
+              </ExternalLink>
+            </div>
+            {!bus.cashAccepted && (
+              <div className="bg-destructive/5 border border-destructive/15 rounded-xl p-3">
+                <p className="text-xs text-destructive">
+                  <strong>⚠️ Important:</strong> Bring a contactless debit/credit card or buy a transit card at a station before boarding. Drivers will NOT accept cash.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* General transport tip */}
+        <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
+          <p className="text-xs text-muted-foreground">
+            <strong>🇧🇷 General tip:</strong> In most Brazilian cities, public transport does <strong>not</strong> accept cash. You'll need either a local transit card or a contactless bank card. Uber/99 is the easiest option for visitors — just make sure to set up the app with a credit card before your trip.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // === DOCUMENTS TAB ===
 const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => {
   const [declarationCopied, setDeclarationCopied] = useState(false);
