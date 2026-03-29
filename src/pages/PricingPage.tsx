@@ -175,8 +175,8 @@ const PricingPage = () => {
         {/* STEP 1: Email */}
         {flowStep === "email" && (
           <div className="max-w-md mx-auto text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Get your CPF sorted</h1>
-            <p className="text-muted-foreground text-sm mb-8">Enter your email to get started. We'll use this for your account and payment receipt.</p>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Let's get your CPF sorted</h1>
+            <p className="text-muted-foreground text-sm mb-8">Pop in your email and we'll get you started.</p>
             <form onSubmit={handleEmailSubmit} className="space-y-4">
               <input
                 type="email"
