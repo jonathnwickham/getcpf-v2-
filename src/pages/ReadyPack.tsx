@@ -535,7 +535,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
           ))}
         </div>
         <button
-          onClick={() => onOpenGuide()}
+          onClick={() => onOpenLifeGuide()}
           className="mt-4 w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
         >
           🔓 See full guide — Life in Brazil →
