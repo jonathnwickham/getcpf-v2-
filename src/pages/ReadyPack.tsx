@@ -356,6 +356,9 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             >
               {saving ? "⏳ Saving..." : "💾 Save my CPF number"}
             </button>
+            {cpfError && (
+              <p className="text-xs text-destructive font-semibold mt-1">{cpfError}</p>
+            )}
           </div>
           {/* Photo upload */}
           <div className="mt-4 pt-4 border-t border-primary/10">
