@@ -604,7 +604,79 @@ const AddressStep = ({
   );
 };
 
-const ContactStep = ({
+const DeclarationPreview = ({ declaration }: { declaration: string }) => {
+  const [copied, setCopied] = useState(false);
+  const [savedToPack, setSavedToPack] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(declaration);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleSaveToPack = () => {
+    // Save to localStorage so it's available in the Ready Pack
+    localStorage.setItem("cpf-host-declaration", declaration);
+    setSavedToPack(true);
+    setTimeout(() => setSavedToPack(false), 3000);
+  };
+
+  return (
+    <div className="mt-3 space-y-4">
+      <div className="bg-card border border-border rounded-lg p-4">
+        <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
+      </div>
+
+      {/* Two action buttons side by side */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={handleCopy}
+          className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
+            copied
+              ? "bg-primary text-primary-foreground"
+              : "bg-secondary text-foreground hover:bg-secondary/80"
+          }`}
+        >
+          {copied ? "✓ Text copied!" : "📋 Copy text"}
+        </button>
+        <button
+          type="button"
+          onClick={handleSaveToPack}
+          className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
+            savedToPack
+              ? "bg-primary text-primary-foreground"
+              : "bg-primary/10 text-primary hover:bg-primary/20"
+          }`}
+        >
+          {savedToPack ? "✓ Saved to your pack!" : "💾 Save to my documents"}
+        </button>
+      </div>
+
+      {/* Detailed instructions */}
+      <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 space-y-3">
+        <h4 className="font-bold text-sm text-amber-900 dark:text-amber-100">📋 What to do with this letter</h4>
+        <ol className="text-xs text-amber-800 dark:text-amber-200 space-y-2 list-decimal list-inside">
+          <li><strong>Send it to your host</strong> — copy the text or share via WhatsApp so they can review it</li>
+          <li><strong>Your host prints it</strong> — they need to print the letter on paper</li>
+          <li><strong>Your host signs it</strong> — a handwritten signature at the bottom, above their name</li>
+          <li><strong>They give you a copy of their ID</strong> — a photocopy of their RG or CNH (Brazilian ID)</li>
+          <li><strong>Bring both to the office</strong> — the signed letter + their ID copy = your proof of address</li>
+        </ol>
+      </div>
+
+      <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
+        <p className="text-xs text-muted-foreground">
+          <strong>💡 Important:</strong> Make sure your host checks that their name, CPF, and address are correct in the letter before signing. If anything is wrong, update the fields above and regenerate it.
+        </p>
+      </div>
+
+      <div className="pb-6" />
+    </div>
+  );
+};
+
+
   email, nationality, onEmailChange, onNationalityChange,
 }: {
   email: string; nationality: string; onEmailChange: (v: string) => void; onNationalityChange: (v: string) => void;
