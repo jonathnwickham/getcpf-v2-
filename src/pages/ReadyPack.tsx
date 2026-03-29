@@ -1119,7 +1119,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       let y = height - 60;
       coverPage.drawText("CPF APPLICATION DOCUMENT PACK", { x: 50, y, font: fontBold, size: 18, color: rgb(0.1, 0.4, 0.2) });
       y -= 30;
-      coverPage.drawText(`Prepared for: ${data.fullName}`, { x: 50, y, font, size: 12 });
+      coverPage.drawText(safe(`Prepared for: ${data.fullName}`), { x: 50, y, font, size: 12 });
       y -= 18;
       coverPage.drawText(`Date: ${new Date().toLocaleDateString()}`, { x: 50, y, font, size: 10, color: rgb(0.4, 0.4, 0.4) });
       y -= 40;
