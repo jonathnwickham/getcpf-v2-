@@ -416,14 +416,18 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide }: {
       id: "photo",
       title: "Document",
       content: (
-        <div className="py-6 text-center">
+        <div className="py-6 text-center space-y-4">
           {photoPreview ? (
-            <img src={photoPreview} alt="CPF printout" className="max-w-sm mx-auto rounded-xl border border-border" />
+            <div className="space-y-3">
+              <img src={photoPreview} alt="CPF printout" className="max-w-sm mx-auto rounded-xl border border-border" />
+              <p className="text-sm text-primary font-semibold">✓ Your CPF photo is stored here for quick access</p>
+            </div>
           ) : (
             <div className="space-y-3">
-              <div className="text-muted-foreground text-sm">No photo saved yet</div>
-              <label className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer hover:bg-secondary/80">
-                📷 Upload photo
+              <div className="text-muted-foreground text-sm">Add a photo of your CPF printout so this page becomes your full backup space.</div>
+              <label className="inline-flex flex-col items-center gap-2 bg-secondary px-4 py-4 rounded-xl text-sm font-semibold cursor-pointer hover:bg-secondary/80">
+                <span>📷 Upload photo of your CPF</span>
+                <span className="text-xs text-muted-foreground font-medium">Keep it stored here so you can always find it again</span>
                 <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
               </label>
             </div>
