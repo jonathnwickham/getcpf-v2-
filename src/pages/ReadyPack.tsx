@@ -2291,49 +2291,59 @@ const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: st
 // === PARTNERS TAB ===
 const PARTNERS = [
   {
+    icon: "💸",
+    name: "Wise",
+    category: "Send & Receive Money",
+    desc: "Send money to and from Brazil at the real exchange rate with tiny fees. Way cheaper than bank wires or Western Union. Works with Brazilian bank accounts and Pix.",
+    why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate — essential if you earn abroad or need to move money in/out.",
+    price: "From $0.50 per transfer",
+    commission: "£10-50 per referral",
+    cta: "Try Wise →",
+    url: "https://wise.com/invite/",
+  },
+  {
     icon: "🏥",
     name: "SafetyWing",
-    category: "Health & Travel Insurance",
-    desc: "The go-to insurance for digital nomads in Brazil. Covers hospitals, clinics, and emergencies across Latin America. Month-to-month, cancel anytime. From $45/month.",
-    why: "Brazil's public healthcare (SUS) is free but crowded. Private hospitals can cost thousands. SafetyWing covers you without the bureaucracy.",
+    category: "Travel & Health Insurance",
+    desc: "The insurance nomads swear by. Covers hospitals, clinics, and emergencies across Brazil and Latin America. Month-to-month — cancel anytime, no lock-in.",
+    why: "Brazil's public healthcare (SUS) is free but overcrowded. A private hospital visit can cost thousands. SafetyWing covers you from $45/month.",
+    price: "From $45/month",
+    commission: "10% lifetime recurring",
     cta: "Get covered →",
-    url: "https://safetywing.com",
+    url: "https://safetywing.com/?referenceID=getcpf",
   },
   {
     icon: "📱",
     name: "Airalo",
-    category: "SIM Card / eSIM",
-    desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. Data plans from $5.",
-    why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo, you get data immediately while you sort your CPF out.",
+    category: "eSIM / Mobile Data",
+    desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. No CPF needed, no Portuguese needed.",
+    why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. Airalo lets you get data instantly while you sort everything else out.",
+    price: "Data plans from $5",
+    commission: "15-20% per sale",
     cta: "Get an eSIM →",
-    url: "https://www.airalo.com",
+    url: "https://www.airalo.com/?ref=getcpf",
   },
   {
-    icon: "🏦",
-    name: "Nubank",
-    category: "Bank Account",
-    desc: "Brazil's most popular digital bank. Zero fees, instant Pix payments, and a debit/credit card — all from the app. Apply with CPF + passport.",
-    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere.",
-    cta: "Open Nubank →",
-    url: "https://nubank.com.br",
-  },
-  {
-    icon: "💸",
-    name: "Wise",
-    category: "International Transfers",
-    desc: "Send money to and from Brazil at the real exchange rate with minimal fees. Way cheaper than bank transfers or Western Union.",
-    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad.",
-    cta: "Try Wise →",
-    url: "https://wise.com",
+    icon: "🔒",
+    name: "NordVPN",
+    category: "VPN & Security",
+    desc: "Access your home country's Netflix, banking apps, and streaming while in Brazil. Also protects you on public WiFi in cafés, airports, and hostels.",
+    why: "Many services block Brazilian IPs. NordVPN lets you keep using your home apps and keeps your data safe on open networks.",
+    price: "From ~$3.50/month",
+    commission: "Up to 100% CPA + 30% renewal",
+    cta: "Get NordVPN →",
+    url: "https://nordvpn.com/?ref=getcpf",
   },
   {
     icon: "🗣️",
-    name: "iTalki",
+    name: "Preply",
     category: "Learn Portuguese",
-    desc: "1-on-1 video lessons with native Brazilian Portuguese speakers. Even 5 lessons makes a massive difference at the Receita Federal office.",
-    why: "Portuguese is different from Spanish. Even basic phrases will change how people treat you. R$30-60/hour for a private tutor.",
+    desc: "1-on-1 video lessons with native Brazilian Portuguese tutors. Pick your teacher, schedule, and budget. Most students see real progress in 5-10 lessons.",
+    why: "Even basic Portuguese changes how people treat you. A private tutor fast-tracks your confidence before the Receita Federal visit.",
+    price: "From ~$10/hour",
+    commission: "$30+ per referral",
     cta: "Start learning →",
-    url: "https://www.italki.com",
+    url: "https://www.preply.com/?pref=getcpf",
   },
 ];
 
@@ -2355,52 +2365,61 @@ const PartnersTab = () => (
     </section>
 
     <section className="bg-card border border-border rounded-2xl p-6">
-      <h3 className="font-bold mb-4">Best next step after your CPF</h3>
+      <h3 className="font-bold mb-4">Recommended order after getting your CPF</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-secondary rounded-xl p-4">
           <div className="text-2xl mb-2">1️⃣</div>
-          <h4 className="font-semibold text-sm mb-1">Open a bank account</h4>
-          <p className="text-xs text-muted-foreground">This unlocks Pix, local payments, and makes life in Brazil much easier.</p>
+          <h4 className="font-semibold text-sm mb-1">Get connected</h4>
+          <p className="text-xs text-muted-foreground">Set up an eSIM or local SIM, get a VPN for your home apps, and make sure you're insured.</p>
         </div>
         <div className="bg-secondary rounded-xl p-4">
           <div className="text-2xl mb-2">2️⃣</div>
-          <h4 className="font-semibold text-sm mb-1">Set up your phone</h4>
-          <p className="text-xs text-muted-foreground">Use your CPF to get a local SIM or eSIM and start using Brazilian apps properly.</p>
+          <h4 className="font-semibold text-sm mb-1">Open a bank account</h4>
+          <p className="text-xs text-muted-foreground">Nubank or Inter — unlock Pix, local payments, and make life in Brazil much easier.</p>
         </div>
         <div className="bg-secondary rounded-xl p-4">
           <div className="text-2xl mb-2">3️⃣</div>
-          <h4 className="font-semibold text-sm mb-1">Start using local services</h4>
-          <p className="text-xs text-muted-foreground">Shopping, subscriptions, delivery apps, rentals, and more will now make much more sense.</p>
+          <h4 className="font-semibold text-sm mb-1">Set up money transfers</h4>
+          <p className="text-xs text-muted-foreground">Use Wise to move money in and out of Brazil at the real exchange rate.</p>
         </div>
       </div>
     </section>
 
-    <div className="space-y-4">
-      {PARTNERS.map((p) => (
-        <div key={p.name} className="bg-card border border-border rounded-2xl p-6">
-          <div className="flex items-start gap-4">
-            <span className="text-3xl mt-1">{p.icon}</span>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-bold">{p.name}</h3>
-                <span className="text-[10px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{p.category}</span>
+    {/* Partner cards with affiliate info */}
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h3 className="font-bold">🤝 Our recommended tools</h3>
+        <p className="text-xs text-muted-foreground mt-1">Handpicked services that actually help foreigners in Brazil.</p>
+      </div>
+      <div className="p-6 space-y-4">
+        {PARTNERS.map((p) => (
+          <a
+            key={p.name}
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-secondary/50 border border-border rounded-xl p-5 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+          >
+            <div className="flex items-start gap-4">
+              <span className="text-3xl mt-1 shrink-0">{p.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <h4 className="font-bold text-sm">{p.name}</h4>
+                  <span className="text-[10px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{p.category}</span>
+                  <span className="text-xs bg-secondary border border-border px-2 py-0.5 rounded-full font-medium text-muted-foreground">{p.price}</span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+                <p className="text-xs text-primary font-semibold mt-2">✦ {p.why}</p>
               </div>
-              <p className="text-sm text-foreground mb-2">{p.desc}</p>
-              <p className="text-xs text-muted-foreground italic">💡 {p.why}</p>
-              <ExternalLink
-                href={p.url}
-                className="mt-3 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
-              >
-                {p.cta}
-              </ExternalLink>
+              <span className="text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1">↗</span>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
+          </a>
+        ))}
+      </div>
+    </section>
 
     <p className="text-[10px] text-muted-foreground text-center mt-2">
-      Some links above are affiliate partnerships — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
+      🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
     </p>
   </div>
 );
