@@ -25,7 +25,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
         <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-        AI-powered CPF registration assistant
+        Trusted by 200+ foreigners moving to Brazil
       </div>
 
       <h1 className="animate-fade-up-1 text-[clamp(2.5rem,5.5vw,4rem)] font-extrabold leading-[1.08] tracking-[-1.5px] max-w-[720px]">
