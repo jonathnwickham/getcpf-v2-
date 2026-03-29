@@ -553,6 +553,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </section>
     )}
 
+    {/* Email template to Receita Federal */}
+    <EmailTemplateSection data={data} motherDisplay={motherDisplay} />
+
     {/* AI Document Scanner */}
     <DocumentScanner />
   </div>
