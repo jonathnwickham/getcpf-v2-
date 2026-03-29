@@ -17,6 +17,10 @@ const GetStarted = () => {
   const [forceFullName, setForceFullName] = useState(false);
   const [ready, setReady] = useState(false);
 
+  const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
+    setData((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
   // Check if user already has a completed application
   useEffect(() => {
     if (authLoading) return;
@@ -33,7 +37,6 @@ const GetStarted = () => {
       .then(({ data: apps }) => {
         const app = apps?.[0];
         if (app && app.status !== "draft") {
-          // Already completed — go to dashboard
           navigate("/dashboard", { replace: true });
         } else {
           setReady(true);
@@ -48,10 +51,6 @@ const GetStarted = () => {
       </div>
     );
   }
-
-  const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
-    setData((prev) => ({ ...prev, [field]: value }));
-  }, []);
 
   const next = () => {
     setDirection("forward");
