@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
 import { getCitiesForState } from "@/lib/brazilian-cities";
@@ -8,10 +10,44 @@ const TOTAL_STEPS = 8;
 
 const GetStarted = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  // Check if user already has a completed application
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      setReady(true);
+      return;
+    }
+    supabase
+      .from("applications")
+      .select("status")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .then(({ data: apps }) => {
+        const app = apps?.[0];
+        if (app && app.status !== "draft") {
+          // Already completed — go to dashboard
+          navigate("/dashboard", { replace: true });
+        } else {
+          setReady(true);
+        }
+      });
+  }, [user, authLoading, navigate]);
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
     setData((prev) => ({ ...prev, [field]: value }));
