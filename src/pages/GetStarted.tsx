@@ -73,15 +73,24 @@ const GetStarted = () => {
     );
   }
 
-  const next = () => {
+  const next = async () => {
     setDirection("forward");
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
-    } else {
-      // Store data and navigate to ready-pack
-      sessionStorage.setItem("cpf-onboarding", JSON.stringify(data));
-      navigate("/ready-pack");
+      return;
     }
+
+    persistOnboardingData(data);
+
+    if (user) {
+      try {
+        await saveLatestApplication(user.id, data, "prepared");
+      } catch (error) {
+        console.error("Failed to save application", error);
+      }
+    }
+
+    navigate("/ready-pack");
   };
 
   const back = () => {

@@ -9,7 +9,12 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleGetStarted = () => {
+  const handlePrimaryAction = () => {
+    if (user) {
+      navigate("/ready-pack");
+      return;
+    }
+
     if (onOpenModal) {
       onOpenModal();
     } else {
@@ -26,29 +31,18 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
         <a href="/#how" className="hidden md:inline text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">How it works</a>
         <a href="/#pricing" className="hidden md:inline text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">Pricing</a>
         <a href="/#faq" className="hidden md:inline text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">FAQ</a>
-        {user ? (
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
-          >
-            My dashboard
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={() => navigate("/login")}
-              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
-            >
-              Sign in
-            </button>
-            <button
-              onClick={handleGetStarted}
-              className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
-            >
-              Get started
-            </button>
-          </>
-        )}
+        <button
+          onClick={() => navigate("/login")}
+          className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
+        >
+          Sign in
+        </button>
+        <button
+          onClick={handlePrimaryAction}
+          className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+        >
+          {user ? "My CPF pack" : "Get started"}
+        </button>
       </div>
     </nav>
   );

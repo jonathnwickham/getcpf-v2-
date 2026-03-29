@@ -124,7 +124,7 @@ const PricingPage = () => {
       setLoading(false);
     } else {
       toast({ title: "Welcome to cpfeasy! 🎉", description: "Let's get your CPF sorted." });
-      navigate("/get-started");
+      navigate("/ready-pack");
       setLoading(false);
     }
   };

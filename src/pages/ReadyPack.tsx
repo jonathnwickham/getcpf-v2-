@@ -1,10 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { useAuth } from "@/contexts/AuthContext";
 import { BRAZILIAN_STATES, STATE_OFFICES, type OnboardingData, type OfficeInfo } from "@/lib/onboarding-data";
 import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
+import {
+  applicationHasReadyPack,
+  fetchLatestApplication,
+  mapApplicationToOnboardingData,
+  persistOnboardingData,
+  readPersistedOnboardingData,
+} from "@/lib/application-storage";
 
 type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf";
 
@@ -37,17 +45,40 @@ const openExternal = (url: string) => {
 
 const ReadyPack = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [data, setData] = useState<OnboardingData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("cpf-onboarding");
-    if (!stored) {
-      navigate("/get-started");
+    if (authLoading) return;
+
+    const localData = readPersistedOnboardingData();
+    if (localData) {
+      setData(localData);
+    }
+
+    if (!user) {
+      if (!localData) navigate("/get-started");
       return;
     }
-    setData(JSON.parse(stored));
-  }, [navigate]);
+
+    fetchLatestApplication(user.id)
+      .then((application) => {
+        if (application && applicationHasReadyPack(application)) {
+          const mapped = mapApplicationToOnboardingData(application);
+          setData(mapped);
+          persistOnboardingData(mapped);
+          return;
+        }
+
+        if (!localData) {
+          navigate("/get-started");
+        }
+      })
+      .catch(() => {
+        if (!localData) navigate("/get-started");
+      });
+  }, [navigate, user, authLoading]);
 
   if (!data) return null;
 
