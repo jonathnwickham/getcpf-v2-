@@ -553,7 +553,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
     {/* Visual process timeline */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Your CPF journey — 3 simple steps</h2>
+        <h2 className="font-bold">Your CPF journey — three steps and you're done</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:divide-x divide-border">
         <ProcessStep
