@@ -67,10 +67,10 @@ const Testimonials = () => {
         <div className="text-center mb-12">
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Real stories</div>
           <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
-            People just like you, sorted
+            They were in your shoes last month
           </h2>
           <p className="text-muted-foreground mt-3 max-w-md mx-auto text-sm">
-            From confused to CPF — here's what our users say about their experience.
+            Real people, real CPFs. Here's how it went for them.
           </p>
         </div>
 

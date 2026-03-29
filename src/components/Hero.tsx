@@ -41,7 +41,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center">
         <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
 
-          Get my CPF pack →
+          Let's get started →
         </button>
         <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
           See how it works

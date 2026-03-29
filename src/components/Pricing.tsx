@@ -126,7 +126,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
         ))}
       </div>
       <p className="text-xs text-muted-foreground mt-8 max-w-[500px] mx-auto">
-        The CPF itself is free. You're paying for guidance, document preparation, and support.
+        One payment, no subscriptions. You keep access to your Ready Pack forever.
       </p>
     </section>
   );

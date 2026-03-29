@@ -9,7 +9,7 @@ const HowItWorks = () => {
   return (
     <section id="how" className="py-24 px-8 max-w-[900px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">How it works</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">From confused to CPF in 4 steps</h2>
+      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">Here's how it works</h2>
       <div className="mt-12 relative">
         <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/40 to-border" />
         {steps.map((step) => (

@@ -16,7 +16,7 @@ const FAQ = () => {
   return (
     <section id="faq" className="py-24 px-8 max-w-[700px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">FAQ</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">Common questions</h2>
+      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">Things you're probably wondering</h2>
       <div className="mt-8">
         {faqs.map((faq, i) => (
           <div key={i} className="border-b border-border py-5">
