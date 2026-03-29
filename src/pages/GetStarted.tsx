@@ -345,7 +345,7 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
     <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 3</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your father's full name?</h2>
     <p className="text-muted-foreground text-sm mb-8">
-      Optional — you can skip this if you prefer. Some forms include it but it's not required.
+      This one's optional — skip it if you'd rather not include it. Some forms have a space for it, but it's not required.
     </p>
     <input
       type="text"
