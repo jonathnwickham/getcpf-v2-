@@ -38,8 +38,7 @@ const openExternal = (url: string) => {
 const ReadyPack = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<OnboardingData | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>("mycpf");
-  const [showGuide, setShowGuide] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   useEffect(() => {
     const stored = sessionStorage.getItem("cpf-onboarding");
@@ -58,26 +57,17 @@ const ReadyPack = () => {
   const alternativeOffices = offices.filter((o) => !o.recommended);
   const motherDisplay = data.noMotherName ? data.motherAlternative : data.motherName;
 
-  const guideTabs: { id: Tab; label: string; icon: string }[] = [
+  const allTabs: { id: Tab; label: string; icon: string }[] = [
     { id: "overview", label: "Overview", icon: "📋" },
     { id: "office", label: "Where to go", icon: "📍" },
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
     { id: "partners", label: "Partners", icon: "🤝" },
+    { id: "mycpf", label: "My CPF", icon: "🎉" },
   ];
 
   const isOnMyCpf = activeTab === "mycpf";
-
-  const handleOpenGuide = () => {
-    setShowGuide(true);
-    setActiveTab("overview");
-  };
-
-  const handleBackToCpf = () => {
-    setShowGuide(false);
-    setActiveTab("mycpf");
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,26 +111,21 @@ const ReadyPack = () => {
             {isOnMyCpf ? (
               <>
                 <button
+                  onClick={() => setActiveTab("overview")}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+                >
+                  ← Open application guide
+                </button>
+                <div className="flex-1" />
+                <button
                   className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground shadow-sm"
                 >
                   <span>🎉</span> My CPF
                 </button>
-                <button
-                  onClick={handleOpenGuide}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
-                >
-                  <span>📋</span> Open application guide →
-                </button>
               </>
             ) : (
               <>
-                <button
-                  onClick={handleBackToCpf}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
-                >
-                  ← Back
-                </button>
-                {guideTabs.map((tab) => (
+                {allTabs.filter(t => t.id !== "mycpf").map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
@@ -153,6 +138,13 @@ const ReadyPack = () => {
                     <span>{tab.icon}</span> {tab.label}
                   </button>
                 ))}
+                <div className="flex-1" />
+                <button
+                  onClick={() => setActiveTab("mycpf")}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap text-muted-foreground hover:bg-secondary hover:text-foreground transition-all border border-border"
+                >
+                  <span>🎉</span> My CPF
+                </button>
               </>
             )}
           </div>
