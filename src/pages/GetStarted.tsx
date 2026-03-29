@@ -77,6 +77,15 @@ const GetStarted = () => {
     setDirection("forward");
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
+
+      // Save progress to DB after every step so login redirect works
+      if (user) {
+        try {
+          await saveLatestApplication(user.id, data, "draft");
+        } catch (error) {
+          console.error("Failed to save progress", error);
+        }
+      }
       return;
     }
 
