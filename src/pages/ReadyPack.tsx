@@ -1138,7 +1138,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       ];
       for (const [label, value] of details) {
         coverPage.drawText(`${label}:`, { x: 50, y, font: fontBold, size: 10 });
-        coverPage.drawText(value, { x: 180, y, font, size: 10 });
+        coverPage.drawText(safe(value), { x: 180, y, font, size: 10 });
         y -= 18;
       }
       y -= 20;
