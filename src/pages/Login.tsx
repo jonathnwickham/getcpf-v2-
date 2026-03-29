@@ -29,7 +29,7 @@ const Login = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <a href="/" className="text-2xl font-bold tracking-tight">
+          <a href="/" className="text-2xl font-bold tracking-tight inline-block">
             cpf<span className="text-primary">easy</span>.ai
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Welcome back</h1>
