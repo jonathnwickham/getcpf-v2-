@@ -899,7 +899,7 @@ const PARTNERS = [
     desc: "The go-to insurance for digital nomads in Brazil. Covers hospitals, clinics, and emergencies across Latin America. Month-to-month, cancel anytime. From $45/month.",
     why: "Brazil's public healthcare (SUS) is free but crowded. Private hospitals can cost thousands. SafetyWing covers you without the bureaucracy.",
     cta: "Get covered →",
-    url: "#",
+    url: "https://safetywing.com",
   },
   {
     icon: "📱",
@@ -908,25 +908,25 @@ const PARTNERS = [
     desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. Data plans from $5.",
     why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo, you get data immediately while you sort your CPF out.",
     cta: "Get an eSIM →",
-    url: "#",
+    url: "https://www.airalo.com",
   },
   {
     icon: "🏦",
     name: "Nubank",
     category: "Bank Account",
     desc: "Brazil's most popular digital bank. Zero fees, instant Pix payments, and a debit/credit card — all from the app. Apply with CPF + passport.",
-    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere (restaurants, shops, Uber, everything).",
+    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere.",
     cta: "Open Nubank →",
-    url: "#",
+    url: "https://nubank.com.br",
   },
   {
     icon: "💸",
     name: "Wise",
     category: "International Transfers",
     desc: "Send money to and from Brazil at the real exchange rate with minimal fees. Way cheaper than bank transfers or Western Union.",
-    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad or sending money home.",
+    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad.",
     cta: "Try Wise →",
-    url: "#",
+    url: "https://wise.com",
   },
   {
     icon: "🗣️",
@@ -935,7 +935,7 @@ const PARTNERS = [
     desc: "1-on-1 video lessons with native Brazilian Portuguese speakers. Even 5 lessons makes a massive difference at the Receita Federal office.",
     why: "Portuguese is different from Spanish. Even basic phrases will change how people treat you. R$30-60/hour for a private tutor.",
     cta: "Start learning →",
-    url: "#",
+    url: "https://www.italki.com",
   },
 ];
 
