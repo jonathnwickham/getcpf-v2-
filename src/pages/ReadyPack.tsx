@@ -685,12 +685,12 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
       </div>
       <div className="p-6">
         <p className="text-sm text-muted-foreground mb-3">If Receita Federal is busy or redirects you, any Correios can process your CPF for R$7. Walk-in, no appointment needed.</p>
-        <button
-          onClick={() => openExternal(`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`)}
+        <ExternalLink
+          href={`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`}
           className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
         >
           📍 Find nearest Correios
-        </button>
+        </ExternalLink>
         <div className="mt-4 bg-secondary rounded-xl p-4">
           <p className="text-xs text-muted-foreground">
             <strong>Note about banks:</strong> Some Banco do Brasil and Caixa branches can process CPF, but availability for foreigners is inconsistent. We recommend Receita Federal or Correios instead.
