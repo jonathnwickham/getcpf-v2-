@@ -109,7 +109,7 @@ const GetStarted = () => {
       }
       case 2: return data.noMotherName ? data.motherAlternative.trim().length > 0 : data.motherName.trim().length > 2;
       case 3: return true; // father is optional
-      case 4: return data.passportNumber.trim().length > 4;
+      case 4: return /^[A-Z0-9]{5,15}$/i.test(data.passportNumber.trim());
       case 5: return data.state !== "";
       case 6: return data.streetAddress.trim().length > 3 && data.city.trim().length > 1;
       case 7: return data.email.includes("@") && data.nationality.trim().length > 1;
@@ -374,6 +374,9 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
       autoFocus
       className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50 tracking-wider"
     />
+    {value.trim().length > 0 && !/^[A-Z0-9]{5,15}$/i.test(value.trim()) && (
+      <p className="text-xs text-destructive mt-2">⚠️ Passport numbers are 5–15 alphanumeric characters (letters and numbers only).</p>
+    )}
     <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
       <span>🔒</span> Your passport number is used only to prepare your forms and is never stored.
     </div>

@@ -112,7 +112,7 @@ const Testimonials = () => {
                     </div>
                   )}
                   {expanded !== i && (
-                    <span className="text-xs text-primary font-semibold mt-2 inline-block">Read full story →</span>
+                    <span className="text-xs text-primary font-semibold mt-2 inline-block">Read more →</span>
                   )}
                 </div>
               </div>

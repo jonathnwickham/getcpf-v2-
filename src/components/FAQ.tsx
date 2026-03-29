@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const faqs = [
-  { q: "What exactly do I get for $79?", a: "A personalized consultation that determines your exact CPF application path, plus a downloadable Ready Pack containing: a pre-filled form guide, the correct Receita Federal office for your state, a Portuguese cheat sheet, document checklist, and step-by-step instructions. Everything you need to walk in and walk out with your CPF." },
+  { q: "What exactly do I get for $49?", a: "A personalized Ready Pack containing: a pre-filled form guide, the correct Receita Federal office for your state, a Portuguese cheat sheet, document checklist, and step-by-step instructions. Everything you need to walk in and walk out with your CPF." },
   { q: "Do you actually issue the CPF?", a: "No. Only the Brazilian Federal Revenue Service (Receita Federal) can issue a CPF. We provide expert guidance and document preparation to make sure your application is complete and submitted to the right place. The CPF itself is free — our fee covers the preparation service." },
   { q: "Is it really free to get a CPF?", a: "Yes. The Brazilian government charges nothing for CPF registration at Receita Federal offices. Partner agencies (banks, post offices) charge a small R$7 (~$1.50) convenience fee. Our service fee is for the guidance that ensures your application succeeds on the first try." },
   { q: "How long does it take to get my CPF?", a: "If you go to a Receita Federal office in person (which we recommend), you can often get it the same day. The email method takes 3-7 business days but is less reliable. Our Ready Pack tells you the fastest option based on your location." },
