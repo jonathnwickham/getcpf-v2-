@@ -928,7 +928,7 @@ const BUS_INFO: Record<string, { fare: string; cashAccepted: boolean; tip: strin
 };
 
 const TransportSection = ({ office, data }: { office: OfficeInfo; data: OnboardingData }) => {
-  const [activeTransport, setActiveTransport] = useState<"uber" | "metro" | "bus" | null>(null);
+  const [activeTransport, setActiveTransport] = useState<"uber" | "metro" | "bus" | "bike" | null>(null);
   const destination = encodeURIComponent(office.address);
   const uberLink = `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${destination}&dropoff[nickname]=${encodeURIComponent(office.name)}`;
   const metro = METRO_INFO[data.state];
