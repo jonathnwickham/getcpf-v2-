@@ -1403,7 +1403,7 @@ const DeclarationSection = ({ declaration, declarationCopied, setDeclarationCopi
             <li><strong>Check the details</strong> — make sure their name, CPF number, and address are correct</li>
             <li><strong>Print the letter</strong> — it needs to be on paper</li>
             <li><strong>Sign it</strong> — handwritten signature at the bottom, above their printed name</li>
-            <li><strong>Make a copy of their ID</strong> — a photocopy of their RG or CNH (Brazilian ID document)</li>
+            <li><strong>Make a copy of their ID</strong> — a photocopy of their RG, CNH, <strong>or CPF card</strong> (any one of these is enough)</li>
             <li><strong>Give you both</strong> — the signed letter + their ID copy. These together = your proof of address</li>
           </ol>
         </div>
