@@ -1104,6 +1104,11 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
     setCompiling(true);
     try {
       const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
+      // Sanitize text for WinAnsi encoding (standard PDF fonts)
+      const safe = (text: string) => text.replace(/[^\x20-\x7E\xA0-\xFF]/g, (ch) => {
+        const map: Record<string, string> = { "\u2713": "[x]", "\u2714": "[x]", "\u2717": "[!]", "\u2718": "[!]", "\u2019": "'", "\u2018": "'", "\u201C": '"', "\u201D": '"', "\u2026": "...", "\u2014": "--", "\u2013": "-" };
+        return map[ch] || "";
+      });
       const mergedPdf = await PDFDocument.create();
       const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
       const fontBold = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
@@ -1114,7 +1119,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       let y = height - 60;
       coverPage.drawText("CPF APPLICATION DOCUMENT PACK", { x: 50, y, font: fontBold, size: 18, color: rgb(0.1, 0.4, 0.2) });
       y -= 30;
-      coverPage.drawText(`Prepared for: ${data.fullName}`, { x: 50, y, font, size: 12 });
+      coverPage.drawText(safe(`Prepared for: ${data.fullName}`), { x: 50, y, font, size: 12 });
       y -= 18;
       coverPage.drawText(`Date: ${new Date().toLocaleDateString()}`, { x: 50, y, font, size: 10, color: rgb(0.4, 0.4, 0.4) });
       y -= 40;
@@ -1133,7 +1138,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       ];
       for (const [label, value] of details) {
         coverPage.drawText(`${label}:`, { x: 50, y, font: fontBold, size: 10 });
-        coverPage.drawText(value, { x: 180, y, font, size: 10 });
+        coverPage.drawText(safe(value), { x: 180, y, font, size: 10 });
         y -= 18;
       }
       y -= 20;
@@ -1142,7 +1147,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       coverPage.drawLine({ start: { x: 50, y }, end: { x: 545, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
       y -= 22;
       Object.values(uploads).forEach((doc) => {
-        coverPage.drawText(`✓  ${doc.label}: ${doc.name}`, { x: 50, y, font, size: 10 });
+        coverPage.drawText(safe(`[x]  ${doc.label}: ${doc.name}`), { x: 50, y, font, size: 10 });
         y -= 18;
       });
 
@@ -1157,7 +1162,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
         const lines = declaration.split("\n");
         for (const line of lines) {
           if (dy < 60) { break; }
-          declPage.drawText(line.slice(0, 85), { x: 50, y: dy, font, size: 10 });
+          declPage.drawText(safe(line.slice(0, 85)), { x: 50, y: dy, font, size: 10 });
           dy -= 16;
         }
       }
