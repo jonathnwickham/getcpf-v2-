@@ -435,8 +435,8 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
                     <p className="text-xs font-semibold">{data.nationality}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">SITUAÇÃO</p>
-                    <p className="text-xs font-bold">REGULAR ✓</p>
+                    <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-0.5">STATUS</p>
+                    <p className="text-xs font-bold">SAVED ✓</p>
                   </div>
                 </div>
               </div>
