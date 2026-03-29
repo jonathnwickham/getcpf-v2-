@@ -52,7 +52,7 @@ const Login = () => {
             cpf<span className="text-primary">easy</span>.ai
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Welcome back</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Sign in to access your CPF application</p>
+          <p className="text-muted-foreground mt-2 text-sm">Pick up right where you left off</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
