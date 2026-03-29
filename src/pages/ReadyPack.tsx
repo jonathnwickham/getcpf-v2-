@@ -934,10 +934,18 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
   const metro = METRO_INFO[data.state];
   const bus = BUS_INFO[data.state] || { fare: "R$4–6", cashAccepted: false, tip: "Check locally. Most cities require a transit card — cash is rarely accepted on public transport." };
 
+  const moovitLink = `https://moovitapp.com/index/en/public_transit-${encodeURIComponent(office.name)}-Brazil`;
+  const bikeApps = [
+    { name: "Itaú Bikes", icon: "🚲", desc: "Bike-sharing (orange bikes), available in major cities", link: "https://www.bikeitau.com.br/" },
+    { name: "WHOOSH", icon: "🛴", desc: "Electric scooters — great for short distances (5–10 min)", link: "https://whoosh.bike/" },
+    { name: "JET", icon: "🛴", desc: "Electric scooters — another option in many cities", link: "https://www.jetscooters.com.br/" },
+  ];
+
   const transportOptions = [
     { id: "uber" as const, icon: "🚗", label: "Uber / 99", desc: "Door-to-door, ~R$15–40", badge: "Easiest" },
     { id: "metro" as const, icon: "🚇", label: "Metro / Train", desc: metro ? metro.fare : "Check locally", badge: metro ? "Available" : "Limited" },
     { id: "bus" as const, icon: "🚌", label: "City Bus", desc: bus.fare, badge: "Cheapest" },
+    { id: "bike" as const, icon: "🚲", label: "Bikes / Scooters", desc: "Short distances", badge: "Quick" },
   ];
 
   return (
