@@ -553,6 +553,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </section>
     )}
 
+    {/* Email template to Receita Federal */}
+    <EmailTemplateSection data={data} motherDisplay={motherDisplay} />
+
     {/* AI Document Scanner */}
     <DocumentScanner />
   </div>
@@ -971,4 +974,94 @@ const PartnersTab = () => (
   </div>
 );
 
+// === EMAIL TEMPLATE SECTION ===
+const EmailTemplateSection = ({ data, motherDisplay }: { data: OnboardingData; motherDisplay: string }) => {
+  const [copied, setCopied] = useState(false);
+  const stateEmails: Record<string, string> = {
+    SP: "atendimentorfb.08@rfb.gov.br",
+    RJ: "atendimentorfb.07@rfb.gov.br",
+    MG: "atendimentorfb.06@rfb.gov.br",
+    RS: "atendimentorfb.10@rfb.gov.br",
+    PR: "atendimentorfb.09@rfb.gov.br",
+    SC: "atendimentorfb.09@rfb.gov.br",
+    BA: "atendimentorfb.05@rfb.gov.br",
+    PE: "atendimentorfb.04@rfb.gov.br",
+    CE: "atendimentorfb.03@rfb.gov.br",
+    DF: "atendimentorfb.01@rfb.gov.br",
+  };
+  const rfEmail = stateEmails[data.state] || "atendimentorfb.08@rfb.gov.br";
+
+  const emailBody = `Prezados,
+
+Meu nome é ${data.fullName}, sou ${getNationalityPt(data.nationality)}, portador(a) do passaporte nº ${data.passportNumber}.
+
+Gostaria de solicitar a inscrição no Cadastro de Pessoas Físicas (CPF) conforme a Instrução Normativa RFB nº 2.172/2024.
+
+Seguem os meus dados pessoais:
+
+- Nome completo: ${data.fullName}
+- Nome da mãe: ${motherDisplay}${data.fatherName ? `\n- Nome do pai: ${data.fatherName}` : ""}
+- Número do passaporte: ${data.passportNumber}
+- Nacionalidade: ${getNationalityPt(data.nationality)}
+- Endereço no Brasil: ${data.streetAddress}, ${data.city}, ${data.state}
+- E-mail: ${data.email}
+
+Em anexo, envio os seguintes documentos:
+1. Cópia do passaporte (página com foto e dados)
+2. Cópia do passaporte (página com carimbo de entrada)
+3. Comprovante de endereço no Brasil
+
+Agradeço a atenção e fico no aguardo do retorno.
+
+Atenciosamente,
+${data.fullName}`;
+
+  const subject = `Solicitação de Inscrição no CPF — ${data.fullName}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${rfEmail}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h2 className="font-bold">📧 Email template — backup method</h2>
+        <p className="text-xs text-muted-foreground mt-1">If you can't go in person, send this email to Receita Federal. Takes 3–7 business days.</p>
+      </div>
+      <div className="p-6 space-y-4">
+        <div className="bg-secondary rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
+            <span className="font-bold">To:</span>
+            <span className="font-mono text-primary">{rfEmail}</span>
+          </div>
+          <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
+            <span className="font-bold">Subject:</span>
+            <span className="font-mono">{subject}</span>
+          </div>
+          <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed border-t border-border pt-3 mt-2">{emailBody}</pre>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => { navigator.clipboard.writeText(emailBody); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+            className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
+          >
+            {copied ? "✓ Copied!" : "📋 Copy entire email"}
+          </button>
+          <a
+            href={gmailUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all text-center"
+          >
+            📨 Open in Gmail
+          </a>
+        </div>
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
+          <p className="text-xs text-amber-800 dark:text-amber-200">
+            <strong>Don't forget:</strong> Attach your passport copies and proof of address to the email. Without attachments, they can't process your request.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default ReadyPack;
+
