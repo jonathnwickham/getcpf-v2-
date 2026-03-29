@@ -7,7 +7,8 @@ const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<{ full_name: string | null; plan: string | null } | null>(null);
-  const [hasApplication, setHasApplication] = useState(false);
+  const [application, setApplication] = useState<any>(null);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -15,33 +16,48 @@ const Dashboard = () => {
       return;
     }
     if (user) {
-      // Fetch profile
-      supabase.from("profiles").select("full_name, plan").eq("id", user.id).single()
-        .then(({ data }) => setProfile(data));
-      // Check for existing application
-      supabase.from("applications").select("id").eq("user_id", user.id).limit(1)
-        .then(({ data }) => setHasApplication(!!(data && data.length > 0)));
+      Promise.all([
+        supabase.from("profiles").select("full_name, plan").eq("id", user.id).single(),
+        supabase.from("applications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1),
+      ]).then(([profileRes, appRes]) => {
+        setProfile(profileRes.data);
+        const app = appRes.data?.[0] || null;
+        setApplication(app);
+        setChecking(false);
+
+        // If no application at all, go straight to onboarding
+        if (!app) {
+          navigate("/get-started");
+          return;
+        }
+        // If application is still draft (not submitted), go to onboarding
+        if (app.status === "draft") {
+          navigate("/get-started");
+          return;
+        }
+      });
     }
   }, [user, loading, navigate]);
 
-  if (loading) return (
+  if (loading || checking) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="animate-pulse text-muted-foreground">Loading...</div>
     </div>
   );
 
-  if (!user) return null;
+  if (!user || !application) return null;
 
   const firstName = profile?.full_name?.split(" ")[0] || user.email?.split("@")[0] || "there";
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
       <div className="bg-primary text-primary-foreground">
         <div className="max-w-[960px] mx-auto px-6 py-8 flex items-center justify-between">
           <div>
             <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
-            <h1 className="text-2xl font-extrabold mt-2">Hey {firstName} 👋</h1>
-            <p className="opacity-80 text-sm mt-1">Your CPF journey dashboard</p>
+            <h1 className="text-2xl font-extrabold mt-2">Welcome back, {firstName} 👋</h1>
+            <p className="opacity-80 text-sm mt-1">Your CPF application dashboard</p>
           </div>
           <button onClick={signOut} className="bg-primary-foreground/15 hover:bg-primary-foreground/25 px-4 py-2 rounded-xl text-sm font-semibold transition-all">
             Sign out
@@ -49,157 +65,181 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-[960px] mx-auto px-6 py-8 space-y-6">
-        {/* Start or continue */}
+      <div className="max-w-[960px] mx-auto px-6 py-8 space-y-8">
+        {/* Application summary */}
         <section className="bg-card border border-border rounded-2xl p-6">
-          <h2 className="font-bold text-lg mb-4">
-            {hasApplication ? "Continue your application" : "Start your CPF application"}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            {hasApplication
-              ? "You have a saved application. Pick up where you left off."
-              : "Fill in your details and we'll prepare everything you need to get your CPF."
-            }
-          </p>
-          <button
-            onClick={() => navigate("/get-started")}
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
-          >
-            {hasApplication ? "Continue application →" : "Start application →"}
-          </button>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">📋</div>
+            <div>
+              <h2 className="font-bold text-lg">Your application</h2>
+              <p className="text-xs text-muted-foreground">
+                Status: <span className="text-primary font-semibold capitalize">{application.status}</span>
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            {application.full_name && <InfoField label="Full name" value={application.full_name} />}
+            {application.nationality && <InfoField label="Nationality" value={application.nationality} />}
+            {application.passport_number && <InfoField label="Passport" value={application.passport_number} />}
+            {application.state_name && <InfoField label="State" value={application.state_name} />}
+            {application.city && <InfoField label="City" value={application.city} />}
+            {application.email && <InfoField label="Email" value={application.email} />}
+          </div>
+          {application.cpf_number && (
+            <div className="mt-6 bg-primary/5 border border-primary/15 rounded-xl p-4">
+              <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">🎉 Your CPF Number</div>
+              <div className="text-2xl font-extrabold font-mono tracking-wide">{application.cpf_number}</div>
+            </div>
+          )}
+          <div className="mt-4">
+            <button
+              onClick={() => navigate("/ready-pack")}
+              className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+            >
+              View full application pack →
+            </button>
+          </div>
         </section>
 
-        {/* Share with a friend */}
-        <section className="bg-card border border-border rounded-2xl p-6">
-          <h2 className="font-bold text-lg mb-2">🔗 Know someone who needs a CPF?</h2>
-          <p className="text-sm text-muted-foreground mb-4">Share this tool with friends coming to Brazil. It'll save them hours of confusion.</p>
-          <div className="flex flex-wrap gap-2">
+        {/* Partners */}
+        <section>
+          <div className="mb-6">
+            <h2 className="text-xl font-extrabold">Now that you have your CPF</h2>
+            <p className="text-sm text-muted-foreground mt-1">These are the services most expats set up right after getting their CPF. Each one is trusted and widely used in Brazil.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {PARTNERS.map((p) => (
+              <PartnerCard key={p.name} partner={p} />
+            ))}
+          </div>
+        </section>
+
+        {/* Share */}
+        <section className="bg-card border border-border rounded-2xl p-6 text-center">
+          <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
+          <p className="text-sm text-muted-foreground mb-4">Share cpfeasy.ai — it'll save them hours.</p>
+          <div className="flex flex-wrap justify-center gap-2">
             <button
-              onClick={() => {
-                navigator.clipboard.writeText("https://getcpf.lovable.app");
-              }}
+              onClick={() => navigator.clipboard.writeText("https://getcpf.lovable.app")}
               className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
             >
               📋 Copy link
             </button>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent("Hey! If you're going to Brazil and need a CPF, this tool is amazing — it prepares everything for you: https://getcpf.lovable.app")}`}
+              href={`https://wa.me/?text=${encodeURIComponent("If you're going to Brazil and need a CPF, this tool prepares everything for you: https://getcpf.lovable.app")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#25D366] text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+              className="bg-[hsl(142,70%,49%)] text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
             >
-              💬 Share via WhatsApp
-            </a>
-            <a
-              href={`mailto:?subject=${encodeURIComponent("Get your Brazilian CPF easily")}&body=${encodeURIComponent("Hey! Check out this tool for getting your Brazilian CPF. It handles all the paperwork and tells you exactly what to do: https://getcpf.lovable.app")}`}
-              className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
-            >
-              ✉️ Share via email
+              💬 WhatsApp
             </a>
           </div>
         </section>
-
-        {/* Post-CPF checklist */}
-        <PostCPFChecklist />
       </div>
     </div>
   );
 };
 
-const PostCPFChecklist = () => {
-  const [completed, setCompleted] = useState<Record<string, boolean>>({});
-  const toggle = (id: string) => setCompleted((prev) => ({ ...prev, [id]: !prev[id] }));
+const InfoField = ({ label, value }: { label: string; value: string }) => (
+  <div>
+    <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">{label}</div>
+    <div className="font-semibold text-foreground">{value}</div>
+  </div>
+);
 
-  const steps = [
-    {
-      id: "sim",
-      icon: "📱",
-      title: "Get a Brazilian SIM card",
-      desc: "Go to any Claro, Vivo, or TIM store with your CPF and passport. Or use Airalo for an instant eSIM.",
-      timing: "Do this first — you need data",
-    },
-    {
-      id: "nubank",
-      icon: "🏦",
-      title: "Open a Nubank account",
-      desc: "Download the Nubank app, enter your CPF and passport details. Approval takes minutes. You'll get Pix immediately.",
-      timing: "Same day",
-    },
-    {
-      id: "pix",
-      icon: "💳",
-      title: "Set up Pix",
-      desc: "Inside your bank app, register your CPF or phone number as a Pix key. This is how everyone pays in Brazil — restaurants, shops, Uber, everything.",
-      timing: "5 minutes after bank setup",
-    },
-    {
-      id: "govbr",
-      icon: "🏛️",
-      title: "Register on Gov.br",
-      desc: "Go to gov.br and create an account with your CPF. This is Brazil's digital ID portal — you'll need it for official services.",
-      timing: "When you have time",
-    },
-    {
-      id: "digital",
-      icon: "📲",
-      title: "Get your digital CPF card",
-      desc: "Download the 'CPF Digital' from the Receita Federal app or access it via Gov.br. This replaces the paper document — show it on your phone anywhere.",
-      timing: "After Gov.br registration",
-      steps: [
-        "Download the 'Receita Federal' app from App Store or Play Store",
-        "Log in with your Gov.br account",
-        "Go to 'CPF Digital' section",
-        "Your digital CPF card will appear — screenshot it for quick access",
-      ],
-    },
-    {
-      id: "qr",
-      icon: "🔢",
-      title: "Save your CPF number securely",
-      desc: "Store your CPF number in your phone's notes, password manager, and take a photo of the printed document. You'll need this number constantly.",
-      timing: "Immediately",
-    },
-  ];
+const PARTNERS = [
+  {
+    icon: "📱",
+    name: "Airalo",
+    category: "eSIM / Data",
+    summary: "Get a Brazil eSIM in 2 minutes — works the moment you land.",
+    detail: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo you get data immediately while sorting your CPF. Plans from $5. No store visit needed — install directly from your phone.",
+    tip: "Most popular choice: the 5GB / 30-day Brazil plan. Enough for maps, Uber, and messaging.",
+    url: "https://www.airalo.com",
+  },
+  {
+    icon: "🏦",
+    name: "Nubank",
+    category: "Bank Account",
+    summary: "Brazil's #1 digital bank. Zero fees, instant Pix, debit & credit card.",
+    detail: "Download the Nubank app → enter your CPF + passport → get approved in minutes. Nubank is what most Brazilians use. You get Pix (Brazil's free instant payment system) immediately. Use it at restaurants, shops, Uber — everything.",
+    tip: "Nubank is the fastest way to get Pix. Most expats open this on the same day they get their CPF.",
+    url: "https://nubank.com.br",
+  },
+  {
+    icon: "💸",
+    name: "Wise",
+    category: "International Transfers",
+    summary: "Send money to/from Brazil at the real exchange rate. Way cheaper than banks.",
+    detail: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate with minimal fees. Essential if you receive income from abroad or need to move money between countries. Connect it to your Nubank for instant BRL deposits.",
+    tip: "Set up a BRL balance in Wise and connect your Nubank account for seamless transfers.",
+    url: "https://wise.com",
+  },
+  {
+    icon: "🏥",
+    name: "SafetyWing",
+    category: "Health & Travel Insurance",
+    summary: "Month-to-month health coverage for nomads in Brazil. From $45/month.",
+    detail: "Brazil's public healthcare (SUS) is free but crowded and Portuguese-only. Private hospitals can cost thousands without insurance. SafetyWing covers hospitals, clinics, and emergencies across Latin America. Cancel anytime — no long contracts.",
+    tip: "Covers COVID, emergency dental, and adventure sports. Most digital nomads in Brazil use this.",
+    url: "https://safetywing.com",
+  },
+  {
+    icon: "🗣️",
+    name: "iTalki",
+    category: "Learn Portuguese",
+    summary: "1-on-1 video lessons with native Brazilian Portuguese speakers.",
+    detail: "Even 5 lessons makes a massive difference — at the Receita Federal office, at restaurants, with landlords. Brazilian Portuguese is different from European Portuguese and very different from Spanish. R$30-60/hour for a private tutor.",
+    tip: "Book a few lessons before your office visit. Learn numbers, greetings, and how to say 'I'm here for my CPF'.",
+    url: "https://www.italki.com",
+  },
+  {
+    icon: "🏛️",
+    name: "Gov.br",
+    category: "Digital Government ID",
+    summary: "Brazil's digital ID portal — needed for official services.",
+    detail: "Register at gov.br with your CPF to access government services online. You can download your digital CPF card from the Receita Federal app after registering. This replaces the paper document — show it on your phone anywhere.",
+    tip: "After registering, download the 'Receita Federal' app and go to 'CPF Digital' to get your digital card.",
+    url: "https://www.gov.br",
+  },
+];
+
+const PartnerCard = ({ partner }: { partner: typeof PARTNERS[0] }) => {
+  const [open, setOpen] = useState(false);
 
   return (
-    <section className="bg-card border border-border rounded-2xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-border bg-primary/5">
-        <h2 className="font-bold text-lg">✅ After you get your CPF — do these next</h2>
-        <p className="text-xs text-muted-foreground mt-1">Check each off as you go. This is the order most expats follow.</p>
-      </div>
-      <div className="p-4 space-y-2">
-        {steps.map((step, i) => (
-          <button
-            key={step.id}
-            onClick={() => toggle(step.id)}
-            className={`w-full text-left rounded-xl p-4 transition-all ${
-              completed[step.id] ? "bg-primary/5 border border-primary/15" : "bg-secondary hover:bg-secondary/80"
-            }`}
+    <div className="bg-card border border-border rounded-2xl overflow-hidden transition-all">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full text-left p-5 flex items-start gap-4 hover:bg-secondary/30 transition-colors"
+      >
+        <span className="text-3xl mt-0.5">{partner.icon}</span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-bold text-sm">{partner.name}</h3>
+            <span className="text-[9px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{partner.category}</span>
+          </div>
+          <p className="text-xs text-muted-foreground">{partner.summary}</p>
+        </div>
+        <span className={`text-muted-foreground transition-transform shrink-0 mt-1 ${open ? "rotate-180" : ""}`}>▾</span>
+      </button>
+      {open && (
+        <div className="px-5 pb-5 pt-0 border-t border-border">
+          <p className="text-sm text-foreground mt-4 leading-relaxed">{partner.detail}</p>
+          <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 mt-3">
+            <p className="text-xs text-primary font-medium">💡 {partner.tip}</p>
+          </div>
+          <a
+            href={partner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
           >
-            <div className="flex items-start gap-3">
-              <div className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold border-2 transition-all ${
-                completed[step.id] ? "bg-primary border-primary text-primary-foreground" : "border-border text-muted-foreground"
-              }`}>
-                {completed[step.id] ? "✓" : i + 1}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{step.icon}</span>
-                  <h3 className={`font-semibold text-sm ${completed[step.id] ? "line-through opacity-60" : ""}`}>{step.title}</h3>
-                  <span className="text-[10px] bg-muted text-muted-foreground px-2 py-0.5 rounded font-semibold">{step.timing}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">{step.desc}</p>
-                {step.steps && !completed[step.id] && (
-                  <ol className="mt-2 space-y-1 text-xs text-muted-foreground list-decimal list-inside">
-                    {step.steps.map((s, j) => <li key={j}>{s}</li>)}
-                  </ol>
-                )}
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
-    </section>
+            Visit {partner.name} →
+          </a>
+        </div>
+      )}
+    </div>
   );
 };
 
