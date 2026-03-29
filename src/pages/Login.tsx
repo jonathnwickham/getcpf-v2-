@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { fetchLatestApplication, applicationHasReadyPack } from "@/lib/application-storage";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,13 +15,31 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Welcome back!" });
-      navigate("/ready-pack");
+      setLoading(false);
+      return;
+    }
+
+    toast({ title: "Welcome back!" });
+
+    // Check if user has a completed application → ready-pack, otherwise → get-started
+    try {
+      const userId = authData.user?.id;
+      if (userId) {
+        const app = await fetchLatestApplication(userId);
+        if (app && applicationHasReadyPack(app)) {
+          navigate("/ready-pack");
+        } else {
+          navigate("/get-started");
+        }
+      } else {
+        navigate("/get-started");
+      }
+    } catch {
+      navigate("/get-started");
     }
     setLoading(false);
   };

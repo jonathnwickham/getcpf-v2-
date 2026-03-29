@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  fetchLatestApplication,
+  applicationHasReadyPack,
+  mapApplicationToOnboardingData,
+  persistOnboardingData,
+} from "@/lib/application-storage";
 
 const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
@@ -11,7 +17,6 @@ const Dashboard = () => {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Wait for auth to finish loading before deciding
     if (loading) return;
 
     if (!user) {
@@ -21,23 +26,27 @@ const Dashboard = () => {
 
     Promise.all([
       supabase.from("profiles").select("full_name, plan").eq("id", user.id).single(),
-      supabase.from("applications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1),
-    ]).then(([profileRes, appRes]) => {
+      fetchLatestApplication(user.id),
+    ]).then(([profileRes, app]) => {
       setProfile(profileRes.data);
-      const app = appRes.data?.[0] || null;
       setApplication(app);
       setChecking(false);
 
-      // If no application at all, go straight to onboarding
       if (!app) {
         navigate("/get-started");
         return;
       }
-      // If application is still draft (not submitted), go to onboarding
-      if (app.status === "draft") {
-        navigate("/get-started");
+
+      if (applicationHasReadyPack(app)) {
+        // Persist to local so ReadyPack can load it
+        const mapped = mapApplicationToOnboardingData(app);
+        persistOnboardingData(mapped);
+        navigate("/ready-pack");
         return;
       }
+
+      // Draft — go to onboarding
+      navigate("/get-started");
     });
   }, [user, loading, navigate]);
 
