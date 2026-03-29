@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { BRAZILIAN_STATES, STATE_OFFICES, type OnboardingData, type OfficeInfo } from "@/lib/onboarding-data";
 import officeVisitImg from "@/assets/office-visit.jpg";
@@ -6,7 +6,7 @@ import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
 
-type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners";
+type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf";
 
 // Portuguese nationality translations for common nationalities
 const NATIONALITY_PT: Record<string, string> = {
@@ -30,6 +30,11 @@ const getNationalityPt = (nationality: string): string => {
   return NATIONALITY_PT[nationality] || nationality.toLowerCase();
 };
 
+// Helper to open URLs bypassing iframe restrictions
+const openExternal = (url: string) => {
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
 const ReadyPack = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<OnboardingData | null>(null);
@@ -42,6 +47,11 @@ const ReadyPack = () => {
       return;
     }
     setData(JSON.parse(stored));
+    // Check if CPF is already saved - show mycpf tab
+    const savedCpf = localStorage.getItem("cpf-saved-number");
+    if (savedCpf) {
+      // Don't auto-switch, but make the tab visible
+    }
   }, [navigate]);
 
   if (!data) return null;
@@ -51,6 +61,7 @@ const ReadyPack = () => {
   const recommendedOffice = offices.find((o) => o.recommended) || offices[0];
   const alternativeOffices = offices.filter((o) => !o.recommended);
   const motherDisplay = data.noMotherName ? data.motherAlternative : data.motherName;
+  const hasSavedCpf = !!localStorage.getItem("cpf-saved-number");
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: "overview", label: "Overview", icon: "📋" },
@@ -59,6 +70,7 @@ const ReadyPack = () => {
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
     { id: "partners", label: "Partners", icon: "🤝" },
+    ...(hasSavedCpf ? [{ id: "mycpf" as Tab, label: "My CPF", icon: "🎉" }] : []),
   ];
 
   return (
@@ -116,7 +128,7 @@ const ReadyPack = () => {
 
       <div className="max-w-[960px] mx-auto px-6 py-8">
         {activeTab === "overview" && (
-          <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} />
+          <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} setActiveTab={setActiveTab} />
         )}
         {activeTab === "office" && (
           <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} data={data} />
@@ -125,7 +137,7 @@ const ReadyPack = () => {
           <DocumentsTab data={data} motherDisplay={motherDisplay} />
         )}
         {activeTab === "guide" && (
-          <GuideTab data={data} motherDisplay={motherDisplay} recommendedOffice={recommendedOffice} />
+          <GuideTab data={data} motherDisplay={motherDisplay} recommendedOffice={recommendedOffice} setActiveTab={setActiveTab} />
         )}
         {activeTab === "phrases" && (
           <PhrasesTab data={data} />
@@ -133,14 +145,163 @@ const ReadyPack = () => {
         {activeTab === "partners" && (
           <PartnersTab />
         )}
+        {activeTab === "mycpf" && (
+          <MyCpfTab data={data} stateName={stateName} motherDisplay={motherDisplay} />
+        )}
       </div>
     </div>
   );
 };
 
+// === MY CPF TAB (Celebration + Reference) ===
+const MyCpfTab = ({ data, stateName, motherDisplay }: { data: OnboardingData; stateName: string; motherDisplay: string }) => {
+  const [cpfNumber, setCpfNumber] = useState("");
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [cpfCopied, setCpfCopied] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("cpf-saved-number");
+    if (stored) setCpfNumber(stored);
+    const storedPhoto = localStorage.getItem("cpf-saved-photo");
+    if (storedPhoto) setPhotoPreview(storedPhoto);
+  }, []);
+
+  const formatCpf = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+  };
+
+  const firstName = data.fullName.split(" ")[0];
+
+  const slides = [
+    {
+      id: "cpf",
+      title: "My CPF Number",
+      content: (
+        <div className="text-center py-8">
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🎉</div>
+          <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold mb-2">Your CPF</p>
+          <p className="text-4xl md:text-5xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+          <button
+            onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
+            className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            {cpfCopied ? "✓ Text copied!" : "📋 Copy CPF"}
+          </button>
+        </div>
+      ),
+    },
+    {
+      id: "details",
+      title: "My Details",
+      content: (
+        <div className="py-6 space-y-3">
+          <InfoField label="Full Name" value={data.fullName} />
+          <InfoField label="Passport" value={data.passportNumber} />
+          <InfoField label="Nationality" value={`${data.nationality} / ${getNationalityPt(data.nationality)}`} />
+          <InfoField label="Mother's Name" value={motherDisplay} />
+          {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
+          <InfoField label="Email" value={data.email} />
+        </div>
+      ),
+    },
+    {
+      id: "address",
+      title: "My Address",
+      content: (
+        <div className="py-6 space-y-3">
+          <InfoField label="Street" value={data.streetAddress} />
+          <InfoField label="City" value={data.city} />
+          <InfoField label="State" value={`${data.state} — ${stateName}`} />
+          {data.stayingWithFriend && data.hostName && (
+            <>
+              <InfoField label="Host" value={data.hostName} />
+              {data.hostCpf && <InfoField label="Host CPF" value={data.hostCpf} />}
+            </>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "photo",
+      title: "CPF Document",
+      content: (
+        <div className="py-6 text-center">
+          {photoPreview ? (
+            <img src={photoPreview} alt="CPF printout" className="max-w-sm mx-auto rounded-xl border border-border" />
+          ) : (
+            <div className="text-muted-foreground text-sm">No photo saved yet</div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-8 animate-slide-in">
+      {/* Celebration header */}
+      <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-3xl p-8 text-center">
+        <div className="text-5xl mb-4">🇧🇷</div>
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+          Well done, {firstName}!
+        </h1>
+        <p className="text-lg text-muted-foreground mt-2 max-w-md mx-auto">
+          You did it — your CPF is registered. Welcome to Brazil, officially. 🎉
+        </p>
+      </section>
+
+      {/* Swipeable cards */}
+      <section className="bg-card border border-border rounded-2xl overflow-hidden">
+        <div className="flex border-b border-border">
+          {slides.map((slide, i) => (
+            <button
+              key={slide.id}
+              onClick={() => setActiveSlide(i)}
+              className={`flex-1 py-3 text-xs font-bold transition-all ${
+                activeSlide === i
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-secondary"
+              }`}
+            >
+              {slide.title}
+            </button>
+          ))}
+        </div>
+        <div className="p-6">
+          {slides[activeSlide].content}
+        </div>
+        {/* Dot indicators */}
+        <div className="flex justify-center gap-2 pb-4">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveSlide(i)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                activeSlide === i ? "bg-primary w-6" : "bg-border"
+              }`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Quick reference */}
+      <section className="bg-secondary rounded-2xl p-6">
+        <h3 className="font-bold mb-3">Quick reference</h3>
+        <p className="text-sm text-muted-foreground">
+          This is your safe space. Come back anytime to find your CPF number, your details, and everything you submitted. It's all saved here.
+        </p>
+      </section>
+    </div>
+  );
+};
+
 // === OVERVIEW TAB ===
-const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice }: {
-  data: OnboardingData; motherDisplay: string; stateName: string; recommendedOffice?: OfficeInfo;
+const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setActiveTab }: {
+  data: OnboardingData; motherDisplay: string; stateName: string; recommendedOffice?: OfficeInfo; setActiveTab: (t: Tab) => void;
 }) => (
   <div className="space-y-8 animate-slide-in">
     {/* Visual process timeline */}
@@ -196,10 +357,10 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice }: {
 
     {/* Quick actions */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <QuickAction icon="📍" title="View office details" desc="Address, phone, hours, tips" onClick={() => {}} />
-      <QuickAction icon="📄" title="Document checklist" desc="What to print & bring" onClick={() => {}} />
-      <QuickAction icon="🗓️" title="Day-of guide" desc="Step-by-step for the visit" onClick={() => {}} />
-      <QuickAction icon="🇧🇷" title="Portuguese phrases" desc="What to say at the office" onClick={() => {}} />
+      <QuickAction icon="📍" title="View office details" desc="Address, phone, hours, tips" onClick={() => setActiveTab("office")} />
+      <QuickAction icon="📄" title="Document checklist" desc="What to print & bring" onClick={() => setActiveTab("documents")} />
+      <QuickAction icon="🗓️" title="Day-of guide" desc="Step-by-step for the visit" onClick={() => setActiveTab("guide")} />
+      <QuickAction icon="🇧🇷" title="Portuguese phrases" desc="What to say at the office" onClick={() => setActiveTab("phrases")} />
     </div>
 
     {/* After CPF */}
@@ -213,6 +374,9 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice }: {
         <AfterCard icon="🛒" title="Shop online" desc="Amazon, Mercado Livre" />
       </div>
     </section>
+
+    {/* CPF Storage */}
+    <CpfStorageSection onCpfSaved={() => setActiveTab("mycpf")} data={data} />
   </div>
 );
 
@@ -280,6 +444,9 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
           </div>
         </section>
 
+        {/* Reviews section */}
+        <ReviewsSection office={recommendedOffice} />
+
         {/* How to prepare */}
         <section className="bg-card border border-border rounded-2xl p-6">
           <h3 className="font-bold mb-3">How to prepare for this office</h3>
@@ -328,14 +495,12 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
       </div>
       <div className="p-6">
         <p className="text-sm text-muted-foreground mb-3">If Receita Federal is busy or redirects you, any Correios can process your CPF for R$7. Walk-in, no appointment needed.</p>
-        <a
-          href={`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => openExternal(`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`)}
           className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
         >
           📍 Find nearest Correios
-        </a>
+        </button>
         <div className="mt-4 bg-secondary rounded-xl p-4">
           <p className="text-xs text-muted-foreground">
             <strong>Note about banks:</strong> Some Banco do Brasil and Caixa branches can process CPF, but availability for foreigners is inconsistent. We recommend Receita Federal or Correios instead.
@@ -378,6 +543,62 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
       </div>
     </section>
   </div>
+  );
+};
+
+// === REVIEWS SECTION ===
+const OFFICE_REVIEWS = [
+  { name: "Sarah M.", country: "🇺🇸", rating: 5, text: "Super easy! Walked in at 8am, was out by 8:30 with my CPF. The staff were helpful even though I don't speak Portuguese.", date: "2 weeks ago" },
+  { name: "James T.", country: "🇬🇧", rating: 5, text: "Had everything printed thanks to this app. The lady at the counter smiled when she saw I had everything ready. 15 minutes total.", date: "1 month ago" },
+  { name: "Mika K.", country: "🇩🇪", rating: 4, text: "Waited about 40 minutes because I went on a Monday. But the process itself was painless. Bring a book!", date: "3 weeks ago" },
+  { name: "Lena R.", country: "🇫🇷", rating: 5, text: "I was nervous but it was nothing. Show passport, show address proof, get CPF. The hardest part was finding the building.", date: "1 month ago" },
+  { name: "Carlos P.", country: "🇦🇷", rating: 4, text: "Fui na terça de manhã, peguei senha e em 20 min já tinha meu CPF. Recomendo ir cedo.", date: "2 months ago" },
+  { name: "Aisha N.", country: "🇳🇬", rating: 5, text: "Third time was the charm — first two offices said they couldn't do it. This one did it in 10 minutes. Go to the recommended office!", date: "3 weeks ago" },
+];
+
+const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
+  const [showAll, setShowAll] = useState(false);
+  const displayReviews = showAll ? OFFICE_REVIEWS : OFFICE_REVIEWS.slice(0, 3);
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary flex items-center justify-between">
+        <div>
+          <h3 className="font-bold">⭐ Reviews from visitors</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">{office.reviewCount} reviews · {office.rating}/5 average</p>
+        </div>
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span key={star} className={`text-lg ${star <= Math.round(office.rating) ? "text-amber-400" : "text-border"}`}>★</span>
+          ))}
+        </div>
+      </div>
+      <div className="p-6 space-y-4">
+        {displayReviews.map((review, i) => (
+          <div key={i} className="bg-secondary rounded-xl p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{review.country}</span>
+                <span className="font-semibold text-sm">{review.name}</span>
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star} className={`text-xs ${star <= review.rating ? "text-amber-400" : "text-border"}`}>★</span>
+                  ))}
+                </div>
+              </div>
+              <span className="text-[10px] text-muted-foreground">{review.date}</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
+          </div>
+        ))}
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="w-full py-3 text-sm font-semibold text-primary hover:bg-primary/5 rounded-xl transition-all"
+        >
+          {showAll ? "Show fewer reviews ▲" : `View all ${OFFICE_REVIEWS.length} reviews ▼`}
+        </button>
+      </div>
+    </section>
   );
 };
 
@@ -461,11 +682,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <h2 className="font-bold">📝 Official CPF application form</h2>
       </div>
       <div className="p-6 space-y-4">
-        <a
-          href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-4 bg-secondary rounded-xl p-4 hover:bg-secondary/80 transition-all group"
+        <button
+          onClick={() => openExternal("https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp")}
+          className="flex items-center gap-4 bg-secondary rounded-xl p-4 hover:bg-secondary/80 transition-all group w-full text-left"
         >
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📄</div>
           <div className="flex-1">
@@ -473,7 +692,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             <p className="text-xs text-muted-foreground mt-0.5">servicos.receita.fazenda.gov.br</p>
           </div>
           <span className="text-primary font-semibold text-sm shrink-0">Open →</span>
-        </a>
+        </button>
 
         {/* Pre-filled reference */}
         <div className="bg-secondary rounded-xl p-5">
@@ -521,12 +740,12 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
           <div className="bg-secondary rounded-lg p-4">
             <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
           </div>
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-4">
             <button
               onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2000); }}
               className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
             >
-              {declarationCopied ? "✓ Copied!" : "📋 Copy letter"}
+              {declarationCopied ? "✓ Text copied!" : "📋 Copy letter"}
             </button>
             <button
               onClick={() => {
@@ -538,18 +757,16 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               }}
               className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
             >
-              ⬇️ Download .txt
+              💾 Save to your pack
             </button>
-            <a
-              href={`https://wa.me/?text=${encodeURIComponent(declaration)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(declaration)}`)}
               className="flex-1 min-w-[140px] bg-[#25D366] text-white px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all text-center"
             >
               💬 Send via WhatsApp
-            </a>
+            </button>
           </div>
-          <p className="text-xs text-muted-foreground mt-3">💡 <strong>Save for later:</strong> Download the .txt file and print it, or copy the text and paste into a Word document for your host to sign.</p>
+          <p className="text-xs text-muted-foreground mt-4">💡 <strong>Keep this for the end of the process.</strong> Download and print the letter, or copy the text and paste into a Word document for your host to sign.</p>
         </div>
         <div className="pb-8" />
       </section>
@@ -565,8 +782,8 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
 };
 
 // === GUIDE TAB ===
-const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
-  data: OnboardingData; motherDisplay: string; recommendedOffice?: OfficeInfo;
+const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
+  data: OnboardingData; motherDisplay: string; recommendedOffice?: OfficeInfo; setActiveTab: (t: Tab) => void;
 }) => (
   <div className="space-y-6 animate-slide-in">
     <div className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -629,18 +846,17 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
       />
     </div>
 
-    {/* CPF Number Storage */}
-    <CpfStorageSection />
-
-    {/* Emergency card */}
-    <section className="bg-destructive/5 border border-destructive/15 rounded-2xl p-6">
-      <h3 className="font-bold flex items-center gap-2 text-destructive">⚠️ If something goes wrong</h3>
-      <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-        <li><strong>They ask for documents you don't have:</strong> Ask "O que mais posso trazer?" (What else can I bring?) and come back another day.</li>
-        <li><strong>They say you need an appointment:</strong> Some offices require scheduling. Ask for the website or phone number to book one.</li>
-        <li><strong>Language barrier:</strong> Open Google Translate on your phone and type what you need. Most staff are patient and helpful.</li>
-        <li><strong>Long wait:</strong> This is normal in Brazil. Bring a book or charged phone. Expected wait: {recommendedOffice?.waitTime || "30–60 min"}.</li>
-      </ul>
+    {/* Got your CPF? Save it! */}
+    <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
+      <div className="text-4xl mb-3">🎉</div>
+      <h3 className="text-xl font-bold">Got your CPF?</h3>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">Save it in your personal CPF section — it's your safe space.</p>
+      <button
+        onClick={() => setActiveTab("overview")}
+        className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+      >
+        🔐 Go to my CPF section →
+      </button>
     </section>
   </div>
 );
@@ -648,53 +864,54 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
 // === PHRASES TAB ===
 const PhrasesTab = ({ data }: { data: OnboardingData }) => (
   <div className="space-y-6 animate-slide-in">
-    {/* Main script */}
-    <section className="bg-card border border-border rounded-2xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">🎤 What to say — your script</h2>
-        <p className="text-xs text-muted-foreground mt-1">Show this to the attendant on your phone, or read it out loud.</p>
-      </div>
-      <div className="p-6">
-        <div className="bg-primary/5 border border-primary/15 rounded-xl p-6">
-          <p className="text-base leading-relaxed font-medium">
-            "Bom dia. Eu gostaria de fazer a inscrição no CPF, por favor. Meu nome é <strong>{data.fullName}</strong>, sou <strong>{getNationalityPt(data.nationality)}</strong>, e estou no Brasil com meu passaporte número <strong>{data.passportNumber}</strong>. Aqui está meu formulário e meus documentos."
-          </p>
-        </div>
-        <div className="mt-4 bg-secondary rounded-xl p-5">
-          <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Translation</p>
-          <p className="text-sm text-muted-foreground italic leading-relaxed">
-            "Good morning. I would like to register for a CPF, please. My name is {data.fullName}, I am {data.nationality.toLowerCase()}, and I am in Brazil with my passport number {data.passportNumber}. Here is my form and my documents."
-          </p>
-        </div>
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
+      <h2 className="text-xl font-bold">🇧🇷 Portuguese phrases for the office</h2>
+      <p className="text-sm text-muted-foreground mt-2">You probably won't need all of these, but they're here just in case. Tap any phrase to copy it — you can show it on your phone screen.</p>
+    </section>
+
+    {/* Arrival */}
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-3">When you arrive</h3>
+      <div className="space-y-2">
+        <PhraseCard pt="Bom dia, gostaria de fazer a inscrição no CPF." en="Good morning, I'd like to register for a CPF." category="Arrival" />
+        <PhraseCard pt="Sou estrangeiro(a). Preciso de CPF." en="I'm a foreigner. I need a CPF." category="Arrival" />
+        <PhraseCard pt="Onde fica a fila para CPF?" en="Where is the queue for CPF?" category="Arrival" />
+        <PhraseCard pt="Ficha para CPF, por favor." en="Ticket for CPF, please." category="Arrival" />
       </div>
     </section>
 
-    {/* Essential phrases */}
-    <section className="bg-card border border-border rounded-2xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Essential phrases</h2>
+    {/* At the counter */}
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-3">At the counter</h3>
+      <div className="space-y-2">
+        <PhraseCard pt={`Meu nome é ${data.fullName}.`} en={`My name is ${data.fullName}.`} category="Counter" />
+        <PhraseCard pt="Aqui está meu passaporte e as cópias." en="Here's my passport and the copies." category="Counter" />
+        <PhraseCard pt="Aqui está o comprovante de endereço." en="Here's my proof of address." category="Counter" />
+        <PhraseCard pt="Posso preencher o formulário aqui?" en="Can I fill out the form here?" category="Counter" />
+        <PhraseCard pt="Minha mãe se chama..." en="My mother's name is..." category="Counter" />
       </div>
-      <div className="p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <PhraseCard pt="Inscrição no CPF" en="CPF Registration" category="At the desk" />
-          <PhraseCard pt="Ficha para CPF, por favor" en="A ticket for CPF, please" category="At the entrance" />
-          <PhraseCard pt="Passaporte" en="Passport" category="Documents" />
-          <PhraseCard pt="Comprovante de endereço" en="Proof of address" category="Documents" />
-          <PhraseCard pt="Certidão de nascimento" en="Birth certificate" category="Documents" />
-          <PhraseCard pt="Formulário preenchido" en="Filled-out form" category="Documents" />
-          <PhraseCard pt="Quanto tempo demora?" en="How long does it take?" category="Questions" />
-          <PhraseCard pt="Preciso de mais algum documento?" en="Do I need any other document?" category="Questions" />
-          <PhraseCard pt="Não tenho agendamento, posso fazer mesmo assim?" en="I don't have an appointment, can I do it anyway?" category="Questions" />
-          <PhraseCard pt="Posso receber por email?" en="Can I receive it by email?" category="Questions" />
-          <PhraseCard pt="Preciso de um comprovante" en="I need a receipt/proof" category="Questions" />
-          <PhraseCard pt="Onde fica o banheiro?" en="Where is the bathroom?" category="Practical" />
-          <PhraseCard pt="Não falo português muito bem" en="I don't speak Portuguese very well" category="Helpful" />
-          <PhraseCard pt="Pode me ajudar, por favor?" en="Can you help me, please?" category="Helpful" />
-          <PhraseCard pt="Obrigado / Obrigada" en="Thank you (male / female)" category="Polite" />
-          <PhraseCard pt="Com licença" en="Excuse me" category="Polite" />
-          <PhraseCard pt="Pode escrever, por favor?" en="Can you write it down, please?" category="Helpful" />
-          <PhraseCard pt="Qual é o meu número do CPF?" en="What is my CPF number?" category="At the desk" />
-        </div>
+    </section>
+
+    {/* If there's a problem */}
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-3">If there's a problem</h3>
+      <div className="space-y-2">
+        <PhraseCard pt="Posso fazer a inscrição sem agendamento?" en="Can I register without an appointment?" category="Problem" />
+        <PhraseCard pt="Não tenho CPF ainda, por isso não consigo agendar." en="I don't have a CPF yet, that's why I can't book online." category="Problem" />
+        <PhraseCard pt="Tem outro posto que pode fazer isso?" en="Is there another office that can do this?" category="Problem" />
+        <PhraseCard pt="Pode me ajudar, por favor?" en="Can you help me, please?" category="Problem" />
+      </div>
+    </section>
+
+    {/* Useful extras */}
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <h3 className="font-bold mb-3">Useful extras</h3>
+      <div className="space-y-2">
+        <PhraseCard pt="Obrigado(a)!" en="Thank you!" category="General" />
+        <PhraseCard pt="Não falo português muito bem." en="I don't speak Portuguese very well." category="General" />
+        <PhraseCard pt="Pode repetir, por favor?" en="Can you repeat that, please?" category="General" />
+        <PhraseCard pt="Onde fico a espera?" en="Where do I wait?" category="General" />
+        <PhraseCard pt="Quanto tempo demora?" en="How long does it take?" category="General" />
       </div>
     </section>
 
@@ -721,7 +938,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
 );
 
 // === CPF STORAGE SECTION ===
-const CpfStorageSection = () => {
+const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data: OnboardingData }) => {
   const [cpfNumber, setCpfNumber] = useState("");
   const [saved, setSaved] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -760,6 +977,8 @@ const CpfStorageSection = () => {
     return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
   };
 
+  const firstName = data.fullName.split(" ")[0];
+
   return (
     <section className="bg-primary/5 border border-primary/15 rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-primary/10">
@@ -768,14 +987,19 @@ const CpfStorageSection = () => {
       </div>
       <div className="p-6 space-y-4">
         {saved && cpfNumber ? (
-          <div className="bg-card border border-border rounded-2xl p-6 text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-2">Your CPF number</p>
-            <p className="text-3xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-2xl p-6 text-center">
+              <div className="text-4xl mb-2">🎉</div>
+              <p className="text-sm text-muted-foreground mb-1">Congratulations, {firstName}!</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-2">Your CPF number</p>
+              <p className="text-3xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+              <CopyButton text={cpfNumber.replace(/\D/g, "")} label="Copy CPF" className="mt-3" />
+            </div>
             <button
-              onClick={() => navigator.clipboard.writeText(cpfNumber.replace(/\D/g, ""))}
-              className="mt-3 text-xs text-primary font-semibold hover:underline"
+              onClick={onCpfSaved}
+              className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
             >
-              📋 Copy number
+              🎉 Go to my CPF section →
             </button>
           </div>
         ) : (
@@ -819,6 +1043,19 @@ const CpfStorageSection = () => {
         </div>
       </div>
     </section>
+  );
+};
+
+// === COPY BUTTON COMPONENT ===
+const CopyButton = ({ text, label, className = "" }: { text: string; label: string; className?: string }) => {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+      className={`inline-flex items-center gap-2 text-xs text-primary font-semibold hover:underline ${className}`}
+    >
+      {copied ? "✓ Text copied!" : `📋 ${label}`}
+    </button>
   );
 };
 
@@ -896,14 +1133,12 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
           <span className="text-muted-foreground">({office.reviewCount} reviews)</span>
         </div>
         <div className="flex gap-3 mt-4">
-          <a
-            href={mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => openExternal(mapsUrl)}
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
           >
             📍 Open in Google Maps
-          </a>
+          </button>
           <a
             href={`tel:${office.phone.replace(/[^\d+]/g, "")}`}
             className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary transition-all"
@@ -1020,7 +1255,7 @@ const PhraseCard = ({ pt, en, category }: { pt: string; en: string; category: st
         onClick={copy}
         className="absolute top-2 right-2 bg-card border border-border px-2 py-1 rounded-md text-[10px] font-bold opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-primary hover:text-primary-foreground"
       >
-        {copied ? "✓" : "Copy"}
+        {copied ? "✓ Copied!" : "Copy"}
       </button>
     </div>
   );
@@ -1094,14 +1329,12 @@ const PartnersTab = () => (
               </div>
               <p className="text-sm text-foreground mb-2">{p.desc}</p>
               <p className="text-xs text-muted-foreground italic">💡 {p.why}</p>
-              <a
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openExternal(p.url)}
                 className="mt-3 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
               >
                 {p.cta}
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -1180,7 +1413,7 @@ ${data.fullName}`;
             onClick={() => { navigator.clipboard.writeText(emailBody); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
             className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
           >
-            {copied ? "✓ Copied!" : "📋 Copy entire email"}
+            {copied ? "✓ Text copied!" : "📋 Copy entire email"}
           </button>
           <a
             href={mailtoUrl}
@@ -1200,4 +1433,3 @@ ${data.fullName}`;
 };
 
 export default ReadyPack;
-
