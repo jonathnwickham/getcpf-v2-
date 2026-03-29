@@ -1498,9 +1498,10 @@ const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data:
               <p className="text-xs text-primary font-semibold">✓ Photo saved securely on this device</p>
             </div>
           ) : (
-            <label className="flex items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
+            <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
               <span className="text-2xl">📷</span>
-              <span className="text-sm font-semibold">Take or upload a photo of your CPF</span>
+              <span className="text-sm font-semibold">Upload a photo of your CPF printout</span>
+              <span className="text-xs text-muted-foreground">Keep it stored here safely — you'll always have a backup</span>
               <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
             </label>
           )}
