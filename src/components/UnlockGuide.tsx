@@ -382,8 +382,8 @@ const UnlockGuide = () => {
       {allDone && (
         <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
           <div className="text-4xl mb-3">🎉🇧🇷</div>
-          <h3 className="text-xl font-extrabold">You're fully set up in Brazil!</h3>
-          <p className="text-sm text-muted-foreground mt-1">Every single item completed. You're a local now.</p>
+          <h3 className="text-xl font-extrabold">That's everything. You're not a tourist anymore. 🇧🇷</h3>
+          <p className="text-sm text-muted-foreground mt-1">Every single item done. Welcome to Brazil — properly.</p>
         </section>
       )}
       {allEasyDone && !allDone && (
