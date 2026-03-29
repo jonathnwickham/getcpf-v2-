@@ -443,8 +443,8 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             </div>
           </div>
 
-          {/* Copy & Edit buttons */}
-          <div className="text-center mt-6 flex items-center justify-center gap-3">
+          {/* Copy, Edit & Delete buttons */}
+          <div className="text-center mt-6 flex items-center justify-center gap-3 flex-wrap">
             <button
               onClick={() => { navigator.clipboard.writeText(cpfNumber.replace(/\D/g, "")); setCpfCopied(true); setTimeout(() => setCpfCopied(false), 2000); }}
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
@@ -460,7 +460,35 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             >
               ✏️ Edit
             </button>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="inline-flex items-center gap-2 bg-destructive/10 text-destructive px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-destructive/20 transition-all"
+            >
+              🗑️ Delete
+            </button>
           </div>
+
+          {/* Delete confirmation */}
+          {showDeleteConfirm && (
+            <div className="mt-4 bg-destructive/5 border border-destructive/20 rounded-xl p-4 text-center space-y-3">
+              <p className="text-sm font-semibold text-destructive">Are you sure you want to delete your saved CPF number?</p>
+              <p className="text-xs text-muted-foreground">This will remove your CPF number and photo from this device. Your CPF itself is not affected.</p>
+              <div className="flex justify-center gap-3">
+                <button
+                  onClick={handleDeleteCpf}
+                  className="bg-destructive text-destructive-foreground px-5 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
+                >
+                  Yes, delete it
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="bg-secondary text-foreground px-5 py-2 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ),
     },
