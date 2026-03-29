@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const testimonials = [
   {
     name: "Sarah M.",
@@ -5,6 +7,7 @@ const testimonials = [
     country: "American",
     location: "São Paulo",
     rating: 5,
+    short: "CPF Easy told me exactly which office, what to bring, and what to say. I walked in at 8 AM and out by 9:15.",
     text: "I was so stressed about getting my CPF. I'd seen horror stories online about people spending days going back and forth. CPF Easy told me exactly which office to go to (CAC Bela Vista), what to bring, and even what to say in Portuguese. I walked in at 8 AM and walked out with my CPF by 9:15. Same day I opened a Nubank account and got a SIM card.",
     result: "Got CPF, Nubank account, and Claro SIM — all in one day",
     timeAgo: "2 weeks ago",
@@ -15,6 +18,7 @@ const testimonials = [
     country: "South African",
     location: "Florianópolis",
     rating: 5,
+    short: "The Portuguese email template was a lifesaver — I literally just copied and pasted it.",
     text: "As a South African, I had no idea where to start. The Portuguese email template was a lifesaver — I literally just copied and pasted it. But I ended up going in person based on the app's recommendation and it was so much faster. The office in Florianópolis Centro was super foreigner-friendly, exactly like the app said.",
     result: "CPF in hand within 20 minutes of walking in",
     timeAgo: "1 month ago",
@@ -25,6 +29,7 @@ const testimonials = [
     country: "British",
     location: "Rio de Janeiro",
     rating: 5,
+    short: "The document checklist saved us — we almost forgot the passport copies!",
     text: "We're a couple who just moved to Rio. We both needed CPFs and were dreading the bureaucracy. The document checklist saved us — we almost forgot the passport copies! The day-of guide was spot on: arrive early, take a number, wait about 30 minutes. We both got our CPFs and immediately set up Pix through Nubank. Game changer for daily life here.",
     result: "Both got CPFs, set up Pix, and ordered delivery on iFood that evening",
     timeAgo: "3 weeks ago",
@@ -35,6 +40,7 @@ const testimonials = [
     country: "German",
     location: "Curitiba",
     rating: 5,
+    short: "The Portuguese cheat sheet made the whole interaction smooth. Genuinely impressed.",
     text: "I'm a digital nomad and needed a CPF to get a proper phone plan and use Pix. The app knew I was in Paraná and recommended the Curitiba Centro office — even mentioned the staff speaks basic English. The Portuguese cheat sheet made the whole interaction smooth. I was genuinely impressed by how thorough the preparation was.",
     result: "Got CPF, Vivo SIM card, and Wise account set up in 2 days",
     timeAgo: "1 month ago",
@@ -45,6 +51,7 @@ const testimonials = [
     country: "Nigerian",
     location: "Salvador",
     rating: 4,
+    short: "The troubleshooting section had the exact answer for when I was turned away.",
     text: "The first office I went to said they couldn't help. But the app had a troubleshooting section for exactly that situation — it said to try a larger office. I went to the Comércio location the next day and got my CPF in 40 minutes. Without this app I would've given up after the first rejection.",
     result: "Got CPF on second attempt, exactly as the troubleshooting guide predicted",
     timeAgo: "2 months ago",
@@ -52,6 +59,8 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const [expanded, setExpanded] = useState<number | null>(null);
+
   return (
     <section className="py-24 px-8 bg-secondary">
       <div className="max-w-[1000px] mx-auto">
@@ -67,9 +76,10 @@ const Testimonials = () => {
 
         <div className="space-y-5">
           {testimonials.map((t, i) => (
-            <div
+            <button
               key={i}
-              className="bg-card border border-border rounded-2xl p-6 md:p-8 hover:border-primary/20 transition-all"
+              onClick={() => setExpanded(expanded === i ? null : i)}
+              className="w-full text-left bg-card border border-border rounded-2xl p-6 md:p-8 hover:border-primary/20 transition-all"
             >
               <div className="flex flex-col md:flex-row md:items-start gap-5">
                 <div className="flex items-center gap-3 md:min-w-[180px]">
@@ -90,16 +100,23 @@ const Testimonials = () => {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
-                  <div className="mt-3 flex items-center gap-3 flex-wrap">
-                    <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-semibold">
-                      ✓ {t.result}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">{t.timeAgo}</span>
-                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    "{expanded === i ? t.text : t.short}"
+                  </p>
+                  {expanded === i && (
+                    <div className="mt-3 flex items-center gap-3 flex-wrap">
+                      <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-semibold">
+                        ✓ {t.result}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">{t.timeAgo}</span>
+                    </div>
+                  )}
+                  {expanded !== i && (
+                    <span className="text-xs text-primary font-semibold mt-2 inline-block">Read full story →</span>
+                  )}
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 

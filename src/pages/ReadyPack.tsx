@@ -404,22 +404,22 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
       <div className="p-6 space-y-3">
         <DocCheck title="Original passport" desc="Not a copy — they need to see the original document. Bring the passport you used to enter Brazil." critical />
-        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical />
-        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical />
+        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical uploadable />
+        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical uploadable />
         
         <div className="border-t border-border pt-3 mt-3">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Proof of address — bring ONE of the following</p>
-          <DocCheck title="Hotel booking confirmation" desc="A printed or digital confirmation showing the hotel name, address, and your name. Most commonly accepted." />
-          <DocCheck title="Airbnb rental confirmation" desc="Your Airbnb booking confirmation with the full address shown. Print it or show on your phone." />
-          <DocCheck title="Rental contract" desc="If you're renting an apartment, bring a copy of the signed contract showing the address." />
-          <DocCheck title="Utility bill with address" desc="An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address." />
-          <DocCheck title="Invitation letter from your host" desc="If staying with family, partner, or friends — a signed letter stating you reside at their address, with their name, CPF, address, and signature. Attach a copy of their ID." />
+          <DocCheck title="Hotel booking confirmation" desc="A printed or digital confirmation showing the hotel name, address, and your name. Most commonly accepted." uploadable />
+          <DocCheck title="Airbnb rental confirmation" desc="Your Airbnb booking confirmation with the full address shown. Print it or show on your phone." uploadable />
+          <DocCheck title="Rental contract" desc="If you're renting an apartment, bring a copy of the signed contract showing the address." uploadable />
+          <DocCheck title="Utility bill with address" desc="An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address." uploadable />
+          <DocCheck title="Invitation letter from your host" desc="If staying with family, partner, or friends — a signed letter stating you reside at their address, with their name, CPF, address, and signature. Attach a copy of their ID." uploadable />
         </div>
 
         <div className="border-t border-border pt-3 mt-3">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Recommended extras</p>
-          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." />
-          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." />
+          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." uploadable />
+          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." uploadable />
           <DocCheck title="Pen" desc="Sounds silly, but bring your own pen. Not all offices provide them." />
         </div>
       </div>
@@ -549,7 +549,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               💬 Send via WhatsApp
             </a>
           </div>
+          <p className="text-xs text-muted-foreground mt-3">💡 <strong>Save for later:</strong> Download the .txt file and print it, or copy the text and paste into a Word document for your host to sign.</p>
         </div>
+        <div className="pb-8" />
       </section>
     )}
 
@@ -626,6 +628,9 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice }: {
         ]}
       />
     </div>
+
+    {/* CPF Number Storage */}
+    <CpfStorageSection />
 
     {/* Emergency card */}
     <section className="bg-destructive/5 border border-destructive/15 rounded-2xl p-6">
@@ -714,6 +719,108 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
     </section>
   </div>
 );
+
+// === CPF STORAGE SECTION ===
+const CpfStorageSection = () => {
+  const [cpfNumber, setCpfNumber] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("cpf-saved-number");
+    if (stored) { setCpfNumber(stored); setSaved(true); }
+    const storedPhoto = localStorage.getItem("cpf-saved-photo");
+    if (storedPhoto) setPhotoPreview(storedPhoto);
+  }, []);
+
+  const handleSave = () => {
+    if (cpfNumber.trim().length >= 11) {
+      localStorage.setItem("cpf-saved-number", cpfNumber.trim());
+      setSaved(true);
+    }
+  };
+
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPhotoPreview(result);
+      localStorage.setItem("cpf-saved-photo", result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const formatCpf = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+  };
+
+  return (
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-primary/10">
+        <h2 className="font-bold text-lg">🔐 Store your CPF number</h2>
+        <p className="text-xs text-muted-foreground mt-1">Keep your CPF safe here. Take a photo of your printout or type the number manually.</p>
+      </div>
+      <div className="p-6 space-y-4">
+        {saved && cpfNumber ? (
+          <div className="bg-card border border-border rounded-2xl p-6 text-center">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-2">Your CPF number</p>
+            <p className="text-3xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+            <button
+              onClick={() => navigator.clipboard.writeText(cpfNumber.replace(/\D/g, ""))}
+              className="mt-3 text-xs text-primary font-semibold hover:underline"
+            >
+              📋 Copy number
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Enter your CPF number</label>
+              <input
+                type="text"
+                value={formatCpf(cpfNumber)}
+                onChange={(e) => setCpfNumber(e.target.value.replace(/\D/g, ""))}
+                placeholder="000.000.000-00"
+                className="mt-1 w-full bg-card border border-border rounded-xl px-4 py-3 text-lg font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/30"
+                maxLength={14}
+              />
+            </div>
+            <button
+              onClick={handleSave}
+              disabled={cpfNumber.replace(/\D/g, "").length < 11}
+              className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              💾 Save CPF number
+            </button>
+          </div>
+        )}
+
+        {/* Photo upload */}
+        <div className="border-t border-border pt-4">
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">📸 Photo of your CPF printout</p>
+          {photoPreview ? (
+            <div className="space-y-2">
+              <img src={photoPreview} alt="CPF printout" className="w-full max-w-sm rounded-xl border border-border" />
+              <p className="text-xs text-primary font-semibold">✓ Photo saved securely on this device</p>
+            </div>
+          ) : (
+            <label className="flex items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
+              <span className="text-2xl">📷</span>
+              <span className="text-sm font-semibold">Take or upload a photo of your CPF</span>
+              <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
+            </label>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // === HELPER COMPONENTS ===
 
@@ -828,19 +935,50 @@ const ExpectCard = ({ icon, title, value }: { icon: string; title: string; value
   </div>
 );
 
-const DocCheck = ({ title, desc, critical }: { title: string; desc: string; critical?: boolean }) => (
-  <div className={`flex items-start gap-3 p-3 rounded-xl ${critical ? "bg-primary/5 border border-primary/10" : "bg-secondary"}`}>
-    <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold border-2 ${
-      critical ? "border-primary text-primary" : "border-border text-muted-foreground"
-    }`}>
-      {critical ? "!" : "○"}
+const DocCheck = ({ title, desc, critical, uploadable }: { title: string; desc: string; critical?: boolean; uploadable?: boolean }) => {
+  const [checked, setChecked] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      setChecked(true);
+    }
+  };
+
+  return (
+    <div
+      onClick={() => !uploadable && setChecked(!checked)}
+      className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+        checked ? "bg-primary/5 border border-primary/10" : critical ? "bg-primary/5 border border-primary/10" : "bg-secondary"
+      }`}
+    >
+      <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold border-2 transition-all ${
+        checked ? "border-primary bg-primary text-primary-foreground" : critical ? "border-primary text-primary" : "border-border text-muted-foreground"
+      }`}>
+        {checked ? "✓" : critical ? "!" : "○"}
+      </div>
+      <div className="flex-1">
+        <h4 className={`font-semibold text-sm ${checked ? "line-through opacity-60" : ""}`}>{title}</h4>
+        <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
+        {uploadable && (
+          <div className="mt-2">
+            {fileName ? (
+              <span className="text-xs text-primary font-semibold">📎 {fileName}</span>
+            ) : (
+              <label className="inline-flex items-center gap-1.5 text-xs text-primary font-semibold cursor-pointer hover:underline">
+                📤 Upload this document
+                <input type="file" accept="image/*,.pdf" onChange={handleUpload} className="hidden" />
+              </label>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-    <div>
-      <h4 className="font-semibold text-sm">{title}</h4>
-      <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const FormFieldDisplay = ({ label, value }: { label: string; value: string }) => (
   <div className="flex items-baseline gap-2">
@@ -897,7 +1035,7 @@ const PARTNERS = [
     desc: "The go-to insurance for digital nomads in Brazil. Covers hospitals, clinics, and emergencies across Latin America. Month-to-month, cancel anytime. From $45/month.",
     why: "Brazil's public healthcare (SUS) is free but crowded. Private hospitals can cost thousands. SafetyWing covers you without the bureaucracy.",
     cta: "Get covered →",
-    url: "#",
+    url: "https://safetywing.com",
   },
   {
     icon: "📱",
@@ -906,25 +1044,25 @@ const PARTNERS = [
     desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. Data plans from $5.",
     why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo, you get data immediately while you sort your CPF out.",
     cta: "Get an eSIM →",
-    url: "#",
+    url: "https://www.airalo.com",
   },
   {
     icon: "🏦",
     name: "Nubank",
     category: "Bank Account",
     desc: "Brazil's most popular digital bank. Zero fees, instant Pix payments, and a debit/credit card — all from the app. Apply with CPF + passport.",
-    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere (restaurants, shops, Uber, everything).",
+    why: "Nubank is what everyone uses in Brazil. Fastest way to start using Pix — Brazil's free instant payment system used everywhere.",
     cta: "Open Nubank →",
-    url: "#",
+    url: "https://nubank.com.br",
   },
   {
     icon: "💸",
     name: "Wise",
     category: "International Transfers",
     desc: "Send money to and from Brazil at the real exchange rate with minimal fees. Way cheaper than bank transfers or Western Union.",
-    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad or sending money home.",
+    why: "Brazilian banks charge huge spreads on foreign currency. Wise gives you the mid-market rate. Essential for receiving income from abroad.",
     cta: "Try Wise →",
-    url: "#",
+    url: "https://wise.com",
   },
   {
     icon: "🗣️",
@@ -933,7 +1071,7 @@ const PARTNERS = [
     desc: "1-on-1 video lessons with native Brazilian Portuguese speakers. Even 5 lessons makes a massive difference at the Receita Federal office.",
     why: "Portuguese is different from Spanish. Even basic phrases will change how people treat you. R$30-60/hour for a private tutor.",
     cta: "Start learning →",
-    url: "#",
+    url: "https://www.italki.com",
   },
 ];
 
@@ -1017,7 +1155,7 @@ Atenciosamente,
 ${data.fullName}`;
 
   const subject = `Solicitação de Inscrição no CPF — ${data.fullName}`;
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${rfEmail}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+  const mailtoUrl = `mailto:${rfEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
 
   return (
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -1045,12 +1183,10 @@ ${data.fullName}`;
             {copied ? "✓ Copied!" : "📋 Copy entire email"}
           </button>
           <a
-            href={gmailUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={mailtoUrl}
             className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all text-center"
           >
-            📨 Open in Gmail
+            📨 Open in email app
           </a>
         </div>
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
