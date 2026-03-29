@@ -153,7 +153,7 @@ const ReadyPack = () => {
 
       <div className="max-w-[960px] mx-auto px-6 py-8">
         {activeTab === "mycpf" && (
-          <MyCpfTab data={data} stateName={stateName} motherDisplay={motherDisplay} onOpenGuide={handleOpenGuide} />
+          <MyCpfTab data={data} stateName={stateName} motherDisplay={motherDisplay} onOpenGuide={() => setActiveTab("overview")} />
         )}
         {activeTab === "overview" && (
           <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} setActiveTab={setActiveTab} />
