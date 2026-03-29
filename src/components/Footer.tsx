@@ -8,7 +8,7 @@ const Footer = () => (
         {/* Brand */}
         <div>
           <div className="text-xl font-bold tracking-tight mb-3">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF — the easy way. We handle the preparation so you just show up.
