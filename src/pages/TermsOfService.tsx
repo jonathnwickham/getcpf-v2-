@@ -5,7 +5,7 @@ const TermsOfService = () => (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/" className="text-lg font-bold tracking-tight">
-          cpf<span className="text-primary">easy</span>.ai
+          GET <span className="text-primary">CPF</span>
         </Link>
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
           ← Back to home
@@ -21,7 +21,7 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">What this service is</h2>
           <p className="leading-relaxed">
-            CPF Easy AI is a private consulting and document preparation service. We help foreigners prepare for the Brazilian CPF (Cadastro de Pessoas Físicas) registration process by providing personalised guidance, pre-filled forms, and step-by-step instructions.
+            GET CPF ("we", "us", "our") is a private consulting and document preparation service. We help foreigners prepare for the Brazilian CPF (Cadastro de Pessoas Físicas) registration process by providing personalised guidance, pre-filled forms, and step-by-step instructions.
           </p>
           <p className="leading-relaxed mt-3 font-semibold">
             We do not issue CPF numbers. Only the Brazilian Federal Revenue Service (Receita Federal) can do that. The CPF registration itself is free — our fee covers the preparation service.
@@ -64,7 +64,7 @@ const TermsOfService = () => (
             <li><strong>Not eligible for refund:</strong> If you simply changed your mind after viewing the Ready Pack, or if your rejection was due to information you provided incorrectly.</li>
           </ul>
           <p className="leading-relaxed mt-3">
-            To request a refund, email <a href="mailto:support@cpfeasy.ai" className="text-primary hover:underline">support@cpfeasy.ai</a> with your account email and the reason. We process refunds within 5–10 business days.
+            To request a refund, email <a href="mailto:support@getcpf.com" className="text-primary hover:underline">support@getcpf.com</a> with your account email and the reason. We process refunds within 5–10 business days.
           </p>
         </section>
 
@@ -88,28 +88,28 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Intellectual property</h2>
           <p className="leading-relaxed">
-            All content, design, and code on this site is owned by CPF Easy AI. You may not copy, reproduce, or redistribute any part of the service without written permission. Your personal Ready Pack is licensed for your personal use only.
+            All content, design, and code on this site is owned by GET CPF. You may not copy, reproduce, or redistribute any part of the service without written permission. Your personal Ready Pack is licensed for your personal use only.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Limitation of liability</h2>
           <p className="leading-relaxed">
-            To the maximum extent permitted by law, CPF Easy AI shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service. Our total liability is limited to the amount you paid for the service ($49). We are not responsible for decisions made by the Receita Federal, delays in CPF processing, or any losses arising from the CPF application process.
+            To the maximum extent permitted by law, GET CPF shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service. Our total liability is limited to the amount you paid for the service ($49). We are not responsible for decisions made by the Receita Federal, delays in CPF processing, or any losses arising from the CPF application process.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Termination</h2>
           <p className="leading-relaxed">
-            You can delete your account at any time by emailing <a href="mailto:support@cpfeasy.ai" className="text-primary hover:underline">support@cpfeasy.ai</a>. We reserve the right to suspend or terminate accounts that violate these terms or use the service fraudulently.
+            You can delete your account at any time by emailing <a href="mailto:support@getcpf.com" className="text-primary hover:underline">support@getcpf.com</a>. We reserve the right to suspend or terminate accounts that violate these terms or use the service fraudulently.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Governing law</h2>
           <p className="leading-relaxed">
-            These terms are governed by the laws of the Federative Republic of Brazil. Any disputes shall be resolved in the courts of São Paulo, SP, Brazil.
+            These terms are governed by the laws of the Republic of South Africa. For consumers located in Brazil, mandatory provisions of Brazilian consumer protection law (Lei nº 8.078/1990 — Código de Defesa do Consumidor) apply and are not excluded by this clause.
           </p>
         </section>
 
@@ -123,7 +123,7 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Contact</h2>
           <p className="leading-relaxed">
-            Questions? Email <a href="mailto:support@cpfeasy.ai" className="text-primary hover:underline">support@cpfeasy.ai</a>
+            Questions? Email <a href="mailto:support@getcpf.com" className="text-primary hover:underline">support@getcpf.com</a>
           </p>
         </section>
       </div>

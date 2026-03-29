@@ -5,7 +5,7 @@ const PrivacyPolicy = () => (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/" className="text-lg font-bold tracking-tight">
-          cpf<span className="text-primary">easy</span>.ai
+          GET <span className="text-primary">CPF</span>
         </Link>
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
           ← Back to home
@@ -21,7 +21,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Who we are</h2>
           <p className="leading-relaxed">
-            CPF Easy AI ("we", "us", "our") is a private consulting service that helps foreigners navigate the Brazilian CPF registration process. We are not affiliated with the Brazilian Government, Receita Federal, or any government agency. We operate the website at getcpf.lovable.app.
+            GET CPF ("we", "us", "our") is a private consulting service that helps foreigners navigate the Brazilian CPF registration process. We are not affiliated with the Brazilian Government, Receita Federal, or any government agency.
           </p>
         </section>
 
@@ -88,7 +88,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Your rights</h2>
           <p className="leading-relaxed mb-3">
-            Under the LGPD (Brazil's data protection law), GDPR (if you're in the EU), and other applicable privacy laws, you have the right to:
+            Under the LGPD (Brazil's data protection law), POPIA (South Africa's data protection law), GDPR (if you're in the EU), and other applicable privacy laws, you have the right to:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Access</strong> — request a copy of all data we hold about you</li>
@@ -98,8 +98,28 @@ const PrivacyPolicy = () => (
             <li><strong>Withdraw consent</strong> — at any time, for any reason</li>
           </ul>
           <p className="leading-relaxed mt-3">
-            To exercise any of these rights, email us at <a href="mailto:privacy@cpfeasy.ai" className="text-primary hover:underline">privacy@cpfeasy.ai</a>. We'll respond within 15 business days.
+            To exercise any of these rights, email us at <a href="mailto:privacy@getcpf.com" className="text-primary hover:underline">privacy@getcpf.com</a>. We'll respond within 15 business days.
           </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold mb-3">POPIA compliance (South Africa)</h2>
+          <p className="leading-relaxed mb-3">
+            GET CPF complies with South Africa's Protection of Personal Information Act (POPIA). As a South African company processing personal information, we adhere to the following principles:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li>We process personal information lawfully, for a legitimate and specific purpose</li>
+            <li>We collect only information that is adequate, relevant, and not excessive</li>
+            <li>We take reasonable technical and organisational measures to protect your data</li>
+            <li>We do not retain personal information longer than necessary</li>
+          </ul>
+          <p className="leading-relaxed mt-3">
+            If you believe your rights under POPIA have been infringed, you have the right to lodge a complaint with the Information Regulator of South Africa:
+          </p>
+          <ul className="list-none pl-6 space-y-1 text-sm mt-2">
+            <li>📧 Email: <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a></li>
+            <li>🌐 Website: <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">inforegulator.org.za</a></li>
+          </ul>
         </section>
 
         <section>
@@ -126,7 +146,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Contact us</h2>
           <p className="leading-relaxed">
-            Questions about your data? Email <a href="mailto:privacy@cpfeasy.ai" className="text-primary hover:underline">privacy@cpfeasy.ai</a>
+            Questions about your data? Email <a href="mailto:privacy@getcpf.com" className="text-primary hover:underline">privacy@getcpf.com</a>
           </p>
         </section>
       </div>
