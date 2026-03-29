@@ -101,7 +101,7 @@ const PricingPage = () => {
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length < 6) {
-      toast({ title: "Password too short", description: "At least 6 characters required.", variant: "destructive" });
+      toast({ title: "Password too short", description: "Make it at least 6 characters.", variant: "destructive" });
       return;
     }
     if (password !== confirmPassword) {
