@@ -25,11 +25,11 @@ const Signup = () => {
     });
 
     if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
       toast({
-        title: "Check your email",
-        description: "We sent you a verification link. Please confirm your email to continue.",
+        title: "Check your inbox 📧",
+        description: "We sent you a quick verification link — tap it and you're in.",
       });
     }
     setLoading(false);
