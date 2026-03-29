@@ -745,6 +745,247 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
   );
 };
 
+// === DECLARATION SECTION ===
+const DeclarationSection = ({ declaration, declarationCopied, setDeclarationCopied, data }: {
+  declaration: string; declarationCopied: boolean; setDeclarationCopied: (v: boolean) => void; data: OnboardingData;
+}) => {
+  const [savedToPack, setSavedToPack] = useState(false);
+
+  const whatsappMsg = `Hi! I need your help with my CPF registration in Brazil 🇧🇷\n\nI've prepared a residency declaration letter that I need you to:\n1. Print the letter below\n2. Sign it at the bottom\n3. Give me a copy of your ID (RG or CNH)\n\nHere's the letter:\n\n${declaration}`;
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-primary/5 flex items-center justify-between">
+        <h2 className="font-bold">📝 Host declaration letter</h2>
+        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md font-semibold">Generated ✓</span>
+      </div>
+      <div className="p-6 space-y-4">
+        <p className="text-sm text-muted-foreground">This letter is your proof of address. Send it to your host so they can print and sign it.</p>
+        
+        <div className="bg-secondary rounded-lg p-4">
+          <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
+        </div>
+
+        {/* Two main action buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2500); }}
+            className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
+              declarationCopied ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-secondary/80"
+            }`}
+          >
+            {declarationCopied ? "✓ Text copied!" : "📋 Copy letter text"}
+          </button>
+          <button
+            onClick={() => {
+              const blob = new Blob([declaration], { type: "text/plain" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url; a.download = "declaracao-residencia.txt"; a.click();
+              URL.revokeObjectURL(url);
+              setSavedToPack(true);
+              setTimeout(() => setSavedToPack(false), 3000);
+            }}
+            className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
+              savedToPack ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary hover:bg-primary/20"
+            }`}
+          >
+            {savedToPack ? "✓ Saved!" : "💾 Save to my documents"}
+          </button>
+        </div>
+
+        {/* Send to host via WhatsApp */}
+        <button
+          onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(whatsappMsg)}`)}
+          className="w-full bg-[#25D366] text-white px-4 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
+        >
+          💬 Send to your host via WhatsApp — get them to sign it
+        </button>
+
+        {/* Detailed steps */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-5 space-y-3">
+          <h4 className="font-bold text-sm text-amber-900 dark:text-amber-100">📋 What your host needs to do</h4>
+          <ol className="text-sm text-amber-800 dark:text-amber-200 space-y-2.5 list-decimal list-inside">
+            <li><strong>Check the details</strong> — make sure their name, CPF number, and address are correct</li>
+            <li><strong>Print the letter</strong> — it needs to be on paper</li>
+            <li><strong>Sign it</strong> — handwritten signature at the bottom, above their printed name</li>
+            <li><strong>Make a copy of their ID</strong> — a photocopy of their RG or CNH (Brazilian ID document)</li>
+            <li><strong>Give you both</strong> — the signed letter + their ID copy. These together = your proof of address</li>
+          </ol>
+        </div>
+
+        <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
+          <p className="text-sm text-muted-foreground">
+            <strong>💡 Pro tip:</strong> Send it to your host now so they have time to prepare. You'll need both the signed letter and their ID copy on the day you visit the office.
+          </p>
+        </div>
+      </div>
+      <div className="pb-6" />
+    </section>
+  );
+};
+
+// === DOCUMENT COMPILER ===
+type UploadedDoc = { name: string; label: string; file: File; preview?: string };
+
+const DOCUMENT_SLOTS = [
+  { id: "passport_photo", label: "Passport — photo page", required: true },
+  { id: "passport_stamp", label: "Passport — visa/entry stamp", required: true },
+  { id: "proof_address", label: "Proof of address", required: true },
+  { id: "declaration", label: "Signed host declaration", required: false },
+  { id: "cpf_form", label: "CPF application form", required: false },
+  { id: "birth_cert", label: "Birth certificate (apostille)", required: false },
+  { id: "extra1", label: "Extra document", required: false },
+];
+
+const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: {
+  data: OnboardingData; motherDisplay: string; hasDeclaration: boolean; declaration: string;
+}) => {
+  const [uploads, setUploads] = useState<Record<string, UploadedDoc>>({});
+  const [compiling, setCompiling] = useState(false);
+  const [compiled, setCompiled] = useState(false);
+
+  const handleUpload = (slotId: string, label: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const preview = file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined;
+    setUploads(prev => ({ ...prev, [slotId]: { name: file.name, label, file, preview } }));
+  };
+
+  const removeUpload = (slotId: string) => {
+    setUploads(prev => {
+      const next = { ...prev };
+      if (next[slotId]?.preview) URL.revokeObjectURL(next[slotId].preview!);
+      delete next[slotId];
+      return next;
+    });
+  };
+
+  const uploadCount = Object.keys(uploads).length;
+  const requiredSlots = DOCUMENT_SLOTS.filter(s => s.required);
+  const requiredUploaded = requiredSlots.filter(s => uploads[s.id]).length;
+
+  const handleCompile = async () => {
+    setCompiling(true);
+    await new Promise(r => setTimeout(r, 2000));
+    
+    let content = `CPF APPLICATION DOCUMENT PACK\n${"=".repeat(40)}\n\n`;
+    content += `Prepared for: ${data.fullName}\n`;
+    content += `Date: ${new Date().toLocaleDateString()}\n\n`;
+    content += `PERSONAL DETAILS\n${"-".repeat(30)}\n`;
+    content += `Full Name: ${data.fullName}\n`;
+    content += `Mother's Name: ${motherDisplay}\n`;
+    if (data.fatherName) content += `Father's Name: ${data.fatherName}\n`;
+    content += `Passport: ${data.passportNumber}\n`;
+    content += `Nationality: ${data.nationality}\n`;
+    content += `Address: ${data.streetAddress}, ${data.city}, ${data.state}\n`;
+    content += `Email: ${data.email}\n\n`;
+    content += `UPLOADED DOCUMENTS\n${"-".repeat(30)}\n`;
+    Object.values(uploads).forEach((doc) => {
+      content += `✓ ${doc.label}: ${doc.name}\n`;
+    });
+    if (hasDeclaration) {
+      content += `\n\nHOST DECLARATION LETTER\n${"-".repeat(30)}\n`;
+      content += declaration;
+    }
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cpf-document-pack-${data.fullName.replace(/\s+/g, "-").toLowerCase()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    setCompiling(false);
+    setCompiled(true);
+    setTimeout(() => setCompiled(false), 4000);
+  };
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h2 className="font-bold">📦 Upload & compile your documents</h2>
+        <p className="text-xs text-muted-foreground mt-1">
+          Upload each document here. When you're ready, compile everything into one organised pack.
+        </p>
+      </div>
+      <div className="p-6 space-y-3">
+        {/* Progress */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold text-muted-foreground">
+            {uploadCount} of {DOCUMENT_SLOTS.length} uploaded
+          </span>
+          <span className="text-xs text-primary font-semibold">
+            {requiredUploaded}/{requiredSlots.length} required ✓
+          </span>
+        </div>
+        <div className="w-full bg-secondary rounded-full h-2 mb-4">
+          <div className="bg-primary h-2 rounded-full transition-all duration-500" style={{ width: `${(uploadCount / DOCUMENT_SLOTS.length) * 100}%` }} />
+        </div>
+
+        {/* Upload slots */}
+        {DOCUMENT_SLOTS.map((slot) => {
+          const uploaded = uploads[slot.id];
+          return (
+            <div key={slot.id} className={`rounded-xl p-4 transition-all ${uploaded ? "bg-primary/5 border border-primary/10" : "bg-secondary border border-transparent"}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold border-2 ${
+                    uploaded ? "border-primary bg-primary text-primary-foreground" : slot.required ? "border-primary text-primary" : "border-border text-muted-foreground"
+                  }`}>
+                    {uploaded ? "✓" : slot.required ? "!" : "○"}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">{slot.label}</h4>
+                    {uploaded ? (
+                      <p className="text-xs text-primary font-semibold mt-0.5">📎 {uploaded.name}</p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground mt-0.5">{slot.required ? "Required" : "Optional"}</p>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  {uploaded ? (
+                    <div className="flex items-center gap-2">
+                      {uploaded.preview && <img src={uploaded.preview} alt="" className="w-10 h-10 rounded-md object-cover border border-border" />}
+                      <button onClick={() => removeUpload(slot.id)} className="text-xs text-destructive font-semibold hover:underline">Remove</button>
+                    </div>
+                  ) : (
+                    <label className="inline-flex items-center gap-1.5 bg-card border border-border px-3 py-2 rounded-lg text-xs font-semibold cursor-pointer hover:bg-primary/5 transition-all">
+                      📤 Upload
+                      <input type="file" accept="image/*,.pdf" onChange={(e) => handleUpload(slot.id, slot.label, e)} className="hidden" />
+                    </label>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Compile button */}
+        <div className="pt-4 border-t border-border mt-4">
+          <button
+            onClick={handleCompile}
+            disabled={uploadCount === 0 || compiling}
+            className={`w-full px-4 py-3.5 rounded-xl font-bold text-sm transition-all ${
+              compiled ? "bg-primary text-primary-foreground"
+              : compiling ? "bg-primary/50 text-primary-foreground cursor-wait"
+              : uploadCount > 0 ? "bg-primary text-primary-foreground hover:opacity-90"
+              : "bg-secondary text-muted-foreground cursor-not-allowed"
+            }`}
+          >
+            {compiled ? "✓ Document pack downloaded!" : compiling ? "⏳ Compiling your pack..." : `📦 Compile ${uploadCount} document${uploadCount !== 1 ? "s" : ""} into one pack`}
+          </button>
+          <p className="text-xs text-muted-foreground mt-2 text-center">
+            Creates a single organised file with all your documents and details — everything for the office visit.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // === GUIDE TAB ===
 const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
   data: OnboardingData; motherDisplay: string; recommendedOffice?: OfficeInfo; setActiveTab: (t: Tab) => void;
