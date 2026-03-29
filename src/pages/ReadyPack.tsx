@@ -38,10 +38,10 @@ const getNationalityPt = (nationality: string): string => {
   return NATIONALITY_PT[nationality] || nationality.toLowerCase();
 };
 
-// Helper to open URLs bypassing iframe restrictions
-const openExternal = (url: string) => {
-  window.open(url, "_blank", "noopener,noreferrer");
-};
+// External link component — uses <a> tags which work inside iframes (window.open gets blocked)
+const ExternalLink = ({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" className={className}>{children}</a>
+);
 
 const ReadyPack = () => {
   const navigate = useNavigate();
