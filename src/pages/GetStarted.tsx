@@ -134,7 +134,7 @@ const GetStarted = () => {
             cpf<span className="text-primary">easy</span>.ai
           </a>
           <span className="text-xs text-muted-foreground font-medium">
-            Step {step + 1} of {TOTAL_STEPS}
+            {step + 1} of {TOTAL_STEPS}
           </span>
         </div>
         <div className="h-1 bg-border">
