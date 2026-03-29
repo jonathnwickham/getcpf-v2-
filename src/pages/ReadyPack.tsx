@@ -861,6 +861,8 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
     return `${greeting}!\n\nEspero que esteja tudo bem. Segue abaixo a declaração de residência conforme solicitado para o registro de CPF.\n\n---\n\nDECLARAÇÃO DE RESIDÊNCIA\n\nEu, ${data.hostName}, portador(a) do CPF nº ${data.hostCpf || "[CPF do anfitrião]"}, residente à ${data.hostAddress}, ${data.hostCity}, ${data.state}, declaro para os devidos fins que ${data.fullName}, portador(a) do passaporte nº ${data.passportNumber}, nacionalidade ${getNationalityPt(data.nationality)}, reside temporariamente em meu endereço acima mencionado.\n\nDeclaro ainda que me responsabilizo pela veracidade das informações aqui prestadas.\n\nPor ser verdade, firmo a presente declaração.\n\n${data.hostCity}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}\n\n_______________________________\n${data.hostName}\nCPF: ${data.hostCpf || "[CPF do anfitrião]"}\n\n---\n\nMuito obrigado(a) pela ajuda!\nAtenciosamente,\n${data.fullName}`;
   })() : null;
 
+  const [addressOpen, setAddressOpen] = useState(false);
+
   return (
   <div className="space-y-6 animate-slide-in">
     {/* Visual checklist */}
@@ -871,26 +873,73 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
       <div className="p-6 space-y-3">
         <DocCheck title="Original passport" desc="Not a copy — they need to see the original document. Bring the passport you used to enter Brazil." critical />
-        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical uploadable />
-        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical uploadable />
+        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical />
+        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical />
         
         <div className="border-t border-border pt-3 mt-3">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Proof of address — bring ONE of the following</p>
-          <DocCheck title="Hotel booking confirmation" desc="A printed or digital confirmation showing the hotel name, address, and your name. Most commonly accepted." uploadable />
-          <DocCheck title="Airbnb rental confirmation" desc="Your Airbnb booking confirmation with the full address shown. Print it or show on your phone." uploadable />
-          <DocCheck title="Rental contract" desc="If you're renting an apartment, bring a copy of the signed contract showing the address." uploadable />
-          <DocCheck title="Utility bill with address" desc="An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address." uploadable />
-          <DocCheck title="Invitation letter from your host" desc="If staying with family, partner, or friends — a signed letter stating you reside at their address, with their name, CPF, address, and signature. Attach a copy of their ID." uploadable />
+          <button
+            onClick={() => setAddressOpen(!addressOpen)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 text-xs font-bold border-2 border-primary text-primary">!</div>
+              <div>
+                <h4 className="font-semibold text-sm">Proof of address — bring ONE</h4>
+                <p className="text-xs text-muted-foreground mt-0.5">Tap to see which options apply to you</p>
+              </div>
+            </div>
+            <span className={`text-muted-foreground transition-transform ${addressOpen ? "rotate-180" : ""}`}>▼</span>
+          </button>
+          {addressOpen && (
+            <div className="mt-3 space-y-2 pl-8 animate-slide-in">
+              {data.stayingWithFriend ? (
+                <>
+                  <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+                    <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone</h5>
+                    <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH).</p>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3">
+                    <h5 className="font-semibold text-xs text-muted-foreground">Other options that also work:</h5>
+                    <ul className="text-xs text-muted-foreground mt-1 space-y-1">
+                      <li>• Utility bill at the host's address (in their name is fine)</li>
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+                    <h5 className="font-semibold text-sm">🏨 Hotel or Airbnb</h5>
+                    <p className="text-xs text-muted-foreground mt-1">A printed or digital booking confirmation showing the property name, full address, and your name. Most commonly accepted.</p>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3">
+                    <h5 className="font-semibold text-sm">📄 Rental contract</h5>
+                    <p className="text-xs text-muted-foreground mt-1">If you're renting an apartment, bring a copy of the signed contract showing the address.</p>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3">
+                    <h5 className="font-semibold text-sm">💡 Utility bill</h5>
+                    <p className="text-xs text-muted-foreground mt-1">An electricity, water, or internet bill in your name showing the Brazilian address.</p>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3">
+                    <h5 className="font-semibold text-sm">🏠 Staying with someone?</h5>
+                    <p className="text-xs text-muted-foreground mt-1">A signed letter from your host with their name, CPF, address, and signature. Plus a copy of their ID.</p>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="border-t border-border pt-3 mt-3">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Recommended extras</p>
-          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." uploadable />
-          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." uploadable />
+          <DocCheck title="Printed CPF application form" desc="Some offices have you fill it on-site, but arriving with a printed copy speeds things up and avoids delays." />
+          <DocCheck title="Birth certificate with apostille" desc="Not always required, but can speed things up. If you have an apostilled copy, bring it." />
           <DocCheck title="Pen" desc="Sounds silly, but bring your own pen. Not all offices provide them." />
         </div>
       </div>
     </section>
+
+    {/* Upload & compile — right after checklist */}
+    <DocumentCompiler data={data} motherDisplay={motherDisplay} hasDeclaration={!!(hasHost && declaration)} declaration={declaration || ""} />
 
     {/* Photo tips */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -979,8 +1028,6 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       <DeclarationSection declaration={declaration} declarationCopied={declarationCopied} setDeclarationCopied={setDeclarationCopied} data={data} />
     )}
 
-    {/* Upload & compile all documents into one PDF */}
-    <DocumentCompiler data={data} motherDisplay={motherDisplay} hasDeclaration={!!(hasHost && declaration)} declaration={declaration || ""} />
 
     {/* Email template to Receita Federal */}
     <EmailTemplateSection data={data} motherDisplay={motherDisplay} />
