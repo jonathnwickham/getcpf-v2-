@@ -33,7 +33,17 @@ const Login = () => {
         if (app && applicationHasReadyPack(app)) {
           navigate("/ready-pack");
         } else {
-          navigate("/get-started");
+          // Also check local storage as fallback
+          const localData = readPersistedOnboardingData();
+          if (localData && hasReadyPackData(localData)) {
+            // Save local data to DB then go to ready-pack
+            try {
+              await saveLatestApplication(userId, localData, "prepared");
+            } catch {}
+            navigate("/ready-pack");
+          } else {
+            navigate("/get-started");
+          }
         }
       } else {
         navigate("/get-started");
