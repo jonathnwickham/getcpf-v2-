@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { fetchLatestApplication, applicationHasReadyPack } from "@/lib/application-storage";
+import { fetchLatestApplication, applicationHasReadyPack, readPersistedOnboardingData, hasReadyPackData, saveLatestApplication } from "@/lib/application-storage";
 
 const Login = () => {
   const navigate = useNavigate();
