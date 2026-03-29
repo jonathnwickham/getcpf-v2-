@@ -74,9 +74,9 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
   return (
     <section id="pricing" className="py-24 px-8 text-center bg-secondary">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Simple pricing</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">Pay once. Get your CPF.</h2>
+      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">Choose how you want to do this</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[520px] text-sm leading-relaxed">
-        The CPF itself is free — issued by the Brazilian government. You're paying for expert guidance that makes sure it works first time.
+        The CPF itself is free. You're paying for the preparation that makes it work first time — no rejected forms, no wasted trips.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto mt-12">
         {tiers.map((tier) => (
