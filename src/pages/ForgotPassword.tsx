@@ -47,8 +47,8 @@ const ForgotPassword = () => {
           <a href="/" className="text-2xl font-bold tracking-tight">
             cpf<span className="text-primary">easy</span>.ai
           </a>
-          <h1 className="text-2xl font-extrabold mt-6">Reset your password</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Enter your email and we'll send you a reset link</p>
+          <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
+          <p className="text-muted-foreground mt-2 text-sm">No worries — enter your email and we'll send you a link to reset it</p>
         </div>
 
         <form onSubmit={handleReset} className="space-y-4">
