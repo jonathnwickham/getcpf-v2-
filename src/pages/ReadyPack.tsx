@@ -1610,12 +1610,12 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
           <span className="text-muted-foreground">({office.reviewCount} reviews)</span>
         </div>
         <div className="flex gap-3 mt-4">
-          <button
-            onClick={() => openExternal(mapsUrl)}
+          <ExternalLink
+            href={mapsUrl}
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
           >
             📍 Open in Google Maps
-          </button>
+          </ExternalLink>
           <a
             href={`tel:${office.phone.replace(/[^\d+]/g, "")}`}
             className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary transition-all"
