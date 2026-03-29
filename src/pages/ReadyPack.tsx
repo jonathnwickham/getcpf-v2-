@@ -1855,7 +1855,9 @@ const PartnersTab = () => (
       ))}
     </div>
 
-    <p className="text-xs text-muted-foreground text-center">Questions about any of these services? Message us.</p>
+    <p className="text-[10px] text-muted-foreground text-center mt-2">
+      Some links above are affiliate partnerships — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
+    </p>
   </div>
 );
 
