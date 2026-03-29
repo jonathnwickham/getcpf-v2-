@@ -11,32 +11,34 @@ const Dashboard = () => {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (!loading && !user) {
+    // Wait for auth to finish loading before deciding
+    if (loading) return;
+
+    if (!user) {
       navigate("/login");
       return;
     }
-    if (user) {
-      Promise.all([
-        supabase.from("profiles").select("full_name, plan").eq("id", user.id).single(),
-        supabase.from("applications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1),
-      ]).then(([profileRes, appRes]) => {
-        setProfile(profileRes.data);
-        const app = appRes.data?.[0] || null;
-        setApplication(app);
-        setChecking(false);
 
-        // If no application at all, go straight to onboarding
-        if (!app) {
-          navigate("/get-started");
-          return;
-        }
-        // If application is still draft (not submitted), go to onboarding
-        if (app.status === "draft") {
-          navigate("/get-started");
-          return;
-        }
-      });
-    }
+    Promise.all([
+      supabase.from("profiles").select("full_name, plan").eq("id", user.id).single(),
+      supabase.from("applications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1),
+    ]).then(([profileRes, appRes]) => {
+      setProfile(profileRes.data);
+      const app = appRes.data?.[0] || null;
+      setApplication(app);
+      setChecking(false);
+
+      // If no application at all, go straight to onboarding
+      if (!app) {
+        navigate("/get-started");
+        return;
+      }
+      // If application is still draft (not submitted), go to onboarding
+      if (app.status === "draft") {
+        navigate("/get-started");
+        return;
+      }
+    });
   }, [user, loading, navigate]);
 
   if (loading || checking) return (
