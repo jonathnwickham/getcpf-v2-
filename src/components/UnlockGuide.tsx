@@ -483,8 +483,77 @@ const UnlockGuide = () => {
         </section>
       ))}
 
+      {/* Recommended affiliate tools */}
+      <section className="bg-card border border-border rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-border bg-secondary">
+          <h3 className="font-bold">🤝 Our recommended tools</h3>
+          <p className="text-xs text-muted-foreground mt-1">Handpicked services that actually help foreigners in Brazil. These are what we'd use ourselves.</p>
+        </div>
+        <div className="p-6 space-y-4">
+          {[
+            {
+              icon: "💸", name: "Wise", category: "Send & Receive Money",
+              desc: "Send money to and from Brazil at the real exchange rate with tiny fees. Way cheaper than bank wires or Western Union.",
+              price: "From $0.50 per transfer",
+              url: "https://wise.com/invite/",
+              why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate — essential for receiving income from abroad.",
+            },
+            {
+              icon: "🏥", name: "SafetyWing", category: "Travel & Health Insurance",
+              desc: "Insurance for nomads. Covers hospitals, clinics, and emergencies across Brazil. Month-to-month, cancel anytime.",
+              price: "From $45/month",
+              url: "https://safetywing.com/?referenceID=getcpf",
+              why: "Brazil's public healthcare (SUS) is free but overcrowded. A private hospital visit can cost thousands.",
+            },
+            {
+              icon: "📱", name: "Airalo", category: "eSIM / Mobile Data",
+              desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land.",
+              price: "Data plans from $5",
+              url: "https://www.airalo.com/?ref=getcpf",
+              why: "You need a CPF to buy a physical SIM. Airalo lets you get data instantly while you sort everything else out.",
+            },
+            {
+              icon: "🔒", name: "NordVPN", category: "VPN & Security",
+              desc: "Access your home Netflix, banking apps, and streaming while in Brazil. Protects you on public WiFi too.",
+              price: "From ~$3.50/month",
+              url: "https://nordvpn.com/?ref=getcpf",
+              why: "Many services block Brazilian IPs. NordVPN keeps your home apps working and your data safe.",
+            },
+            {
+              icon: "🗣️", name: "Preply", category: "Learn Portuguese",
+              desc: "1-on-1 video lessons with native Brazilian Portuguese tutors. Pick your teacher, schedule, and budget.",
+              price: "From ~$10/hour",
+              url: "https://www.preply.com/?pref=getcpf",
+              why: "Even basic Portuguese changes how people treat you. A private tutor fast-tracks your confidence.",
+            },
+          ].map((p) => (
+            <a
+              key={p.name}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-secondary/50 border border-border rounded-xl p-5 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+            >
+              <div className="flex items-start gap-4">
+                <span className="text-3xl mt-1 shrink-0">{p.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <h4 className="font-bold text-sm">{p.name}</h4>
+                    <span className="text-[10px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{p.category}</span>
+                    <span className="text-xs bg-secondary border border-border px-2 py-0.5 rounded-full font-medium text-muted-foreground">{p.price}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+                  <p className="text-xs text-primary font-semibold mt-2">✦ {p.why}</p>
+                </div>
+                <span className="text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1">↗</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <p className="text-[10px] text-muted-foreground text-center mt-2">
-        Some links above are affiliate partnerships — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
+        🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
       </p>
     </div>
   );
