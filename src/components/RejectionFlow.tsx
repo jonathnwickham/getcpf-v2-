@@ -469,9 +469,9 @@ const RejectionFlow = ({ onClose, data }: { onClose: () => void; data?: Onboardi
     <div className="space-y-6 animate-slide-in">
       <section className="bg-card border border-border rounded-3xl p-8">
         <button onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground mb-4 font-medium">← Back to guide</button>
-        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Let's fix this together</h1>
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Let's fix this.</h1>
         <p className="text-muted-foreground mt-2 max-w-lg">
-          Most rejections are caused by one small thing. Tell us what happened and we'll give you the exact next step.
+          Most rejections come down to one small thing. Tell us what happened and we'll give you the exact next step — no guessing.
         </p>
       </section>
 

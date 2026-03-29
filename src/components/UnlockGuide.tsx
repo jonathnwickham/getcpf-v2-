@@ -389,7 +389,7 @@ const UnlockGuide = () => {
       {allEasyDone && !allDone && (
         <section className="bg-primary/5 border border-primary/15 rounded-2xl p-4 text-center">
           <p className="text-sm font-semibold">✅ You've nailed the essentials. You're set up in Brazil.</p>
-          <p className="text-xs text-muted-foreground mt-1">Keep going with the Medium and Hard items when you're ready.</p>
+          <p className="text-xs text-muted-foreground mt-1">The hard part's behind you. Tackle the rest when you're ready.</p>
         </section>
       )}
 
