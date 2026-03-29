@@ -375,7 +375,7 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
       className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50 tracking-wider"
     />
     {value.trim().length > 0 && !/^[A-Z0-9]{5,15}$/i.test(value.trim()) && (
-      <p className="text-xs text-destructive mt-2">⚠️ Passport numbers are 5–15 alphanumeric characters (letters and numbers only).</p>
+      <p className="text-xs text-destructive mt-2">⚠️ That doesn't look right — passport numbers are 5–15 characters, letters and numbers only.</p>
     )}
     <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
       <span>🔒</span> Your passport number is used only to prepare your forms and is never stored.
