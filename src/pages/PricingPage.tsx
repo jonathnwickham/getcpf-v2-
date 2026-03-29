@@ -270,7 +270,7 @@ const PricingPage = () => {
         {/* STEP 3: Payment */}
         {flowStep === "payment" && (
           <div className="max-w-md mx-auto text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Complete payment</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
             <p className="text-muted-foreground text-sm mb-2">
               {selectedPlan} plan — <span className="font-bold text-foreground">$49 USD</span>
             </p>
