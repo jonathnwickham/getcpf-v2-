@@ -1806,12 +1806,12 @@ const PartnersTab = () => (
               </div>
               <p className="text-sm text-foreground mb-2">{p.desc}</p>
               <p className="text-xs text-muted-foreground italic">💡 {p.why}</p>
-              <button
-                onClick={() => openExternal(p.url)}
+              <ExternalLink
+                href={p.url}
                 className="mt-3 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
               >
                 {p.cta}
-              </button>
+              </ExternalLink>
             </div>
           </div>
         </div>
