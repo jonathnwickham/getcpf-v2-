@@ -18,7 +18,7 @@ const Login = () => {
     const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      toast({ title: "That didn't work", description: error.message, variant: "destructive" });
       setLoading(false);
       return;
     }
