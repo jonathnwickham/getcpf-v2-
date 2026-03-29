@@ -1028,8 +1028,6 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       <DeclarationSection declaration={declaration} declarationCopied={declarationCopied} setDeclarationCopied={setDeclarationCopied} data={data} />
     )}
 
-    {/* Upload & compile all documents into one PDF */}
-    <DocumentCompiler data={data} motherDisplay={motherDisplay} hasDeclaration={!!(hasHost && declaration)} declaration={declaration || ""} />
 
     {/* Email template to Receita Federal */}
     <EmailTemplateSection data={data} motherDisplay={motherDisplay} />
