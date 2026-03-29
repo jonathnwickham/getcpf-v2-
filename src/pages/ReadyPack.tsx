@@ -1427,7 +1427,8 @@ const DOCUMENT_SLOTS = [
   { id: "passport_stamp", label: "Passport — visa/entry stamp", required: true },
   { id: "proof_address", label: "Proof of address", required: true },
   { id: "declaration", label: "Signed host declaration", required: false },
-  { id: "cpf_form", label: "CPF application form", required: false },
+  { id: "host_id", label: "Host ID copy (RG, CNH, or CPF card)", required: false },
+  { id: "cpf_form", label: "CPF application form / confirmation", required: false },
   { id: "birth_cert", label: "Birth certificate (apostille)", required: false },
   { id: "extra1", label: "Extra document", required: false },
 ];
