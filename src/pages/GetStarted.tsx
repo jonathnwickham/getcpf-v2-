@@ -261,7 +261,7 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
     <div>
       <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
-      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport — no abbreviations.</p>
+      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport. No nicknames — the form needs to match.</p>
       <input
         type="text"
         value={value}
