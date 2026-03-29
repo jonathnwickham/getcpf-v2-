@@ -52,7 +52,7 @@ const Dashboard = () => {
 
   if (loading || checking) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="animate-pulse text-muted-foreground">Loading...</div>
+      <div className="animate-pulse text-muted-foreground">Getting your stuff ready...</div>
     </div>
   );
 
