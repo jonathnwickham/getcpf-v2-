@@ -141,7 +141,7 @@ const PricingPage = () => {
       <div className="border-b border-border bg-background sticky top-0 z-50">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between px-6 py-4">
           <a href="/" className="text-lg font-bold tracking-tight">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </a>
           <a href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Already have an account? <span className="text-primary font-semibold">Sign in</span>

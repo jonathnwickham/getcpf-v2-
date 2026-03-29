@@ -8,7 +8,7 @@ const Footer = () => (
         {/* Brand */}
         <div>
           <div className="text-xl font-bold tracking-tight mb-3">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF — the easy way. We handle the preparation so you just show up.
@@ -32,7 +32,7 @@ const Footer = () => (
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
-            <li><a href="mailto:support@cpfeasy.ai" className="hover:text-foreground transition-colors">Contact us</a></li>
+            <li><a href="mailto:support@getcpf.com" className="hover:text-foreground transition-colors">Contact us</a></li>
           </ul>
         </div>
       </div>
@@ -41,9 +41,9 @@ const Footer = () => (
       <div className="border-t border-border pt-8">
         {/* Disclaimer */}
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
-          CPF Easy AI is a private consulting service and is not affiliated with the Brazilian Government or Receita Federal. We provide guidance to help foreigners navigate the official CPF registration process. We do not issue CPF numbers — only Receita Federal can do that. The CPF registration itself is free. Some partner links on this site are affiliate links — we may earn a small commission at no extra cost to you.
+          GET CPF is a private consulting service and is not affiliated with the Brazilian Government or Receita Federal. We provide guidance to help foreigners navigate the official CPF registration process. We do not issue CPF numbers — only Receita Federal can do that. The CPF registration itself is free. Some partner links on this site are affiliate links — we may earn a small commission at no extra cost to you.
         </p>
-        <p className="text-xs text-muted-foreground mt-4 text-center">© 2026 CPF Easy AI. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
       </div>
     </div>
   </footer>
