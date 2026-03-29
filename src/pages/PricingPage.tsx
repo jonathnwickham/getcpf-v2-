@@ -431,7 +431,7 @@ const PricingPage = () => {
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight mb-3">You're all set!</h1>
             <p className="text-muted-foreground text-sm mb-8">
-              Check your email to verify your account, then sign in to start your CPF application.
+              Check your inbox for a verification link — tap it and you're in.
             </p>
             <button
               onClick={() => navigate("/login")}

@@ -780,10 +780,10 @@ const ContactStep = ({
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Final step</label>
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost done!</h2>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Last step</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost there!</h2>
       <p className="text-muted-foreground text-sm mb-8">
-        Your email for the Ready Pack download, and your nationality for the application.
+        Your email (for your Ready Pack) and your nationality (for the application form).
       </p>
       <div className="space-y-4">
         <div>
