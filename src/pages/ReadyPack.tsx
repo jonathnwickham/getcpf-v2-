@@ -209,7 +209,10 @@ const ReadyPack = () => {
           <PhrasesTab data={data} />
         )}
         {activeTab === "partners" && (
-          <PartnersTab />
+          <UnlockGuide />
+        )}
+        {activeTab === "rejected" && (
+          <RejectionFlow onClose={() => setActiveTab("guide")} />
         )}
       </div>
     </div>
