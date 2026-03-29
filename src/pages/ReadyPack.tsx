@@ -720,6 +720,109 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
   </div>
 );
 
+// === CPF STORAGE SECTION ===
+const CpfStorageSection = () => {
+  const [cpfNumber, setCpfNumber] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  // Load from localStorage on mount
+  useState(() => {
+    const stored = localStorage.getItem("cpf-saved-number");
+    if (stored) { setCpfNumber(stored); setSaved(true); }
+    const storedPhoto = localStorage.getItem("cpf-saved-photo");
+    if (storedPhoto) setPhotoPreview(storedPhoto);
+  });
+
+  const handleSave = () => {
+    if (cpfNumber.trim().length >= 11) {
+      localStorage.setItem("cpf-saved-number", cpfNumber.trim());
+      setSaved(true);
+    }
+  };
+
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPhotoPreview(result);
+      localStorage.setItem("cpf-saved-photo", result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const formatCpf = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+  };
+
+  return (
+    <section className="bg-primary/5 border border-primary/15 rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-primary/10">
+        <h2 className="font-bold text-lg">🔐 Store your CPF number</h2>
+        <p className="text-xs text-muted-foreground mt-1">Keep your CPF safe here. Take a photo of your printout or type the number manually.</p>
+      </div>
+      <div className="p-6 space-y-4">
+        {saved && cpfNumber ? (
+          <div className="bg-card border border-border rounded-2xl p-6 text-center">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-2">Your CPF number</p>
+            <p className="text-3xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+            <button
+              onClick={() => navigator.clipboard.writeText(cpfNumber.replace(/\D/g, ""))}
+              className="mt-3 text-xs text-primary font-semibold hover:underline"
+            >
+              📋 Copy number
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Enter your CPF number</label>
+              <input
+                type="text"
+                value={formatCpf(cpfNumber)}
+                onChange={(e) => setCpfNumber(e.target.value.replace(/\D/g, ""))}
+                placeholder="000.000.000-00"
+                className="mt-1 w-full bg-card border border-border rounded-xl px-4 py-3 text-lg font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/30"
+                maxLength={14}
+              />
+            </div>
+            <button
+              onClick={handleSave}
+              disabled={cpfNumber.replace(/\D/g, "").length < 11}
+              className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              💾 Save CPF number
+            </button>
+          </div>
+        )}
+
+        {/* Photo upload */}
+        <div className="border-t border-border pt-4">
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">📸 Photo of your CPF printout</p>
+          {photoPreview ? (
+            <div className="space-y-2">
+              <img src={photoPreview} alt="CPF printout" className="w-full max-w-sm rounded-xl border border-border" />
+              <p className="text-xs text-primary font-semibold">✓ Photo saved securely on this device</p>
+            </div>
+          ) : (
+            <label className="flex items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
+              <span className="text-2xl">📷</span>
+              <span className="text-sm font-semibold">Take or upload a photo of your CPF</span>
+              <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
+            </label>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // === HELPER COMPONENTS ===
 
 const ProcessStep = ({ num, title, desc, image, status }: {
