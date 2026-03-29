@@ -35,7 +35,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       </h1>
 
       <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground max-w-[540px] mt-6 leading-relaxed">
-        Answer a few questions. Get a personalized application pack with pre-filled forms and exactly where to go — in minutes, not days.
+        Answer a few questions and we'll prepare everything you need — the right forms, the right office, the right words to say. You just show up.
       </p>
 
       <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center">
