@@ -1,10 +1,17 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
 import { getCitiesForState } from "@/lib/brazilian-cities";
+import {
+  applicationHasReadyPack,
+  fetchLatestApplication,
+  mapApplicationToOnboardingData,
+  persistOnboardingData,
+  readPersistedOnboardingData,
+  saveLatestApplication,
+} from "@/lib/application-storage";
 
 const TOTAL_STEPS = 8;
 
@@ -12,36 +19,50 @@ const GetStarted = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
+  const [data, setData] = useState<OnboardingData>(() => readPersistedOnboardingData() ?? INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
   const [ready, setReady] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
-    setData((prev) => ({ ...prev, [field]: value }));
+    setData((prev) => {
+      const next = { ...prev, [field]: value };
+      persistOnboardingData(next);
+      return next;
+    });
   }, []);
 
-  // Check if user already has a completed application
   useEffect(() => {
     if (authLoading) return;
+
+    const localData = readPersistedOnboardingData();
+
     if (!user) {
+      if (localData) {
+        setData(localData);
+      }
       setReady(true);
       return;
     }
-    supabase
-      .from("applications")
-      .select("status")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .then(({ data: apps }) => {
-        const app = apps?.[0];
-        if (app && app.status !== "draft") {
-          navigate("/dashboard", { replace: true });
-        } else {
-          setReady(true);
+
+    fetchLatestApplication(user.id)
+      .then((application) => {
+        if (application) {
+          const mapped = mapApplicationToOnboardingData(application);
+          setData(mapped);
+          persistOnboardingData(mapped);
+
+          if (applicationHasReadyPack(application)) {
+            navigate("/ready-pack", { replace: true });
+            return;
+          }
+        } else if (localData) {
+          setData(localData);
         }
-      });
+
+        setReady(true);
+      })
+      .catch(() => setReady(true));
   }, [user, authLoading, navigate]);
 
   if (!ready) {
