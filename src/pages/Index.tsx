@@ -14,7 +14,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   const handleOpenOnboarding = () => {
-    navigate("/get-started");
+    navigate("/pricing");
   };
 
   return (

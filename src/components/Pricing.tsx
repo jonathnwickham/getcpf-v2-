@@ -68,7 +68,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
-    else navigate("/get-started");
+    else navigate("/pricing");
   };
 
   return (
