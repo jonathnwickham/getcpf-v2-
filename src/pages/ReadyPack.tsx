@@ -96,7 +96,7 @@ const ReadyPack = () => {
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
-    { id: "partners", label: "Partners", icon: "🤝" },
+    { id: "partners", label: "Life in Brazil", icon: "🔓" },
     { id: "mycpf", label: "My CPF", icon: "🎉" },
   ];
 
