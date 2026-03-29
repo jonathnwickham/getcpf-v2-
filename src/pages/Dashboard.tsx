@@ -107,7 +107,7 @@ const Dashboard = () => {
               onClick={() => navigate("/ready-pack")}
               className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
             >
-              View full application pack →
+              Open my Ready Pack →
             </button>
           </div>
         </section>
