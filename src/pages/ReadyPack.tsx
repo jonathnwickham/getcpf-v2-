@@ -212,7 +212,7 @@ const ReadyPack = () => {
           <UnlockGuide />
         )}
         {activeTab === "rejected" && (
-          <RejectionFlow onClose={() => setActiveTab("guide")} />
+          <RejectionFlow onClose={() => setActiveTab("guide")} data={data} />
         )}
       </div>
     </div>
