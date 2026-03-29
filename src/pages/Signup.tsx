@@ -26,12 +26,12 @@ const Signup = () => {
 
     if (error) {
       toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
-    } else {
-      toast({
-        title: "Check your inbox 📧",
-        description: "We sent you a quick verification link — tap it and you're in.",
-      });
+      setLoading(false);
+      return;
     }
+
+    toast({ title: "You're in! 🎉", description: "Account created — let's get your CPF sorted." });
+    navigate("/get-started");
     setLoading(false);
   };
 

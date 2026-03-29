@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { BRAZILIAN_STATES, STATE_OFFICES, type OnboardingData, type OfficeInfo } from "@/lib/onboarding-data";
 import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
@@ -110,7 +111,17 @@ const ReadyPack = () => {
       {/* Header */}
       <div className="bg-primary text-primary-foreground">
         <div className="max-w-[960px] mx-auto px-6 py-12 pt-16">
-          <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
+          <div className="flex items-center justify-between">
+            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← cpfeasy.ai</a>
+            {user && (
+              <button
+                onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}
+                className="text-xs font-semibold opacity-70 hover:opacity-100 transition-opacity"
+              >
+                Sign out
+              </button>
+            )}
+          </div>
           <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 bg-primary-foreground/15 px-3 py-1 rounded-full text-xs font-bold mb-3">
