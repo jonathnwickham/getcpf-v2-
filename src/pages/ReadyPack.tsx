@@ -6,6 +6,8 @@ import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
+import RejectionFlow from "@/components/RejectionFlow";
+import UnlockGuide from "@/components/UnlockGuide";
 import {
   applicationHasReadyPack,
   fetchLatestApplication,
@@ -14,7 +16,7 @@ import {
   readPersistedOnboardingData,
 } from "@/lib/application-storage";
 
-type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf";
+type Tab = "overview" | "office" | "documents" | "guide" | "phrases" | "partners" | "mycpf" | "rejected";
 
 // Portuguese nationality translations for common nationalities
 const NATIONALITY_PT: Record<string, string> = {
@@ -94,7 +96,7 @@ const ReadyPack = () => {
     { id: "documents", label: "Documents", icon: "📄" },
     { id: "guide", label: "Day-of guide", icon: "🗓️" },
     { id: "phrases", label: "Portuguese", icon: "🇧🇷" },
-    { id: "partners", label: "Partners", icon: "🤝" },
+    { id: "partners", label: "Life in Brazil", icon: "🔓" },
     { id: "mycpf", label: "My CPF", icon: "🎉" },
   ];
 
@@ -207,7 +209,10 @@ const ReadyPack = () => {
           <PhrasesTab data={data} />
         )}
         {activeTab === "partners" && (
-          <PartnersTab />
+          <UnlockGuide />
+        )}
+        {activeTab === "rejected" && (
+          <RejectionFlow onClose={() => setActiveTab("guide")} />
         )}
       </div>
     </div>
@@ -1338,6 +1343,19 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
         className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
       >
         🔐 Go to my CPF section →
+      </button>
+    </section>
+
+    {/* Got rejected? */}
+    <section className="bg-card border border-destructive/20 rounded-2xl p-6 text-center">
+      <div className="text-3xl mb-3">😟</div>
+      <h3 className="text-lg font-bold">Got rejected?</h3>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">Don't stress — most rejections have a simple fix. We'll tell you exactly what to do.</p>
+      <button
+        onClick={() => setActiveTab("rejected")}
+        className="bg-secondary text-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
+      >
+        🔄 Fix my rejection →
       </button>
     </section>
   </div>
