@@ -41,8 +41,11 @@ const getNationalityPt = (nationality: string): string => {
 };
 
 // External link component — uses <a> tags which work inside iframes (window.open gets blocked)
-const ExternalLink = ({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer" className={className}>{children}</a>
+const ExternalLink = ({ href, className, children, showHint = true }: { href: string; className?: string; children: React.ReactNode; showHint?: boolean }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" className={`${className || ""} group/ext`}>
+    {children}
+    {showHint && <span className="inline-flex items-center gap-1 ml-1.5 text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">↗ new tab</span>}
+  </a>
 );
 
 const ReadyPack = () => {
