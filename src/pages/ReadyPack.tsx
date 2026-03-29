@@ -882,7 +882,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             <p className="text-xs text-muted-foreground mt-0.5">servicos.receita.fazenda.gov.br</p>
           </div>
           <span className="text-primary font-semibold text-sm shrink-0">Open →</span>
-        </button>
+        </ExternalLink>
 
         {/* Pre-filled reference */}
         <div className="bg-secondary rounded-xl p-5">
