@@ -89,7 +89,11 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             }`}
           >
             {tier.badge && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-bold">
+              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold ${
+                tier.comingSoon
+                  ? "bg-muted text-muted-foreground border border-border"
+                  : "bg-primary text-primary-foreground"
+              }`}>
                 {tier.badge}
               </div>
             )}
@@ -98,7 +102,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
               {tier.price} <span className="text-base font-normal text-muted-foreground">USD</span>
             </div>
             <div className="text-sm text-muted-foreground mt-3 mb-6 leading-relaxed">{tier.description}</div>
-            <ul className="mb-8 space-y-2.5">
+            <ul className={`mb-8 space-y-2.5 ${tier.comingSoon ? "opacity-60" : ""}`}>
               {tier.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-foreground">
                   <span className="text-primary font-bold shrink-0 mt-0.5">✓</span> {f}
@@ -106,14 +110,17 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
               ))}
             </ul>
             <button
-              onClick={handleCTA}
+              onClick={tier.comingSoon ? undefined : handleCTA}
+              disabled={tier.comingSoon}
               className={`w-full py-3.5 rounded-xl font-semibold transition-all ${
-                tier.highlighted
-                  ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
-                  : "border border-border text-foreground hover:bg-secondary"
+                tier.comingSoon
+                  ? "border border-border text-muted-foreground cursor-not-allowed opacity-60"
+                  : tier.highlighted
+                    ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
+                    : "border border-border text-foreground hover:bg-secondary"
               }`}
             >
-              {tier.cta} →
+              {tier.cta} {tier.comingSoon ? "" : "→"}
             </button>
           </div>
         ))}
