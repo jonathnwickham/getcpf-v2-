@@ -892,38 +892,33 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
           </button>
           {addressOpen && (
             <div className="mt-3 space-y-2 pl-8 animate-slide-in">
-              {data.stayingWithFriend ? (
-                <>
-                  <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
-                    <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone</h5>
-                    <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH).</p>
-                  </div>
-                  <div className="bg-secondary rounded-xl p-3">
-                    <h5 className="font-semibold text-xs text-muted-foreground">Other options that also work:</h5>
-                    <ul className="text-xs text-muted-foreground mt-1 space-y-1">
-                      <li>• Utility bill at the host's address (in their name is fine)</li>
-                    </ul>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
-                    <h5 className="font-semibold text-sm">🏨 Hotel or Airbnb</h5>
-                    <p className="text-xs text-muted-foreground mt-1">A printed or digital booking confirmation showing the property name, full address, and your name. Most commonly accepted.</p>
-                  </div>
-                  <div className="bg-secondary rounded-xl p-3">
-                    <h5 className="font-semibold text-sm">📄 Rental contract</h5>
-                    <p className="text-xs text-muted-foreground mt-1">If you're renting an apartment, bring a copy of the signed contract showing the address.</p>
-                  </div>
-                  <div className="bg-secondary rounded-xl p-3">
-                    <h5 className="font-semibold text-sm">💡 Utility bill</h5>
-                    <p className="text-xs text-muted-foreground mt-1">An electricity, water, or internet bill in your name showing the Brazilian address.</p>
-                  </div>
-                  <div className="bg-secondary rounded-xl p-3">
-                    <h5 className="font-semibold text-sm">🏠 Staying with someone?</h5>
-                    <p className="text-xs text-muted-foreground mt-1">A signed letter from your host with their name, CPF, address, and signature. Plus a copy of their ID.</p>
-                  </div>
-                </>
+              {data.stayingWithFriend && (
+                <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-2">
+                  <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone — recommended for you</h5>
+                  <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH).</p>
+                </div>
+              )}
+              <div className={`${data.stayingWithFriend ? 'bg-secondary' : 'bg-primary/5 border border-primary/10'} rounded-xl p-3`}>
+                <h5 className="font-semibold text-sm">🏨 Hotel booking confirmation</h5>
+                <p className="text-xs text-muted-foreground mt-1">A printed or digital confirmation showing the hotel name, full address, and your name. Most commonly accepted.</p>
+              </div>
+              <div className="bg-secondary rounded-xl p-3">
+                <h5 className="font-semibold text-sm">🏡 Airbnb / hostel confirmation</h5>
+                <p className="text-xs text-muted-foreground mt-1">Your Airbnb or hostel booking confirmation with the full address shown. Print it or show on your phone.</p>
+              </div>
+              <div className="bg-secondary rounded-xl p-3">
+                <h5 className="font-semibold text-sm">📄 Rental contract</h5>
+                <p className="text-xs text-muted-foreground mt-1">If you're renting an apartment, bring a copy of the signed contract showing the address.</p>
+              </div>
+              <div className="bg-secondary rounded-xl p-3">
+                <h5 className="font-semibold text-sm">💡 Utility bill</h5>
+                <p className="text-xs text-muted-foreground mt-1">An electricity, water, or internet bill in your name or your host's name, showing the Brazilian address.</p>
+              </div>
+              {!data.stayingWithFriend && (
+                <div className="bg-secondary rounded-xl p-3">
+                  <h5 className="font-semibold text-sm">🏠 Staying with someone?</h5>
+                  <p className="text-xs text-muted-foreground mt-1">A signed letter from your host with their name, CPF, address, and signature. Plus a copy of their ID.</p>
+                </div>
               )}
             </div>
           )}
