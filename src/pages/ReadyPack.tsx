@@ -521,12 +521,12 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
           <div className="bg-secondary rounded-lg p-4">
             <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
           </div>
-          <div className="flex gap-2 mt-3">
+          <div className="flex flex-wrap gap-2 mt-3">
             <button
               onClick={() => { navigator.clipboard.writeText(declaration); setDeclarationCopied(true); setTimeout(() => setDeclarationCopied(false), 2000); }}
-              className="flex-1 bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
+              className="flex-1 min-w-[140px] bg-primary text-primary-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all"
             >
-              {declarationCopied ? "✓ Copied!" : "📋 Copy declaration"}
+              {declarationCopied ? "✓ Copied!" : "📋 Copy letter"}
             </button>
             <button
               onClick={() => {
@@ -536,10 +536,18 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
                 a.href = url; a.download = "declaracao-residencia.txt"; a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="flex-1 bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
+              className="flex-1 min-w-[140px] bg-secondary text-foreground px-4 py-2.5 rounded-lg font-semibold text-xs hover:bg-secondary/80 transition-all"
             >
-              ⬇️ Download
+              ⬇️ Download .txt
             </button>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(declaration)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 min-w-[140px] bg-[#25D366] text-white px-4 py-2.5 rounded-lg font-semibold text-xs hover:opacity-90 transition-all text-center"
+            >
+              💬 Send via WhatsApp
+            </a>
           </div>
         </div>
       </section>
