@@ -240,14 +240,14 @@ const PartnerCard = ({ partner }: { partner: typeof PARTNERS[0] }) => {
           <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 mt-3">
             <p className="text-xs text-primary font-medium">💡 {partner.tip}</p>
           </div>
-          <a
-            href={partner.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
-          >
-            Visit {partner.name} →
-          </a>
+            <a
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all group/ext"
+            >
+              Visit {partner.name} <span className="text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">↗ opens in new tab</span>
+            </a>
         </div>
       )}
     </div>
