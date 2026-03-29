@@ -1196,7 +1196,12 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               {data.stayingWithFriend && (
                 <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-2">
                   <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone — recommended for you</h5>
-                  <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH).</p>
+                  <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH) <strong>or</strong> a copy of their CPF card.</p>
+                  <div className="mt-2 bg-card border border-border rounded-lg p-2.5 space-y-1.5">
+                    <p className="text-[11px] font-bold text-foreground">Your host must provide:</p>
+                    <p className="text-[11px] text-muted-foreground">✓ Signed declaration letter (generated below)</p>
+                    <p className="text-[11px] text-muted-foreground">✓ Copy of their ID — <strong>one</strong> of: RG, CNH, <strong>or</strong> CPF card</p>
+                  </div>
                 </div>
               )}
               <div className={`${data.stayingWithFriend ? 'bg-secondary' : 'bg-primary/5 border border-primary/10'} rounded-xl p-3`}>
@@ -1218,7 +1223,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               {!data.stayingWithFriend && (
                 <div className="bg-secondary rounded-xl p-3">
                   <h5 className="font-semibold text-sm">🏠 Staying with someone?</h5>
-                  <p className="text-xs text-muted-foreground mt-1">A signed letter from your host with their name, CPF, address, and signature. Plus a copy of their ID.</p>
+                  <p className="text-xs text-muted-foreground mt-1">A signed letter from your host with their name, CPF, address, and signature. Plus a copy of their ID (RG, CNH, or CPF card).</p>
                 </div>
               )}
             </div>
