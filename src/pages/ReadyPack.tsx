@@ -448,10 +448,10 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
       <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-3xl p-8 text-center">
         <div className="text-5xl mb-4">🇧🇷</div>
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-          Well done, {firstName}! 🎉
+          You did it, {firstName}! 🇧🇷
         </h1>
         <p className="text-lg text-muted-foreground mt-2 max-w-md mx-auto">
-          You did it — your CPF is registered. Welcome to Brazil, officially.
+          Your CPF is live. Brazil just opened up for you.
         </p>
       </section>
 
