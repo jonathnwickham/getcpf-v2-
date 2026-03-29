@@ -13,10 +13,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   };
 
   const proofItems = [
-    { num: "100%", label: "Online process" },
-    { num: "~5 min", label: "To complete" },
-    { num: "Free", label: "CPF itself" },
-    { num: "24/7", label: "Available anytime" },
+    { num: "~5 min", label: "That's all it takes" },
+    { num: "Free", label: "The CPF itself" },
+    { num: "Same day", label: "Walk out with it" },
+    { num: "24/7", label: "Start anytime" },
   ];
 
   return (
