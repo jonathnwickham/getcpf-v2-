@@ -33,10 +33,15 @@ interface Application {
   email: string | null;
   nationality: string | null;
   state_name: string | null;
+  state_code: string | null;
   city: string | null;
   status: string | null;
   created_at: string | null;
   submitted_at: string | null;
+  passport_number: string | null;
+  street_address: string | null;
+  mother_name: string | null;
+  father_name: string | null;
 }
 
 const CHART_COLORS = [
@@ -133,8 +138,8 @@ const Admin = () => {
           ))}
         </div>
 
-        {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} />}
-        {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} />}
+        {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
+        {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
         {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
         {tab === "promos" && <PromosTab />}
         {tab === "settings" && <SettingsTab />}
@@ -144,12 +149,14 @@ const Admin = () => {
 };
 
 /* ── Users Tab with search and funnel ── */
-const UsersTab = ({ profiles, applications, search, setSearch }: {
+const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   profiles: Profile[];
   applications: Application[];
   search: string;
   setSearch: (v: string) => void;
+  onRefresh: () => void;
 }) => {
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
@@ -188,15 +195,17 @@ const UsersTab = ({ profiles, applications, search, setSearch }: {
   // Nationality breakdown
   const nationalityData = useMemo(() => {
     const map = new Map<string, number>();
+    // Use nationality from applications where available, fall back to profile country_code
     profiles.forEach(p => {
-      const nat = p.country_code || "Unknown";
+      const app = applications.find(a => a.user_id === p.id);
+      const nat = app?.nationality || p.country_code || "Unknown";
       map.set(nat, (map.get(nat) || 0) + 1);
     });
     return Array.from(map.entries())
       .sort(([, a], [, b]) => b - a)
       .slice(0, 8)
       .map(([name, value]) => ({ name, value }));
-  }, [profiles]);
+  }, [profiles, applications]);
 
   return (
     <div className="space-y-6">
@@ -284,25 +293,29 @@ const UsersTab = ({ profiles, applications, search, setSearch }: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map(p => (
-              <TableRow key={p.id}>
-                <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
-                <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
-                <TableCell className="text-sm">{p.country_code || "—"}</TableCell>
-                <TableCell>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
-                    p.plan && p.plan !== "free"
-                      ? "bg-primary/10 text-primary"
-                      : "bg-secondary text-muted-foreground"
-                  }`}>
-                    {p.plan || "free"}
-                  </span>
-                </TableCell>
-                <TableCell className="text-xs text-muted-foreground">
-                  {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
-                </TableCell>
-              </TableRow>
-            ))}
+            {filtered.map(p => {
+              const userApp = applications.find(a => a.user_id === p.id);
+              const nat = userApp?.nationality || p.country_code || "—";
+              return (
+                <TableRow key={p.id} className="cursor-pointer hover:bg-secondary/50" onClick={() => setSelectedUser(p.id)}>
+                  <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
+                  <TableCell className="text-sm">{nat}</TableCell>
+                  <TableCell>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                      p.plan && p.plan !== "free"
+                        ? "bg-primary/10 text-primary"
+                        : "bg-secondary text-muted-foreground"
+                    }`}>
+                      {p.plan || "free"}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-xs text-muted-foreground">
+                    {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
             {filtered.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-sm text-muted-foreground py-8">
@@ -313,13 +326,84 @@ const UsersTab = ({ profiles, applications, search, setSearch }: {
           </TableBody>
         </Table>
       </div>
+
+      {/* User drill-down dialog */}
+      {(() => {
+        const userProfile = profiles.find(p => p.id === selectedUser);
+        const userApps = applications.filter(a => a.user_id === selectedUser);
+        if (!userProfile) return null;
+        return (
+          <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open) setSelectedUser(null); }}>
+            <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-xl">{userProfile.full_name || userProfile.email}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{userProfile.plan || "free"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
+                </div>
+
+                {userApps.length > 0 ? userApps.map(app => (
+                  <div key={app.id} className="bg-secondary rounded-xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-sm">Application</h4>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
+                        app.status === "prepared" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground border border-border"
+                      }`}>{app.status || "draft"}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div><span className="text-xs text-muted-foreground">Name:</span> {app.full_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Passport:</span> {app.passport_number || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Nationality:</span> {app.nationality || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">State:</span> {app.state_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">City:</span> {app.city || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Address:</span> {app.street_address || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Mother:</span> {app.mother_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Father:</span> {app.father_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Email:</span> {app.email || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Created:</span> {app.created_at ? new Date(app.created_at).toLocaleDateString() : "—"}</div>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No application yet</p>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        );
+      })()}
     </div>
   );
 };
 
 /* ── Applications Tab ── */
-const ApplicationsTab = ({ applications, profiles }: { applications: Application[]; profiles: Profile[] }) => {
+const APP_STATUSES = ["draft", "paid", "prepared", "office_visited", "cpf_issued", "rejected"] as const;
+const STATUS_COLORS: Record<string, string> = {
+  draft: "bg-secondary text-muted-foreground",
+  paid: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  prepared: "bg-primary/10 text-primary",
+  office_visited: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+  cpf_issued: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+  rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+};
+const STATUS_LABELS: Record<string, string> = {
+  draft: "Draft", paid: "Paid", prepared: "Prepared",
+  office_visited: "Office Visited", cpf_issued: "CPF Issued", rejected: "Rejected",
+};
+
+const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
   const profileMap = new Map(profiles.map(p => [p.id, p]));
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  const updateStatus = async (appId: string, newStatus: string) => {
+    setUpdatingId(appId);
+    await supabase.from("applications").update({ status: newStatus } as any).eq("id", appId);
+    setUpdatingId(null);
+    onRefresh();
+  };
 
   // State breakdown
   const stateData = useMemo(() => {
@@ -339,8 +423,8 @@ const ApplicationsTab = ({ applications, profiles }: { applications: Application
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Submitted" value={applications.filter(a => a.submitted_at).length.toString()} icon="📤" />
-        <StatCard label="Draft" value={applications.filter(a => a.status === "draft").length.toString()} icon="📝" />
+        <StatCard label="Paid" value={applications.filter(a => a.status === "paid").length.toString()} icon="💳" />
+        <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
       </div>
 
@@ -382,13 +466,16 @@ const ApplicationsTab = ({ applications, profiles }: { applications: Application
                   <TableCell className="text-sm">{a.state_name || "—"}</TableCell>
                   <TableCell className="text-sm">{a.city || "—"}</TableCell>
                   <TableCell>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
-                      a.status === "prepared" ? "bg-primary/10 text-primary" :
-                      a.status === "submitted" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" :
-                      "bg-secondary text-muted-foreground"
-                    }`}>
-                      {a.status || "draft"}
-                    </span>
+                    <select
+                      value={a.status || "draft"}
+                      onChange={(e) => updateStatus(a.id, e.target.value)}
+                      disabled={updatingId === a.id}
+                      className={`text-xs font-semibold px-2 py-1 rounded cursor-pointer border-0 outline-none ${STATUS_COLORS[a.status || "draft"] || STATUS_COLORS.draft}`}
+                    >
+                      {APP_STATUSES.map(s => (
+                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                      ))}
+                    </select>
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {a.created_at ? new Date(a.created_at).toLocaleDateString() : "—"}
@@ -983,7 +1070,7 @@ const PromosTab = () => {
                                   onClick={(e) => { e.stopPropagation(); setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name); }}
                                   className="text-xs text-muted-foreground hover:text-foreground"
                                 >
-                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `View ▼`) : "No data"}
+                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `${a.conversions.length} sales ▼`) : "No sales yet"}
                                 </button>
                                 <button
                                   onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
@@ -1145,20 +1232,38 @@ const SettingsTab = () => {
 
   const exportCSV = async () => {
     setExporting(true);
-    const { data } = await supabase.from("profiles").select("*");
-    if (data) {
-      const headers = ["id", "email", "full_name", "plan", "country_code", "created_at"];
-      const csv = [headers.join(","), ...data.map(r =>
-        headers.map(h => `"${(r as any)[h] ?? ""}"`).join(",")
-      )].join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `getcpf-users-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+    const [profilesRes, appsRes] = await Promise.all([
+      supabase.from("profiles").select("*"),
+      supabase.from("applications").select("*"),
+    ]);
+    const profileData = profilesRes.data || [];
+    const appData = appsRes.data || [];
+    const appMap = new Map((appData as any[]).map(a => [a.user_id, a]));
+
+    const headers = ["email", "full_name", "nationality", "state", "city", "plan", "status", "created_at"];
+    const rows = profileData.map((p: any) => {
+      const app = appMap.get(p.id) as any;
+      return headers.map(h => {
+        let val = "";
+        if (h === "nationality") val = app?.nationality || p.country_code || "";
+        else if (h === "state") val = app?.state_name || "";
+        else if (h === "city") val = app?.city || "";
+        else if (h === "status") val = app?.status || "";
+        else val = (p as any)[h] ?? "";
+        return `"${String(val).replace(/"/g, '""')}"`;
+      }).join(",");
+    });
+
+    const csv = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `getcpf-users-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     setExporting(false);
   };
 

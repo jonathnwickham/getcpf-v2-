@@ -686,7 +686,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
           <InfoField label="Mother's Name" value={motherDisplay} />
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Passport" value={data.passportNumber} />
-          <InfoField label="Nationality" value={`${data.nationality} (${getNationalityPt(data.nationality)})`} />
+          <InfoField label="Nationality" value={data.nationality} />
           <InfoField label="State" value={`${data.state} — ${stateName}`} />
           <InfoField label="Address" value={data.streetAddress} />
           <InfoField label="City" value={data.city} />

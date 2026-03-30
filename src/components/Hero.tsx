@@ -62,8 +62,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         {/* Left, Copy */}
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
-            <span className="text-sm">🇧🇷</span>
-            Trusted by 200+ foreigners moving to Brazil
+            <span className="text-sm">🛡️</span>
+            100% Acceptance Guarantee — or your money back
           </div>
 
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
@@ -80,7 +80,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
               Let's get started →
             </button>
-            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
+            <a href="#how-it-works" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
               See how it works
             </a>
           </div>

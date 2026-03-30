@@ -14,17 +14,12 @@ const tiers = [
     badge: "Available now",
     comingSoon: false,
     features: [
-      "AI-powered consultation for your situation",
-      "Pre-filled form data with copy buttons",
-      "Portuguese email template with your details",
-      "Document storage (passport, address proof)",
-      "AI document scanner, checks your docs are correct",
-      "Correct Receita Federal office for your state",
-      "Document checklist with quality tips",
-      "Portuguese cheat sheet for office visits",
+      "Pre-filled forms, office finder & document checklist",
+      "AI document scanner — checks before you go",
+      "Portuguese cheat sheet for the office visit",
       "Host declaration letter generator",
-      "Post-CPF partner recommendations",
-      "Application status tracking",
+      "Post-CPF setup guide (bank, SIM, Pix)",
+      "100% Acceptance Guarantee — or your money back",
     ],
     cta: "Get started, $49",
   },
@@ -149,6 +144,10 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       <p className="text-xs text-muted-foreground mt-8 max-w-[500px] mx-auto">
         One payment, no subscriptions. You keep access to your Ready Pack forever.
       </p>
+      <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary font-semibold">
+        <span>🛡️</span>
+        100% Acceptance Guarantee — follow our steps or get your money back
+      </div>
     </section>
   );
 };
