@@ -11,7 +11,7 @@ const faqs = [
 ];
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0, 1]));
 
   return (
     <section id="faq" className="py-24 px-8 max-w-[700px] mx-auto">
@@ -21,14 +21,14 @@ const FAQ = () => {
           <div key={i} className="border-b border-border py-5">
             <button
               className="w-full flex justify-between items-center text-left font-semibold text-foreground"
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              onClick={() => setOpenIndices(prev => { const next = new Set(prev); if (next.has(i)) next.delete(i); else next.add(i); return next; })}
             >
               {faq.q}
-              <span className={`text-lg text-muted-foreground transition-transform shrink-0 ml-4 ${openIndex === i ? "rotate-45 text-primary" : ""}`}>
+              <span className={`text-lg text-muted-foreground transition-transform shrink-0 ml-4 ${openIndices.has(i) ? "rotate-45 text-primary" : ""}`}>
                 +
               </span>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 text-sm text-muted-foreground leading-relaxed ${openIndex === i ? "max-h-[300px] pt-3" : "max-h-0"}`}>
+            <div className={`overflow-hidden transition-all duration-300 text-sm text-muted-foreground leading-relaxed ${openIndices.has(i) ? "max-h-[300px] pt-3" : "max-h-0"}`}>
               {faq.a}
             </div>
           </div>
