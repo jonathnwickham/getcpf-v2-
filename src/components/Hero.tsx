@@ -125,7 +125,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                   <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">Nearest Receita Federal</div>
-                    <div className="text-[10px] text-muted-foreground">São Paulo, CAC Bela Vista</div>
+                    <div className="text-[10px] text-muted-foreground transition-all duration-500">{offices[officeIndex].city}, {offices[officeIndex].office}</div>
                   </div>
                 </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
