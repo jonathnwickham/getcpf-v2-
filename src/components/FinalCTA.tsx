@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import brazilFlagOutline from "@/assets/brazil-flag-outline.png";
+import brazilFlag from "@/assets/brazil-flag.png";
 
 interface FinalCTAProps {
   onOpenModal?: () => void;
