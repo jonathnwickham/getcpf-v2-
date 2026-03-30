@@ -343,7 +343,6 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               </div>
             );
           })()}
-          />
         </div>
         <Table>
           <TableHeader>
