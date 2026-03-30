@@ -38,7 +38,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   ];
 
   return (
-    <section className="flex flex-col justify-center items-center px-6 pt-28 pb-6 relative overflow-hidden bg-primary/[0.03]">
+    <section className="flex flex-col justify-center items-center px-6 pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]">
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <img
@@ -50,7 +50,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         height={800}
       />
 
-      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 lg:gap-12 items-center">
+      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
           {/* Trust pill */}
