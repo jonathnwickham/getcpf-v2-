@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import brazilFlagOutline from "@/assets/brazil-flag-outline.png";
+import brazilFlag from "@/assets/brazil-flag.png";
 
 interface FinalCTAProps {
   onOpenModal?: () => void;
@@ -17,13 +17,13 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
     <section className="py-24 px-8 text-center relative bg-primary/[0.03] overflow-hidden">
       {/* Faint Brazilian flag outline on the left */}
       <img
-        src={brazilFlagOutline}
+        src={brazilFlag}
         alt=""
         aria-hidden="true"
         loading="lazy"
-        width={800}
-        height={560}
-        className="absolute left-[-8%] top-1/2 -translate-y-1/2 w-[28rem] max-w-none opacity-[0.06] pointer-events-none select-none"
+        width={1024}
+        height={1024}
+        className="absolute left-[-6%] top-1/2 -translate-y-1/2 w-[26rem] max-w-none opacity-[0.08] pointer-events-none select-none"
       />
 
       <div className="relative z-10">
