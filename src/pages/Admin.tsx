@@ -289,6 +289,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <TableHead>Email</TableHead>
               <TableHead>Nationality</TableHead>
               <TableHead>Plan</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Signed up</TableHead>
             </TableRow>
           </TableHeader>
