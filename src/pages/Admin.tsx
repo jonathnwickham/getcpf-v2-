@@ -1791,11 +1791,19 @@ const PartnersTab = ({ userId }: { userId: string }) => {
 };
 
 /* ── Settings Tab ── */
-const SettingsTab = () => {
+const SettingsTab = ({ userId }: { userId: string }) => {
   const [exporting, setExporting] = useState(false);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [loadingLogs, setLoadingLogs] = useState(true);
+
+  useEffect(() => {
+    supabase.from("audit_log").select("*").order("created_at", { ascending: false }).limit(50)
+      .then(({ data }) => { if (data) setAuditLogs(data); setLoadingLogs(false); });
+  }, []);
 
   const exportCSV = async () => {
     setExporting(true);
+    await logAuditAction(userId, "Exported users CSV");
     const [profilesRes, appsRes] = await Promise.all([
       supabase.from("profiles").select("*"),
       supabase.from("applications").select("*"),
@@ -1851,6 +1859,40 @@ const SettingsTab = () => {
         <p className="text-sm text-muted-foreground">
           Payment integration settings will appear here once connected. Price changes and webhook configuration will be manageable from this panel.
         </p>
+      </div>
+
+      {/* Audit Log */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <h2 className="font-bold text-lg mb-1">Audit log</h2>
+        <p className="text-xs text-muted-foreground mb-4">Recent admin actions (last 50)</p>
+        {loadingLogs ? (
+          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+        ) : auditLogs.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No audit log entries yet. Actions will be recorded as you use the admin panel.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Details</TableHead>
+                  <TableHead>When</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {auditLogs.map((log: any) => (
+                  <TableRow key={log.id}>
+                    <TableCell className="font-semibold text-sm">{log.action}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[300px] truncate">{log.details || "—"}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                      {new Date(log.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
     </div>
   );
