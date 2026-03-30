@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 
 const upcoming = [
   { emoji: "🛂", title: "Digital Nomad Visa", desc: "Step-by-step guide to Brazil's digital nomad visa. Requirements, documents, and where to apply." },
@@ -35,24 +35,6 @@ const ComingSoon = () => (
         ))}
       </div>
 
-      {/* Affiliate CTA */}
-      <div className="mt-16 bg-secondary border border-border rounded-2xl p-8 md:p-10 text-center">
-        <div className="text-3xl mb-3">🤝</div>
-        <h3 className="font-bold text-xl mb-2">Help us spread the word</h3>
-        <p className="text-sm text-muted-foreground max-w-[500px] mx-auto leading-relaxed mb-6">
-          Run a blog, YouTube channel, or community for expats and travellers in Brazil? 
-          We're looking for affiliates who genuinely care about helping foreigners navigate the system.
-        </p>
-        <Link
-          to="/affiliates/apply"
-          className="inline-block bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-md shadow-primary/20"
-        >
-          Apply to become an affiliate →
-        </Link>
-        <p className="text-xs text-muted-foreground mt-3">
-          We review every application personally. Earn commission on every referral.
-        </p>
-      </div>
     </div>
   </section>
 );

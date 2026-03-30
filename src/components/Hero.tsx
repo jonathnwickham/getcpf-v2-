@@ -76,7 +76,11 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out. No wasted trips, no rejected forms, no showing up to the wrong office.
           </p>
 
-          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-3 max-w-[520px] mx-auto lg:mx-0 italic">
+          <p className="animate-fade-up-2 text-sm text-muted-foreground/60 mt-3 max-w-[520px] mx-auto lg:mx-0 italic">
+            "I spent three hours on Reddit and still showed up to the wrong office."
+          </p>
+
+          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-2 max-w-[520px] mx-auto lg:mx-0">
             You still need to visit an office in person. We make sure that visit works.
           </p>
 
@@ -96,6 +100,16 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                 <div className="text-xs text-muted-foreground mt-1 font-medium">{item.label}</div>
               </div>
             ))}
+          </div>
+
+          {/* Logo trust strip */}
+          <div className="animate-fade-up-4 mt-8">
+            <p className="text-xs text-muted-foreground mb-3 text-center lg:text-left">Your CPF unlocks all of these and everything else in Brazil.</p>
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center">
+              {["Nubank", "iFood", "Mercado Livre", "Rappi", "Vivo", "QuintoAndar", "Amazon BR", "Correios"].map((name) => (
+                <span key={name} className="text-xs font-semibold text-muted-foreground/50 tracking-wide uppercase">{name}</span>
+              ))}
+            </div>
           </div>
         </div>
 
