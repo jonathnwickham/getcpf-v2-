@@ -306,13 +306,43 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 
       {/* Search + Table */}
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-border flex flex-wrap gap-3 items-center">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email..."
             className="w-full md:w-80 px-4 py-2.5 bg-secondary border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+          {(() => {
+            const dueForDeletion = filtered.filter(p => getDataStatus(p) === "Due for deletion");
+            if (dueForDeletion.length === 0) return null;
+            return (
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => setSelectedForBulk(new Set(dueForDeletion.map(p => p.id)))}
+                  className="text-xs font-semibold text-destructive bg-destructive/10 px-3 py-2 rounded-lg hover:bg-destructive/20 transition-colors"
+                >
+                  Select all due for deletion ({dueForDeletion.length})
+                </button>
+                {selectedForBulk.size > 0 && (
+                  <button
+                    onClick={async () => {
+                      if (!confirm(`Anonymize ${selectedForBulk.size} user(s)? This cannot be undone.`)) return;
+                      for (const uid of selectedForBulk) {
+                        await anonymizeUser(uid, () => {});
+                      }
+                      setSelectedForBulk(new Set());
+                      onRefresh();
+                    }}
+                    className="text-xs font-semibold text-destructive-foreground bg-destructive px-3 py-2 rounded-lg hover:opacity-90 transition-all"
+                  >
+                    Delete selected ({selectedForBulk.size})
+                  </button>
+                )}
+              </div>
+            );
+          })()}
           />
         </div>
         <Table>
