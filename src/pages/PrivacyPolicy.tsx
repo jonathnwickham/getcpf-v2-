@@ -87,7 +87,7 @@ const PrivacyPolicy = () => (
           </ul>
           <p className="leading-relaxed mt-3">
             To exercise any of these rights, email us at{" "}
-            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>.
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
             We'll respond within 15 business days.
           </p>
         </section>
