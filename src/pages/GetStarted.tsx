@@ -35,12 +35,11 @@ const GetStarted = () => {
   useEffect(() => {
     if (authLoading) return;
 
-    const localData = readPersistedOnboardingData();
-
     if (!user) {
-      if (localData) {
-        setData(localData);
-      }
+      // Not logged in — start fresh, clear any stale test data
+      localStorage.removeItem(ONBOARDING_LOCAL_KEY);
+      sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
+      setData(INITIAL_DATA);
       setReady(true);
       return;
     }
@@ -56,8 +55,11 @@ const GetStarted = () => {
             navigate("/ready-pack", { replace: true });
             return;
           }
-        } else if (localData) {
-          setData(localData);
+        } else {
+          // Logged in but no application — start completely fresh
+          localStorage.removeItem(ONBOARDING_LOCAL_KEY);
+          sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
+          setData(INITIAL_DATA);
         }
 
         setReady(true);
