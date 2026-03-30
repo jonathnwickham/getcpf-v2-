@@ -415,6 +415,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
   );
 };
 
+const InfoField = ({ label, value }: { label: string; value: string }) => (
   <div>
     <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">{label}</div>
     <div className="font-semibold text-foreground">{value}</div>
