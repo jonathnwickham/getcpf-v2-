@@ -859,31 +859,92 @@ const PromosTab = () => {
                     <TableHead>Conversions</TableHead>
                     <TableHead>Revenue</TableHead>
                     <TableHead>Commission owed</TableHead>
-                    <TableHead></TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {affiliateData.map((a) => (
                     <>
-                      <TableRow key={a.name} className="cursor-pointer hover:bg-secondary/50" onClick={() => setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name)}>
-                        <TableCell className="font-semibold">{a.name}</TableCell>
-                        <TableCell className="font-mono text-primary">{a.code}</TableCell>
-                        <TableCell>{a.discount}%</TableCell>
-                        <TableCell>{a.commission}%</TableCell>
-                        <TableCell>{a.uses}</TableCell>
-                        <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                        <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
-                        <TableCell className="text-muted-foreground text-xs">{a.conversions.length > 0 ? (expandedAffiliate === a.name ? "▲" : "▼") : ""}</TableCell>
+                      <TableRow key={a.name}>
+                        {editingAffiliate === a.promoId ? (
+                          <>
+                            <TableCell>
+                              <input
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary"
+                              />
+                            </TableCell>
+                            <TableCell className="font-mono text-primary">{a.code}</TableCell>
+                            <TableCell>{a.discount}%</TableCell>
+                            <TableCell>
+                              <input
+                                value={editCommission}
+                                onChange={(e) => setEditCommission(e.target.value)}
+                                type="number"
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-20 focus:outline-none focus:ring-2 focus:ring-primary"
+                              />%
+                            </TableCell>
+                            <TableCell>{a.uses}</TableCell>
+                            <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
+                            <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <button onClick={() => updateAffiliate(a.promoId)} className="text-xs font-bold text-primary hover:opacity-80">Save</button>
+                                <button onClick={() => setEditingAffiliate(null)} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
+                              </div>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell className="font-semibold">{a.name}</TableCell>
+                            <TableCell className="font-mono text-primary">{a.code}</TableCell>
+                            <TableCell>{a.discount}%</TableCell>
+                            <TableCell>{a.commission}%</TableCell>
+                            <TableCell>{a.uses}</TableCell>
+                            <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
+                            <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-3">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name); }}
+                                  className="text-xs text-muted-foreground hover:text-foreground"
+                                >
+                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `View ▼`) : "No data"}
+                                </button>
+                                <button
+                                  onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditCommission(String(a.commission)); }}
+                                  className="text-xs font-semibold text-muted-foreground hover:text-foreground"
+                                >
+                                  Edit
+                                </button>
+                                {confirmDeleteAffiliate === a.promoId ? (
+                                  <div className="flex items-center gap-1">
+                                    <button onClick={() => removeAffiliate(a.promoId)} className="text-xs font-bold text-red-600 hover:text-red-700">Remove</button>
+                                    <button onClick={() => setConfirmDeleteAffiliate(null)} className="text-xs text-muted-foreground">Cancel</button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => setConfirmDeleteAffiliate(a.promoId)}
+                                    className="text-xs font-semibold text-red-500 hover:text-red-600"
+                                  >
+                                    Delete
+                                  </button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                       {expandedAffiliate === a.name && a.conversions.length > 0 && (
                         <TableRow key={`${a.name}-detail`}>
                           <TableCell colSpan={8} className="bg-secondary/30 p-0">
-                            <div className="p-4">
-                              <p className="text-xs font-bold text-muted-foreground mb-2">Conversions for {a.name}</p>
+                            <div className="p-5">
+                              <p className="text-xs font-bold text-muted-foreground mb-3">Conversions for {a.name}</p>
                               <div className="space-y-2">
                                 {a.conversions.map((c: any, i: number) => (
-                                  <div key={i} className="flex items-center gap-4 text-xs bg-card rounded-lg px-3 py-2 border border-border">
-                                    <span className="font-semibold">{c.full_name || c.email || "Unknown"}</span>
+                                  <div key={i} className="flex flex-wrap items-center gap-4 text-xs bg-card rounded-lg px-4 py-3 border border-border">
+                                    <span className="font-semibold min-w-[120px]">{c.full_name || c.email || "Unknown"}</span>
                                     <span className="text-muted-foreground">{c.email}</span>
                                     <span className="text-primary font-bold">${Number(c.final_price || 0).toFixed(2)}</span>
                                     <span className="text-muted-foreground">saved ${Number(c.discount_amount || 0).toFixed(2)}</span>

@@ -78,6 +78,48 @@ const PricingPage = () => {
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
+  // Promo code state
+  const [promoInput, setPromoInput] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount_percent: number } | null>(null);
+  const [promoError, setPromoError] = useState("");
+
+  const BASE_PRICE = 49;
+  const finalPrice = appliedPromo
+    ? (BASE_PRICE * (1 - appliedPromo.discount_percent / 100)).toFixed(2)
+    : BASE_PRICE.toFixed(2);
+  const discount = appliedPromo
+    ? (BASE_PRICE * appliedPromo.discount_percent / 100).toFixed(2)
+    : null;
+
+  const applyPromo = async () => {
+    const code = promoInput.trim().toUpperCase();
+    if (!code) return;
+    setPromoLoading(true);
+    setPromoError("");
+    const { data: promo } = await supabase
+      .from("promo_codes")
+      .select("code, discount_percent, is_active")
+      .eq("code", code)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (!promo) {
+      setPromoError("Code not found or expired");
+      setAppliedPromo(null);
+    } else {
+      setAppliedPromo({ code: promo.code, discount_percent: promo.discount_percent });
+      setPromoError("");
+    }
+    setPromoLoading(false);
+  };
+
+  const removePromo = () => {
+    setAppliedPromo(null);
+    setPromoInput("");
+    setPromoError("");
+  };
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.includes("@")) {
@@ -92,10 +134,9 @@ const PricingPage = () => {
 
   const handleMockPayment = (method: "card" | "paypal") => {
     setLoading(true);
-    // Simulate payment processing
     setTimeout(() => {
       setLoading(false);
-      toast({ title: "Payment sorted!", description: `$49 charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
+      toast({ title: "Payment sorted!", description: `$${finalPrice} charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
       setFlowStep("password");
     }, 1500);
   };
@@ -273,13 +314,52 @@ const PricingPage = () => {
         {flowStep === "payment" && (
           <div className="max-w-md mx-auto text-center">
             <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
-            <p className="text-muted-foreground text-sm mb-2">
-              {selectedPlan} plan — <span className="font-bold text-foreground">$49 USD</span>
-            </p>
-            <p className="text-xs text-muted-foreground mb-8">for {email}</p>
+
+            {/* Price display */}
+            {appliedPromo ? (
+              <div className="mb-2">
+                <p className="text-muted-foreground text-sm">
+                  {selectedPlan} plan —{" "}
+                  <span className="line-through text-muted-foreground">$49</span>{" "}
+                  <span className="font-bold text-primary text-lg">${finalPrice} USD</span>
+                </p>
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mt-1">
+                  🎉 {appliedPromo.code} applied, you save ${discount}
+                  <button onClick={removePromo} className="hover:text-primary/70 transition-colors">✕</button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-sm mb-2">
+                {selectedPlan} plan — <span className="font-bold text-foreground">$49 USD</span>
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground mb-6">for {email}</p>
+
+            {/* Promo code input */}
+            {!appliedPromo && (
+              <div className="mb-6">
+                <div className="flex gap-2">
+                  <input
+                    value={promoInput}
+                    onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(""); }}
+                    placeholder="Discount code"
+                    maxLength={30}
+                    className="flex-1 bg-secondary border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono tracking-wide"
+                  />
+                  <button
+                    onClick={applyPromo}
+                    disabled={promoLoading || !promoInput.trim()}
+                    className="bg-secondary border border-border px-5 py-3 rounded-xl text-sm font-semibold hover:bg-muted transition-all disabled:opacity-50"
+                  >
+                    {promoLoading ? "..." : "Apply"}
+                  </button>
+                </div>
+                {promoError && <p className="text-xs text-destructive mt-1.5 text-left">{promoError}</p>}
+              </div>
+            )}
 
             <div className="space-y-3">
-              {/* Mock Stripe card payment */}
+              {/* Card payment */}
               <button
                 onClick={() => handleMockPayment("card")}
                 disabled={loading}
@@ -293,7 +373,7 @@ const PricingPage = () => {
                       <rect width="20" height="14" x="2" y="5" rx="2" />
                       <line x1="2" x2="22" y1="10" y2="10" />
                     </svg>
-                    Pay with card
+                    Pay ${finalPrice} with card
                   </>
                 )}
               </button>
@@ -304,7 +384,7 @@ const PricingPage = () => {
                 <div className="flex-1 h-px bg-border" />
               </div>
 
-              {/* Mock PayPal payment */}
+              {/* PayPal payment */}
               <button
                 onClick={() => handleMockPayment("paypal")}
                 disabled={loading}
@@ -314,7 +394,7 @@ const PricingPage = () => {
                   <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
-                    <span className="font-extrabold text-base tracking-tight">Pay with </span>
+                    <span className="font-extrabold text-base tracking-tight">Pay ${finalPrice} with </span>
                     <span className="font-extrabold text-base tracking-tight text-[hsl(210,80%,45%)]">PayPal</span>
                   </>
                 )}
