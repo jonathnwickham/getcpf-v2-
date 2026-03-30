@@ -11,7 +11,6 @@ import vivoLogo from "@/assets/logos/vivo.png";
 import quintoAndarLogo from "@/assets/logos/quintoandar.png";
 import amazonLogo from "@/assets/logos/amazon.png";
 import correiosLogo from "@/assets/logos/correios.png";
-import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
