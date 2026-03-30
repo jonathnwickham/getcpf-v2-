@@ -23,6 +23,7 @@ import Admin from "./pages/Admin.tsx";
 import Guides from "./pages/Guides.tsx";
 import GuideDetail from "./pages/GuideDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Contact from "./pages/Contact.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 
