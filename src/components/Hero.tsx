@@ -53,7 +53,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-6 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            Most foreigners waste a full day on their CPF. Our users are done by 9 AM. Answer a few questions and we prepare everything — the right forms, the right office, the right words to say.
+            Most foreigners waste a full day figuring out their CPF. We cut that to five minutes. Answer a few questions and we prepare everything — the right forms, the nearest office, the exact words to say in Portuguese.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center lg:justify-start">
