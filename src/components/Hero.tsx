@@ -46,7 +46,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
     { num: displayCount, label: "CPFs prepared" },
   ];
 
-  const flags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇳🇬", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷"];
+  const orbitFlags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇮🇹", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷", "🇵🇹", "🇳🇱", "🇨🇦", "🇮🇪"];
 
   return (
     <section className="min-h-[90vh] flex flex-col justify-center items-center px-6 pt-32 pb-16 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
@@ -211,17 +211,37 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
       </div>
 
-      {/* Nationality flags — tighter to logos */}
-      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-2">
-        <div className="flex gap-2 flex-wrap justify-center items-center">
-          <span className="text-3xl">🇧🇷</span>
-          <span className="text-muted-foreground mx-1">←</span>
-          {flags.map((flag) => (
-            <span key={flag} className="text-2xl">{flag}</span>
-          ))}
-          <span className="text-sm text-muted-foreground font-medium self-center ml-1">+43 more</span>
+      {/* Nationality orbit */}
+      <div className="animate-fade-up-4 mt-8 flex flex-col items-center gap-3">
+        <div className="relative w-[180px] h-[180px] md:w-[240px] md:h-[240px] lg:w-[280px] lg:h-[280px]">
+          {/* Centre Brazil flag */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="text-5xl md:text-6xl drop-shadow-lg">🇧🇷</span>
+          </div>
+          {/* Rotating ring */}
+          <div className="absolute inset-0 animate-[spin_24s_linear_infinite]">
+            {orbitFlags.map((flag, i) => {
+              const angle = (i / orbitFlags.length) * 2 * Math.PI;
+              const radius = 50;
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              return (
+                <span
+                  key={i}
+                  className="absolute text-lg md:text-xl lg:text-2xl animate-[spin_24s_linear_infinite_reverse]"
+                  style={{
+                    left: `${x}%`,
+                    top: `${y}%`,
+                    transform: `translate(-50%, -50%)`,
+                  }}
+                >
+                  {flag}
+                </span>
+              );
+            })}
+          </div>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality</p>
+        <p className="text-xs text-muted-foreground">Works for any nationality — 50+ countries supported</p>
       </div>
     </section>
   );
