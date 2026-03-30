@@ -116,7 +116,7 @@ const Dashboard = () => {
         <section>
           <div className="mb-6">
             <h2 className="text-xl font-extrabold">What to do next with your CPF</h2>
-            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF — each one is tried and tested by people who've done exactly this.</p>
+            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF, each one is tried and tested by people who've done exactly this.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PARTNERS.map((p) => (
