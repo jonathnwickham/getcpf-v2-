@@ -64,7 +64,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
           <div className="animate-fade-up-3 flex items-center gap-2 mt-3 justify-center lg:justify-start text-xs text-muted-foreground">
             <span>🛡️</span>
-            If you follow our steps and get rejected, full refund. No questions asked.
+            Didn't work? Full refund. No questions.
           </div>
         </div>
 
