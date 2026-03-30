@@ -35,7 +35,7 @@ const testimonials = [
     country: "German",
     location: "Curitiba",
     rating: 5,
-    text: "I'm a digital nomad and needed a CPF to get a proper phone plan and use Pix. The app knew I was in Paraná and recommended the Curitiba Centro office — even mentioned the staff speaks basic English. The Portuguese cheat sheet made the whole interaction smooth. I was genuinely impressed by how thorough the preparation was.",
+    text: "I'm a digital nomad and needed a CPF to get a proper phone plan and use Pix. The app knew I was in Paraná and recommended the Curitiba Centro office, even mentioned the staff speaks basic English. The Portuguese cheat sheet made the whole interaction smooth. I was genuinely impressed by how thorough the preparation was.",
     result: "Got CPF, Vivo SIM card, and Wise account set up in 2 days",
     timeAgo: "1 month ago",
   },
