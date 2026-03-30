@@ -198,7 +198,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
     // Use nationality from applications where available, fall back to profile country_code
     profiles.forEach(p => {
       const app = applications.find(a => a.user_id === p.id);
-      const nat = app?.nationality || p.country_code || "Unknown";
+      const nat = app?.nationality || p.country_code || "Not onboarded";
       map.set(nat, (map.get(nat) || 0) + 1);
     });
     return Array.from(map.entries())

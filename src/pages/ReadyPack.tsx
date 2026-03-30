@@ -753,6 +753,9 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
             onChange={(e) => {
               if (onChangeState) onChangeState(e.target.value);
               setShowStateChange(false);
+              // Show inline confirmation
+              const btn = document.getElementById("state-changed-toast");
+              if (btn) { btn.textContent = "✓ State updated"; btn.classList.remove("hidden"); setTimeout(() => btn.classList.add("hidden"), 3000); }
             }}
           >
             {BRAZILIAN_STATES.map((s) => (
