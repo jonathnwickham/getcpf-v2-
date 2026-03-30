@@ -381,7 +381,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                   </TableCell>
                   <TableCell>
                     {(() => {
-                      const status = getDataStatus(p);
+                      const status = getDataStatus(p, applications);
                       return (
                         <span className={`text-xs font-semibold px-2 py-0.5 rounded ${DATA_STATUS_COLORS[status]}`}>
                           {status}
