@@ -319,7 +319,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             className="w-full md:w-80 px-4 py-2.5 bg-secondary border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
           />
           {(() => {
-            const dueForDeletion = filtered.filter(p => getDataStatus(p) === "Due for deletion");
+            const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
             if (dueForDeletion.length === 0) return null;
             return (
               <div className="flex gap-2 items-center">
