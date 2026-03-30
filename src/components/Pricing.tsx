@@ -126,19 +126,39 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
                 </li>
               ))}
             </ul>
-            <button
-              onClick={tier.comingSoon ? undefined : handleCTA}
-              disabled={tier.comingSoon}
-              className={`w-full py-3.5 rounded-xl font-semibold transition-all ${
-                tier.comingSoon
-                  ? "border border-border text-muted-foreground cursor-not-allowed opacity-60"
-                  : tier.highlighted
+            {tier.comingSoon ? (
+              !waitlistSubmitted[tier.name] ? (
+                <form onSubmit={(e) => handleWaitlist(e, tier.name)} className="space-y-2">
+                  <input
+                    type="email"
+                    value={waitlistEmail[tier.name] || ""}
+                    onChange={(e) => setWaitlistEmail((s) => ({ ...s, [tier.name]: e.target.value }))}
+                    required
+                    placeholder="your@email.com"
+                    className="w-full bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 rounded-xl font-semibold border border-border text-foreground hover:bg-secondary transition-all"
+                  >
+                    Join waitlist →
+                  </button>
+                </form>
+              ) : (
+                <div className="text-center text-sm text-primary font-semibold py-3.5">✓ On the waitlist</div>
+              )
+            ) : (
+              <button
+                onClick={handleCTA}
+                className={`w-full py-3.5 rounded-xl font-semibold transition-all ${
+                  tier.highlighted
                     ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
                     : "border border-border text-foreground hover:bg-secondary"
-              }`}
-            >
-              {tier.cta} {tier.comingSoon ? "" : "→"}
-            </button>
+                }`}
+              >
+                {tier.cta} →
+              </button>
+            )}
             {/* Trust signals, only on highlighted tier */}
             {tier.highlighted && (
               <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">

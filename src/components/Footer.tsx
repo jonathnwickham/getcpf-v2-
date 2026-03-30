@@ -33,6 +33,7 @@ const Footer = () => (
             <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
             <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Become an Affiliate</Link></li>
             <li><a href="mailto:support@getcpf.com" className="hover:text-foreground transition-colors">Contact us</a></li>
           </ul>
         </div>
