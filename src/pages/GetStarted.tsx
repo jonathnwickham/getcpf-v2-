@@ -11,6 +11,8 @@ import {
   persistOnboardingData,
   readPersistedOnboardingData,
   saveLatestApplication,
+  ONBOARDING_LOCAL_KEY,
+  ONBOARDING_SESSION_KEY,
 } from "@/lib/application-storage";
 
 const TOTAL_STEPS = 8;
@@ -19,7 +21,7 @@ const GetStarted = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<OnboardingData>(() => readPersistedOnboardingData() ?? INITIAL_DATA);
+  const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
   const [ready, setReady] = useState(false);
@@ -35,12 +37,11 @@ const GetStarted = () => {
   useEffect(() => {
     if (authLoading) return;
 
-    const localData = readPersistedOnboardingData();
-
     if (!user) {
-      if (localData) {
-        setData(localData);
-      }
+      // Not logged in — start fresh, clear any stale test data
+      localStorage.removeItem(ONBOARDING_LOCAL_KEY);
+      sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
+      setData(INITIAL_DATA);
       setReady(true);
       return;
     }
@@ -56,8 +57,11 @@ const GetStarted = () => {
             navigate("/ready-pack", { replace: true });
             return;
           }
-        } else if (localData) {
-          setData(localData);
+        } else {
+          // Logged in but no application — start completely fresh
+          localStorage.removeItem(ONBOARDING_LOCAL_KEY);
+          sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
+          setData(INITIAL_DATA);
         }
 
         setReady(true);
