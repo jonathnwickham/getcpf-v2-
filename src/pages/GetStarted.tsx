@@ -188,7 +188,7 @@ const GetStarted = () => {
           className="max-w-[520px] w-full animate-slide-in"
         >
           {step === 0 && <WelcomeStep />}
-          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} />}
+          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} consentChecked={consentChecked} onConsentChange={(v) => { setConsentChecked(v); setConsentError(false); }} consentError={consentError} />}
           {step === 2 && (
             <MotherStep
               value={data.motherName}
