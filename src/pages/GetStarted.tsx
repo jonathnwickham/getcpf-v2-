@@ -81,9 +81,29 @@ const GetStarted = () => {
   }
 
   const next = async () => {
+    // Consent required on step 1 (first personal data entry)
+    if (step === 1 && !consentChecked) {
+      setConsentError(true);
+      return;
+    }
+
     setDirection("forward");
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
+
+      // Log consent on step 1 advance
+      if (step === 1 && user) {
+        try {
+          await supabase.from("consent_log").insert({
+            user_id: user.id,
+            consent_text: "I consent to GET CPF processing my personal data including my passport details to prepare my CPF application documents. I have read and agree to the Privacy Policy. I understand my data will be permanently deleted within 30 days.",
+            consent_version: "1.0",
+            consent: true,
+          });
+        } catch (e) {
+          console.error("Failed to log consent", e);
+        }
+      }
 
       // Save progress to DB after every step so login redirect works
       if (user) {
