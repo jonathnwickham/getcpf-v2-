@@ -11,6 +11,7 @@ const faqs = [
 ];
 
 const FAQ = () => {
+  // First two FAQs open by default
   const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0, 1]));
 
   return (
