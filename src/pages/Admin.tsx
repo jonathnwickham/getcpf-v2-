@@ -564,6 +564,7 @@ interface PromoCode {
   code: string;
   discount_percent: number;
   affiliate_name: string | null;
+  affiliate_email: string | null;
   affiliate_commission_percent: number;
   is_active: boolean;
   max_uses: number | null;
@@ -578,12 +579,14 @@ const PromosTab = () => {
   const [newCode, setNewCode] = useState("");
   const [newDiscount, setNewDiscount] = useState("10");
   const [newAffiliate, setNewAffiliate] = useState("");
+  const [newAffiliateEmail, setNewAffiliateEmail] = useState("");
   const [newCommission, setNewCommission] = useState("20");
   const [adding, setAdding] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [expandedAffiliate, setExpandedAffiliate] = useState<string | null>(null);
   const [editingAffiliate, setEditingAffiliate] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
   const [editCommission, setEditCommission] = useState("");
   const [confirmDeleteAffiliate, setConfirmDeleteAffiliate] = useState<string | null>(null);
 
@@ -609,10 +612,12 @@ const PromosTab = () => {
       code: newCode.trim().toUpperCase(),
       discount_percent: parseInt(newDiscount) || 10,
       affiliate_name: newAffiliate.trim() || null,
+      affiliate_email: newAffiliateEmail.trim() || null,
       affiliate_commission_percent: parseInt(newCommission) || 20,
-    });
+    } as any);
     setNewCode("");
     setNewAffiliate("");
+    setNewAffiliateEmail("");
     setNewDiscount("10");
     setNewCommission("20");
     setAdding(false);
@@ -633,8 +638,9 @@ const PromosTab = () => {
   const updateAffiliate = async (promoId: string) => {
     await supabase.from("promo_codes").update({
       affiliate_name: editName.trim() || null,
+      affiliate_email: editEmail.trim() || null,
       affiliate_commission_percent: parseInt(editCommission) || 20,
-    }).eq("id", promoId);
+    } as any).eq("id", promoId);
     setEditingAffiliate(null);
     loadData();
   };
@@ -642,8 +648,9 @@ const PromosTab = () => {
   const removeAffiliate = async (promoId: string) => {
     await supabase.from("promo_codes").update({
       affiliate_name: null,
+      affiliate_email: null,
       affiliate_commission_percent: 0,
-    }).eq("id", promoId);
+    } as any).eq("id", promoId);
     setConfirmDeleteAffiliate(null);
     loadData();
   };
@@ -653,6 +660,7 @@ const PromosTab = () => {
     const data: Record<string, {
       promoId: string;
       name: string;
+      email: string | null;
       code: string;
       discount: number;
       commission: number;
@@ -678,6 +686,7 @@ const PromosTab = () => {
         data[p.affiliate_name] = {
           promoId: p.id,
           name: p.affiliate_name,
+          email: p.affiliate_email,
           code: p.code,
           discount: p.discount_percent,
           commission: p.affiliate_commission_percent,
@@ -697,7 +706,7 @@ const PromosTab = () => {
       {/* Add new promo */}
       <div className="bg-card border border-border rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-4">Create promo code</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
             <label className="text-xs font-semibold text-muted-foreground block mb-1">Code</label>
             <input
@@ -723,6 +732,16 @@ const PromosTab = () => {
               value={newAffiliate}
               onChange={(e) => setNewAffiliate(e.target.value)}
               placeholder="Brazilian Gringo"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Affiliate email</label>
+            <input
+              value={newAffiliateEmail}
+              onChange={(e) => setNewAffiliateEmail(e.target.value)}
+              placeholder="gringo@email.com"
+              type="email"
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
@@ -853,12 +872,12 @@ const PromosTab = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Affiliate</TableHead>
+                    <TableHead>Email</TableHead>
                     <TableHead>Code</TableHead>
-                    <TableHead>Discount</TableHead>
-                    <TableHead>Commission rate</TableHead>
+                    <TableHead>Commission</TableHead>
                     <TableHead>Conversions</TableHead>
                     <TableHead>Revenue</TableHead>
-                    <TableHead>Commission owed</TableHead>
+                    <TableHead>Owed</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -872,18 +891,30 @@ const PromosTab = () => {
                               <input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="Name"
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-primary"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <input
+                                value={editEmail}
+                                onChange={(e) => setEditEmail(e.target.value)}
+                                placeholder="email@example.com"
+                                type="email"
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-primary"
                               />
                             </TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
-                            <TableCell>{a.discount}%</TableCell>
                             <TableCell>
-                              <input
-                                value={editCommission}
-                                onChange={(e) => setEditCommission(e.target.value)}
-                                type="number"
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-20 focus:outline-none focus:ring-2 focus:ring-primary"
-                              />%
+                              <div className="flex items-center gap-1">
+                                <input
+                                  value={editCommission}
+                                  onChange={(e) => setEditCommission(e.target.value)}
+                                  type="number"
+                                  className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                                <span className="text-sm text-muted-foreground">%</span>
+                              </div>
                             </TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
@@ -898,8 +929,8 @@ const PromosTab = () => {
                         ) : (
                           <>
                             <TableCell className="font-semibold">{a.name}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">{a.email || "No email"}</TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
-                            <TableCell>{a.discount}%</TableCell>
                             <TableCell>{a.commission}%</TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
@@ -913,7 +944,7 @@ const PromosTab = () => {
                                   {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `View ▼`) : "No data"}
                                 </button>
                                 <button
-                                  onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditCommission(String(a.commission)); }}
+                                  onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
                                   className="text-xs font-semibold text-muted-foreground hover:text-foreground"
                                 >
                                   Edit
@@ -938,7 +969,7 @@ const PromosTab = () => {
                       </TableRow>
                       {expandedAffiliate === a.name && a.conversions.length > 0 && (
                         <TableRow key={`${a.name}-detail`}>
-                          <TableCell colSpan={8} className="bg-secondary/30 p-0">
+                          <TableCell colSpan={9} className="bg-secondary/30 p-0">
                             <div className="p-5">
                               <p className="text-xs font-bold text-muted-foreground mb-3">Conversions for {a.name}</p>
                               <div className="space-y-2">
