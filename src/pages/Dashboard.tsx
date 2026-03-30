@@ -173,7 +173,7 @@ const PARTNERS = [
     name: "Nubank",
     category: "Bank Account",
     summary: "Brazil's #1 digital bank. Zero fees, instant Pix, debit & credit card.",
-    detail: "Download the Nubank app → enter your CPF + passport → get approved in minutes. Nubank is what most Brazilians use. You get Pix (Brazil's free instant payment system) immediately. Use it at restaurants, shops, Uber — everything.",
+    detail: "Download the Nubank app, enter your CPF + passport, get approved in minutes. Nubank is what most Brazilians use. You get Pix (Brazil's free instant payment system) immediately. Use it at restaurants, shops, Uber, everything.",
     tip: "Nubank is the fastest way to get Pix. Most expats open this on the same day they get their CPF.",
     url: "https://nubank.com.br",
   },
