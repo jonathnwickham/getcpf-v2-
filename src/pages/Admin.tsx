@@ -638,8 +638,9 @@ const PromosTab = () => {
   const updateAffiliate = async (promoId: string) => {
     await supabase.from("promo_codes").update({
       affiliate_name: editName.trim() || null,
+      affiliate_email: editEmail.trim() || null,
       affiliate_commission_percent: parseInt(editCommission) || 20,
-    }).eq("id", promoId);
+    } as any).eq("id", promoId);
     setEditingAffiliate(null);
     loadData();
   };
