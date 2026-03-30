@@ -46,16 +46,11 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
         // Check admin
         if (needsAdminCheck) {
-          promises.push(
-            supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const }).then(({ data }) => {
-              setIsAdmin(!!data && user.email === ADMIN_EMAIL);
-            })
-          );
+          const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
+          setIsAdmin(!!adminRes.data && user.email === ADMIN_EMAIL);
         } else {
           setIsAdmin(true);
         }
-
-        await Promise.all(promises);
       } catch {
         setIsPaid(false);
         setIsAdmin(false);
