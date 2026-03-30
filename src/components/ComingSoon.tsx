@@ -5,8 +5,10 @@ const upcoming = [
   { emoji: "📚", title: "Student Visa", desc: "Everything you need to get a student visa for Brazilian universities, from enrollment letters to consulate appointments." },
   { emoji: "⏳", title: "Visa Extensions", desc: "How to extend your tourist visa without leaving the country — Polícia Federal process, documents, and timelines." },
   { emoji: "🪪", title: "RG (Identity Card)", desc: "Once you have residency, you'll need an RG. We'll walk you through the full process." },
+  { emoji: "🏥", title: "SUS (Public Healthcare)", desc: "How to register for Brazil's free public health system — for foreigners and Brazilians alike." },
+  { emoji: "🚗", title: "CNH (Driver's Licence)", desc: "Convert your foreign licence or get a Brazilian one from scratch. Every step, every document." },
+  { emoji: "📄", title: "CTPS (Work Card)", desc: "Need to work formally in Brazil? We'll guide you through getting your digital work card." },
   { emoji: "🏦", title: "Opening a Bank Account", desc: "Which banks accept foreigners, what documents you need, and how to get approved on the first try." },
-  { emoji: "📱", title: "Brazilian Phone & eSIM", desc: "The best plans for foreigners, how to activate a local number, and which carriers work where." },
 ];
 
 const ComingSoon = () => (
@@ -17,8 +19,7 @@ const ComingSoon = () => (
         CPF is just the beginning
       </h2>
       <p className="text-muted-foreground mt-4 max-w-[600px] text-sm leading-relaxed">
-        We're building the one place foreigners go to sort out <em>anything</em> in Brazil — visas, documents, banking, all of it. 
-        No more jumping through hoops. If there's enough demand for GET CPF, here's what's next.
+        We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy — whether you're a foreigner navigating the system for the first time or a Brazilian who's tired of jumping through hoops. Here's what's next.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
