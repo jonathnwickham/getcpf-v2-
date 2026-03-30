@@ -17,7 +17,7 @@ const painPoints = [
   },
   {
     title: "Buying event tickets",
-    text: "Football, concerts, shows — CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
+    text: "Football, concerts, shows. CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
   },
   {
     title: "Shopping online",
