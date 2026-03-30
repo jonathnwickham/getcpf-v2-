@@ -424,7 +424,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Paid" value={applications.filter(a => a.status === "paid").length.toString()} icon="💳" />
+        <StatCard label="Paid" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} icon="💳" />
         <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
       </div>
