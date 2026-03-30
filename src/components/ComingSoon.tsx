@@ -1,42 +1,88 @@
+import { useEffect, useRef, useState } from "react";
 
-
-const upcoming = [
-  { emoji: "🛂", title: "Digital Nomad Visa", desc: "Step-by-step guide to Brazil's digital nomad visa. Requirements, documents, and where to apply." },
-  { emoji: "📚", title: "Student Visa", desc: "Everything you need to get a student visa for Brazilian universities, from enrollment letters to consulate appointments." },
-  { emoji: "⏳", title: "Visa Extensions", desc: "How to extend your tourist visa without leaving the country. Polícia Federal process, documents, and timelines." },
-  { emoji: "🪪", title: "RG (Identity Card)", desc: "Once you have residency, you'll need an RG. We'll walk you through the full process." },
-  { emoji: "🏥", title: "SUS (Public Healthcare)", desc: "How to register for Brazil's free public health system. For foreigners and Brazilians alike." },
-  { emoji: "🚗", title: "CNH (Driver's Licence)", desc: "Convert your foreign licence or get a Brazilian one from scratch. Every step, every document." },
-  { emoji: "📄", title: "CTPS (Work Card)", desc: "Need to work formally in Brazil? We'll guide you through getting your digital work card." },
-  { emoji: "🏦", title: "Opening a Bank Account", desc: "Which banks accept foreigners, what documents you need, and how to get approved on the first try." },
+const items = [
+  "Digital Nomad Visa",
+  "Student Visa",
+  "Visa Extensions",
+  "RG (Identity Card)",
+  "SUS (Public Healthcare)",
+  "CNH (Driver's Licence)",
+  "CTPS (Work Card)",
+  "Opening a Bank Account",
+  "Starting a Business in Brazil",
 ];
 
-const ComingSoon = () => (
-  <section className="py-24 px-8 bg-card border-t border-border">
-    <div className="max-w-[900px] mx-auto">
-      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Coming soon</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
-        CPF is just the beginning
-      </h2>
-      <p className="text-muted-foreground mt-4 max-w-[600px] text-sm leading-relaxed">
-        We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy. Whether you're a foreigner navigating the system for the first time or a Brazilian who's tired of jumping through hoops. Here's what's next.
-      </p>
+const ComingSoon = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
-        {upcoming.map((item) => (
-          <div
-            key={item.title}
-            className="bg-secondary border border-border rounded-2xl p-6 opacity-80 hover:opacity-100 transition-all"
-          >
-            <div className="text-3xl mb-3">{item.emoji}</div>
-            <h3 className="font-bold text-base mb-1.5">{item.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-          </div>
-        ))}
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="py-24 px-8 bg-card border-t border-border">
+      <div className="max-w-[700px] mx-auto">
+        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Coming soon</div>
+        <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
+          CPF is just the beginning
+        </h2>
+        <p className="text-muted-foreground mt-4 max-w-[560px] text-sm leading-relaxed">
+          We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy. Here's what's next.
+        </p>
+
+        <div className="mt-10 space-y-3">
+          {items.map((item, i) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 transition-all duration-500"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateX(0)" : "translateX(-12px)",
+                transitionDelay: visible ? `${i * 120}ms` : "0ms",
+              }}
+            >
+              <div
+                className="w-6 h-6 rounded-md border-2 flex items-center justify-center shrink-0 transition-all duration-300"
+                style={{
+                  borderColor: visible ? "hsl(var(--primary))" : "hsl(var(--border))",
+                  backgroundColor: visible ? "hsl(var(--primary) / 0.1)" : "transparent",
+                  transitionDelay: visible ? `${i * 120 + 200}ms` : "0ms",
+                }}
+              >
+                <svg
+                  className="w-3.5 h-3.5 transition-all duration-300"
+                  style={{
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "scale(1)" : "scale(0)",
+                    transitionDelay: visible ? `${i * 120 + 300}ms` : "0ms",
+                    color: "hsl(var(--primary))",
+                  }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-foreground">{item}</span>
+            </div>
+          ))}
+        </div>
       </div>
-
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default ComingSoon;
