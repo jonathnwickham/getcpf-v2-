@@ -11,11 +11,10 @@ const faqs = [
 ];
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section id="faq" className="py-24 px-8 max-w-[700px] mx-auto">
-      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">FAQ</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">Things you're probably wondering</h2>
       <div className="mt-8">
         {faqs.map((faq, i) => (

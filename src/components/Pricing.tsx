@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Lock, Clock, Users } from "lucide-react";
 
 interface PricingProps {
   onOpenModal?: () => void;
@@ -63,6 +64,12 @@ const tiers = [
   },
 ];
 
+const trustSignals = [
+  { icon: Lock, label: "Secure payment" },
+  { icon: Clock, label: "5 min setup" },
+  { icon: Users, label: "200+ served" },
+];
+
 const Pricing = ({ onOpenModal }: PricingProps) => {
   const navigate = useNavigate();
 
@@ -73,8 +80,8 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
 
   return (
     <section id="pricing" className="py-24 px-8 text-center bg-secondary">
-      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Simple pricing</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">Choose how you want to do this</h2>
+      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Pricing</div>
+      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[520px] text-sm leading-relaxed">
         The CPF itself is free. You're paying for the preparation that makes it work first time — no rejected forms, no wasted trips.
       </p>
@@ -122,6 +129,20 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             >
               {tier.cta} {tier.comingSoon ? "" : "→"}
             </button>
+            {/* Trust signals — only on highlighted tier */}
+            {tier.highlighted && (
+              <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
+                {trustSignals.map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <div key={s.label} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                      <Icon className="w-3.5 h-3.5" />
+                      {s.label}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         ))}
       </div>

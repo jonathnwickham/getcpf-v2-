@@ -25,6 +25,7 @@ const Index = () => {
       <PainPoints />
       <HowItWorks />
       <Pricing onOpenModal={handleOpenOnboarding} />
+      <AfterCPF />
       <Testimonials />
       <TrustBar />
       <FAQ />
