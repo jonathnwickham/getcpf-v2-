@@ -7,7 +7,7 @@ const personas = [
   {
     emoji: "🏠",
     title: "Expats settling in",
-    desc: "Renting an apartment, setting up utilities, getting health insurance — none of it works without a CPF.",
+    desc: "Renting an apartment, setting up utilities, getting health insurance. None of it works without a CPF.",
   },
   {
     emoji: "✈️",
