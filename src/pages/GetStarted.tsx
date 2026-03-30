@@ -140,7 +140,7 @@ const GetStarted = () => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
         <div className="flex items-center justify-between px-6 py-4">
           <a href="/" className="text-lg font-bold tracking-tight">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </a>
           <span className="text-xs text-muted-foreground font-medium">
             {step + 1} of {TOTAL_STEPS}
