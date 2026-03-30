@@ -47,7 +47,7 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Refund policy</h2>
           <p className="leading-relaxed text-sm">
-            If you follow our preparation steps and your CPF application is rejected, we will prepare corrected documents and provide updated guidance at no additional charge. This is our fix-it guarantee. We do not offer cash refunds once documents have been generated, as the preparation service has been delivered.
+            If you follow our preparation steps and your CPF application is rejected, we will issue a full refund. No questions asked.
           </p>
           <p className="leading-relaxed mt-3">
             To request a refund, email{" "}

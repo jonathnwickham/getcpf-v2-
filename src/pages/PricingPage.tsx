@@ -316,7 +316,7 @@ const PricingPage = () => {
             <div className="mt-8 space-y-4 max-w-[700px] mx-auto">
               <div className="flex items-center justify-center gap-2 text-sm text-primary font-semibold">
                 <span>🛡️</span>
-                If you follow our steps and get rejected, we fix it free. No questions asked.
+                If you follow our steps and get rejected, we'll refund you in full. No questions asked.
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
                 {[
@@ -430,7 +430,7 @@ const PricingPage = () => {
             </div>
 
             <div className="mt-4 text-center text-xs text-primary font-semibold">
-              🛡️ If you follow our steps and get rejected, we fix it free. No questions asked.
+              🛡️ If you follow our steps and get rejected, we'll refund you in full. No questions asked.
             </div>
 
             <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
