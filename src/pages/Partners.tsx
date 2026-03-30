@@ -161,10 +161,10 @@ const Partners = () => {
           <p className="text-lg text-muted-foreground mt-6 leading-relaxed">One CPF at a time.</p>
 
           <div className="mt-12 space-y-6 text-[15px] text-muted-foreground leading-relaxed">
-            <p>
-              Brazil is one of the most welcoming countries in the world. But the bureaucracy does not always 
-              match the warmth of the people. We are building the thing that changes that, starting with the CPF.
-            </p>
+             <p>
+               Brazil is one of the most welcoming countries in the world. But the systems can be confusing 
+               for someone who is not from here. We are building the thing that changes that, starting with the CPF.
+             </p>
             <p>
               If you work with foreigners in Brazil, whether you teach them Portuguese, help them find an apartment, 
               translate their documents, or pick them up from the airport, you already know the CPF question. 
