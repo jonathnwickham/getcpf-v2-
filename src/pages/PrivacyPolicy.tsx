@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const PrivacyPolicy = () => (
   <div className="min-h-screen bg-background">
@@ -27,68 +28,55 @@ const PrivacyPolicy = () => (
 
         <section>
           <h2 className="text-xl font-bold mb-3">What data we collect</h2>
-          <p className="leading-relaxed mb-3">We collect only what's needed to generate your personalised Ready Pack:</p>
+          <p className="leading-relaxed mb-3">We collect only what's needed to generate your personalised CPF application documents:</p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Identity information:</strong> Full name, mother's name, father's name (optional), passport number, nationality, date of birth</li>
             <li><strong>Location information:</strong> Brazilian state, city, street address, and host details if staying with someone</li>
             <li><strong>Contact information:</strong> Email address</li>
             <li><strong>Account information:</strong> Encrypted password (we never see or store your plain-text password)</li>
-            <li><strong>Payment information:</strong> Processed securely by our payment provider — we never see or store your card details</li>
+            <li><strong>Payment information:</strong> Processed securely by Fanbasis — we never see or store your card details</li>
             <li><strong>Uploaded documents:</strong> Passport photo, selfie, and proof of address (if you choose to upload them)</li>
           </ul>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Why we collect it</h2>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li>To pre-fill your official CPF application form (FCPF) so you don't have to</li>
-            <li>To identify the correct Receita Federal office for your location</li>
-            <li>To personalise your document checklist, Portuguese phrases, and day-of guide</li>
-            <li>To save your progress so you can come back anytime</li>
-            <li>To send you your Ready Pack and account-related emails</li>
-          </ul>
+          <p className="leading-relaxed">To generate personalised CPF application documents — specifically to pre-fill your official FCPF form, identify the correct Receita Federal office, personalise your document checklist and Portuguese phrases, and save your progress.</p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">How we store and protect it</h2>
           <p className="leading-relaxed mb-3">
-            Your data is stored securely using industry-standard infrastructure with encryption at rest and in transit. Specifically:
+            Your data is encrypted and stored securely in our database with row-level security — you can only access your own data. Specifically:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>All data is transmitted over HTTPS (TLS 1.2+)</li>
-            <li>Database access is restricted by row-level security — you can only access your own data</li>
-            <li>Passwords are hashed using bcrypt — we cannot read them</li>
-            <li>Payment details are handled entirely by our payment processor and never touch our servers</li>
+            <li>Database access is restricted by row-level security</li>
+            <li>Passwords are hashed using bcrypt</li>
+            <li>Payment details are handled entirely by Fanbasis and never touch our servers</li>
             <li>Uploaded documents are stored in private, authenticated storage buckets</li>
           </ul>
+          <p className="leading-relaxed mt-3 font-semibold">We never sell, rent, or share your personal data with third parties.</p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-3">Who we share it with</h2>
-          <p className="leading-relaxed mb-3">
-            We do not sell, rent, or trade your personal data. We share data only with:
-          </p>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Our infrastructure provider</strong> (for hosting and database services)</li>
-            <li><strong>Our payment processor</strong> (to process your payment securely)</li>
-            <li><strong>You</strong> — in the form of your downloaded Ready Pack documents</li>
-          </ul>
-          <p className="leading-relaxed mt-3">
-            We never share your passport number, mother's name, or any personal details with third parties for marketing or any other purpose.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold mb-3">Cookies and analytics</h2>
+          <h2 className="text-xl font-bold mb-3">Data retention</h2>
           <p className="leading-relaxed">
-            We use essential cookies only — to keep you logged in and save your session. We do not use advertising cookies or third-party trackers. We may use anonymous analytics to understand how people use the app so we can make it better.
+            User data and generated documents are available for <strong>30 days after account creation</strong>, then permanently deleted. Raw passport data is not retained after document generation. Anonymous, aggregated data may be retained indefinitely.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold mb-3">Cookies</h2>
+          <p className="leading-relaxed">
+            We use session cookies for authentication only. We do not use advertising cookies or third-party tracking cookies.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Your rights</h2>
           <p className="leading-relaxed mb-3">
-            Under the LGPD (Brazil's data protection law), POPIA (South Africa's data protection law), GDPR (if you're in the EU), and other applicable privacy laws, you have the right to:
+            Under the <strong>LGPD</strong> (Brazil's data protection law), <strong>GDPR</strong> (EU), and <strong>POPIA</strong> (South Africa), you have the right to:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Access</strong> — request a copy of all data we hold about you</li>
@@ -98,59 +86,37 @@ const PrivacyPolicy = () => (
             <li><strong>Withdraw consent</strong> — at any time, for any reason</li>
           </ul>
           <p className="leading-relaxed mt-3">
-            To exercise any of these rights, email us at <a href="mailto:privacy@getcpf.com" className="text-primary hover:underline">privacy@getcpf.com</a>. We'll respond within 15 business days.
+            To exercise any of these rights, email us at{" "}
+            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>.
+            We'll respond within 15 business days.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">POPIA compliance (South Africa)</h2>
-          <p className="leading-relaxed mb-3">
-            GET CPF complies with South Africa's Protection of Personal Information Act (POPIA). As a South African company processing personal information, we adhere to the following principles:
-          </p>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li>We process personal information lawfully, for a legitimate and specific purpose</li>
-            <li>We collect only information that is adequate, relevant, and not excessive</li>
-            <li>We take reasonable technical and organisational measures to protect your data</li>
-            <li>We do not retain personal information longer than necessary</li>
-          </ul>
-          <p className="leading-relaxed mt-3">
-            If you believe your rights under POPIA have been infringed, you have the right to lodge a complaint with the Information Regulator of South Africa:
-          </p>
-          <ul className="list-none pl-6 space-y-1 text-sm mt-2">
-            <li>📧 Email: <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a></li>
-            <li>🌐 Website: <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">inforegulator.org.za</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold mb-3">Data retention</h2>
           <p className="leading-relaxed">
-            We keep your data for as long as your account is active. If you delete your account, we remove all personal data within 30 days. Anonymous, aggregated data (like "X users completed the flow this month") may be retained indefinitely.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold mb-3">Children</h2>
-          <p className="leading-relaxed">
-            This service is not intended for anyone under 18. We do not knowingly collect data from minors.
+            GET CPF complies with South Africa's Protection of Personal Information Act (POPIA). We process personal information lawfully, collect only what is necessary, and take reasonable measures to protect it. If you believe your rights under POPIA have been infringed, contact the Information Regulator of South Africa at{" "}
+            <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a>.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Changes to this policy</h2>
           <p className="leading-relaxed">
-            If we make significant changes, we'll update the date at the top and notify you by email. Your continued use of the service after changes means you accept the updated policy.
+            If we make significant changes, we'll update the date at the top and notify you by email.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Contact us</h2>
           <p className="leading-relaxed">
-            Questions about your data? Email <a href="mailto:privacy@getcpf.com" className="text-primary hover:underline">privacy@getcpf.com</a>
+            Questions about your data? Email{" "}
+            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>
           </p>
         </section>
       </div>
     </main>
+    <Footer />
   </div>
 );
 
