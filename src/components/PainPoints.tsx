@@ -5,7 +5,7 @@ const painPoints = [
   },
   {
     title: "Buying a SIM card",
-    text: "Every carrier needs a CPF to activate a plan. Without one you're on roaming. Your foreign card works fine — at around $15 a day until you sort this out.",
+    text: "Every carrier needs a CPF to activate a plan. Without one you're on roaming. Your foreign card works fine, at around $15 a day until you sort this out.",
   },
   {
     title: "Ordering food delivery",
