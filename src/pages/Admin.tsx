@@ -969,7 +969,7 @@ const PromosTab = () => {
                       </TableRow>
                       {expandedAffiliate === a.name && a.conversions.length > 0 && (
                         <TableRow key={`${a.name}-detail`}>
-                          <TableCell colSpan={8} className="bg-secondary/30 p-0">
+                          <TableCell colSpan={9} className="bg-secondary/30 p-0">
                             <div className="p-5">
                               <p className="text-xs font-bold text-muted-foreground mb-3">Conversions for {a.name}</p>
                               <div className="space-y-2">
