@@ -499,7 +499,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
         <div className="py-6 space-y-3">
           <InfoField label="Full Name" value={data.fullName} />
           <InfoField label="Passport" value={data.passportNumber} />
-          <InfoField label="Nationality" value={`${data.nationality} / ${getNationalityPt(data.nationality)}`} />
+          <InfoField label="Nationality" value={data.nationality} />
           <InfoField label="Mother's Name" value={motherDisplay} />
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Email" value={data.email} />

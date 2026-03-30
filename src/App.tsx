@@ -9,6 +9,7 @@ import GetStarted from "./pages/GetStarted.tsx";
 import ReadyPack from "./pages/ReadyPack.tsx";
 import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
+import { Navigate } from "react-router-dom";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
