@@ -25,7 +25,7 @@ const painPoints = [
   },
   {
     title: "Getting contacts or medicine delivered",
-    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF — the checkout just stops.",
+    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF. The checkout just stops.",
   },
 ];
 

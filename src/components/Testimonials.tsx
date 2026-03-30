@@ -45,7 +45,7 @@ const testimonials = [
     country: "Nigerian",
     location: "Salvador",
     rating: 4,
-    text: "The first office I went to said they couldn't help. But the app had a troubleshooting section for exactly that situation — it said to try a larger office. I went to the Comércio location the next day and got my CPF in 40 minutes. Without this app I would've given up after the first rejection.",
+    text: "The first office I went to said they couldn't help. But the app had a troubleshooting section for exactly that situation. It said to try a larger office. I went to the Comércio location the next day and got my CPF in 40 minutes. Without this app I would've given up after the first rejection.",
     result: "Got CPF on second attempt, exactly as the troubleshooting guide predicted",
     timeAgo: "2 months ago",
   },
