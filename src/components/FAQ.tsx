@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const faqs = [
   { q: "What exactly do I get for $49?", a: "Everything you need to walk into a Receita Federal office and walk out with your CPF. A personalised Ready Pack with pre-filled forms, the right office for your state, a Portuguese cheat sheet so you know what to say, a document checklist, and a step-by-step day-of guide. Plus a rejection troubleshooter and a full 'Life in Brazil' guide for after you get your CPF." },
@@ -8,10 +8,35 @@ const faqs = [
   { q: "I'm not in Brazil yet. Can I start now?", a: "Yes. Start the questionnaire now and have everything ready before you land. When you arrive, you just print your documents and visit the office. Some people even do it through their local Brazilian consulate before travelling." },
   { q: "Is my data safe?", a: "Your data is stored securely in your account so you can access your Ready Pack anytime. We use encryption at rest and in transit, and we never sell or share your personal information. See our Privacy Policy for full details." },
   { q: "What if I get rejected?", a: "We've built a full rejection troubleshooter into the app. Tell us what happened and we'll give you the exact fix, whether it's a mother's name abbreviation, a wrong proof of address, or an office that doesn't process foreigners. Most rejections have a one-visit fix." },
+  { q: "What do you do with my passport and personal documents?", a: "Your documents are used only to prepare your CPF application. We use encryption to protect sensitive fields. All personal data is permanently deleted from our systems within 30 days, or immediately if you request it. We never sell or share your data with anyone. You can read our full Privacy Policy for details." },
+  { q: "How does the money-back guarantee actually work?", a: "Simple. If you follow our preparation steps exactly, bring the documents we specify, go to the office we recommend, use the form we generate, and your CPF application is still rejected, email support@getcpf.com. We will refund your $49 within 24 hours. No forms. No questions." },
+  { q: "Does this work for my nationality?", a: "GET CPF works for foreigners from over 50 countries. The preparation varies by nationality and visa type, which is why we ask for your nationality during signup and personalise your Ready Pack accordingly. If you have a valid passport and are in Brazil or planning to visit, you can get a CPF." },
 ];
 
 const FAQ = () => {
   const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0, 1]));
+
+  // Inject FAQ JSON-LD schema
+  useEffect(() => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a,
+        },
+      })),
+    };
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(schema);
+    script.id = "faq-schema";
+    document.head.appendChild(script);
+    return () => { document.getElementById("faq-schema")?.remove(); };
+  }, []);
 
   return (
     <section id="faq" className="py-24 px-8 max-w-[700px] mx-auto">

@@ -13,6 +13,9 @@ const Footer = () => (
           <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF, the easy way. We handle the preparation so you just show up.
           </p>
+          <p className="text-xs text-muted-foreground mt-3">
+            We respond within 24 hours.
+          </p>
         </div>
 
         {/* Quick links */}
@@ -23,6 +26,7 @@ const Footer = () => (
             <li><a href="/#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
             <li><a href="/#faq" className="hover:text-foreground transition-colors">FAQ</a></li>
             <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides</Link></li>
+            <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact us</Link></li>
             <li><Link to="/login" className="hover:text-foreground transition-colors">Sign in</Link></li>
           </ul>
         </div>
@@ -36,7 +40,6 @@ const Footer = () => (
             <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
             <li><Link to="/partners" className="hover:text-foreground transition-colors">Become a partner →</Link></li>
             <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Become an affiliate →</Link></li>
-            <li><a href="mailto:support@getcpf.com" className="hover:text-foreground transition-colors">Contact us</a></li>
           </ul>
         </div>
       </div>
