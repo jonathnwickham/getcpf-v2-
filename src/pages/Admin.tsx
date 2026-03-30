@@ -308,7 +308,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                         ? "bg-primary/10 text-primary"
                         : "bg-secondary text-muted-foreground"
                     }`}>
-                      {p.plan || "free"}
+                      {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
                     </span>
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
