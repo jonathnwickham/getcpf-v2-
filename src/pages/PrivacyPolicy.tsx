@@ -101,6 +101,27 @@ const PrivacyPolicy = () => (
         </section>
 
         <section>
+          <h2 className="text-xl font-bold mb-3">Data transfers</h2>
+          <p className="leading-relaxed">
+            Your data is stored on Supabase infrastructure. Supabase is certified under SOC 2 Type II. Data may be processed in the United States. By using GET CPF you consent to this transfer in order to receive the service.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold mb-3">Security measures</h2>
+          <p className="leading-relaxed">
+            GET CPF uses Supabase Row Level Security to prevent any user from accessing another user's data. Sensitive fields are masked in the user interface. All data is stored on encrypted infrastructure. Personal data is automatically deleted within 30 days of account creation or immediately on request.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold mb-3">Data breach notification</h2>
+          <p className="leading-relaxed">
+            In the event of a data breach affecting your personal information GET CPF will notify you by email within 72 hours of becoming aware of the breach.
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-bold mb-3">Changes to this policy</h2>
           <p className="leading-relaxed">
             If we make significant changes, we'll update the date at the top and notify you by email.
