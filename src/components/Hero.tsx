@@ -35,10 +35,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   };
 
   const proofItems = [
-    { num: "~5 min", label: "That's all it takes" },
-    { num: "R$7", label: "Or free at Receita Federal" },
-    { num: "Same day", label: "Walk out with it" },
-    { num: "24/7", label: "Start anytime" },
+    { num: "~5 min", label: "Setup time" },
+    { num: "R$7", label: "At Correios" },
+    { num: "Same day", label: "When you go in" },
+    { num: "200+", label: "CPFs prepared" },
   ];
 
   const flags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇳🇬", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷"];
@@ -63,7 +63,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
             <span className="text-sm">🛡️</span>
-            If you follow our steps and get rejected, we'll refund you in full. No questions asked.
+            If you follow our steps and get rejected — full refund. No questions asked.
           </div>
 
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
@@ -73,19 +73,23 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-6 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            Most foreigners waste a full day figuring out their CPF. We cut that to five minutes. Answer a few questions and we prepare everything, the right forms, the nearest office, the exact words to say in Portuguese.
+            A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out. No wasted trips, no rejected forms, no showing up to the wrong office.
+          </p>
+
+          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-3 max-w-[520px] mx-auto lg:mx-0 italic">
+            You still need to visit an office in person. We make sure that visit works.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center lg:justify-start">
-            <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
-              Let's get started →
+            <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
+              Get started →
             </button>
-            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
+            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all min-h-[52px] inline-flex items-center">
               See how it works
             </a>
           </div>
 
-          <div className="animate-fade-up-4 flex gap-10 mt-12 flex-wrap justify-center lg:justify-start">
+          <div className="animate-fade-up-4 grid grid-cols-2 sm:flex gap-8 sm:gap-10 mt-12 justify-center lg:justify-start">
             {proofItems.map((item) => (
               <div key={item.label} className="text-center lg:text-left">
                 <div className="text-2xl font-bold text-foreground">{item.num}</div>
@@ -186,9 +190,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           {flags.map((flag) => (
             <span key={flag} className="text-2xl">{flag}</span>
           ))}
-          <span className="text-sm text-muted-foreground font-medium self-center ml-1">+40 more</span>
+          <span className="text-sm text-muted-foreground font-medium self-center ml-1">+43 more</span>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality moving to Brazil</p>
+        <p className="text-xs text-muted-foreground">Works for any nationality</p>
       </div>
     </section>
   );
