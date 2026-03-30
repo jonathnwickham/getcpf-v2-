@@ -17,6 +17,7 @@ import PricingPage from "./pages/PricingPage.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import Affiliates from "./pages/Affiliates.tsx";
+import Partners from "./pages/Partners.tsx";
 import AffiliateApply from "./pages/AffiliateApply.tsx";
 import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/affiliates" element={<Affiliates />} />
+            <Route path="/partners" element={<Partners />} />
             <Route path="/affiliates/apply" element={<AffiliateApply />} />
             <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
