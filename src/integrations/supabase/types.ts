@@ -20,8 +20,10 @@ export type Database = {
           city: string | null
           cpf_number: string | null
           created_at: string | null
+          discount_amount: number | null
           email: string | null
           father_name: string | null
+          final_price: number | null
           full_name: string | null
           host_address: string | null
           host_city: string | null
@@ -35,6 +37,7 @@ export type Database = {
           notes: string | null
           passport_number: string | null
           passport_photo_url: string | null
+          promo_code: string | null
           protocol_number: string | null
           received_at: string | null
           selfie_url: string | null
@@ -52,8 +55,10 @@ export type Database = {
           city?: string | null
           cpf_number?: string | null
           created_at?: string | null
+          discount_amount?: number | null
           email?: string | null
           father_name?: string | null
+          final_price?: number | null
           full_name?: string | null
           host_address?: string | null
           host_city?: string | null
@@ -67,6 +72,7 @@ export type Database = {
           notes?: string | null
           passport_number?: string | null
           passport_photo_url?: string | null
+          promo_code?: string | null
           protocol_number?: string | null
           received_at?: string | null
           selfie_url?: string | null
@@ -84,8 +90,10 @@ export type Database = {
           city?: string | null
           cpf_number?: string | null
           created_at?: string | null
+          discount_amount?: number | null
           email?: string | null
           father_name?: string | null
+          final_price?: number | null
           full_name?: string | null
           host_address?: string | null
           host_city?: string | null
@@ -99,6 +107,7 @@ export type Database = {
           notes?: string | null
           passport_number?: string | null
           passport_photo_url?: string | null
+          promo_code?: string | null
           protocol_number?: string | null
           received_at?: string | null
           selfie_url?: string | null
@@ -181,6 +190,42 @@ export type Database = {
           location?: string | null
           plan?: string | null
           stripe_customer_id?: string | null
+        }
+        Relationships: []
+      }
+      promo_codes: {
+        Row: {
+          affiliate_commission_percent: number
+          affiliate_name: string | null
+          code: string
+          created_at: string
+          discount_percent: number
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          times_used: number
+        }
+        Insert: {
+          affiliate_commission_percent?: number
+          affiliate_name?: string | null
+          code: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          times_used?: number
+        }
+        Update: {
+          affiliate_commission_percent?: number
+          affiliate_name?: string | null
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          times_used?: number
         }
         Relationships: []
       }
