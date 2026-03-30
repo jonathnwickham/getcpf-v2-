@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import brazilFlag from "@/assets/brazil-flag-cristo.png";
+import brazilStencil from "@/assets/brazil-flag-cristo-stencil.png";
 
 interface FinalCTAProps {
   onOpenModal?: () => void;
