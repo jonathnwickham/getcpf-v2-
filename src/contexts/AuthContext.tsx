@@ -41,6 +41,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    // Clear any persisted local data
+    localStorage.removeItem("cpf_onboarding_data");
+    window.location.href = "/";
   };
 
   return (

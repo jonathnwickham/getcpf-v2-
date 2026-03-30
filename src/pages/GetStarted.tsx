@@ -118,7 +118,7 @@ const GetStarted = () => {
       }
       case 2: return data.noMotherName ? data.motherAlternative.trim().length > 0 : data.motherName.trim().length > 2;
       case 3: return true; // father is optional
-      case 4: return /^[A-Z0-9]{5,15}$/i.test(data.passportNumber.trim());
+      case 4: return /^[A-Z0-9]{6,12}$/i.test(data.passportNumber.trim());
       case 5: return data.state !== "";
       case 6: return data.streetAddress.trim().length > 3 && data.city.trim().length > 1;
       case 7: return data.email.includes("@") && data.nationality.trim().length > 1;
@@ -140,7 +140,7 @@ const GetStarted = () => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
         <div className="flex items-center justify-between px-6 py-4">
           <a href="/" className="text-lg font-bold tracking-tight">
-            cpf<span className="text-primary">easy</span>.ai
+            GET <span className="text-primary">CPF</span>
           </a>
           <span className="text-xs text-muted-foreground font-medium">
             {step + 1} of {TOTAL_STEPS}
@@ -303,51 +303,65 @@ const MotherStep = ({
   value: string; onChange: (v: string) => void;
   noMother: boolean; onToggleNoMother: (v: boolean) => void;
   alternative: string; onAlternativeChange: (v: string) => void;
-}) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
-    </p>
-    {!noMother ? (
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="e.g. Maria Antonia Smith"
-        autoFocus
-        className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-      />
-    ) : (
-      <div>
-        <p className="text-sm text-muted-foreground mb-3">
-          If your mother's name is unavailable, you can use your father's name or legal guardian's name instead.
-        </p>
+}) => {
+  // Detect initials/abbreviations like "M.", "J. Smith", single letters
+  const hasAbbreviation = !noMother && value.trim().length > 0 && /\b[A-Z]\.?\s/i.test(value.trim());
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
+      </p>
+      {!noMother ? (
+        <>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="e.g. Maria Antonia Smith"
+            autoFocus
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+          {hasAbbreviation && (
+            <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
+              <p className="text-xs text-amber-800 dark:text-amber-200 font-medium">
+                ⚠️ Make sure this is your mother's <strong>full name</strong> with no abbreviations. This is the most common rejection reason.
+              </p>
+            </div>
+          )}
+        </>
+      ) : (
+        <div>
+          <p className="text-sm text-muted-foreground mb-3">
+            If your mother's name is unavailable, you can use your father's name or legal guardian's name instead.
+          </p>
+          <input
+            type="text"
+            value={alternative}
+            onChange={(e) => onAlternativeChange(e.target.value)}
+            placeholder="Father's or guardian's full name"
+            autoFocus
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+        </div>
+      )}
+      <label className="flex items-center gap-3 mt-4 cursor-pointer group">
+        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
+          {noMother && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+        </div>
         <input
-          type="text"
-          value={alternative}
-          onChange={(e) => onAlternativeChange(e.target.value)}
-          placeholder="Father's or guardian's full name"
-          autoFocus
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          type="checkbox"
+          checked={noMother}
+          onChange={(e) => onToggleNoMother(e.target.checked)}
+          className="sr-only"
         />
-      </div>
-    )}
-    <label className="flex items-center gap-3 mt-4 cursor-pointer group">
-      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
-        {noMother && <span className="text-primary-foreground text-xs font-bold">✓</span>}
-      </div>
-      <input
-        type="checkbox"
-        checked={noMother}
-        onChange={(e) => onToggleNoMother(e.target.checked)}
-        className="sr-only"
-      />
-      <span className="text-sm text-muted-foreground">My mother's name is not available</span>
-    </label>
-  </div>
-);
+        <span className="text-sm text-muted-foreground">My mother's name is not available</span>
+      </label>
+    </div>
+  );
+};
 
 const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
@@ -368,29 +382,51 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
   </div>
 );
 
-const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
-    </p>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value.toUpperCase())}
-      placeholder="e.g. AB1234567"
-      autoFocus
-      className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50 tracking-wider"
-    />
-    {value.trim().length > 0 && !/^[A-Z0-9]{5,15}$/i.test(value.trim()) && (
-      <p className="text-xs text-destructive mt-2">⚠️ That doesn't look right — passport numbers are 5–15 characters, letters and numbers only.</p>
-    )}
-    <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
-      <span>🔒</span> Your passport number is used only to prepare your forms and is never stored.
+const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
+  const trimmed = value.trim();
+  const hasInput = trimmed.length > 0;
+  const hasSpaces = /\s/.test(trimmed);
+  const hasSpecialChars = /[^A-Z0-9]/i.test(trimmed);
+  const tooShort = hasInput && trimmed.length < 6;
+  const tooLong = trimmed.length > 12;
+  const isValid = hasInput && /^[A-Z0-9]{6,12}$/i.test(trimmed);
+
+  let errorMsg = "";
+  if (hasInput && hasSpaces) errorMsg = "Passport numbers can't contain spaces.";
+  else if (hasInput && hasSpecialChars) errorMsg = "Letters and numbers only — no special characters.";
+  else if (tooShort) errorMsg = "Too short — passport numbers are at least 6 characters.";
+  else if (tooLong) errorMsg = "Too long — passport numbers are at most 12 characters.";
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
+      </p>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value.toUpperCase().replace(/\s/g, ""))}
+        placeholder="e.g. AB1234567"
+        autoFocus
+        maxLength={12}
+        className={`w-full px-5 py-4 bg-card border rounded-xl text-foreground text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/50 tracking-wider ${
+          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-border focus:border-primary focus:ring-primary/10"
+        }`}
+      />
+      {errorMsg && (
+        <p className="text-xs text-destructive mt-2 font-medium">⚠️ {errorMsg}</p>
+      )}
+      {hasInput && isValid && (
+        <p className="text-xs text-primary mt-2 font-medium">✓ Looks good</p>
+      )}
+      <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
+        <span>🔒</span> Your passport number is used only to prepare your forms and is never stored after document generation.
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
