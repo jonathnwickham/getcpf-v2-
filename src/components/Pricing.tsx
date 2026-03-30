@@ -19,7 +19,7 @@ const tiers = [
       "Portuguese cheat sheet for the office visit",
       "Host declaration letter generator",
       "Post-CPF setup guide (bank, SIM, Pix)",
-      "100% Acceptance Guarantee — or your money back",
+      "If you follow our steps and get rejected, we fix it free",
     ],
     cta: "Get started, $49",
   },
