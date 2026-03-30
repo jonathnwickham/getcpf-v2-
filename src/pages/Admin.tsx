@@ -1294,7 +1294,7 @@ const SettingsTab = () => {
 };
 
 /* ── Shared components ── */
-const StatCard = ({ label, value, icon, trend }: { label: string; value: string; icon?: string; trend?: "up" | "down" }) => (
+const StatCard = ({ label, value, icon, trend, sub }: { label: string; value: string; icon?: string; trend?: "up" | "down"; sub?: string }) => (
   <div className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
       <div className="text-xs text-muted-foreground font-medium">{label}</div>
@@ -1304,6 +1304,7 @@ const StatCard = ({ label, value, icon, trend }: { label: string; value: string;
       {value}
       {trend === "up" && <span className="text-xs text-green-500 font-semibold">↑</span>}
     </div>
+    {sub && <div className="text-[10px] text-muted-foreground mt-1">{sub}</div>}
   </div>
 );
 
