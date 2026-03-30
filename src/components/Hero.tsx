@@ -62,7 +62,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         {/* Left, Copy */}
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
-            <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+            <span className="text-sm">🇧🇷</span>
             Trusted by 200+ foreigners moving to Brazil
           </div>
 
