@@ -579,12 +579,14 @@ const PromosTab = () => {
   const [newCode, setNewCode] = useState("");
   const [newDiscount, setNewDiscount] = useState("10");
   const [newAffiliate, setNewAffiliate] = useState("");
+  const [newAffiliateEmail, setNewAffiliateEmail] = useState("");
   const [newCommission, setNewCommission] = useState("20");
   const [adding, setAdding] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [expandedAffiliate, setExpandedAffiliate] = useState<string | null>(null);
   const [editingAffiliate, setEditingAffiliate] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
   const [editCommission, setEditCommission] = useState("");
   const [confirmDeleteAffiliate, setConfirmDeleteAffiliate] = useState<string | null>(null);
 
