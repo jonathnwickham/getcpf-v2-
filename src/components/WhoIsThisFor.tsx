@@ -76,8 +76,9 @@ const WhoIsThisFor = () => (
             className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-primary/20" style={{ objectPosition: "center 42%" }}
           />
           <div>
+            <div className="text-xs uppercase tracking-[2px] text-primary font-bold mb-1">Founder Story</div>
             <h3 className="font-bold text-base">Why I built this</h3>
-            <p className="text-xs text-muted-foreground">Jonathan Wickham 🇿🇦 South African</p>
+            <p className="text-xs text-muted-foreground">Jonathan Wickham · 🇿🇦 South African</p>
           </div>
         </div>
         <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">

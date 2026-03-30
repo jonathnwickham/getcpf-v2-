@@ -207,34 +207,17 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
         <p className="text-[11px] text-muted-foreground">Your CPF unlocks all of these</p>
 
-        {/* Compact orbit */}
-        <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px]">
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <span className="text-2xl md:text-3xl">🇧🇷</span>
-          </div>
-          <div className="absolute inset-0 animate-[spin_24s_linear_infinite]">
-            {orbitFlags.map((flag, i) => {
-              const angle = (i / orbitFlags.length) * 2 * Math.PI;
-              const radius = 44;
-              const x = 50 + radius * Math.cos(angle);
-              const y = 50 + radius * Math.sin(angle);
-              return (
-                <span
-                  key={i}
-                  className="absolute text-xs md:text-sm animate-[spin_24s_linear_infinite_reverse]"
-                  style={{
-                    left: `${x}%`,
-                    top: `${y}%`,
-                    transform: `translate(-50%, -50%)`,
-                  }}
-                >
-                  {flag}
-                </span>
-              );
-            })}
+        {/* Linear flag marquee */}
+        <div className="w-full max-w-[600px] overflow-hidden relative mt-1">
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[hsl(160_84%_28%/0.03)] to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[hsl(160_84%_28%/0.03)] to-transparent z-10" />
+          <div className="flex gap-3 animate-[marquee_20s_linear_infinite] w-max">
+            {[...orbitFlags, ...orbitFlags].map((flag, i) => (
+              <span key={i} className="text-lg shrink-0">{flag}</span>
+            ))}
           </div>
         </div>
-        <p className="text-[11px] text-muted-foreground -mt-1">50+ countries supported</p>
+        <p className="text-[11px] text-muted-foreground font-medium">🇧🇷 50+ countries supported</p>
       </div>
     </section>
   );
