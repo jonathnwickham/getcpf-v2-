@@ -41,7 +41,7 @@ const ComingSoon = () => {
           We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy. Here's what's next.
         </p>
 
-        <div className="mt-10 space-y-3">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {items.map((item, i) => (
             <div
               key={item}

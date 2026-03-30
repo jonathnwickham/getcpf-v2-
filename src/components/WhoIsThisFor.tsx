@@ -78,21 +78,13 @@ const WhoIsThisFor = () => (
         </div>
         <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
           <p>
-            I built GET CPF because I needed it myself. When I moved to Brazil, I had no idea where to go, 
-            what to bring, or what to say. I spent days jumping between government websites, Reddit threads, 
-            and AI tools that gave me half the answer with none of the context. Every source had a different 
-            version of what to do, and most of it was outdated or for a different state.
+            I built GET CPF because I needed it myself. I moved to Brazil, had no idea where to go or what to bring, 
+            and spent days jumping between government sites, Reddit, and AI tools that gave me half the answer 
+            with none of the context.
           </p>
           <p>
-            So I documented the entire process. Every step. From signing up, to gathering documents, to printing 
-            everything, to walking into the Receita Federal office and actually getting my CPF. I wanted to build 
-            something that did it properly, not just point you in a direction and hope for the best.
-          </p>
-          <p>
-            That's what GET CPF is. It's the guide I wish existed when I started. I turned a full day of 
-            confusion into a five-minute preparation process. It worked for me. I got my CPF on the first try. 
-            Since then I've been obsessed with making it work for everyone else too. The price is fair, 
-            it's staying where it is, and it does exactly what it says.
+            So I documented every step, built it into a tool, and got my CPF on the first try. That's what this is. 
+            The price is fair, it's staying where it is, and it does exactly what it says.
           </p>
         </div>
       </div>
