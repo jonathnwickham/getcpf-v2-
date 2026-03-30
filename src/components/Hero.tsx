@@ -97,22 +97,22 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
                   <FileCheck className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-xs font-semibold">Pre-filled forms</div>
+                    <div className="text-xs font-semibold">Your forms, pre-filled</div>
                     <div className="text-[10px] text-muted-foreground">Ready to print</div>
                   </div>
                 </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-xs font-semibold">Office finder</div>
-                    <div className="text-[10px] text-muted-foreground">São Paulo – Centro</div>
+                    <div className="text-xs font-semibold">Nearest Receita Federal</div>
+                    <div className="text-[10px] text-muted-foreground">São Paulo, CAC Bela Vista</div>
                   </div>
                 </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
                   <Languages className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-xs font-semibold">Portuguese guide</div>
-                    <div className="text-[10px] text-muted-foreground">What to say</div>
+                    <div className="text-xs font-semibold">What to say</div>
+                    <div className="text-[10px] text-muted-foreground">Portuguese cheat sheet</div>
                   </div>
                 </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
