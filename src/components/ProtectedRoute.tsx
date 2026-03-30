@@ -89,6 +89,32 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
   return <>{children}</>;
 };
 
+const AccessDeniedScreen = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <div className="w-full max-w-md text-center">
+        <a href="/" className="text-2xl font-bold tracking-tight inline-block mb-8">
+          GET <span className="text-primary">CPF</span>
+        </a>
+        <div className="bg-card border border-border rounded-2xl p-8">
+          <div className="text-5xl mb-4">🚫</div>
+          <h1 className="text-xl font-extrabold mb-2">Access denied</h1>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            You do not have permission to view this page. If you believe this is an error, please contact support.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+          >
+            Go to homepage
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const VerifyEmailScreen = () => {
   const { signOut } = useAuth();
 
