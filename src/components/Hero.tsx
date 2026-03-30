@@ -101,6 +101,16 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               </div>
             ))}
           </div>
+
+          {/* Logo trust strip */}
+          <div className="animate-fade-up-4 mt-8">
+            <p className="text-xs text-muted-foreground mb-3 text-center lg:text-left">Your CPF unlocks all of these and everything else in Brazil.</p>
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center">
+              {["Nubank", "iFood", "Mercado Livre", "Rappi", "Vivo", "QuintoAndar", "Amazon BR", "Correios"].map((name) => (
+                <span key={name} className="text-xs font-semibold text-muted-foreground/50 tracking-wide uppercase">{name}</span>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Right, Product Mockup */}
