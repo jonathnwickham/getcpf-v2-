@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
+import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
@@ -21,14 +22,23 @@ interface HeroProps {
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
   const [officeIndex, setOfficeIndex] = useState(0);
+  const cpfCount = useCpfCount();
+  const displayCount = cpfCount !== null ? cpfCount : 200;
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
     else navigate("/get-started");
   };
 
+  const proofItems = [
+    { num: "~5 min", label: "Setup time" },
+    { num: "R$7", label: "At Correios" },
+    { num: "Same day", label: "When you go in" },
+    { num: `${displayCount}+`, label: "CPFs prepared" },
+  ];
+
   return (
-    <section className="flex flex-col justify-center items-center px-6 pt-32 pb-8 relative overflow-hidden bg-primary/[0.03]">
+    <section className="flex flex-col justify-center items-center px-6 pt-28 pb-6 relative overflow-hidden bg-primary/[0.03]">
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <img
@@ -40,20 +50,26 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         height={800}
       />
 
-      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 items-center">
-        {/* Left — copy only */}
+      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 lg:gap-12 items-center">
+        {/* Left — copy */}
         <div className="text-center lg:text-left">
+          {/* Trust pill */}
+          <div className="animate-fade-up-1 inline-flex items-center gap-2 bg-primary/[0.08] border border-primary/20 rounded-full px-4 py-1.5 mb-5">
+            <span className="text-sm">🇧🇷</span>
+            <span className="text-xs font-medium text-foreground">Trusted by {displayCount}+ foreigners moving to Brazil</span>
+          </div>
+
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
             <span className="text-primary font-serif italic">CPF</span>{" "}
             without the headache
           </h1>
 
-          <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-5 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
+          <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-4 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
             A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out.
           </p>
 
-          <div className="animate-fade-up-3 flex gap-4 mt-7 flex-wrap justify-center lg:justify-start">
+          <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
               Get started →
             </button>
@@ -62,9 +78,14 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             </a>
           </div>
 
-          <div className="animate-fade-up-3 flex items-center gap-2 mt-3 justify-center lg:justify-start text-xs text-muted-foreground">
-            <span>🛡️</span>
-            Didn't work? Full refund. No questions.
+          {/* Stats row */}
+          <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-6 justify-center lg:justify-start">
+            {proofItems.map((item) => (
+              <div key={item.label} className="text-center lg:text-left">
+                <div className="text-lg font-bold text-foreground">{item.num}</div>
+                <div className="text-[10px] text-muted-foreground font-medium">{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 
