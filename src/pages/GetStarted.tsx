@@ -19,7 +19,7 @@ const GetStarted = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<OnboardingData>(() => readPersistedOnboardingData() ?? INITIAL_DATA);
+  const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
   const [ready, setReady] = useState(false);
