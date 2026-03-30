@@ -24,7 +24,7 @@ const FAQ = () => {
               onClick={() => setOpenIndices(prev => { const next = new Set(prev); if (next.has(i)) next.delete(i); else next.add(i); return next; })}
             >
               {faq.q}
-              <span className={`text-lg text-muted-foreground transition-transform shrink-0 ml-4 ${openIndex === i ? "rotate-45 text-primary" : ""}`}>
+              <span className={`text-lg text-muted-foreground transition-transform shrink-0 ml-4 ${openIndices.has(i) ? "rotate-45 text-primary" : ""}`}>
                 +
               </span>
             </button>
