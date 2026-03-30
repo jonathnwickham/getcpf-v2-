@@ -648,8 +648,9 @@ const PromosTab = () => {
   const removeAffiliate = async (promoId: string) => {
     await supabase.from("promo_codes").update({
       affiliate_name: null,
+      affiliate_email: null,
       affiliate_commission_percent: 0,
-    }).eq("id", promoId);
+    } as any).eq("id", promoId);
     setConfirmDeleteAffiliate(null);
     loadData();
   };
