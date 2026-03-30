@@ -56,12 +56,52 @@ const GuideDetail = () => {
             ))}
           </div>
 
+          {/* DIY vs Ready Pack comparison */}
+          <div className="mt-16 bg-card border border-border rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-2">
+              <div className="p-6 border-r border-border">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">Do it yourself</div>
+                <ul className="space-y-3">
+                  {[
+                    "Research which office accepts foreigners",
+                    "Figure out proof of address requirements",
+                    "Find and fill the correct form",
+                    "Hope your mother's name format is right",
+                    "Translate Portuguese instructions yourself",
+                    "Wing it at the counter",
+                    "If rejected, start over",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                      <span className="text-muted-foreground/40 shrink-0 mt-0.5">○</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="p-6 bg-primary/[0.03]">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Ready Pack ($49)</div>
+                <ul className="space-y-3">
+                  {[
+                    "Correct office auto-selected for your state",
+                    "Proof of address sorted for your situation",
+                    "Forms pre-filled with your details",
+                    "AI scanner catches name errors before you go",
+                    "Portuguese cheat sheet for the counter",
+                    "Know exactly what to say and do",
+                    "Rejection troubleshooter if anything goes wrong",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-foreground leading-relaxed">
+                      <span className="text-primary font-bold shrink-0 mt-0.5">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div className="mt-16 bg-primary/5 border border-primary/10 rounded-2xl p-8 text-center">
-            <h3 className="text-xl font-bold">Skip the research. We prepare everything.</h3>
-            <p className="text-sm text-muted-foreground mt-2 mb-6 max-w-[420px] mx-auto">
-              Pre-filled forms, the right office for your state, a Portuguese cheat sheet, and a document checklist. 5 minutes of setup, one visit, done.
-            </p>
+          <div className="mt-8 text-center py-8">
             <Link
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
