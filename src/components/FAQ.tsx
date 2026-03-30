@@ -21,7 +21,7 @@ const FAQ = () => {
           <div key={i} className="border-b border-border py-5">
             <button
               className="w-full flex justify-between items-center text-left font-semibold text-foreground"
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              onClick={() => setOpenIndices(prev => { const next = new Set(prev); if (next.has(i)) next.delete(i); else next.add(i); return next; })}
             >
               {faq.q}
               <span className={`text-lg text-muted-foreground transition-transform shrink-0 ml-4 ${openIndex === i ? "rotate-45 text-primary" : ""}`}>
