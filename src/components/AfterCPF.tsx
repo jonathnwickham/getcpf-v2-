@@ -4,7 +4,7 @@ const cards = [
   {
     icon: CreditCard,
     title: "Open a bank account in 10 minutes",
-    desc: "Nubank, Inter, C6 — digital banks approve you instantly with a CPF. Get a debit card, Pix, and credit line.",
+    desc: "Nubank, Inter, C6, digital banks approve you instantly with a CPF. Get a debit card, Pix, and credit line.",
   },
   {
     icon: Smartphone,
