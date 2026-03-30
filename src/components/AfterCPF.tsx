@@ -35,18 +35,26 @@ const cards = [
 
 const AfterCPF = () => {
   return (
-    <section className="py-24 px-8">
+    <section className="py-24 px-8 relative overflow-hidden">
+      {/* Subtle Brazilian flag accent */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[hsl(140,70%,40%)] via-[hsl(50,90%,55%)] to-[hsl(210,80%,45%)]" />
+
       <div className="max-w-[1100px] mx-auto text-center">
-        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">This is where it gets good</div>
+        <div className="text-4xl mb-6">🇧🇷</div>
+        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">After you've got your CPF</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
           This is where the fun starts
         </h2>
-        <p className="text-muted-foreground mt-3 max-w-lg mx-auto text-sm leading-relaxed">
-          You might not be Brazilian, but with a CPF you're part of it. No more asking for help, no more workarounds. 
-          Brazil is the most beautiful country in the world, and we're proud to help you actually experience it.
+        <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-[15px] leading-relaxed">
+          You might not be Brazilian, but with a CPF you're part of it. No more asking for help at the checkout. 
+          No more borrowing someone's number to order food. No more workarounds. You just... do things. Like everyone else.
+        </p>
+        <p className="text-muted-foreground mt-3 max-w-xl mx-auto text-[15px] leading-relaxed">
+          Brazil is the most beautiful country in the world, and we're so proud to help you actually experience it. 
+          Not as a tourist figuring things out, but as someone who belongs.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14 text-left">
           {cards.map((card) => {
             const Icon = card.icon;
             return (
@@ -61,9 +69,13 @@ const AfterCPF = () => {
           })}
         </div>
 
-        <p className="text-sm text-muted-foreground mt-10 max-w-md mx-auto leading-relaxed">
-          Your Ready Pack includes a full "Life in Brazil" guide so you know exactly what to do after your CPF. We've got you.
-        </p>
+        <div className="mt-12 bg-primary/5 border border-primary/10 rounded-2xl p-8 max-w-2xl mx-auto">
+          <p className="text-sm leading-relaxed text-foreground">
+            Your Ready Pack includes a full <span className="font-semibold text-primary">"Life in Brazil"</span> guide. 
+            Once you have your CPF, we walk you through everything: setting up Pix, getting a phone plan, 
+            opening a bank account, finding an apartment. You don't need to figure it out alone. We've got you. 🇧🇷
+          </p>
+        </div>
       </div>
     </section>
   );
