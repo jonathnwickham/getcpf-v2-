@@ -17,7 +17,7 @@ const personas = [
   {
     emoji: "❤️",
     title: "Partners & spouses",
-    desc: "Moved for love? A CPF lets you build a life here — joint accounts, car insurance, even a gym membership.",
+    desc: "Moved for love? A CPF lets you build a life here. Joint accounts, car insurance, even a gym membership.",
   },
   {
     emoji: "🎓",
