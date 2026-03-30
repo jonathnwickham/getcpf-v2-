@@ -376,11 +376,14 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     </span>
                   </TableCell>
                   <TableCell>
-                    {userApp ? (
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Onboarded</span>
-                    ) : (
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Paid — not started</span>
-                    )}
+                    {(() => {
+                      const status = getDataStatus(p);
+                      return (
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded ${DATA_STATUS_COLORS[status]}`}>
+                          {status}
+                        </span>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
@@ -389,14 +392,12 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     <button
                       onClick={async (e) => {
                         e.stopPropagation();
-                        if (!confirm(`Delete user ${p.email}? This removes their profile and application data.`)) return;
-                        await supabase.from("applications").delete().eq("user_id", p.id);
-                        await supabase.from("profiles").delete().eq("id", p.id);
-                        onRefresh();
+                        if (!confirm(`Delete user data for ${p.email}? This anonymizes their profile and removes application data. Consent log is retained.`)) return;
+                        await anonymizeUser(p.id, onRefresh);
                       }}
-                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors"
+                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors whitespace-nowrap"
                     >
-                      Delete
+                      Delete user data
                     </button>
                   </TableCell>
                 </TableRow>
@@ -404,7 +405,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             })}
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">
+                <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
                   No users found
                 </TableCell>
               </TableRow>
