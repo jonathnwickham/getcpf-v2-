@@ -660,6 +660,7 @@ const PromosTab = () => {
     const data: Record<string, {
       promoId: string;
       name: string;
+      email: string | null;
       code: string;
       discount: number;
       commission: number;
@@ -685,6 +686,7 @@ const PromosTab = () => {
         data[p.affiliate_name] = {
           promoId: p.id,
           name: p.affiliate_name,
+          email: p.affiliate_email,
           code: p.code,
           discount: p.discount_percent,
           commission: p.affiliate_commission_percent,
