@@ -212,6 +212,30 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          details: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       consent_log: {
         Row: {
           consent: boolean
@@ -355,6 +379,39 @@ export type Database = {
           is_active?: boolean
           max_uses?: number | null
           times_used?: number
+        }
+        Relationships: []
+      }
+      revenue_entries: {
+        Row: {
+          amount: number
+          created_at: string
+          entry_date: string
+          entry_type: string
+          id: string
+          notes: string | null
+          transaction_id: string | null
+          user_email: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          entry_date?: string
+          entry_type?: string
+          id?: string
+          notes?: string | null
+          transaction_id?: string | null
+          user_email?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          entry_date?: string
+          entry_type?: string
+          id?: string
+          notes?: string | null
+          transaction_id?: string | null
+          user_email?: string | null
         }
         Relationships: []
       }

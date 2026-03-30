@@ -15,7 +15,11 @@ import {
 } from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
 
-type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "waitlist" | "settings";
+type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "partners" | "waitlist" | "settings";
+
+const logAuditAction = async (userId: string, action: string, details?: string) => {
+  await supabase.from("audit_log").insert({ user_id: userId, action, details } as any);
+};
 
 interface Profile {
   id: string;
@@ -106,6 +110,7 @@ const Admin = () => {
     { key: "revenue", label: "Revenue", icon: "💰" },
     { key: "promos", label: "Promo Codes", icon: "🏷️" },
     { key: "affiliates", label: "Affiliates", icon: "🤝" },
+    { key: "partners", label: "Partners", icon: "🌐" },
     { key: "waitlist", label: "Waitlist", icon: "📧" },
     { key: "settings", label: "Settings", icon: "⚙️" },
   ];
@@ -143,11 +148,12 @@ const Admin = () => {
 
         {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
         {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
-        {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
+        {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
         {tab === "promos" && <PromosTab />}
         {tab === "affiliates" && <AffiliatesTab />}
+        {tab === "partners" && <PartnersTab userId={user?.id || ""} />}
         {tab === "waitlist" && <WaitlistTab />}
-        {tab === "settings" && <SettingsTab />}
+        {tab === "settings" && <SettingsTab userId={user?.id || ""} />}
       </div>
     </div>
   );
@@ -581,34 +587,90 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
   );
 };
 
-/* ── Revenue Tab with charts ── */
-const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applications: Application[] }) => {
+/* ── Revenue Tab with manual entry ── */
+const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; applications: Application[]; userId: string }) => {
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
-  const totalRevenue = paidUsers * 49;
-  const avgPerUser = paidUsers > 0 ? (totalRevenue / paidUsers).toFixed(0) : "0";
+  const [manualEntries, setManualEntries] = useState<any[]>([]);
+  const [loadingEntries, setLoadingEntries] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [formType, setFormType] = useState<"revenue" | "refund">("revenue");
+  const [entryForm, setEntryForm] = useState({ amount: "", user_email: "", transaction_id: "", notes: "", entry_date: new Date().toISOString().slice(0, 10) });
+  const [saving, setSaving] = useState(false);
 
-  // Revenue over time (based on paid user signup dates)
+  useEffect(() => {
+    loadEntries();
+  }, []);
+
+  const loadEntries = async () => {
+    setLoadingEntries(true);
+    const { data } = await supabase.from("revenue_entries").select("*").order("entry_date", { ascending: false });
+    if (data) setManualEntries(data);
+    setLoadingEntries(false);
+  };
+
+  const saveEntry = async () => {
+    if (!entryForm.amount) return;
+    setSaving(true);
+    await supabase.from("revenue_entries").insert({
+      entry_type: formType,
+      amount: parseFloat(entryForm.amount),
+      user_email: entryForm.user_email.trim() || null,
+      transaction_id: entryForm.transaction_id.trim() || null,
+      notes: entryForm.notes.trim() || null,
+      entry_date: entryForm.entry_date,
+    } as any);
+    await logAuditAction(userId, `Added ${formType}`, `$${entryForm.amount} - ${entryForm.user_email || "no email"}`);
+    setEntryForm({ amount: "", user_email: "", transaction_id: "", notes: "", entry_date: new Date().toISOString().slice(0, 10) });
+    setShowForm(false);
+    setSaving(false);
+    loadEntries();
+  };
+
+  const deleteEntry = async (id: string) => {
+    if (!confirm("Delete this entry?")) return;
+    await supabase.from("revenue_entries").delete().eq("id", id);
+    await logAuditAction(userId, "Deleted revenue entry", id);
+    loadEntries();
+  };
+
+  const revenueEntries = manualEntries.filter(e => e.entry_type === "revenue");
+  const refundEntries = manualEntries.filter(e => e.entry_type === "refund");
+  const manualRevenue = revenueEntries.reduce((s: number, e: any) => s + Number(e.amount), 0);
+  const totalRefunds = refundEntries.reduce((s: number, e: any) => s + Number(e.amount), 0);
+  const estimatedRevenue = paidUsers * 49;
+  const totalRevenue = estimatedRevenue + manualRevenue - totalRefunds;
+
+  // Revenue over time (based on paid user signup dates + manual entries)
   const revenueByDay = useMemo(() => {
     const paidProfiles = profiles.filter(p => p.plan && p.plan !== "free" && p.created_at);
-    const map = new Map<string, number>();
+    const map = new Map<string, { revenue: number; refunds: number }>();
     paidProfiles.forEach(p => {
       const day = new Date(p.created_at!).toISOString().slice(0, 10);
-      map.set(day, (map.get(day) || 0) + 49);
+      const existing = map.get(day) || { revenue: 0, refunds: 0 };
+      existing.revenue += 49;
+      map.set(day, existing);
+    });
+    manualEntries.forEach((e: any) => {
+      const day = e.entry_date;
+      const existing = map.get(day) || { revenue: 0, refunds: 0 };
+      if (e.entry_type === "revenue") existing.revenue += Number(e.amount);
+      else existing.refunds += Number(e.amount);
+      map.set(day, existing);
     });
     let cumulative = 0;
     return Array.from(map.entries())
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([date, revenue]) => {
-        cumulative += revenue;
+      .map(([date, { revenue, refunds }]) => {
+        cumulative += revenue - refunds;
         return {
           date: new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
           revenue,
+          refunds,
           cumulative,
         };
       });
-  }, [profiles]);
+  }, [profiles, manualEntries]);
 
-  // Revenue by plan type
   const planData = useMemo(() => {
     const map = new Map<string, number>();
     profiles.forEach(p => {
@@ -618,57 +680,44 @@ const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applicati
     return Array.from(map.entries()).map(([name, value]) => ({ name, value }));
   }, [profiles]);
 
-  // Activity timeline (last 10 events)
   const recentActivity = useMemo(() => {
     const events: { time: string; type: string; detail: string }[] = [];
     profiles.forEach(p => {
-      if (p.created_at) {
-        events.push({
-          time: p.created_at,
-          type: "signup",
-          detail: `${p.full_name || p.email} signed up`,
-        });
-      }
+      if (p.created_at) events.push({ time: p.created_at, type: "signup", detail: `${p.full_name || p.email} signed up` });
     });
     applications.forEach(a => {
-      if (a.created_at) {
-        events.push({
-          time: a.created_at,
-          type: "application",
-          detail: `${a.full_name || "User"} started application${a.state_name ? ` in ${a.state_name}` : ""}`,
-        });
-      }
+      if (a.created_at) events.push({ time: a.created_at, type: "application", detail: `${a.full_name || "User"} started application${a.state_name ? ` in ${a.state_name}` : ""}` });
     });
-    return events
-      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-      .slice(0, 15);
+    return events.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 15);
   }, [profiles, applications]);
 
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total revenue" value={`$${totalRevenue}`} icon="💰" trend={totalRevenue > 0 ? "up" : undefined} />
-        <StatCard label="Paid users" value={paidUsers.toString()} icon="✅" />
-        <StatCard label="Avg. per user" value={`$${avgPerUser}`} icon="📊" />
-        <StatCard label="Refunds" value="$0" icon="↩️" />
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <StatCard label="Total revenue" value={`$${totalRevenue.toFixed(0)}`} icon="💰" trend={totalRevenue > 0 ? "up" : undefined} />
+        <StatCard label="Estimated (auto)" value={`$${estimatedRevenue}`} icon="📊" />
+        <StatCard label="Manual revenue" value={`$${manualRevenue.toFixed(0)}`} icon="✅" />
+        <StatCard label="Refunds" value={`-$${totalRefunds.toFixed(0)}`} icon="↩️" />
+        <StatCard label="Paid users" value={paidUsers.toString()} icon="👥" />
       </div>
 
       {/* Revenue charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ChartCard title="Daily Revenue" subtitle="Revenue per day ($49 per sale)">
+        <ChartCard title="Daily Revenue" subtitle="Revenue per day (auto + manual)">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={revenueByDay} margin={{ left: 0, right: 10, top: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
               <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} formatter={(v: number) => [`$${v}`, "Revenue"]} />
-              <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
+              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
+              <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} name="Revenue" />
+              <Bar dataKey="refunds" fill="hsl(var(--destructive))" radius={[8, 8, 0, 0]} name="Refunds" />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Cumulative Revenue" subtitle="Total revenue growth over time">
+        <ChartCard title="Cumulative Revenue" subtitle="Net revenue growth over time">
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={revenueByDay} margin={{ left: 0, right: 10, top: 5 }}>
               <defs>
@@ -687,6 +736,95 @@ const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applicati
         </ChartCard>
       </div>
 
+      {/* Manual entry section */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="font-bold text-lg">Manual entries</h2>
+            <p className="text-xs text-muted-foreground">Add revenue or refund records manually</p>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Revenue</button>
+            <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="bg-destructive text-destructive-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Refund</button>
+          </div>
+        </div>
+
+        {showForm && (
+          <div className="bg-secondary rounded-xl p-4 mb-4 space-y-3">
+            <h3 className="font-semibold text-sm capitalize">{formType} entry</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Amount ($) *</label>
+                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Date</label>
+                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">User email</label>
+                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Transaction ID</label>
+                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Notes</label>
+                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-primary text-primary-foreground px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
+              <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-xl text-sm font-semibold border border-border text-muted-foreground hover:text-foreground">Cancel</button>
+            </div>
+          </div>
+        )}
+
+        {loadingEntries ? (
+          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+        ) : manualEntries.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No manual entries yet.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Transaction</TableHead>
+                  <TableHead>Notes</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {manualEntries.map((e: any) => (
+                  <TableRow key={e.id}>
+                    <TableCell>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
+                        {e.entry_type}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm">{new Date(e.entry_date).toLocaleDateString()}</TableCell>
+                    <TableCell className={`font-semibold ${e.entry_type === "refund" ? "text-destructive" : ""}`}>
+                      {e.entry_type === "refund" ? "-" : ""}${Number(e.amount).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{e.user_email || "—"}</TableCell>
+                    <TableCell className="text-xs font-mono text-muted-foreground">{e.transaction_id || "—"}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{e.notes || "—"}</TableCell>
+                    <TableCell className="text-right">
+                      <button onClick={() => deleteEntry(e.id)} className="text-xs text-destructive hover:text-destructive/80 font-medium">Delete</button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+
       {/* Plan breakdown + Activity timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <ChartCard title="Users by Plan" subtitle="Distribution across tiers">
@@ -703,7 +841,6 @@ const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applicati
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* Activity Timeline */}
         <div className="bg-card border border-border rounded-2xl p-5">
           <h3 className="font-bold text-sm mb-1">Recent Activity</h3>
           <p className="text-xs text-muted-foreground mb-4">Latest signups and applications</p>
@@ -713,20 +850,14 @@ const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applicati
             ) : (
               recentActivity.map((event, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${
-                    event.type === "signup" ? "bg-primary" : "bg-blue-500"
-                  }`} />
+                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-primary" : "bg-accent"}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate">{event.detail}</p>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(event.time).toLocaleString("en-US", {
-                        month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
-                      })}
+                      {new Date(event.time).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </p>
                   </div>
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${
-                    event.type === "signup" ? "bg-primary/10 text-primary" : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                  }`}>
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent-foreground"}`}>
                     {event.type}
                   </span>
                 </div>
@@ -1567,12 +1698,112 @@ const AffiliatesTab = () => {
   );
 };
 
+/* ── Partners Tab (affiliate_applications) ── */
+const PartnersTab = ({ userId }: { userId: string }) => {
+  const [apps, setApps] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedApp, setSelectedApp] = useState<any | null>(null);
+
+  useEffect(() => {
+    loadApps();
+  }, []);
+
+  const loadApps = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("affiliate_applications").select("*").order("created_at", { ascending: false });
+    if (data) setApps(data);
+    setLoading(false);
+  };
+
+  const totalApps = apps.length;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <StatCard label="Total applications" value={totalApps.toString()} icon="🌐" />
+      </div>
+
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+        {loading ? (
+          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">Loading...</div>
+        ) : apps.length === 0 ? (
+          <div className="p-8 text-center text-sm text-muted-foreground">No partner applications yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Platform</TableHead>
+                  <TableHead>Situation</TableHead>
+                  <TableHead>Applied</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {apps.map((a: any) => (
+                  <TableRow key={a.id}>
+                    <TableCell className="font-semibold">{a.name}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
+                    <TableCell className="text-sm">{a.platform || "—"}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{a.situation || "—"}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-right">
+                      <button onClick={() => setSelectedApp(a)} className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">View</button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+
+      {selectedApp && (
+        <Dialog open={!!selectedApp} onOpenChange={(open) => { if (!open) setSelectedApp(null); }}>
+          <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-xl">{selectedApp.name}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-2 text-sm">
+              <div className="grid grid-cols-2 gap-3">
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{selectedApp.email}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
+              </div>
+              {selectedApp.situation && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
+              )}
+              {selectedApp.why && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
+              )}
+              {selectedApp.motivation && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
 /* ── Settings Tab ── */
-const SettingsTab = () => {
+const SettingsTab = ({ userId }: { userId: string }) => {
   const [exporting, setExporting] = useState(false);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [loadingLogs, setLoadingLogs] = useState(true);
+
+  useEffect(() => {
+    supabase.from("audit_log").select("*").order("created_at", { ascending: false }).limit(50)
+      .then(({ data }) => { if (data) setAuditLogs(data); setLoadingLogs(false); });
+  }, []);
 
   const exportCSV = async () => {
     setExporting(true);
+    await logAuditAction(userId, "Exported users CSV");
     const [profilesRes, appsRes] = await Promise.all([
       supabase.from("profiles").select("*"),
       supabase.from("applications").select("*"),
@@ -1628,6 +1859,40 @@ const SettingsTab = () => {
         <p className="text-sm text-muted-foreground">
           Payment integration settings will appear here once connected. Price changes and webhook configuration will be manageable from this panel.
         </p>
+      </div>
+
+      {/* Audit Log */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <h2 className="font-bold text-lg mb-1">Audit log</h2>
+        <p className="text-xs text-muted-foreground mb-4">Recent admin actions (last 50)</p>
+        {loadingLogs ? (
+          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+        ) : auditLogs.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No audit log entries yet. Actions will be recorded as you use the admin panel.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Details</TableHead>
+                  <TableHead>When</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {auditLogs.map((log: any) => (
+                  <TableRow key={log.id}>
+                    <TableCell className="font-semibold text-sm">{log.action}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[300px] truncate">{log.details || "—"}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                      {new Date(log.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
     </div>
   );
