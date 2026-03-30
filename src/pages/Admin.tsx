@@ -612,10 +612,12 @@ const PromosTab = () => {
       code: newCode.trim().toUpperCase(),
       discount_percent: parseInt(newDiscount) || 10,
       affiliate_name: newAffiliate.trim() || null,
+      affiliate_email: newAffiliateEmail.trim() || null,
       affiliate_commission_percent: parseInt(newCommission) || 20,
-    });
+    } as any);
     setNewCode("");
     setNewAffiliate("");
+    setNewAffiliateEmail("");
     setNewDiscount("10");
     setNewCommission("20");
     setAdding(false);
