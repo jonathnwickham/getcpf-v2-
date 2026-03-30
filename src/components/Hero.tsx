@@ -36,7 +36,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
   const proofItems = [
     { num: "~5 min", label: "That's all it takes" },
-    { num: "Free", label: "The CPF itself" },
+    { num: "R$7", label: "Or free at Receita Federal" },
     { num: "Same day", label: "Walk out with it" },
     { num: "24/7", label: "Start anytime" },
   ];
