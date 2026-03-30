@@ -11,6 +11,8 @@ import {
   persistOnboardingData,
   readPersistedOnboardingData,
   saveLatestApplication,
+  ONBOARDING_LOCAL_KEY,
+  ONBOARDING_SESSION_KEY,
 } from "@/lib/application-storage";
 
 const TOTAL_STEPS = 8;
