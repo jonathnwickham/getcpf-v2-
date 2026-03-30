@@ -382,29 +382,51 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
   </div>
 );
 
-const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
-    </p>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value.toUpperCase())}
-      placeholder="e.g. AB1234567"
-      autoFocus
-      className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50 tracking-wider"
-    />
-    {value.trim().length > 0 && !/^[A-Z0-9]{5,15}$/i.test(value.trim()) && (
-      <p className="text-xs text-destructive mt-2">⚠️ That doesn't look right — passport numbers are 5–15 characters, letters and numbers only.</p>
-    )}
-    <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
-      <span>🔒</span> Your passport number is used only to prepare your forms and is never stored.
+const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
+  const trimmed = value.trim();
+  const hasInput = trimmed.length > 0;
+  const hasSpaces = /\s/.test(trimmed);
+  const hasSpecialChars = /[^A-Z0-9]/i.test(trimmed);
+  const tooShort = hasInput && trimmed.length < 6;
+  const tooLong = trimmed.length > 12;
+  const isValid = hasInput && /^[A-Z0-9]{6,12}$/i.test(trimmed);
+
+  let errorMsg = "";
+  if (hasInput && hasSpaces) errorMsg = "Passport numbers can't contain spaces.";
+  else if (hasInput && hasSpecialChars) errorMsg = "Letters and numbers only — no special characters.";
+  else if (tooShort) errorMsg = "Too short — passport numbers are at least 6 characters.";
+  else if (tooLong) errorMsg = "Too long — passport numbers are at most 12 characters.";
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
+      </p>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value.toUpperCase().replace(/\s/g, ""))}
+        placeholder="e.g. AB1234567"
+        autoFocus
+        maxLength={12}
+        className={`w-full px-5 py-4 bg-card border rounded-xl text-foreground text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/50 tracking-wider ${
+          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-border focus:border-primary focus:ring-primary/10"
+        }`}
+      />
+      {errorMsg && (
+        <p className="text-xs text-destructive mt-2 font-medium">⚠️ {errorMsg}</p>
+      )}
+      {hasInput && isValid && (
+        <p className="text-xs text-primary mt-2 font-medium">✓ Looks good</p>
+      )}
+      <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
+        <span>🔒</span> Your passport number is used only to prepare your forms and is never stored after document generation.
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
