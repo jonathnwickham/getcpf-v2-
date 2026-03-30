@@ -592,6 +592,12 @@ const PromosTab = () => {
   const [editEmail, setEditEmail] = useState("");
   const [editCommission, setEditCommission] = useState("");
   const [confirmDeleteAffiliate, setConfirmDeleteAffiliate] = useState<string | null>(null);
+  // Profile dialog
+  const [profileOpen, setProfileOpen] = useState<string | null>(null);
+  const [profileNotes, setProfileNotes] = useState("");
+  const [profileSource, setProfileSource] = useState("");
+  const [profileLocation, setProfileLocation] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
 
   useEffect(() => {
     loadData();
