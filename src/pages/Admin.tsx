@@ -104,6 +104,7 @@ const Admin = () => {
     { key: "applications", label: "Applications", icon: "📋" },
     { key: "revenue", label: "Revenue", icon: "💰" },
     { key: "promos", label: "Promo Codes", icon: "🏷️" },
+    { key: "affiliates", label: "Affiliates", icon: "🤝" },
     { key: "waitlist", label: "Waitlist", icon: "📧" },
     { key: "settings", label: "Settings", icon: "⚙️" },
   ];
