@@ -237,6 +237,27 @@ const ReadyPack = () => {
   );
 };
 
+// === REFERRAL SHARE BUTTON ===
+const ReferralShareButton = ({ type, label, emoji, onClick }: { type: string; label: string; emoji: string; onClick: () => void }) => {
+  const [clicked, setClicked] = useState(false);
+  const handleClick = () => {
+    onClick();
+    if (type === "copy") {
+      setClicked(true);
+      setTimeout(() => setClicked(false), 2000);
+    }
+  };
+  return (
+    <button
+      onClick={handleClick}
+      className="inline-flex items-center gap-2 bg-card border border-border px-5 py-3 rounded-xl text-sm font-semibold hover:bg-secondary transition-all"
+    >
+      <span>{emoji}</span>
+      {type === "copy" && clicked ? "✓ Copied!" : label}
+    </button>
+  );
+};
+
 // === MY CPF TAB ===
 const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide }: {
   data: OnboardingData; stateName: string; motherDisplay: string; onOpenGuide: () => void; onOpenLifeGuide: () => void;
@@ -646,6 +667,44 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
         >
           🔓 See full guide — Life in Brazil →
         </button>
+      </section>
+
+      {/* Referral / Share section */}
+      <section className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
+        <div className="text-3xl mb-3">💬</div>
+        <h3 className="font-bold text-lg mb-1">Know someone who needs a CPF?</h3>
+        <p className="text-sm text-muted-foreground mb-5 max-w-md mx-auto">
+          You went through it. Help a friend skip the stress. Share GET CPF and they'll thank you later.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <ReferralShareButton
+            type="whatsapp"
+            label="Share on WhatsApp"
+            emoji="💬"
+            onClick={() => {
+              const text = encodeURIComponent("I just got my Brazilian CPF sorted with GET CPF. If you need one, check it out — saved me so much time: https://getcpf.com");
+              window.open(`https://wa.me/?text=${text}`, "_blank");
+            }}
+          />
+          <ReferralShareButton
+            type="copy"
+            label="Copy link"
+            emoji="🔗"
+            onClick={() => {
+              navigator.clipboard.writeText("https://getcpf.com");
+              // Brief feedback handled inside the button
+            }}
+          />
+          <ReferralShareButton
+            type="twitter"
+            label="Post on X"
+            emoji="𝕏"
+            onClick={() => {
+              const text = encodeURIComponent("Just got my Brazilian CPF with @getcpf. If you're moving to Brazil, this saved me hours. https://getcpf.com");
+              window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank");
+            }}
+          />
+        </div>
       </section>
     </div>
   );
