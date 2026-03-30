@@ -380,8 +380,30 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 };
 
 /* ── Applications Tab ── */
-const ApplicationsTab = ({ applications, profiles }: { applications: Application[]; profiles: Profile[] }) => {
+const APP_STATUSES = ["draft", "paid", "prepared", "office_visited", "cpf_issued", "rejected"] as const;
+const STATUS_COLORS: Record<string, string> = {
+  draft: "bg-secondary text-muted-foreground",
+  paid: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  prepared: "bg-primary/10 text-primary",
+  office_visited: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+  cpf_issued: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+  rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+};
+const STATUS_LABELS: Record<string, string> = {
+  draft: "Draft", paid: "Paid", prepared: "Prepared",
+  office_visited: "Office Visited", cpf_issued: "CPF Issued", rejected: "Rejected",
+};
+
+const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
   const profileMap = new Map(profiles.map(p => [p.id, p]));
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  const updateStatus = async (appId: string, newStatus: string) => {
+    setUpdatingId(appId);
+    await supabase.from("applications").update({ status: newStatus } as any).eq("id", appId);
+    setUpdatingId(null);
+    onRefresh();
+  };
 
   // State breakdown
   const stateData = useMemo(() => {
@@ -401,8 +423,8 @@ const ApplicationsTab = ({ applications, profiles }: { applications: Application
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Submitted" value={applications.filter(a => a.submitted_at).length.toString()} icon="📤" />
-        <StatCard label="Draft" value={applications.filter(a => a.status === "draft").length.toString()} icon="📝" />
+        <StatCard label="Paid" value={applications.filter(a => a.status === "paid").length.toString()} icon="💳" />
+        <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
       </div>
 
@@ -444,13 +466,16 @@ const ApplicationsTab = ({ applications, profiles }: { applications: Application
                   <TableCell className="text-sm">{a.state_name || "—"}</TableCell>
                   <TableCell className="text-sm">{a.city || "—"}</TableCell>
                   <TableCell>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
-                      a.status === "prepared" ? "bg-primary/10 text-primary" :
-                      a.status === "submitted" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" :
-                      "bg-secondary text-muted-foreground"
-                    }`}>
-                      {a.status || "draft"}
-                    </span>
+                    <select
+                      value={a.status || "draft"}
+                      onChange={(e) => updateStatus(a.id, e.target.value)}
+                      disabled={updatingId === a.id}
+                      className={`text-xs font-semibold px-2 py-1 rounded cursor-pointer border-0 outline-none ${STATUS_COLORS[a.status || "draft"] || STATUS_COLORS.draft}`}
+                    >
+                      {APP_STATUSES.map(s => (
+                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                      ))}
+                    </select>
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {a.created_at ? new Date(a.created_at).toLocaleDateString() : "—"}
