@@ -372,7 +372,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_promo_codes: {
+        Row: {
+          code: string | null
+          discount_percent: number | null
+          is_active: boolean | null
+        }
+        Insert: {
+          code?: string | null
+          discount_percent?: number | null
+          is_active?: boolean | null
+        }
+        Update: {
+          code?: string | null
+          discount_percent?: number | null
+          is_active?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
