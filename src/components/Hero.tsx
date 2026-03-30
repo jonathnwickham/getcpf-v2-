@@ -219,18 +219,21 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <span className="text-5xl md:text-6xl drop-shadow-lg">🇧🇷</span>
           </div>
           {/* Rotating ring */}
-          <div className="absolute inset-0 animate-[spin_20s_linear_infinite]">
+          <div className="absolute inset-0 animate-[spin_24s_linear_infinite]">
             {orbitFlags.map((flag, i) => {
-              const angle = (i / orbitFlags.length) * 360;
+              const angle = (i / orbitFlags.length) * 2 * Math.PI;
+              const radius = 50; // percentage from center
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              const degreesAngle = (i / orbitFlags.length) * 360;
               return (
                 <span
                   key={i}
-                  className="absolute text-xl md:text-2xl"
+                  className="absolute text-lg md:text-xl lg:text-2xl"
                   style={{
-                    left: "50%",
-                    top: "50%",
-                    transform: `rotate(${angle}deg) translateY(-50%) translateX(-50%) translateY(-${50}%) rotate(-${angle}deg)`,
-                    transformOrigin: "0 0",
+                    left: `${x}%`,
+                    top: `${y}%`,
+                    transform: `translate(-50%, -50%) rotate(-${degreesAngle}deg)`,
                   }}
                 >
                   {flag}
