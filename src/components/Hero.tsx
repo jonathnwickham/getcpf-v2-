@@ -80,7 +80,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20">
               Let's get started →
             </button>
-            <a href="#how-it-works" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
+            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all">
               See how it works
             </a>
           </div>

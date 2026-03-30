@@ -28,7 +28,7 @@ const FAQ = () => {
                 +
               </span>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 text-sm text-muted-foreground leading-relaxed ${openIndex === i ? "max-h-[300px] pt-3" : "max-h-0"}`}>
+            <div className={`overflow-hidden transition-all duration-300 text-sm text-muted-foreground leading-relaxed ${openIndices.has(i) ? "max-h-[300px] pt-3" : "max-h-0"}`}>
               {faq.a}
             </div>
           </div>
