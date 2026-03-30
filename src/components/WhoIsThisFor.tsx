@@ -37,7 +37,7 @@ const personas = [
   {
     emoji: "🧳",
     title: "Snowbirds & seasonal visitors",
-    desc: "Spend a few months a year in Brazil? A CPF makes every return easier — banking, phone plans, and online shopping just work.",
+    desc: "Spend a few months a year in Brazil? A CPF makes every return easier. Banking, phone plans, and online shopping just work.",
   },
 ];
 
