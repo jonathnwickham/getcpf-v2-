@@ -1,13 +1,13 @@
 import { X, Check } from "lucide-react";
 
 const beforeSteps = [
-  "Googled for hours \u2014 found conflicting advice",
-  "Went to the wrong office \u2014 turned away at the door",
-  "Missing one document \u2014 told to come back next week",
+  "Googled for hours, found conflicting advice",
+  "Went to the wrong office, turned away at the door",
+  "Missing one document, told to come back next week",
 ];
 
 const afterSteps = [
-  "5-minute questionnaire \u2014 personalised pack ready",
+  "5-minute questionnaire, personalised pack ready",
   "Exact documents, right office, no surprises",
   "Walk in, walk out with your CPF number",
 ];
