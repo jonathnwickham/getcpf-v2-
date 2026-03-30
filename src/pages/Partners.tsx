@@ -251,11 +251,11 @@ const Partners = () => {
         <div className="max-w-[640px] mx-auto text-center">
           <h2 className="text-2xl font-bold tracking-tight mb-6">Brazil deserves better</h2>
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed text-left">
-            <p>
-              Brazil is extraordinary. The people, the food, the culture, the energy. There is nowhere else like it. 
-              But arriving here as a foreigner is unnecessarily hard. Not because Brazilians are unwelcoming, the 
-              opposite is true. But because the systems were not built with outsiders in mind.
-            </p>
+             <p>
+               Brazil is extraordinary. The people, the food, the culture, the energy. There is nowhere else like it. 
+               But arriving here as a foreigner can be confusing. Not because Brazilians are unwelcoming, the 
+               opposite is true. But because the systems were not built with outsiders in mind.
+             </p>
             <p>
               The CPF is the front door to Brazilian life. It unlocks banking, housing, food delivery, phone plans, 
               everything. And for most foreigners it takes a full day of confusion, wrong offices, rejected forms, 
