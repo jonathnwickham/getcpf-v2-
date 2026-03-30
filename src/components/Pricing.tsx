@@ -93,7 +93,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Pricing</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[560px] text-sm leading-relaxed">
-        The CPF costs R$7 at Correios or nothing at the Receita Federal. Either way, you're paying us $49 to make sure you don't waste a full day getting it wrong.
+        The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us $49 to make sure that when you go in, it works.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto mt-12">
         {tiers.map((tier) => (
