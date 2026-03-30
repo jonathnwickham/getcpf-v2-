@@ -311,6 +311,27 @@ const PricingPage = () => {
                 </div>
               ))}
             </div>
+
+            {/* Guarantee + micro-testimonials */}
+            <div className="mt-8 space-y-4 max-w-[700px] mx-auto">
+              <div className="flex items-center justify-center gap-2 text-sm text-primary font-semibold">
+                <span>🛡️</span>
+                If you follow our steps and get rejected, we fix it free. No questions asked.
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                {[
+                  { text: "Got my CPF in 45 minutes. The Portuguese phrases saved me.", name: "James K.", loc: "São Paulo" },
+                  { text: "Worth every cent. I'd have wasted the whole day without this.", name: "Sarah M.", loc: "Florianópolis" },
+                  { text: "We both got CPFs on the first try. The troubleshooter is genius.", name: "Lisa W.", loc: "Rio de Janeiro" },
+                ].map((t) => (
+                  <div key={t.name} className="bg-card border border-border rounded-xl p-4">
+                    <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
+                    <p className="text-[10px] text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <button onClick={() => setFlowStep("email")} className="mt-8 text-sm text-muted-foreground hover:text-foreground mx-auto block">
               ← Back
             </button>
