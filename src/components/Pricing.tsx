@@ -70,10 +70,22 @@ const trustSignals = [
 
 const Pricing = ({ onOpenModal }: PricingProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [waitlistEmail, setWaitlistEmail] = useState<Record<string, string>>({});
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState<Record<string, boolean>>({});
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
     else navigate("/pricing");
+  };
+
+  const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
+    e.preventDefault();
+    const email = waitlistEmail[tierName]?.trim();
+    if (!email) return;
+    await supabase.from("waitlist").insert({ email, plan: tierName } as any);
+    setWaitlistSubmitted((s) => ({ ...s, [tierName]: true }));
+    toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
 
   return (
