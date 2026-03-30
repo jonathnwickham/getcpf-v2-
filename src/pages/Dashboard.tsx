@@ -96,12 +96,7 @@ const Dashboard = () => {
             {application.city && <InfoField label="City" value={application.city} />}
             {application.email && <InfoField label="Email" value={application.email} />}
           </div>
-          {application.cpf_number && (
-            <div className="mt-6 bg-primary/5 border border-primary/15 rounded-xl p-4">
-              <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">🎉 Your CPF Number</div>
-              <div className="text-2xl font-extrabold font-mono tracking-wide">{application.cpf_number}</div>
-            </div>
-          )}
+          <CpfConfirmation applicationId={application.id} existingCpf={application.cpf_number} />
           <div className="mt-4">
             <button
               onClick={() => navigate("/ready-pack")}
