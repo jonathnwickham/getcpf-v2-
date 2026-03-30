@@ -35,11 +35,14 @@ const Hero = ({ onOpenModal }: HeroProps) => {
     else navigate("/get-started");
   };
 
+  const cpfCount = useCpfCount();
+  const displayCount = cpfCount !== null ? `${cpfCount}+` : "200+";
+
   const proofItems = [
     { num: "~5 min", label: "Setup time" },
     { num: "R$7", label: "At Correios" },
     { num: "Same day", label: "When you go in" },
-    { num: "200+", label: "CPFs prepared" },
+    { num: displayCount, label: "CPFs prepared" },
   ];
 
   const flags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇳🇬", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷"];
