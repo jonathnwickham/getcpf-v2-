@@ -31,6 +31,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
     { label: "How it works", href: "/#how" },
     { label: "Pricing", href: "/#pricing" },
     { label: "FAQ", href: "/#faq" },
+    { label: "Partner with us", href: "/partners" },
   ];
 
   return (
