@@ -49,7 +49,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   const orbitFlags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇮🇹", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷", "🇵🇹", "🇳🇱", "🇨🇦", "🇮🇪"];
 
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center items-center px-6 pt-32 pb-8 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
+    <section className="flex flex-col justify-center items-center px-6 pt-32 pb-8 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
       {/* Radial glow */}
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
