@@ -198,7 +198,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
     // Use nationality from applications where available, fall back to profile country_code
     profiles.forEach(p => {
       const app = applications.find(a => a.user_id === p.id);
-      const nat = app?.nationality || p.country_code || "Unknown";
+      const nat = app?.nationality || p.country_code || "Not onboarded";
       map.set(nat, (map.get(nat) || 0) + 1);
     });
     return Array.from(map.entries())
@@ -289,6 +289,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <TableHead>Email</TableHead>
               <TableHead>Nationality</TableHead>
               <TableHead>Plan</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Signed up</TableHead>
             </TableRow>
           </TableHeader>
@@ -310,6 +311,13 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     }`}>
                       {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
                     </span>
+                  </TableCell>
+                  <TableCell>
+                    {userApp ? (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Onboarded</span>
+                    ) : (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Paid — not started</span>
+                    )}
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}

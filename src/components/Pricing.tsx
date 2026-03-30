@@ -19,7 +19,7 @@ const tiers = [
       "Portuguese cheat sheet for the office visit",
       "Host declaration letter generator",
       "Post-CPF setup guide (bank, SIM, Pix)",
-      "100% Acceptance Guarantee — or your money back",
+      "If you follow our steps and get rejected, we fix it free",
     ],
     cta: "Get started, $49",
   },
@@ -146,7 +146,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       </p>
       <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary font-semibold">
         <span>🛡️</span>
-        100% Acceptance Guarantee — follow our steps or get your money back
+        If you follow our steps and get rejected, we fix it free. No questions asked.
       </div>
     </section>
   );

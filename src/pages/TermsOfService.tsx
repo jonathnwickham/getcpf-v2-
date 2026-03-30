@@ -46,11 +46,9 @@ const TermsOfService = () => (
 
         <section>
           <h2 className="text-xl font-bold mb-3">Refund policy</h2>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Before accessing your Ready Pack:</strong> Full refund within 7 days, no questions asked.</li>
-            <li><strong>After accessing your Ready Pack:</strong> If your application is rejected due to an error in our document preparation, we will prepare corrected documents at no additional charge.</li>
-            <li><strong>No cash refunds</strong> once documents have been generated.</li>
-          </ul>
+          <p className="leading-relaxed text-sm">
+            If you follow our preparation steps and your CPF application is rejected, we will prepare corrected documents and provide updated guidance at no additional charge. This is our fix-it guarantee. We do not offer cash refunds once documents have been generated, as the preparation service has been delivered.
+          </p>
           <p className="leading-relaxed mt-3">
             To request a refund, email{" "}
             <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>.

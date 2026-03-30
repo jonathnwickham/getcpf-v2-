@@ -282,12 +282,19 @@ const PricingPage = () => {
                   {tier.comingSoon ? (
                     !waitlistSubmitted ? (
                       <form onSubmit={handleWaitlist} className="space-y-2">
+                        <input
+                          type="email"
+                          value={waitlistEmail}
+                          onChange={(e) => setWaitlistEmail(e.target.value)}
+                          required
+                          placeholder="your@email.com"
+                          className="w-full bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        />
                         <button
                           type="submit"
-                          className="w-full py-3.5 rounded-xl font-semibold border border-border text-muted-foreground cursor-not-allowed opacity-60"
-                          disabled
+                          className="w-full py-3.5 rounded-xl font-semibold border border-border text-foreground hover:bg-secondary transition-all"
                         >
-                          Coming soon
+                          Join waitlist →
                         </button>
                       </form>
                     ) : (
@@ -304,6 +311,27 @@ const PricingPage = () => {
                 </div>
               ))}
             </div>
+
+            {/* Guarantee + micro-testimonials */}
+            <div className="mt-8 space-y-4 max-w-[700px] mx-auto">
+              <div className="flex items-center justify-center gap-2 text-sm text-primary font-semibold">
+                <span>🛡️</span>
+                If you follow our steps and get rejected, we fix it free. No questions asked.
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                {[
+                  { text: "Got my CPF in 45 minutes. The Portuguese phrases saved me.", name: "James K.", loc: "São Paulo" },
+                  { text: "Worth every cent. I'd have wasted the whole day without this.", name: "Sarah M.", loc: "Florianópolis" },
+                  { text: "We both got CPFs on the first try. The troubleshooter is genius.", name: "Lisa W.", loc: "Rio de Janeiro" },
+                ].map((t) => (
+                  <div key={t.name} className="bg-card border border-border rounded-xl p-4">
+                    <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
+                    <p className="text-[10px] text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <button onClick={() => setFlowStep("email")} className="mt-8 text-sm text-muted-foreground hover:text-foreground mx-auto block">
               ← Back
             </button>
@@ -401,7 +429,11 @@ const PricingPage = () => {
               </button>
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="mt-4 text-center text-xs text-primary font-semibold">
+              🛡️ If you follow our steps and get rejected, we fix it free. No questions asked.
+            </div>
+
+            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Secure checkout
