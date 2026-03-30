@@ -463,6 +463,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             <button
               onClick={() => {
                 setAnimateCard(false);
+                setCpfNumber("");
                 localStorage.removeItem("cpf-saved-number");
               }}
               className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
