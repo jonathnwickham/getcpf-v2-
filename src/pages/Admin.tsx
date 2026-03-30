@@ -149,12 +149,14 @@ const Admin = () => {
 };
 
 /* ── Users Tab with search and funnel ── */
-const UsersTab = ({ profiles, applications, search, setSearch }: {
+const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   profiles: Profile[];
   applications: Application[];
   search: string;
   setSearch: (v: string) => void;
+  onRefresh: () => void;
 }) => {
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
