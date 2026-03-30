@@ -31,7 +31,7 @@ const ForgotPassword = () => {
         <div className="w-full max-w-md text-center">
           <div className="text-5xl mb-4">📧</div>
           <h1 className="text-2xl font-extrabold">Check your inbox</h1>
-          <p className="text-muted-foreground mt-2 text-sm">We sent a reset link to <strong>{email}</strong> — it'll be there in a minute</p>
+          <p className="text-muted-foreground mt-2 text-sm">We sent a reset link to <strong>{email}</strong>, it'll be there in a minute</p>
           <Link to="/login" className="mt-6 inline-block text-primary font-semibold hover:underline text-sm">
             ← Back to login
           </Link>
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
             GET <span className="text-primary">CPF</span>
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
-          <p className="text-muted-foreground mt-2 text-sm">No worries — enter your email and we'll send you a link to reset it</p>
+          <p className="text-muted-foreground mt-2 text-sm">No worries, enter your email and we'll send you a link to reset it</p>
         </div>
 
         <form onSubmit={handleReset} className="space-y-4">

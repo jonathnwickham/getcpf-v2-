@@ -116,7 +116,7 @@ const Dashboard = () => {
         <section>
           <div className="mb-6">
             <h2 className="text-xl font-extrabold">What to do next with your CPF</h2>
-            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF — each one is tried and tested by people who've done exactly this.</p>
+            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF, each one is tried and tested by people who've done exactly this.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PARTNERS.map((p) => (
@@ -128,7 +128,7 @@ const Dashboard = () => {
         {/* Share */}
         <section className="bg-card border border-border rounded-2xl p-6 text-center">
           <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
-          <p className="text-sm text-muted-foreground mb-4">Send them this — they'll thank you later.</p>
+          <p className="text-sm text-muted-foreground mb-4">Send them this, they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText("https://getcpf.lovable.app")}
@@ -163,8 +163,8 @@ const PARTNERS = [
     icon: "📱",
     name: "Airalo",
     category: "eSIM / Data",
-    summary: "Get a Brazil eSIM in 2 minutes — works the moment you land.",
-    detail: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo you get data immediately while sorting your CPF. Plans from $5. No store visit needed — install directly from your phone.",
+    summary: "Get a Brazil eSIM in 2 minutes, works the moment you land.",
+    detail: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. With Airalo you get data immediately while sorting your CPF. Plans from $5. No store visit needed, install directly from your phone.",
     tip: "Most popular choice: the 5GB / 30-day Brazil plan. Enough for maps, Uber, and messaging.",
     url: "https://www.airalo.com",
   },
@@ -173,7 +173,7 @@ const PARTNERS = [
     name: "Nubank",
     category: "Bank Account",
     summary: "Brazil's #1 digital bank. Zero fees, instant Pix, debit & credit card.",
-    detail: "Download the Nubank app → enter your CPF + passport → get approved in minutes. Nubank is what most Brazilians use. You get Pix (Brazil's free instant payment system) immediately. Use it at restaurants, shops, Uber — everything.",
+    detail: "Download the Nubank app, enter your CPF + passport, get approved in minutes. Nubank is what most Brazilians use. You get Pix (Brazil's free instant payment system) immediately. Use it at restaurants, shops, Uber, everything.",
     tip: "Nubank is the fastest way to get Pix. Most expats open this on the same day they get their CPF.",
     url: "https://nubank.com.br",
   },
@@ -191,7 +191,7 @@ const PARTNERS = [
     name: "SafetyWing",
     category: "Health & Travel Insurance",
     summary: "Month-to-month health coverage for nomads in Brazil. From $45/month.",
-    detail: "Brazil's public healthcare (SUS) is free but crowded and Portuguese-only. Private hospitals can cost thousands without insurance. SafetyWing covers hospitals, clinics, and emergencies across Latin America. Cancel anytime — no long contracts.",
+    detail: "Brazil's public healthcare (SUS) is free but crowded and Portuguese-only. Private hospitals can cost thousands without insurance. SafetyWing covers hospitals, clinics, and emergencies across Latin America. Cancel anytime, no long contracts.",
     tip: "Covers COVID, emergency dental, and adventure sports. Most digital nomads in Brazil use this.",
     url: "https://safetywing.com",
   },
@@ -200,7 +200,7 @@ const PARTNERS = [
     name: "iTalki",
     category: "Learn Portuguese",
     summary: "1-on-1 video lessons with native Brazilian Portuguese speakers.",
-    detail: "Even 5 lessons makes a massive difference — at the Receita Federal office, at restaurants, with landlords. Brazilian Portuguese is different from European Portuguese and very different from Spanish. R$30-60/hour for a private tutor.",
+    detail: "Even 5 lessons makes a massive difference, at the Receita Federal office, at restaurants, with landlords. Brazilian Portuguese is different from European Portuguese and very different from Spanish. R$30-60/hour for a private tutor.",
     tip: "Book a few lessons before your office visit. Learn numbers, greetings, and how to say 'I'm here for my CPF'.",
     url: "https://www.italki.com",
   },
@@ -208,8 +208,8 @@ const PARTNERS = [
     icon: "🏛️",
     name: "Gov.br",
     category: "Digital Government ID",
-    summary: "Brazil's digital ID portal — needed for official services.",
-    detail: "Register at gov.br with your CPF to access government services online. You can download your digital CPF card from the Receita Federal app after registering. This replaces the paper document — show it on your phone anywhere.",
+    summary: "Brazil's digital ID portal, needed for official services.",
+    detail: "Register at gov.br with your CPF to access government services online. You can download your digital CPF card from the Receita Federal app after registering. This replaces the paper document, show it on your phone anywhere.",
     tip: "After registering, download the 'Receita Federal' app and go to 'CPF Digital' to get your digital card.",
     url: "https://www.gov.br",
   },
