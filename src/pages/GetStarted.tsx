@@ -327,7 +327,7 @@ const MotherStep = ({
           {hasAbbreviation && (
             <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
               <p className="text-xs text-amber-800 dark:text-amber-200 font-medium">
-                ⚠️ Make sure this is your mother's <strong>full name</strong> with no abbreviations. This is the most common rejection reason.
+                ⚠️ Please enter your mother's full name with no abbreviations or initials. This is the most common CPF rejection reason and we check it automatically.
               </p>
             </div>
           )}
