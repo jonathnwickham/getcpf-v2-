@@ -45,10 +45,10 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
             )}
           </div>
         </div>
-        <span className="text-sm text-muted-foreground font-medium mt-2 inline-block">🇧🇷 50+ countries supported</span>
-        <button onClick={handleCTA} className="mt-8 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
+        <button onClick={handleCTA} className="mt-6 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
           Get started →
         </button>
+        <span className="text-sm text-muted-foreground font-medium mt-4 inline-block">🇧🇷 50+ countries supported</span>
       </div>
     </section>
   );
