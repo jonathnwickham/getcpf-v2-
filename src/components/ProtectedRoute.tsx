@@ -9,8 +9,6 @@ interface ProtectedRouteProps {
   requireAdmin?: boolean;
 }
 
-const ADMIN_EMAIL = "jonathan@getcpf.com";
-
 const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
