@@ -1,33 +1,49 @@
-import { Smartphone, UtensilsCrossed, Plane, Building2, Ticket, ShoppingCart } from "lucide-react";
-
-const painCards = [
-  { icon: Smartphone, title: "Can't buy a SIM card", desc: "Carriers require a CPF to activate any SIM. No phone, no Uber, no maps, no WhatsApp." },
-  { icon: UtensilsCrossed, title: "Can't order food delivery", desc: "iFood, Rappi, and most delivery apps require a CPF to create an account or pay." },
-  { icon: Plane, title: "Can't buy domestic flights", desc: "GOL, LATAM, and Azul all require a CPF at checkout for domestic ticket purchases." },
-  { icon: Building2, title: "Can't open a bank account", desc: "Nubank, Inter, C6, every bank and fintech in Brazil requires a CPF to sign up." },
-  { icon: Ticket, title: "Can't buy event tickets", desc: "Concert, football, theatre, ticket platforms demand a CPF. No workaround." },
-  { icon: ShoppingCart, title: "Can't shop online", desc: "Amazon Brazil, Mercado Livre, and most e-commerce sites require a CPF at checkout." },
+const painPoints = [
+  {
+    title: "Sending a parcel",
+    text: "A friend left their clothes at your Airbnb. They need them shipped urgently. You go to Correios. They ask for your CPF. You don't have one. You spend the rest of the day trying to find someone who'll lend you theirs. Half a day gone for a parcel.",
+  },
+  {
+    title: "Buying a SIM card",
+    text: "Every carrier needs a CPF to activate a plan. Without one you're on roaming. Your foreign card works fine — at around $15 a day until you sort this out.",
+  },
+  {
+    title: "Ordering food delivery",
+    text: "iFood, Rappi, 99Food. All need a CPF to create an account. You're asking the person at reception to order for you or eating wherever you can pay cash.",
+  },
+  {
+    title: "Opening a bank account",
+    text: "Nubank, Inter, C6 — every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
+  },
+  {
+    title: "Buying event tickets",
+    text: "Football, concerts, shows — CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
+  },
+  {
+    title: "Shopping online",
+    text: "Mercado Livre, Amazon Brazil, Shopee — CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
+  },
+  {
+    title: "Getting contacts or medicine delivered",
+    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF — the checkout just stops.",
+  },
 ];
 
 const PainPoints = () => {
   return (
     <section className="py-24 px-8 relative bg-secondary">
-      <div className="max-w-[1100px] mx-auto">
+      <div className="max-w-[900px] mx-auto">
         <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
-        <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[600px]">
-          Life without a CPF
+        <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[700px]">
+          Brazil is incredible. Until you try to do literally anything without a CPF.
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
-          {painCards.map((card) => {
-            const Icon = card.icon;
-            return (
-              <div key={card.title} className="bg-card border border-border border-l-4 border-l-destructive/60 rounded-xl p-6 hover:border-l-destructive hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <Icon className="w-6 h-6 text-muted-foreground mb-3" />
-                <h3 className="font-semibold mb-2">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          {painPoints.map((point) => (
+            <div key={point.title} className="bg-card border border-border rounded-xl p-6">
+              <h3 className="font-semibold text-base mb-2">{point.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{point.text}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

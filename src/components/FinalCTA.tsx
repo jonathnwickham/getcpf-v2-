@@ -30,14 +30,13 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
 
       <div className="relative z-10">
         <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight">
-          Brazil is waiting.<br />
-          <span className="text-primary font-serif italic">Let's get you ready.</span>
+          Ready when you are.
         </h2>
         <p className="text-muted-foreground mt-5 mx-auto max-w-[480px] leading-relaxed">
-          Five minutes now saves you hours later. Get your CPF sorted before you even land.
+          Five minutes of preparation now saves you a wasted day later. Get everything sorted before you even walk in.
         </p>
-        <button onClick={handleCTA} className="mt-10 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20">
-          Let's do this →
+        <button onClick={handleCTA} className="mt-10 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
+          Get started →
         </button>
       </div>
     </section>
