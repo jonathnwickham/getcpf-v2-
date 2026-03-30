@@ -6,6 +6,9 @@ import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table";
 import {
+  Dialog, DialogContent, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   AreaChart, Area,
@@ -565,6 +568,9 @@ interface PromoCode {
   discount_percent: number;
   affiliate_name: string | null;
   affiliate_email: string | null;
+  affiliate_notes: string | null;
+  affiliate_source: string | null;
+  affiliate_location: string | null;
   affiliate_commission_percent: number;
   is_active: boolean;
   max_uses: number | null;
@@ -589,6 +595,12 @@ const PromosTab = () => {
   const [editEmail, setEditEmail] = useState("");
   const [editCommission, setEditCommission] = useState("");
   const [confirmDeleteAffiliate, setConfirmDeleteAffiliate] = useState<string | null>(null);
+  // Profile dialog
+  const [profileOpen, setProfileOpen] = useState<string | null>(null);
+  const [profileNotes, setProfileNotes] = useState("");
+  const [profileSource, setProfileSource] = useState("");
+  const [profileLocation, setProfileLocation] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -655,12 +667,33 @@ const PromosTab = () => {
     loadData();
   };
 
+  const saveProfile = async (promoId: string) => {
+    setProfileSaving(true);
+    await supabase.from("promo_codes").update({
+      affiliate_notes: profileNotes.trim() || null,
+      affiliate_source: profileSource.trim() || null,
+      affiliate_location: profileLocation.trim() || null,
+    } as any).eq("id", promoId);
+    setProfileSaving(false);
+    loadData();
+  };
+
+  const openProfile = (a: typeof affiliateData[0]) => {
+    setProfileOpen(a.promoId);
+    setProfileNotes(a.notes || "");
+    setProfileSource(a.source || "");
+    setProfileLocation(a.location || "");
+  };
+
   // Build affiliate performance from real application data
   const affiliateData = useMemo(() => {
     const data: Record<string, {
       promoId: string;
       name: string;
       email: string | null;
+      notes: string | null;
+      source: string | null;
+      location: string | null;
       code: string;
       discount: number;
       commission: number;
@@ -668,6 +701,7 @@ const PromosTab = () => {
       totalRevenue: number;
       commissionOwed: number;
       conversions: any[];
+      createdAt: string;
     }> = {};
 
     promos.forEach(p => {
@@ -687,6 +721,9 @@ const PromosTab = () => {
           promoId: p.id,
           name: p.affiliate_name,
           email: p.affiliate_email,
+          notes: p.affiliate_notes,
+          source: p.affiliate_source,
+          location: p.affiliate_location,
           code: p.code,
           discount: p.discount_percent,
           commission: p.affiliate_commission_percent,
@@ -694,6 +731,7 @@ const PromosTab = () => {
           totalRevenue,
           commissionOwed,
           conversions: matchingApps,
+          createdAt: p.created_at,
         };
       }
     });
@@ -928,7 +966,11 @@ const PromosTab = () => {
                           </>
                         ) : (
                           <>
-                            <TableCell className="font-semibold">{a.name}</TableCell>
+                            <TableCell>
+                              <button onClick={() => openProfile(a)} className="font-semibold text-primary hover:underline cursor-pointer text-left">
+                                {a.name}
+                              </button>
+                            </TableCell>
                             <TableCell className="text-sm text-muted-foreground">{a.email || "No email"}</TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
                             <TableCell>{a.commission}%</TableCell>
@@ -998,6 +1040,101 @@ const PromosTab = () => {
           </div>
         )}
       </div>
+      {/* Affiliate Profile Dialog */}
+      {(() => {
+        const activeAffiliate = affiliateData.find(a => a.promoId === profileOpen);
+        if (!activeAffiliate) return null;
+        return (
+          <Dialog open={!!profileOpen} onOpenChange={(open) => { if (!open) setProfileOpen(null); }}>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="text-xl">{activeAffiliate.name}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-5 mt-2">
+                {/* Quick stats */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Conversions</div>
+                    <div className="text-xl font-extrabold">{activeAffiliate.uses}</div>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Revenue</div>
+                    <div className="text-xl font-extrabold">${activeAffiliate.totalRevenue.toFixed(2)}</div>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Owed</div>
+                    <div className="text-xl font-extrabold text-primary">${activeAffiliate.commissionOwed.toFixed(2)}</div>
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div>
+                    <div className="font-medium">{activeAffiliate.email || "Not set"}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Code</div>
+                    <div className="font-mono font-bold text-primary">{activeAffiliate.code}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Discount</div>
+                    <div>{activeAffiliate.discount}% off</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Commission</div>
+                    <div>{activeAffiliate.commission}%</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Added</div>
+                    <div>{new Date(activeAffiliate.createdAt).toLocaleDateString()}</div>
+                  </div>
+                </div>
+
+                {/* Editable fields */}
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Where did you find them?</label>
+                    <input
+                      value={profileSource}
+                      onChange={(e) => setProfileSource(e.target.value)}
+                      placeholder="YouTube, Instagram, referral, event..."
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
+                    <input
+                      value={profileLocation}
+                      onChange={(e) => setProfileLocation(e.target.value)}
+                      placeholder="São Paulo, Brazil / London, UK..."
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Notes</label>
+                    <textarea
+                      value={profileNotes}
+                      onChange={(e) => setProfileNotes(e.target.value)}
+                      placeholder="Any notes about this affiliate... deal terms, contact preferences, follow-up dates..."
+                      rows={4}
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => saveProfile(activeAffiliate.promoId)}
+                  disabled={profileSaving}
+                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                >
+                  {profileSaving ? "Saving..." : "Save profile"}
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        );
+      })()}
     </div>
   );
 };
