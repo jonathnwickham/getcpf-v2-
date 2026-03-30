@@ -99,6 +99,7 @@ const Transformation = () => {
                 >
                   <span className="text-sm">{item.emoji}</span>
                   <span className="text-[10px] font-medium text-foreground whitespace-nowrap">{item.label}</span>
+                  <Check className="w-3 h-3 text-primary ml-auto" />
                 </div>
               ))}
             </div>
