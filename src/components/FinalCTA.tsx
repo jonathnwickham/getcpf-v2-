@@ -14,18 +14,18 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
   };
 
   return (
-    <section className="py-24 px-8 text-center relative bg-primary/[0.03] overflow-hidden">
+    <section className="py-32 px-8 text-center relative bg-primary/[0.03] overflow-hidden">
       {/* Green glow behind stencil */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse,hsl(var(--primary)/0.08)_0%,transparent_70%)] pointer-events-none" />
-      {/* Flag + Cristo stencil */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse,hsl(var(--primary)/0.06)_0%,transparent_70%)] pointer-events-none" />
+      {/* Flag + Cristo stencil, spread wide */}
       <img
         src={brazilStencil}
         alt=""
         aria-hidden="true"
         loading="lazy"
-        width={1024}
-        height={1024}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] max-w-none opacity-[0.05] pointer-events-none select-none"
+        width={1400}
+        height={512}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70rem] max-w-none opacity-[0.07] pointer-events-none select-none"
       />
 
       <div className="relative z-10">
@@ -33,10 +33,10 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
           Brazil is waiting.<br />
           <span className="text-primary font-serif italic">Let's get you ready.</span>
         </h2>
-        <p className="text-muted-foreground mt-4 mx-auto max-w-[480px] leading-relaxed">
+        <p className="text-muted-foreground mt-5 mx-auto max-w-[480px] leading-relaxed">
           Five minutes now saves you hours later. Get your CPF sorted before you even land.
         </p>
-        <button onClick={handleCTA} className="mt-8 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+        <button onClick={handleCTA} className="mt-10 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20">
           Let's do this →
         </button>
       </div>
