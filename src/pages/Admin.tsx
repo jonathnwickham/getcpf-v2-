@@ -15,7 +15,11 @@ import {
 } from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
 
-type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "waitlist" | "settings";
+type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "partners" | "waitlist" | "settings";
+
+const logAuditAction = async (userId: string, action: string, details?: string) => {
+  await supabase.from("audit_log").insert({ user_id: userId, action, details } as any);
+};
 
 interface Profile {
   id: string;
