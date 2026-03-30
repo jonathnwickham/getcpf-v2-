@@ -38,7 +38,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   ];
 
   return (
-    <section className="flex flex-col justify-center items-center px-6 pt-28 pb-6 relative overflow-hidden bg-primary/[0.03]">
+    <section className="flex flex-col justify-center items-center px-6 pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]">
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <img
