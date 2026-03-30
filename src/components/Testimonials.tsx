@@ -6,7 +6,7 @@ const testimonials = [
     location: "São Paulo",
     rating: 5,
     text: "I was so stressed about getting my CPF. I'd seen horror stories online about people spending days going back and forth. GET CPF told me exactly which office to go to (CAC Bela Vista), what to bring, and even what to say in Portuguese. I walked in at 8 AM and walked out with my CPF by 9:15. Same day I opened a Nubank account and got a SIM card.",
-    result: "Got CPF, Nubank account, and Claro SIM — all in one day",
+    result: "Got CPF, Nubank account, and Claro SIM, all in one day",
     timeAgo: "2 weeks ago",
   },
   {
