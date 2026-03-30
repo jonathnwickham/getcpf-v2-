@@ -41,7 +41,7 @@ const Footer = () => (
       {/* Divider */}
       <div className="border-t border-border pt-8">
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
-          GET CPF is not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance — only Receita Federal issues CPF numbers. Some links are affiliate links.
+          GET CPF is not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance, only Receita Federal issues CPF numbers. Some links are affiliate links.
         </p>
         <p className="text-xs text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
       </div>

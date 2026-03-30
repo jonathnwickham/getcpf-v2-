@@ -27,7 +27,7 @@ const AfterCPF = () => {
           Your CPF unlocks everything
         </h2>
         <p className="text-muted-foreground mt-3 max-w-md mx-auto text-sm leading-relaxed">
-          Once you have your CPF, we show you exactly what to do next — step by step.
+          Once you have your CPF, we show you exactly what to do next, step by step.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left">
