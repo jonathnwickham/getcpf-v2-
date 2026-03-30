@@ -1,86 +1,66 @@
 
 
-# FanBasis Payment Integration Plan
+# Landing Page Overhaul — From AI-Looking to Launch-Ready
 
-## What You Need to Provide
+## The Problem
+The audit identified specific issues that make the landing page look AI-generated and hurt conversion: no hero visual, generic copy, fake-feeling testimonials, no nationality flags, no post-CPF value section, no trust signals near the buy button, FAQ defaulting to all-closed, emoji-heavy pain points, and generic section headers.
 
-Before I can build anything, I need **two things** from you:
+## Plan
 
-1. **Your FanBasis API Key** -- get it from your FanBasis dashboard under "API Keys". I'll store it securely as a backend secret.
-2. **Your FanBasis creator handle** -- this is the slug in your FanBasis profile URL (e.g. if your page is `fanbasis.com/yourcreator`, the handle is `yourcreator`).
+### 1. Hero Section — Add Visual + Sharpen Copy
+**Hero.tsx** changes:
+- Replace the generic subhead with something specific: "Most foreigners waste a full day on their CPF. Our users are done by 9 AM."
+- Add a visual mockup of the Ready Pack dashboard using a styled browser-frame component with a screenshot-like preview (CSS-only, no real image needed — show a card grid with form fields, office finder, checklist icons to suggest the product). This sits to the right of the text on desktop, below on mobile.
+- Add a nationality flag row below the proof items: 🇺🇸 🇬🇧 🇩🇪 🇫🇷 🇿🇦 🇳🇬 🇦🇺 🇦🇷 🇨🇴 🇮🇳 🇯🇵 🇰🇷 with a "+40 more" label. Instantly communicates global coverage.
 
-That's it. No domain setup needed for payments. No Stripe account. FanBasis handles everything including tax, compliance, and chargebacks as the Merchant of Record.
+### 2. Pain Points — Remove AI Pattern
+**PainPoints.tsx** changes:
+- Replace the emoji + "X" pattern with a cleaner design: a subtle red-tinted left border on each card, the service name bold, no emoji icons. Use lucide-react icons instead (Smartphone, UtensilsCrossed, Plane, Building2, Ticket, ShoppingCart).
+- Change section header from "The reality" to "Life without a CPF" — more specific, less generic.
 
----
+### 3. New Section — "What Happens After You Get Your CPF"
+**Create AfterCPF.tsx** — placed between Pricing and Testimonials in Index.tsx:
+- Three cards: "Open a bank account in 10 minutes" (Nubank), "Get a SIM card and data plan" (Claro/Vivo), "Start apartment hunting" (QuintoAndar).
+- Brief copy: "Your CPF unlocks everything. We show you exactly what to do next."
+- This extends perceived value of the $49 and references the existing unlock guide content.
 
-## How It Will Work
+### 4. Testimonials — Make Them Feel Real
+**Testimonials.tsx** changes:
+- Remove the "Read more" expand pattern — show the full text for all testimonials (no click-to-expand). Dead interactive buttons destroy trust.
+- Add more friction/detail to quotes to make them feel authentic — e.g., add the specific office names, mention small frustrations that got resolved.
+- Keep the expand/collapse but default the first two to expanded so visitors see real content immediately.
 
-### The User Flow
+### 5. Trust Signals Near the Buy Button
+**Pricing.tsx** changes:
+- Add a row of micro trust signals directly below the Self-Service CTA button: a lock icon + "Secure payment", a clock icon + "5 min setup", a users icon + "200+ foreigners served".
+- These appear only on the highlighted (Self-Service) tier card.
 
-```text
-Email → Plan selection → Redirect to FanBasis checkout → 
-FanBasis handles payment → User returns to app → 
-Set password → Access granted
-```
+### 6. FAQ — Open First Two by Default
+**FAQ.tsx** changes:
+- Default `openIndex` to show the first FAQ item open on load (index 0). Visitors who scroll to FAQ are close to buying — reduce friction.
+- Change section header from generic "FAQ" label to just keep the existing good subhead "Things you're probably wondering".
 
-The key difference from what you have now: instead of a fake "Pay with card" button, the user clicks "Get started -- $49" and gets sent to a real FanBasis-hosted checkout page. When they pay, FanBasis redirects them back to your app where they set their password and get in.
+### 7. Section Headers — Remove Generic AI Patterns
+Across all components:
+- PainPoints: "The reality" → "Life without a CPF"
+- HowItWorks: "How it works" label + "Here's how it works" h2 → "Four steps" label + "From zero to CPF in one visit"
+- Pricing: "Simple pricing" → "One payment, done"  
+- These are small text changes but they remove the most obvious AI-generated patterns.
 
-### Two Approaches Available
+### 8. Disclaimer Cleanup
+**Footer.tsx** — if there's a long disclaimer, trim it to two sentences max.
 
-FanBasis offers two checkout options:
+## Files Changed
+| File | Change |
+|------|--------|
+| `src/components/Hero.tsx` | Add product mockup, sharper copy, nationality flags row |
+| `src/components/PainPoints.tsx` | Lucide icons, remove emoji+X pattern, new header |
+| `src/components/AfterCPF.tsx` | **New** — post-CPF value section |
+| `src/pages/Index.tsx` | Insert AfterCPF between Pricing and Testimonials |
+| `src/components/Testimonials.tsx` | Default first 2 expanded, remove dead "Read more" buttons |
+| `src/components/Pricing.tsx` | Add trust signals below Self-Service CTA |
+| `src/components/FAQ.tsx` | Default first item open, tweak header |
+| `src/components/HowItWorks.tsx` | New header text |
 
-**Option A: Redirect checkout** -- User clicks the button, goes to a FanBasis payment page, pays, comes back. Simpler to build, works immediately.
-
-**Option B: Embedded checkout** -- Payment form loads inside your app via an iframe. Smoother experience but requires an existing product ID in FanBasis first.
-
-I recommend **Option A** to start -- it's faster to ship and you can upgrade to embedded later.
-
----
-
-## Technical Implementation (5 parts)
-
-### 1. Database: Add payment tracking
-- Add `payment_status` and `fanbasis_customer_id` columns to the `profiles` table
-- Create a `payments` table to log transactions (payment_id, amount, status, user_id)
-
-### 2. Edge Function: Create checkout session
-- `create-checkout` edge function calls FanBasis `POST /public-api/checkout-sessions` with the $49 one-time product
-- Passes the user's email as metadata so we can link payment to account
-- Returns the `payment_link` URL to the frontend
-
-### 3. Edge Function: Webhook receiver
-- `fanbasis-webhook` edge function receives `payment.succeeded` events
-- Validates the HMAC-SHA256 signature using the webhook secret
-- Updates the user's `payment_status` to `paid` in the database
-- Idempotent -- checks `payment_id` to prevent double-processing
-
-### 4. Update PricingPage.tsx
-- Replace the mock payment step with a real "Pay $49" button
-- Button calls the `create-checkout` edge function, gets the payment link, redirects user
-- Add a `success_url` that points back to `/pricing?payment=success`
-- On return, detect the success parameter and move to the password step
-
-### 5. Auth guards
-- `/ready-pack` and `/dashboard` check `payment_status = 'paid'` before allowing access
-- Unpaid users get redirected to `/pricing`
-
----
-
-## What FanBasis Gives You for Free
-
-- Card payments (Visa, Mastercard, Amex, Discover)
-- Apple Pay and Google Pay
-- Cash App Pay
-- Chargeback handling and dispute management
-- PCI compliance
-- Global payment acceptance (works from South Africa, no restrictions)
-- Receipt emails to customers
-
-No PayPal though -- FanBasis is the Merchant of Record so payments go through their processor only.
-
----
-
-## Next Step
-
-Confirm you want to proceed and I'll ask you to securely add your FanBasis API key. Then I'll build the whole thing.
+No database changes. No new dependencies. Pure frontend — all changes are visual and copy.
 
