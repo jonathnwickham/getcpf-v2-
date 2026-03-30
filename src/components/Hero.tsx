@@ -222,18 +222,17 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           <div className="absolute inset-0 animate-[spin_24s_linear_infinite]">
             {orbitFlags.map((flag, i) => {
               const angle = (i / orbitFlags.length) * 2 * Math.PI;
-              const radius = 50; // percentage from center
+              const radius = 50;
               const x = 50 + radius * Math.cos(angle);
               const y = 50 + radius * Math.sin(angle);
-              const degreesAngle = (i / orbitFlags.length) * 360;
               return (
                 <span
                   key={i}
-                  className="absolute text-lg md:text-xl lg:text-2xl"
+                  className="absolute text-lg md:text-xl lg:text-2xl animate-[spin_24s_linear_infinite_reverse]"
                   style={{
                     left: `${x}%`,
                     top: `${y}%`,
-                    transform: `translate(-50%, -50%) rotate(-${degreesAngle}deg)`,
+                    transform: `translate(-50%, -50%)`,
                   }}
                 >
                   {flag}
