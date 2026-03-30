@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import SocialProofBar from "@/components/SocialProofBar";
 import PainPoints from "@/components/PainPoints";
 import WhoIsThisFor from "@/components/WhoIsThisFor";
 import HowItWorks from "@/components/HowItWorks";
@@ -25,6 +26,7 @@ const Index = () => {
     <div className="overflow-x-hidden">
       <Navbar onOpenModal={handleOpenOnboarding} />
       <Hero onOpenModal={handleOpenOnboarding} />
+      <SocialProofBar />
       <PainPoints />
       <WhoIsThisFor />
       <HowItWorks />
