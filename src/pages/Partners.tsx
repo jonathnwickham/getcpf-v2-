@@ -161,10 +161,10 @@ const Partners = () => {
           <p className="text-lg text-muted-foreground mt-6 leading-relaxed">One CPF at a time.</p>
 
           <div className="mt-12 space-y-6 text-[15px] text-muted-foreground leading-relaxed">
-            <p>
-              Brazil is one of the most welcoming countries in the world. But the bureaucracy does not always 
-              match the warmth of the people. We are building the thing that changes that, starting with the CPF.
-            </p>
+             <p>
+               Brazil is one of the most welcoming countries in the world. But the systems can be confusing 
+               for someone who is not from here. We are building the thing that changes that, starting with the CPF.
+             </p>
             <p>
               If you work with foreigners in Brazil, whether you teach them Portuguese, help them find an apartment, 
               translate their documents, or pick them up from the airport, you already know the CPF question. 
@@ -251,11 +251,11 @@ const Partners = () => {
         <div className="max-w-[640px] mx-auto text-center">
           <h2 className="text-2xl font-bold tracking-tight mb-6">Brazil deserves better</h2>
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed text-left">
-            <p>
-              Brazil is extraordinary. The people, the food, the culture, the energy. There is nowhere else like it. 
-              But arriving here as a foreigner is unnecessarily hard. Not because Brazilians are unwelcoming, the 
-              opposite is true. But because the systems were not built with outsiders in mind.
-            </p>
+             <p>
+               Brazil is extraordinary. The people, the food, the culture, the energy. There is nowhere else like it. 
+               But arriving here as a foreigner can be confusing. Not because Brazilians are unwelcoming, the 
+               opposite is true. But because the systems were not built with outsiders in mind.
+             </p>
             <p>
               The CPF is the front door to Brazilian life. It unlocks banking, housing, food delivery, phone plans, 
               everything. And for most foreigners it takes a full day of confusion, wrong offices, rejected forms, 
