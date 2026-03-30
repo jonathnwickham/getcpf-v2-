@@ -98,7 +98,7 @@ const PricingPage = () => {
     setPromoLoading(true);
     setPromoError("");
     const { data: promo } = await supabase
-      .from("promo_codes")
+      .from("public_promo_codes")
       .select("code, discount_percent, is_active")
       .eq("code", code)
       .eq("is_active", true)
