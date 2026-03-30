@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
@@ -19,13 +19,35 @@ interface HeroProps {
   onOpenModal?: () => void;
 }
 
+const empathyLines = [
+  "Turned away at Correios because you don't have a CPF?",
+  "Trying to open Nubank but they need your CPF first?",
+  "Can't order iFood without a CPF account?",
+  "Landlord asking for a CPF you don't have yet?",
+  "Trying to buy a SIM card but every carrier needs a CPF?",
+  "Can't buy event tickets without a CPF at checkout?",
+];
+
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
   const [officeIndex, setOfficeIndex] = useState(0);
+  const [empathyIndex, setEmpathyIndex] = useState(0);
+  const [empathyVisible, setEmpathyVisible] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setOfficeIndex((prev) => (prev + 1) % offices.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEmpathyVisible(false);
+      setTimeout(() => {
+        setEmpathyIndex((prev) => (prev + 1) % empathyLines.length);
+        setEmpathyVisible(true);
+      }, 400);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -69,6 +91,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <span className="text-sm">🛡️</span>
             If you follow our steps and get rejected — full refund. No questions asked.
           </div>
+
+          <p
+            className={`text-sm italic text-muted-foreground/70 mb-4 h-5 transition-opacity duration-400 ${empathyVisible ? "opacity-100" : "opacity-0"}`}
+          >
+            {empathyLines[empathyIndex]}
+          </p>
 
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
