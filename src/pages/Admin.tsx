@@ -573,21 +573,28 @@ interface PromoCode {
 
 const PromosTab = () => {
   const [promos, setPromos] = useState<PromoCode[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [newCode, setNewCode] = useState("");
   const [newDiscount, setNewDiscount] = useState("10");
   const [newAffiliate, setNewAffiliate] = useState("");
   const [newCommission, setNewCommission] = useState("20");
   const [adding, setAdding] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [expandedAffiliate, setExpandedAffiliate] = useState<string | null>(null);
 
   useEffect(() => {
-    loadPromos();
+    loadData();
   }, []);
 
-  const loadPromos = async () => {
+  const loadData = async () => {
     setLoading(true);
-    const { data } = await supabase.from("promo_codes").select("*").order("created_at", { ascending: false });
-    if (data) setPromos(data as PromoCode[]);
+    const [promosRes, appsRes] = await Promise.all([
+      supabase.from("promo_codes").select("*").order("created_at", { ascending: false }),
+      supabase.from("applications").select("promo_code, final_price, discount_amount, status, created_at, full_name, email").not("promo_code", "is", null),
+    ]);
+    if (promosRes.data) setPromos(promosRes.data as PromoCode[]);
+    if (appsRes.data) setApplications(appsRes.data);
     setLoading(false);
   };
 
@@ -605,29 +612,61 @@ const PromosTab = () => {
     setNewDiscount("10");
     setNewCommission("20");
     setAdding(false);
-    loadPromos();
+    loadData();
   };
 
   const toggleActive = async (id: string, currentlyActive: boolean) => {
     await supabase.from("promo_codes").update({ is_active: !currentlyActive }).eq("id", id);
-    loadPromos();
+    loadData();
   };
 
-  // Calculate affiliate revenue from applications
-  const affiliateRevenue = useMemo(() => {
-    const revenue: Record<string, { name: string; uses: number; totalRevenue: number; commission: number }> = {};
+  const deletePromo = async (id: string) => {
+    await supabase.from("promo_codes").delete().eq("id", id);
+    setConfirmDelete(null);
+    loadData();
+  };
+
+  // Build affiliate performance from real application data
+  const affiliateData = useMemo(() => {
+    const data: Record<string, {
+      name: string;
+      code: string;
+      discount: number;
+      commission: number;
+      uses: number;
+      totalRevenue: number;
+      commissionOwed: number;
+      conversions: any[];
+    }> = {};
+
     promos.forEach(p => {
-      if (p.affiliate_name) {
-        revenue[p.code] = {
+      if (!p.affiliate_name) return;
+      const matchingApps = applications.filter(a => a.promo_code?.toUpperCase() === p.code.toUpperCase());
+      const totalRevenue = matchingApps.reduce((sum, a) => sum + (Number(a.final_price) || 0), 0);
+      const commissionOwed = totalRevenue * (p.affiliate_commission_percent / 100);
+
+      const existing = data[p.affiliate_name];
+      if (existing) {
+        existing.uses += matchingApps.length;
+        existing.totalRevenue += totalRevenue;
+        existing.commissionOwed += commissionOwed;
+        existing.conversions.push(...matchingApps);
+      } else {
+        data[p.affiliate_name] = {
           name: p.affiliate_name,
-          uses: p.times_used,
-          totalRevenue: p.times_used * (49 * (1 - p.discount_percent / 100)),
-          commission: p.times_used * (49 * (1 - p.discount_percent / 100)) * (p.affiliate_commission_percent / 100),
+          code: p.code,
+          discount: p.discount_percent,
+          commission: p.affiliate_commission_percent,
+          uses: matchingApps.length,
+          totalRevenue,
+          commissionOwed,
+          conversions: matchingApps,
         };
       }
     });
-    return Object.values(revenue);
-  }, [promos]);
+
+    return Object.values(data);
+  }, [promos, applications]);
 
   return (
     <div className="space-y-6">
@@ -685,7 +724,7 @@ const PromosTab = () => {
 
       {/* Existing promos */}
       <div className="bg-card border border-border rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-4">Active promo codes</h2>
+        <h2 className="font-bold text-lg mb-4">All promo codes</h2>
         {loading ? (
           <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
         ) : promos.length === 0 ? (
@@ -701,7 +740,7 @@ const PromosTab = () => {
                   <TableHead>Commission</TableHead>
                   <TableHead>Uses</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -709,7 +748,7 @@ const PromosTab = () => {
                   <TableRow key={p.id}>
                     <TableCell className="font-mono font-bold text-primary">{p.code}</TableCell>
                     <TableCell>{p.discount_percent}% off</TableCell>
-                    <TableCell>{p.affiliate_name || "—"}</TableCell>
+                    <TableCell>{p.affiliate_name || "None"}</TableCell>
                     <TableCell>{p.affiliate_commission_percent}%</TableCell>
                     <TableCell>{p.times_used}{p.max_uses ? ` / ${p.max_uses}` : ""}</TableCell>
                     <TableCell>
@@ -719,13 +758,38 @@ const PromosTab = () => {
                         {p.is_active ? "Active" : "Disabled"}
                       </span>
                     </TableCell>
-                    <TableCell>
-                      <button
-                        onClick={() => toggleActive(p.id, p.is_active)}
-                        className="text-xs font-semibold text-muted-foreground hover:text-foreground"
-                      >
-                        {p.is_active ? "Disable" : "Enable"}
-                      </button>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => toggleActive(p.id, p.is_active)}
+                          className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {p.is_active ? "Disable" : "Enable"}
+                        </button>
+                        {confirmDelete === p.id ? (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => deletePromo(p.id)}
+                              className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors"
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              onClick={() => setConfirmDelete(null)}
+                              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmDelete(p.id)}
+                            className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -735,34 +799,89 @@ const PromosTab = () => {
         )}
       </div>
 
-      {/* Affiliate revenue summary */}
-      {affiliateRevenue.length > 0 && (
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <h2 className="font-bold text-lg mb-4">Affiliate revenue</h2>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Affiliate</TableHead>
-                  <TableHead>Uses</TableHead>
-                  <TableHead>Revenue generated</TableHead>
-                  <TableHead>Commission owed</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {affiliateRevenue.map((a) => (
-                  <TableRow key={a.name}>
-                    <TableCell className="font-semibold">{a.name}</TableCell>
-                    <TableCell>{a.uses}</TableCell>
-                    <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                    <TableCell className="font-bold text-primary">${a.commission.toFixed(2)}</TableCell>
+      {/* Affiliate performance */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <h2 className="font-bold text-lg mb-1">Affiliate performance</h2>
+        <p className="text-xs text-muted-foreground mb-4">Revenue and commission based on actual paid applications</p>
+        {affiliateData.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No affiliates yet. Add an affiliate name when creating a promo code.</p>
+        ) : (
+          <div className="space-y-4">
+            {/* Summary cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-secondary rounded-xl p-4">
+                <div className="text-xs text-muted-foreground font-semibold mb-1">Total affiliates</div>
+                <div className="text-2xl font-extrabold">{affiliateData.length}</div>
+              </div>
+              <div className="bg-secondary rounded-xl p-4">
+                <div className="text-xs text-muted-foreground font-semibold mb-1">Total affiliate revenue</div>
+                <div className="text-2xl font-extrabold">${affiliateData.reduce((s, a) => s + a.totalRevenue, 0).toFixed(2)}</div>
+              </div>
+              <div className="bg-secondary rounded-xl p-4">
+                <div className="text-xs text-muted-foreground font-semibold mb-1">Total commission owed</div>
+                <div className="text-2xl font-extrabold text-primary">${affiliateData.reduce((s, a) => s + a.commissionOwed, 0).toFixed(2)}</div>
+              </div>
+            </div>
+
+            {/* Per-affiliate breakdown */}
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Affiliate</TableHead>
+                    <TableHead>Code</TableHead>
+                    <TableHead>Discount</TableHead>
+                    <TableHead>Commission rate</TableHead>
+                    <TableHead>Conversions</TableHead>
+                    <TableHead>Revenue</TableHead>
+                    <TableHead>Commission owed</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {affiliateData.map((a) => (
+                    <>
+                      <TableRow key={a.name} className="cursor-pointer hover:bg-secondary/50" onClick={() => setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name)}>
+                        <TableCell className="font-semibold">{a.name}</TableCell>
+                        <TableCell className="font-mono text-primary">{a.code}</TableCell>
+                        <TableCell>{a.discount}%</TableCell>
+                        <TableCell>{a.commission}%</TableCell>
+                        <TableCell>{a.uses}</TableCell>
+                        <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
+                        <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
+                        <TableCell className="text-muted-foreground text-xs">{a.conversions.length > 0 ? (expandedAffiliate === a.name ? "▲" : "▼") : ""}</TableCell>
+                      </TableRow>
+                      {expandedAffiliate === a.name && a.conversions.length > 0 && (
+                        <TableRow key={`${a.name}-detail`}>
+                          <TableCell colSpan={8} className="bg-secondary/30 p-0">
+                            <div className="p-4">
+                              <p className="text-xs font-bold text-muted-foreground mb-2">Conversions for {a.name}</p>
+                              <div className="space-y-2">
+                                {a.conversions.map((c: any, i: number) => (
+                                  <div key={i} className="flex items-center gap-4 text-xs bg-card rounded-lg px-3 py-2 border border-border">
+                                    <span className="font-semibold">{c.full_name || c.email || "Unknown"}</span>
+                                    <span className="text-muted-foreground">{c.email}</span>
+                                    <span className="text-primary font-bold">${Number(c.final_price || 0).toFixed(2)}</span>
+                                    <span className="text-muted-foreground">saved ${Number(c.discount_amount || 0).toFixed(2)}</span>
+                                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                      c.status === "paid" || c.status === "completed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                                    }`}>{c.status}</span>
+                                    <span className="text-muted-foreground ml-auto">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ""}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
