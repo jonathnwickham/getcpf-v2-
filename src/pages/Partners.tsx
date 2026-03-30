@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useCpfCount } from "@/hooks/use-cpf-count";
+import { Star, Users, Gift, Megaphone, ArrowRight, Shield } from "lucide-react";
 
 const partnerQuotes = [
   {
@@ -22,6 +23,81 @@ const partnerQuotes = [
     role: "Co-living space, Florianópolis",
   },
 ];
+
+const partnerBenefits = [
+  {
+    icon: Shield,
+    title: "Credibility by association",
+    desc: "Recommending GET CPF tells your students and clients 'I know how Brazil works.' It elevates your reputation at zero cost.",
+  },
+  {
+    icon: Megaphone,
+    title: "A confident answer to the CPF question",
+    desc: "No more shrugging or saying 'go to the Receita Federal.' You have a specific, helpful answer every time.",
+  },
+  {
+    icon: Star,
+    title: "A badge for your marketing",
+    desc: "'Official GET CPF Partner' on your Instagram bio or website differentiates you from everyone else in your space.",
+  },
+  {
+    icon: Gift,
+    title: "We send customers to you",
+    desc: "In our post-CPF guide, we recommend our partners directly. Every foreigner who gets their CPF through us sees your name.",
+  },
+];
+
+const PartnerBenefitsSection = () => (
+  <section className="py-20 px-6">
+    <div className="max-w-[800px] mx-auto">
+      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4 text-center">Beyond the commission</div>
+      <h2 className="text-2xl font-bold tracking-tight mb-4 text-center">What partners actually get</h2>
+      <p className="text-sm text-muted-foreground text-center mb-12 max-w-[500px] mx-auto">
+        The commission gets you to listen. Here's what makes you stay.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {partnerBenefits.map((b) => (
+          <div key={b.title} className="bg-card border border-border rounded-2xl p-6">
+            <b.icon className="w-5 h-5 text-primary mb-3" />
+            <h3 className="font-bold text-sm mb-1">{b.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const FoundingPartnerSection = () => (
+  <section className="py-16 px-6 bg-primary/5 border-y border-primary/15">
+    <div className="max-w-[700px] mx-auto text-center">
+      <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-[2px] px-4 py-1.5 rounded-full mb-6">
+        <Users className="w-3.5 h-3.5" />
+        Limited to 20 spots
+      </div>
+      <h2 className="text-2xl font-bold tracking-tight mb-4">Founding Partners</h2>
+      <p className="text-sm text-muted-foreground leading-relaxed max-w-[520px] mx-auto mb-8">
+        The first 20 partners get a permanent, higher commission rate, named placement on our website, 
+        first access to every new product we launch, and a direct line to us. After 20, the terms change.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+        {[
+          { label: "Higher commission", desc: "Locked in permanently — more than standard partners will ever get" },
+          { label: "Named on the site", desc: "Your name, logo, and one-line bio featured on the partners page" },
+          { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide — you promote it first" },
+        ].map((item) => (
+          <div key={item.label} className="bg-background border border-border rounded-xl p-4">
+            <div className="text-sm font-bold mb-1">{item.label}</div>
+            <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
+          </div>
+        ))}
+      </div>
+      <a href="#join" className="inline-flex items-center gap-1 text-sm font-bold text-primary mt-8 hover:underline">
+        Apply for a founding spot <ArrowRight className="w-4 h-4" />
+      </a>
+    </div>
+  </section>
+);
 
 const Partners = () => {
   const [form, setForm] = useState({ name: "", email: "", business: "", city: "", why: "" });
@@ -98,6 +174,12 @@ const Partners = () => {
         </div>
       </section>
 
+      {/* What partners actually get */}
+      <PartnerBenefitsSection />
+
+      {/* Founding partner tier */}
+      <FoundingPartnerSection />
+
       {/* What partners are saying */}
       <section className="py-16 px-6 bg-secondary border-y border-border">
         <div className="max-w-[900px] mx-auto">
@@ -143,13 +225,11 @@ const Partners = () => {
       {/* Live counter + Cities */}
       <section className="py-16 px-6">
         <div className="max-w-[900px] mx-auto">
-          {/* Live counter */}
           <div className="text-center mb-16">
             <div className="text-5xl font-extrabold text-primary">{cpfCount !== null ? cpfCount : "..."}</div>
             <p className="text-sm text-muted-foreground mt-2">foreigners arrived in Brazil prepared</p>
           </div>
 
-          {/* Cities */}
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-6 text-center">Cities we cover</div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {cities.map((c) => (
@@ -271,8 +351,11 @@ const Partners = () => {
                 />
               </div>
               <Button type="submit" disabled={submitting} className="w-full h-12 rounded-xl text-sm font-bold">
-                {submitting ? "Submitting..." : "Apply to become a partner"}
+                {submitting ? "Submitting..." : "Apply to become a founding partner"}
               </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Only {20} founding spots available. After that, the terms change.
+              </p>
             </form>
           )}
         </div>
