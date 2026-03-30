@@ -95,6 +95,7 @@ const Admin = () => {
     { key: "users", label: "Users", icon: "👥" },
     { key: "applications", label: "Applications", icon: "📋" },
     { key: "revenue", label: "Revenue", icon: "💰" },
+    { key: "promos", label: "Promo Codes", icon: "🏷️" },
     { key: "settings", label: "Settings", icon: "⚙️" },
   ];
 
