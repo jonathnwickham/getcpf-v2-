@@ -46,7 +46,7 @@ Deno.serve(async (req: Request) => {
 
       const emailBody = `Data deletion due for ${expiredCount} account(s):\n\n${accountList}\n\nReview these in the admin dashboard and delete as needed.`;
 
-      // Log to console (admin notification — in production this would email jonathan@telosmedia.co)
+      // Log to console (admin notification — in production this would email jonathan@getcpf.com)
       console.log(`[check_expired_accounts] ${emailBody}`);
 
       return new Response(

@@ -51,7 +51,7 @@ const TermsOfService = () => (
           </p>
           <p className="leading-relaxed mt-3">
             To request a refund, email{" "}
-            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>.
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
           </p>
         </section>
 
@@ -91,7 +91,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Contact</h2>
           <p className="leading-relaxed">
             Questions? Email{" "}
-            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
           </p>
         </section>
       </div>
