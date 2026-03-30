@@ -84,7 +84,7 @@ const WhoIsThisFor = () => (
             was for a different state.
           </p>
           <p>
-            So I documented the entire process — from signing up, to gathering documents, to printing everything, 
+            So I documented the entire process. From signing up, to gathering documents, to printing everything, 
             to walking into the Receita Federal office and actually getting my CPF. Every step, every mistake, 
             every "I wish someone had told me this."
           </p>
