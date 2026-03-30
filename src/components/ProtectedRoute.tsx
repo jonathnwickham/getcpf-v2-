@@ -42,13 +42,10 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
           setIsPaid(true);
         }
 
-        // Check admin
+        // Check admin via database role only
         if (needsAdminCheck) {
           const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
-          console.log("[ProtectedRoute] Admin check:", { rpcData: adminRes.data, rpcError: adminRes.error, email: user.email, expected: ADMIN_EMAIL });
-          const roleOk = adminRes.data === true;
-          const emailOk = user.email === ADMIN_EMAIL;
-          setIsAdmin(roleOk && emailOk);
+          setIsAdmin(adminRes.data === true);
         } else {
           setIsAdmin(true);
         }
