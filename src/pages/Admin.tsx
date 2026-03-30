@@ -14,7 +14,7 @@ import {
   AreaChart, Area,
 } from "recharts";
 
-type AdminTab = "users" | "applications" | "revenue" | "promos" | "settings";
+type AdminTab = "users" | "applications" | "revenue" | "promos" | "waitlist" | "settings";
 
 interface Profile {
   id: string;
