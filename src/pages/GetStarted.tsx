@@ -303,51 +303,65 @@ const MotherStep = ({
   value: string; onChange: (v: string) => void;
   noMother: boolean; onToggleNoMother: (v: boolean) => void;
   alternative: string; onAlternativeChange: (v: string) => void;
-}) => (
-  <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
-    <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
-    </p>
-    {!noMother ? (
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="e.g. Maria Antonia Smith"
-        autoFocus
-        className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
-      />
-    ) : (
-      <div>
-        <p className="text-sm text-muted-foreground mb-3">
-          If your mother's name is unavailable, you can use your father's name or legal guardian's name instead.
-        </p>
+}) => {
+  // Detect initials/abbreviations like "M.", "J. Smith", single letters
+  const hasAbbreviation = !noMother && value.trim().length > 0 && /\b[A-Z]\.?\s/i.test(value.trim());
+
+  return (
+    <div>
+      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
+      <p className="text-muted-foreground text-sm mb-8">
+        No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
+      </p>
+      {!noMother ? (
+        <>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="e.g. Maria Antonia Smith"
+            autoFocus
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+          {hasAbbreviation && (
+            <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
+              <p className="text-xs text-amber-800 dark:text-amber-200 font-medium">
+                ⚠️ Make sure this is your mother's <strong>full name</strong> with no abbreviations. This is the most common rejection reason.
+              </p>
+            </div>
+          )}
+        </>
+      ) : (
+        <div>
+          <p className="text-sm text-muted-foreground mb-3">
+            If your mother's name is unavailable, you can use your father's name or legal guardian's name instead.
+          </p>
+          <input
+            type="text"
+            value={alternative}
+            onChange={(e) => onAlternativeChange(e.target.value)}
+            placeholder="Father's or guardian's full name"
+            autoFocus
+            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          />
+        </div>
+      )}
+      <label className="flex items-center gap-3 mt-4 cursor-pointer group">
+        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
+          {noMother && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+        </div>
         <input
-          type="text"
-          value={alternative}
-          onChange={(e) => onAlternativeChange(e.target.value)}
-          placeholder="Father's or guardian's full name"
-          autoFocus
-          className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+          type="checkbox"
+          checked={noMother}
+          onChange={(e) => onToggleNoMother(e.target.checked)}
+          className="sr-only"
         />
-      </div>
-    )}
-    <label className="flex items-center gap-3 mt-4 cursor-pointer group">
-      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
-        {noMother && <span className="text-primary-foreground text-xs font-bold">✓</span>}
-      </div>
-      <input
-        type="checkbox"
-        checked={noMother}
-        onChange={(e) => onToggleNoMother(e.target.checked)}
-        className="sr-only"
-      />
-      <span className="text-sm text-muted-foreground">My mother's name is not available</span>
-    </label>
-  </div>
-);
+        <span className="text-sm text-muted-foreground">My mother's name is not available</span>
+      </label>
+    </div>
+  );
+};
 
 const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
