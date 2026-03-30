@@ -342,7 +342,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <div className="space-y-4 mt-2">
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{userProfile.plan || "free"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
                 </div>
