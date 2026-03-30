@@ -208,16 +208,16 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         <p className="text-[11px] text-muted-foreground">Your CPF unlocks all of these</p>
 
         {/* Linear flag marquee */}
-        <div className="w-full max-w-[600px] overflow-hidden relative mt-1">
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[hsl(160_84%_28%/0.03)] to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[hsl(160_84%_28%/0.03)] to-transparent z-10" />
-          <div className="flex gap-3 animate-[marquee_20s_linear_infinite] w-max">
+        <div className="w-full max-w-[600px] overflow-hidden relative">
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10" />
+          <div className="flex gap-3 animate-marquee w-max">
             {[...orbitFlags, ...orbitFlags].map((flag, i) => (
               <span key={i} className="text-lg shrink-0">{flag}</span>
             ))}
           </div>
         </div>
-        <p className="text-[11px] text-muted-foreground font-medium">🇧🇷 50+ countries supported</p>
+        <p className="text-[11px] text-muted-foreground font-medium -mt-1">🇧🇷 50+ countries supported</p>
       </div>
     </section>
   );
