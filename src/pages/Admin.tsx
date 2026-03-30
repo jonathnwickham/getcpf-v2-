@@ -1232,20 +1232,38 @@ const SettingsTab = () => {
 
   const exportCSV = async () => {
     setExporting(true);
-    const { data } = await supabase.from("profiles").select("*");
-    if (data) {
-      const headers = ["id", "email", "full_name", "plan", "country_code", "created_at"];
-      const csv = [headers.join(","), ...data.map(r =>
-        headers.map(h => `"${(r as any)[h] ?? ""}"`).join(",")
-      )].join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `getcpf-users-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+    const [profilesRes, appsRes] = await Promise.all([
+      supabase.from("profiles").select("*"),
+      supabase.from("applications").select("*"),
+    ]);
+    const profileData = profilesRes.data || [];
+    const appData = appsRes.data || [];
+    const appMap = new Map((appData as any[]).map(a => [a.user_id, a]));
+
+    const headers = ["email", "full_name", "nationality", "state", "city", "plan", "status", "created_at"];
+    const rows = profileData.map((p: any) => {
+      const app = appMap.get(p.id) as any;
+      return headers.map(h => {
+        let val = "";
+        if (h === "nationality") val = app?.nationality || p.country_code || "";
+        else if (h === "state") val = app?.state_name || "";
+        else if (h === "city") val = app?.city || "";
+        else if (h === "status") val = app?.status || "";
+        else val = (p as any)[h] ?? "";
+        return `"${String(val).replace(/"/g, '""')}"`;
+      }).join(",");
+    });
+
+    const csv = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `getcpf-users-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     setExporting(false);
   };
 
