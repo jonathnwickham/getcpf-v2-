@@ -293,25 +293,29 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map(p => (
-              <TableRow key={p.id}>
-                <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
-                <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
-                <TableCell className="text-sm">{p.country_code || "—"}</TableCell>
-                <TableCell>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
-                    p.plan && p.plan !== "free"
-                      ? "bg-primary/10 text-primary"
-                      : "bg-secondary text-muted-foreground"
-                  }`}>
-                    {p.plan || "free"}
-                  </span>
-                </TableCell>
-                <TableCell className="text-xs text-muted-foreground">
-                  {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
-                </TableCell>
-              </TableRow>
-            ))}
+            {filtered.map(p => {
+              const userApp = applications.find(a => a.user_id === p.id);
+              const nat = userApp?.nationality || p.country_code || "—";
+              return (
+                <TableRow key={p.id} className="cursor-pointer hover:bg-secondary/50" onClick={() => setSelectedUser(p.id)}>
+                  <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
+                  <TableCell className="text-sm">{nat}</TableCell>
+                  <TableCell>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                      p.plan && p.plan !== "free"
+                        ? "bg-primary/10 text-primary"
+                        : "bg-secondary text-muted-foreground"
+                    }`}>
+                      {p.plan || "free"}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-xs text-muted-foreground">
+                    {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
             {filtered.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-sm text-muted-foreground py-8">
@@ -322,6 +326,55 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
           </TableBody>
         </Table>
       </div>
+
+      {/* User drill-down dialog */}
+      {(() => {
+        const userProfile = profiles.find(p => p.id === selectedUser);
+        const userApps = applications.filter(a => a.user_id === selectedUser);
+        if (!userProfile) return null;
+        return (
+          <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open) setSelectedUser(null); }}>
+            <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-xl">{userProfile.full_name || userProfile.email}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{userProfile.plan || "free"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
+                </div>
+
+                {userApps.length > 0 ? userApps.map(app => (
+                  <div key={app.id} className="bg-secondary rounded-xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-sm">Application</h4>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
+                        app.status === "prepared" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground border border-border"
+                      }`}>{app.status || "draft"}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div><span className="text-xs text-muted-foreground">Name:</span> {app.full_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Passport:</span> {app.passport_number || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Nationality:</span> {app.nationality || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">State:</span> {app.state_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">City:</span> {app.city || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Address:</span> {app.street_address || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Mother:</span> {app.mother_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Father:</span> {app.father_name || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Email:</span> {app.email || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Created:</span> {app.created_at ? new Date(app.created_at).toLocaleDateString() : "—"}</div>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No application yet</p>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        );
+      })()}
     </div>
   );
 };
