@@ -211,8 +211,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
       </div>
 
-      {/* Nationality flags */}
-      <div className="animate-fade-up-4 mt-14 flex flex-col items-center gap-3">
+      {/* Nationality flags — tighter to logos */}
+      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-2">
         <div className="flex gap-2 flex-wrap justify-center items-center">
           <span className="text-3xl">🇧🇷</span>
           <span className="text-muted-foreground mx-1">←</span>
