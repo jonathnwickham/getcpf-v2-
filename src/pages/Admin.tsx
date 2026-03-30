@@ -312,6 +312,13 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                       {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
                     </span>
                   </TableCell>
+                  <TableCell>
+                    {userApp ? (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Onboarded</span>
+                    ) : (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Paid — not started</span>
+                    )}
+                  </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
                   </TableCell>
