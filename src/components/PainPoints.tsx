@@ -13,7 +13,7 @@ const painPoints = [
   },
   {
     title: "Opening a bank account",
-    text: "Nubank, Inter, C6 — every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
+    text: "Nubank, Inter, C6. Every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
   },
   {
     title: "Buying event tickets",
