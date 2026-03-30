@@ -191,7 +191,7 @@ const PARTNERS = [
     name: "SafetyWing",
     category: "Health & Travel Insurance",
     summary: "Month-to-month health coverage for nomads in Brazil. From $45/month.",
-    detail: "Brazil's public healthcare (SUS) is free but crowded and Portuguese-only. Private hospitals can cost thousands without insurance. SafetyWing covers hospitals, clinics, and emergencies across Latin America. Cancel anytime — no long contracts.",
+    detail: "Brazil's public healthcare (SUS) is free but crowded and Portuguese-only. Private hospitals can cost thousands without insurance. SafetyWing covers hospitals, clinics, and emergencies across Latin America. Cancel anytime, no long contracts.",
     tip: "Covers COVID, emergency dental, and adventure sports. Most digital nomads in Brazil use this.",
     url: "https://safetywing.com",
   },
