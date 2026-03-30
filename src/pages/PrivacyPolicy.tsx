@@ -132,7 +132,7 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Contact us</h2>
           <p className="leading-relaxed">
             Questions about your data? Email{" "}
-            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">jonathan@telosmedia.co</a>
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
           </p>
         </section>
       </div>

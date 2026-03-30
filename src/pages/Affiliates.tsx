@@ -37,8 +37,8 @@ const Affiliates = () => (
           <h2 className="text-foreground text-lg font-bold mt-8">Questions?</h2>
           <p>
             If you have any questions about our affiliate relationships, contact us at{" "}
-            <a href="mailto:jonathan@telosmedia.co" className="text-primary hover:underline font-semibold">
-              jonathan@telosmedia.co
+            <a href="mailto:jonathan@getcpf.com" className="text-primary hover:underline font-semibold">
+              jonathan@getcpf.com
             </a>.
           </p>
         </div>
