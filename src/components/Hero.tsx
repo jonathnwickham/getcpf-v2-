@@ -1,6 +1,18 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
+
+const offices = [
+  { city: "São Paulo", office: "CAC Bela Vista" },
+  { city: "Rio de Janeiro", office: "CAC Centro" },
+  { city: "Florianópolis", office: "Receita Federal Centro" },
+  { city: "Curitiba", office: "Delegacia Centro" },
+  { city: "Salvador", office: "CAC Comércio" },
+  { city: "Belo Horizonte", office: "CAC Savassi" },
+  { city: "Brasília", office: "Delegacia Asa Sul" },
+  { city: "Recife", office: "CAC Boa Vista" },
+];
 
 interface HeroProps {
   onOpenModal?: () => void;
