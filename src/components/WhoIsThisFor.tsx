@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import founderPhoto from "@/assets/founder-jonathan.jpg";
 
 const personas = [
@@ -67,14 +66,11 @@ const WhoIsThisFor = () => (
         {personas.map((p) => (
           <div
             key={p.title}
-            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all flex flex-col"
+            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all"
           >
             <div className="text-3xl mb-3">{p.emoji}</div>
             <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-            <Link to={p.guide} className="text-xs font-semibold text-primary mt-3 hover:underline inline-block">
-              Learn more →
-            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
           </div>
         ))}
       </div>
