@@ -15,7 +15,7 @@ const CookieBanner = () => {
       <div className="max-w-3xl mx-auto flex items-center justify-between gap-4 flex-wrap">
         <p className="text-sm text-muted-foreground">
           We use essential cookies to keep you logged in. By continuing, you accept our{" "}
-          <a href="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</a>.
+           <a href="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</a>.
         </p>
         <button
           onClick={() => { localStorage.setItem("cookie-consent", "true"); setVisible(false); }}
