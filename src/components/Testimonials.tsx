@@ -15,7 +15,7 @@ const testimonials = [
     country: "South African",
     location: "Florianópolis",
     rating: 5,
-    text: "As a South African, I had no idea where to start. The Portuguese email template was a lifesaver — I literally just copied and pasted it. But I ended up going in person based on the app's recommendation and it was so much faster. The office in Florianópolis Centro was super foreigner-friendly, exactly like the app said.",
+    text: "As a South African, I had no idea where to start. The Portuguese email template was a lifesaver, I literally just copied and pasted it. But I ended up going in person based on the app's recommendation and it was so much faster. The office in Florianópolis Centro was super foreigner-friendly, exactly like the app said.",
     result: "CPF in hand within 20 minutes of walking in",
     timeAgo: "1 month ago",
   },
