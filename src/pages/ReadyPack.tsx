@@ -211,7 +211,11 @@ const ReadyPack = () => {
           <OverviewTab data={data} motherDisplay={motherDisplay} stateName={stateName} recommendedOffice={recommendedOffice} setActiveTab={setActiveTab} />
         )}
         {activeTab === "office" && (
-          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} data={data} />
+          <OfficeTab recommendedOffice={recommendedOffice} alternativeOffices={alternativeOffices} stateName={stateName} data={data} onChangeState={(newState) => {
+            const updated = { ...data, state: newState };
+            setData(updated);
+            persistOnboardingData(updated);
+          }} />
         )}
         {activeTab === "documents" && (
           <DocumentsTab data={data} motherDisplay={motherDisplay} />
