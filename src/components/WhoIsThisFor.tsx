@@ -54,6 +54,36 @@ const WhoIsThisFor = () => (
           </div>
         ))}
       </div>
+
+      {/* Founder story */}
+      <div className="mt-16 bg-card border border-border rounded-2xl p-8 md:p-10">
+        <div className="flex items-start gap-4 mb-5">
+          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-xl shrink-0">
+            🧑‍💻
+          </div>
+          <div>
+            <h3 className="font-bold text-base">Why I built this</h3>
+            <p className="text-xs text-muted-foreground">From the founder of GET CPF</p>
+          </div>
+        </div>
+        <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+          <p>
+            I built GET CPF because I needed it myself. When I moved to Brazil, I had no idea where to go, 
+            what to bring, or what to say. I spent days jumping between government websites, Reddit threads, 
+            and ChatGPT — but nothing gave me the full picture. Half the info was outdated, the other half 
+            was for a different state.
+          </p>
+          <p>
+            So I documented the entire process — from signing up, to gathering documents, to printing everything, 
+            to walking into the Receita Federal office and actually getting my CPF. Every step, every mistake, 
+            every "I wish someone had told me this."
+          </p>
+          <p>
+            That's what GET CPF is. It's the guide I wish existed when I started. I turned a full day of 
+            confusion into a five-minute preparation process. And it worked — I got my CPF on the first try.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 );

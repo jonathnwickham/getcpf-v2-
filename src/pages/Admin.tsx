@@ -308,7 +308,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                         ? "bg-primary/10 text-primary"
                         : "bg-secondary text-muted-foreground"
                     }`}>
-                      {p.plan || "free"}
+                      {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
                     </span>
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
@@ -342,7 +342,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <div className="space-y-4 mt-2">
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{userProfile.plan || "free"}</div></div>
+                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
                   <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
                 </div>
@@ -424,7 +424,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Paid" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} icon="💳" />
+        <StatCard label="Paid (onboarded)" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} icon="💳" sub={(() => { const paidTotal = profiles.filter(p => p.plan && p.plan !== "free").length; const onboarded = applications.filter(a => a.status && a.status !== "draft").length; const diff = paidTotal - onboarded; return diff > 0 ? `${diff} paid, not yet onboarded` : undefined; })()} />
         <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
       </div>
@@ -1294,7 +1294,7 @@ const SettingsTab = () => {
 };
 
 /* ── Shared components ── */
-const StatCard = ({ label, value, icon, trend }: { label: string; value: string; icon?: string; trend?: "up" | "down" }) => (
+const StatCard = ({ label, value, icon, trend, sub }: { label: string; value: string; icon?: string; trend?: "up" | "down"; sub?: string }) => (
   <div className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
       <div className="text-xs text-muted-foreground font-medium">{label}</div>
@@ -1304,6 +1304,7 @@ const StatCard = ({ label, value, icon, trend }: { label: string; value: string;
       {value}
       {trend === "up" && <span className="text-xs text-green-500 font-semibold">↑</span>}
     </div>
+    {sub && <div className="text-[10px] text-muted-foreground mt-1">{sub}</div>}
   </div>
 );
 
