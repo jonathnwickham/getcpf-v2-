@@ -361,6 +361,10 @@ const UnlockGuide = () => {
 
   return (
     <div className="space-y-6 animate-slide-in">
+      {/* Affiliate disclosure */}
+      <div className="bg-secondary border border-border rounded-xl px-4 py-3 text-xs text-muted-foreground text-center">
+        Some links below are affiliate links. We may earn a commission at no extra cost to you.
+      </div>
       {/* Header + progress */}
       <section className="bg-primary/5 border border-primary/15 rounded-3xl p-8 text-center">
         <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">🔓 You're in.</h2>
