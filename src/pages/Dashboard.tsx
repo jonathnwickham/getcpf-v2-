@@ -8,6 +8,68 @@ import {
   mapApplicationToOnboardingData,
   persistOnboardingData,
 } from "@/lib/application-storage";
+import { toast } from "sonner";
+
+const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string; existingCpf: string | null }) => {
+  const [cpf, setCpf] = useState(existingCpf || "");
+  const [showInput, setShowInput] = useState(!!existingCpf);
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    const trimmed = cpf.trim();
+    if (!trimmed) return;
+    setSaving(true);
+    const { error } = await supabase
+      .from("applications")
+      .update({ cpf_number: trimmed, status: "completed" })
+      .eq("id", applicationId);
+    setSaving(false);
+    if (error) {
+      toast.error("Could not save your CPF number. Try again.");
+    } else {
+      toast.success("CPF number saved.");
+    }
+  };
+
+  if (showInput || existingCpf) {
+    return (
+      <div className="mt-6 bg-primary/5 border border-primary/15 rounded-xl p-4">
+        <div className="text-xs text-primary font-bold uppercase tracking-wider mb-2">🎉 Your CPF Number</div>
+        {existingCpf && !showInput ? (
+          <div className="text-2xl font-extrabold font-mono tracking-wide">{existingCpf}</div>
+        ) : (
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter your CPF number"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-base font-mono tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+            <button
+              onClick={handleSave}
+              disabled={saving || !cpf.trim()}
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              {saving ? "Saving..." : "Save"}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6">
+      <button
+        onClick={() => setShowInput(true)}
+        className="bg-[hsl(142,70%,49%)] text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+      >
+        🎉 It worked! Save my CPF number
+      </button>
+    </div>
+  );
+};
 
 const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
@@ -96,12 +158,7 @@ const Dashboard = () => {
             {application.city && <InfoField label="City" value={application.city} />}
             {application.email && <InfoField label="Email" value={application.email} />}
           </div>
-          {application.cpf_number && (
-            <div className="mt-6 bg-primary/5 border border-primary/15 rounded-xl p-4">
-              <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">🎉 Your CPF Number</div>
-              <div className="text-2xl font-extrabold font-mono tracking-wide">{application.cpf_number}</div>
-            </div>
-          )}
+          <CpfConfirmation applicationId={application.id} existingCpf={application.cpf_number} />
           <div className="mt-4">
             <button
               onClick={() => navigate("/ready-pack")}
