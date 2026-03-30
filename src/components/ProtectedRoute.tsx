@@ -33,17 +33,13 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
         // Check payment status
         if (needsPaymentCheck) {
-          promises.push(
-            supabase
+          const payRes = await supabase
               .from("applications")
               .select("status")
               .eq("user_id", user.id)
               .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
-              .limit(1)
-              .then(({ data }) => {
-                setIsPaid(!!data && data.length > 0);
-              })
-          );
+              .limit(1);
+          setIsPaid(!!payRes.data && payRes.data.length > 0);
         } else {
           setIsPaid(true);
         }
