@@ -40,9 +40,8 @@ const Footer = () => (
 
       {/* Divider */}
       <div className="border-t border-border pt-8">
-        {/* Disclaimer */}
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
-          GET CPF is a private consulting service and is not affiliated with the Brazilian Government or Receita Federal. We provide guidance to help foreigners navigate the official CPF registration process. We do not issue CPF numbers — only Receita Federal can do that. The CPF registration itself is free. Some partner links on this site are affiliate links — we may earn a small commission at no extra cost to you.
+          GET CPF is not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance — only Receita Federal issues CPF numbers. Some links are affiliate links.
         </p>
         <p className="text-xs text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
       </div>

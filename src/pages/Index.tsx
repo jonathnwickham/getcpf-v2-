@@ -5,6 +5,7 @@ import PainPoints from "@/components/PainPoints";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import TrustBar from "@/components/TrustBar";
+import AfterCPF from "@/components/AfterCPF";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -24,6 +25,7 @@ const Index = () => {
       <PainPoints />
       <HowItWorks />
       <Pricing onOpenModal={handleOpenOnboarding} />
+      <AfterCPF />
       <Testimonials />
       <TrustBar />
       <FAQ />
