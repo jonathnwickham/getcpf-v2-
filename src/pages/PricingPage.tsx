@@ -78,6 +78,48 @@ const PricingPage = () => {
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
+  // Promo code state
+  const [promoInput, setPromoInput] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount_percent: number } | null>(null);
+  const [promoError, setPromoError] = useState("");
+
+  const BASE_PRICE = 49;
+  const finalPrice = appliedPromo
+    ? (BASE_PRICE * (1 - appliedPromo.discount_percent / 100)).toFixed(2)
+    : BASE_PRICE.toFixed(2);
+  const discount = appliedPromo
+    ? (BASE_PRICE * appliedPromo.discount_percent / 100).toFixed(2)
+    : null;
+
+  const applyPromo = async () => {
+    const code = promoInput.trim().toUpperCase();
+    if (!code) return;
+    setPromoLoading(true);
+    setPromoError("");
+    const { data: promo } = await supabase
+      .from("promo_codes")
+      .select("code, discount_percent, is_active")
+      .eq("code", code)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (!promo) {
+      setPromoError("Code not found or expired");
+      setAppliedPromo(null);
+    } else {
+      setAppliedPromo({ code: promo.code, discount_percent: promo.discount_percent });
+      setPromoError("");
+    }
+    setPromoLoading(false);
+  };
+
+  const removePromo = () => {
+    setAppliedPromo(null);
+    setPromoInput("");
+    setPromoError("");
+  };
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.includes("@")) {
