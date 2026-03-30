@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
+import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
