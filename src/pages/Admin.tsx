@@ -1303,6 +1303,61 @@ const SettingsTab = () => {
   );
 };
 
+/* ── Waitlist Tab ── */
+const WaitlistTab = () => {
+  const [entries, setEntries] = useState<{ id: string; email: string; plan: string; created_at: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.from("waitlist").select("*").order("created_at", { ascending: false })
+      .then(({ data }) => { if (data) setEntries(data as any); setLoading(false); });
+  }, []);
+
+  const byPlan = entries.reduce<Record<string, number>>((acc, e) => {
+    acc[e.plan] = (acc[e.plan] || 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Total signups" value={entries.length.toString()} icon="📧" />
+        {Object.entries(byPlan).map(([plan, count]) => (
+          <StatCard key={plan} label={plan} value={count.toString()} icon="📋" />
+        ))}
+      </div>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Email</TableHead>
+              <TableHead>Plan interest</TableHead>
+              <TableHead>Signed up</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">Loading...</TableCell></TableRow>
+            ) : entries.length === 0 ? (
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">No waitlist signups yet</TableCell></TableRow>
+            ) : entries.map(e => (
+              <TableRow key={e.id}>
+                <TableCell className="font-medium">{e.email}</TableCell>
+                <TableCell>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">{e.plan}</span>
+                </TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {new Date(e.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+};
+
 /* ── Shared components ── */
 const StatCard = ({ label, value, icon, trend, sub }: { label: string; value: string; icon?: string; trend?: "up" | "down"; sub?: string }) => (
   <div className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">

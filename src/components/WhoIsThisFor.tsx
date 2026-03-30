@@ -29,6 +29,16 @@ const personas = [
     title: "Long-stay travellers",
     desc: "Staying more than a few weeks? A CPF unlocks local prices, Pix payments, and iFood delivery.",
   },
+  {
+    emoji: "🌎",
+    title: "Tourists & short-stay visitors",
+    desc: "Even on a tourist visa, a CPF lets you buy a local SIM, use Pix, order on iFood, and skip gringo prices.",
+  },
+  {
+    emoji: "🧳",
+    title: "Snowbirds & seasonal visitors",
+    desc: "Spend a few months a year in Brazil? A CPF makes every return easier — banking, phone plans, and online shopping just work.",
+  },
 ];
 
 const WhoIsThisFor = () => (
