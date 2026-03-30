@@ -706,7 +706,7 @@ const PromosTab = () => {
       {/* Add new promo */}
       <div className="bg-card border border-border rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-4">Create promo code</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
             <label className="text-xs font-semibold text-muted-foreground block mb-1">Code</label>
             <input
@@ -732,6 +732,16 @@ const PromosTab = () => {
               value={newAffiliate}
               onChange={(e) => setNewAffiliate(e.target.value)}
               placeholder="Brazilian Gringo"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Affiliate email</label>
+            <input
+              value={newAffiliateEmail}
+              onChange={(e) => setNewAffiliateEmail(e.target.value)}
+              placeholder="gringo@email.com"
+              type="email"
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
