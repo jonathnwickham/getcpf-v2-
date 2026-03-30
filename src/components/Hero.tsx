@@ -72,15 +72,11 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             without the headache
           </h1>
 
-          <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-6 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out. No wasted trips, no rejected forms, no showing up to the wrong office.
+          <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-5 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
+            A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out.
           </p>
 
-          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-3 max-w-[520px] mx-auto lg:mx-0">
-            You still need to visit an office in person. We make sure that visit works the first time.
-          </p>
-
-          <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center lg:justify-start">
+          <div className="animate-fade-up-3 flex gap-4 mt-7 flex-wrap justify-center lg:justify-start">
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
               Get started →
             </button>
@@ -89,42 +85,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             </a>
           </div>
 
-          <div className="animate-fade-up-3 flex items-center gap-2 mt-4 justify-center lg:justify-start text-xs text-muted-foreground">
+          <div className="animate-fade-up-3 flex items-center gap-2 mt-3 justify-center lg:justify-start text-xs text-muted-foreground">
             <span>🛡️</span>
             If you follow our steps and get rejected, full refund. No questions asked.
-          </div>
-
-          <div className="animate-fade-up-4 grid grid-cols-2 sm:flex gap-8 sm:gap-10 mt-12 justify-center lg:justify-start">
-            {proofItems.map((item) => (
-              <div key={item.label} className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-foreground">{item.num}</div>
-                <div className="text-xs text-muted-foreground mt-1 font-medium">{item.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Logo trust strip */}
-          <div className="animate-fade-up-4 mt-8">
-            <p className="text-xs text-muted-foreground mb-3 text-center lg:text-left">Your CPF unlocks all of these and everything else in Brazil.</p>
-            <div className="flex flex-wrap gap-5 justify-center lg:justify-start items-center">
-              {[
-                { src: nubankLogo, alt: "Nubank" },
-                { src: ifoodLogo, alt: "iFood" },
-                { src: mercadoLivreLogo, alt: "Mercado Livre" },
-                { src: rappiLogo, alt: "Rappi" },
-                { src: vivoLogo, alt: "Vivo" },
-                { src: quintoAndarLogo, alt: "QuintoAndar" },
-                { src: amazonLogo, alt: "Amazon BR" },
-                { src: correiosLogo, alt: "Correios" },
-              ].map((logo) => (
-                <img
-                  key={logo.alt}
-                  src={logo.src}
-                  alt={logo.alt}
-                  className="h-8 w-auto rounded-md object-contain opacity-80 hover:opacity-100 transition-all duration-300"
-                />
-              ))}
-            </div>
           </div>
         </div>
 
