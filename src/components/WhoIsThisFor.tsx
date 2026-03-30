@@ -73,7 +73,7 @@ const WhoIsThisFor = () => (
           <img
             src={founderPhoto}
             alt="Jonathan Wickham"
-            className="w-14 h-14 rounded-full object-cover object-top shrink-0 border-2 border-primary/20"
+            className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-primary/20" style={{ objectPosition: "center 25%" }}
           />
           <div>
             <h3 className="font-bold text-base">Why I built this</h3>
