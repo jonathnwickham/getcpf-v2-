@@ -153,6 +153,33 @@ const Admin = () => {
   );
 };
 
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+const getDataStatus = (profile: Profile): "Active" | "Due for deletion" | "Retained" => {
+  if (!profile.created_at) return "Active";
+  const age = Date.now() - new Date(profile.created_at).getTime();
+  if (profile.plan === "active_subscriber") return "Retained";
+  if (age > THIRTY_DAYS_MS) return "Due for deletion";
+  return "Active";
+};
+
+const DATA_STATUS_COLORS: Record<string, string> = {
+  "Active": "bg-primary/10 text-primary",
+  "Due for deletion": "bg-destructive/10 text-destructive",
+  "Retained": "bg-secondary text-muted-foreground",
+};
+
+const anonymizeUser = async (userId: string, onRefresh: () => void) => {
+  await supabase.from("applications").delete().eq("user_id", userId);
+  await supabase.from("profiles").update({
+    full_name: null,
+    email: `deleted-${userId.slice(0, 8)}@deleted.getcpf.com`,
+    country_code: null,
+    location: null,
+  }).eq("id", userId);
+  onRefresh();
+};
+
 /* ── Users Tab with search and funnel ── */
 const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   profiles: Profile[];
@@ -162,6 +189,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   onRefresh: () => void;
 }) => {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedForBulk, setSelectedForBulk] = useState<Set<string>>(new Set());
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
