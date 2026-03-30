@@ -212,6 +212,33 @@ export type Database = {
         }
         Relationships: []
       }
+      consent_log: {
+        Row: {
+          consent: boolean
+          consent_text: string
+          consent_version: string
+          consented_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          consent?: boolean
+          consent_text: string
+          consent_version?: string
+          consented_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          consent?: boolean
+          consent_text?: string
+          consent_version?: string
+          consented_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           application_id: string
