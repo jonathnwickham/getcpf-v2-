@@ -135,6 +135,11 @@ export const saveLatestApplication = async (userId: string, data: OnboardingData
 
   const existing = await fetchLatestApplication(userId);
 
+  // Sync nationality to profile for admin visibility
+  if (data.nationality.trim()) {
+    await supabase.from("profiles").update({ country_code: data.nationality.trim() }).eq("id", userId);
+  }
+
   if (existing?.id) {
     const { error } = await supabase.from("applications").update(payload).eq("id", existing.id);
     if (error) throw error;
