@@ -14,7 +14,7 @@ const cards = [
   {
     icon: Home,
     title: "Start apartment hunting",
-    desc: "QuintoAndar, ZAP Imóveis, OLX — lease an apartment, sign contracts, set up utilities. All need a CPF.",
+    desc: "QuintoAndar, ZAP Imóveis, OLX, lease an apartment, sign contracts, set up utilities. All need a CPF.",
   },
 ];
 
