@@ -296,9 +296,10 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             {filtered.map(p => {
               const userApp = applications.find(a => a.user_id === p.id);
               const nat = userApp?.nationality || p.country_code || "—";
+              const displayName = p.full_name || userApp?.full_name || "—";
               return (
                 <TableRow key={p.id} className="cursor-pointer hover:bg-secondary/50" onClick={() => setSelectedUser(p.id)}>
-                  <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
+                  <TableCell className="font-medium">{displayName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
                   <TableCell className="text-sm">{nat}</TableCell>
                   <TableCell>
