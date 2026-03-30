@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_applications: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          motivation: string | null
+          name: string
+          platform: string | null
+          posting_frequency: string | null
+          situation: string | null
+          why: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          motivation?: string | null
+          name: string
+          platform?: string | null
+          posting_frequency?: string | null
+          situation?: string | null
+          why?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          motivation?: string | null
+          name?: string
+          platform?: string | null
+          posting_frequency?: string | null
+          situation?: string | null
+          why?: string | null
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           address_proof_url: string | null
@@ -256,6 +292,27 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          plan: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          plan: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          plan?: string
         }
         Relationships: []
       }

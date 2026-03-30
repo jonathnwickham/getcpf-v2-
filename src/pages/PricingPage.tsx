@@ -172,8 +172,11 @@ const PricingPage = () => {
     }
   };
 
-  const handleWaitlist = (e: React.FormEvent) => {
+  const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
     e.preventDefault();
+    const wEmail = waitlistEmail.trim() || email.trim();
+    if (!wEmail) return;
+    await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
     setWaitlistSubmitted(true);
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
@@ -281,7 +284,7 @@ const PricingPage = () => {
                   </ul>
                   {tier.comingSoon ? (
                     !waitlistSubmitted ? (
-                      <form onSubmit={handleWaitlist} className="space-y-2">
+                      <form onSubmit={(e) => handleWaitlist(e, tier.name)} className="space-y-2">
                         <input
                           type="email"
                           value={waitlistEmail}
