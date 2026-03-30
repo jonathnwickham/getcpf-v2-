@@ -35,7 +35,15 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
         <p className="text-muted-foreground mt-5 mx-auto max-w-[480px] leading-relaxed">
           Five minutes of preparation now saves you a wasted day later. Get everything sorted before you even walk in.
         </p>
-        <button onClick={handleCTA} className="mt-10 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
+        <div className="flex items-center gap-2 justify-center mt-6">
+          <div className="flex -space-x-1">
+            {["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇮🇹", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷", "🇵🇹", "🇳🇱", "🇨🇦", "🇮🇪"].map((flag, i) => (
+              <span key={i} className="text-base">{flag}</span>
+            ))}
+          </div>
+          <span className="text-sm text-muted-foreground font-medium">🇧🇷 50+ countries supported</span>
+        </div>
+        <button onClick={handleCTA} className="mt-8 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
           Get started →
         </button>
       </div>
