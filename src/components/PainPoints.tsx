@@ -21,7 +21,7 @@ const painPoints = [
   },
   {
     title: "Shopping online",
-    text: "Mercado Livre, Amazon Brazil, Shopee — CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
+    text: "Mercado Livre, Amazon Brazil, Shopee. CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
   },
   {
     title: "Getting contacts or medicine delivered",
