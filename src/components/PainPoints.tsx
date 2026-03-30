@@ -24,8 +24,8 @@ const painPoints = [
     text: "Mercado Livre, Amazon Brazil, Shopee. CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
   },
   {
-    title: "Getting contacts or medicine delivered",
-    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF. The checkout just stops.",
+    title: "Getting paid in Brazil",
+    text: "Brazilian freelance platforms, payroll systems, and wire transfers all require a CPF. Without one, you cannot receive local payments or register on Brazilian platforms.",
   },
 ];
 

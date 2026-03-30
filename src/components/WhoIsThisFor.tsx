@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import founderPhoto from "@/assets/founder-jonathan.jpg";
 
 const personas = [
@@ -5,41 +6,49 @@ const personas = [
     emoji: "💻",
     title: "Digital nomads",
     desc: "Working remotely from Brazil? You need a CPF to open a bank account, get a local SIM, and sign up for coworking spaces.",
+    guide: "/guides/cpf-digital-nomads-brazil",
   },
   {
     emoji: "🏠",
     title: "Expats settling in",
     desc: "Renting an apartment, setting up utilities, getting health insurance. None of it works without a CPF.",
+    guide: "/guides/how-to-get-cpf-brazil-foreigner",
   },
   {
     emoji: "✈️",
     title: "People moving for work",
     desc: "Your employer needs your CPF for payroll. HR won't wait while you figure out the bureaucracy.",
+    guide: "/guides/cpf-work-permit-brazil",
   },
   {
     emoji: "❤️",
     title: "Partners & spouses",
     desc: "Moved for love? A CPF lets you build a life here. Joint accounts, car insurance, even a gym membership.",
+    guide: "/guides/cpf-spouse-dependent-brazil",
   },
   {
     emoji: "🎓",
     title: "Students",
     desc: "Brazilian universities require a CPF for enrollment. Get it sorted before classes start, not during.",
+    guide: "/guides/cpf-students-brazil",
   },
   {
     emoji: "🏖️",
     title: "Long-stay travellers",
     desc: "Staying more than a few weeks? A CPF unlocks local prices, Pix payments, and iFood delivery.",
+    guide: "/guides/cpf-long-stay-brazil",
   },
   {
     emoji: "🌎",
     title: "Tourists & short-stay visitors",
     desc: "Even on a tourist visa, a CPF lets you buy a local SIM, use Pix, order on iFood, and skip gringo prices.",
+    guide: "/guides/cpf-tourists-brazil",
   },
   {
     emoji: "🧳",
     title: "Snowbirds & seasonal visitors",
     desc: "Spend a few months a year in Brazil? A CPF makes every return easier. Banking, phone plans, and online shopping just work.",
+    guide: "/guides/cpf-retirees-snowbirds-brazil",
   },
 ];
 
@@ -58,11 +67,14 @@ const WhoIsThisFor = () => (
         {personas.map((p) => (
           <div
             key={p.title}
-            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all"
+            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all flex flex-col"
           >
             <div className="text-3xl mb-3">{p.emoji}</div>
             <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
+            <Link to={p.guide} className="text-xs font-semibold text-primary mt-3 hover:underline inline-block">
+              Learn more →
+            </Link>
           </div>
         ))}
       </div>
@@ -72,7 +84,7 @@ const WhoIsThisFor = () => (
         <div className="flex items-start gap-4 mb-5">
           <img
             src={founderPhoto}
-            alt="Jonathan Wickham"
+            alt="Jonathan Wickham, founder of GET CPF"
             className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-primary/20" style={{ objectPosition: "center 42%" }}
           />
           <div>
@@ -83,21 +95,21 @@ const WhoIsThisFor = () => (
         </div>
         <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
           <p>
-            I fell in love with Brazil, met my gorgeous girlfriend, and now I come back as often as I can.
+            I fell in love with Brazil, met my girlfriend, and now I come back as often as I can.
           </p>
           <p>
-            When I needed my CPF I spent days jumping between government sites, Reddit threads, and AI tools 
-            that each gave me half the answer but none of the context. I had to piece it all together myself 
-            — and I still nearly got it wrong.
+            When I needed my CPF I spent days jumping between government sites, Reddit threads, and AI tools
+            that each gave me half the answer but none of the context. I had to piece it all together myself
+            and I still nearly got it wrong.
           </p>
           <p>
             So I documented every step, built it into a tool, and got my CPF on my first try using what I'd created.
           </p>
           <p>
-            That was the test. If it worked for me it would work for anyone. So I cleaned it up, priced it fairly, and put it out there.
+            That was the test. If it worked for me, it would work for anyone. So I cleaned it up, priced it fairly, and put it out there.
           </p>
           <p className="text-foreground font-medium">
-            Now you get the version I wish I'd had.
+            Now you get the version I wish I had.
           </p>
         </div>
       </div>

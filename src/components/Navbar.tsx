@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, X } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NavbarProps {
   onOpenModal?: () => void;
@@ -11,7 +10,6 @@ interface NavbarProps {
 const Navbar = ({ onOpenModal }: NavbarProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const isMobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handlePrimaryAction = () => {
@@ -31,7 +29,8 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
     { label: "How it works", href: "/#how" },
     { label: "Pricing", href: "/#pricing" },
     { label: "FAQ", href: "/#faq" },
-    { label: "Partner with us", href: "/partners" },
+    { label: "Guides", href: "/guides" },
+    { label: "Affiliates", href: "/partners" },
   ];
 
   return (

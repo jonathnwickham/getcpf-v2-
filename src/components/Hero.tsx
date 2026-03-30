@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
-import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
@@ -19,11 +18,39 @@ interface HeroProps {
   onOpenModal?: () => void;
 }
 
+const CountUp = ({ end, suffix = "", duration = 1500 }: { end: number; suffix?: string; duration?: number }) => {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStarted(true); },
+      { threshold: 0.5 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    const steps = 40;
+    const stepTime = duration / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current++;
+      setCount(Math.round((current / steps) * end));
+      if (current >= steps) clearInterval(timer);
+    }, stepTime);
+    return () => clearInterval(timer);
+  }, [started, end, duration]);
+
+  return <div ref={ref}>{started ? count : 0}{suffix}</div>;
+};
+
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
   const [officeIndex, setOfficeIndex] = useState(0);
-  const cpfCount = useCpfCount();
-  const displayCount = cpfCount !== null ? cpfCount : 200;
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
@@ -31,10 +58,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   };
 
   const proofItems = [
-    { num: "~5 min", label: "Setup time" },
-    { num: "R$7", label: "At Correios" },
-    { num: "Same day", label: "When you go in" },
-    { num: `${displayCount}+`, label: "CPFs prepared" },
+    { num: 5, suffix: " min", label: "Setup time", isCount: true },
+    { num: 7, suffix: "", label: "R$ at Correios", prefix: "R$", isCount: false },
+    { num: 0, suffix: "", label: "When you go in", text: "Same day", isCount: false },
+    { num: 50, suffix: "+", label: "Nationalities served", isCount: true },
   ];
 
   return (
@@ -43,8 +70,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       <img
         src={brazilStencil}
-        alt=""
-        aria-hidden="true"
+        alt="Outline map of Brazil"
         className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-[100em] max-w-none opacity-[0.04] pointer-events-none select-none"
         width={1200}
         height={800}
@@ -53,12 +79,6 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
-          {/* Trust pill */}
-          <div className="animate-fade-up-1 inline-flex items-center gap-2 bg-primary/[0.08] border border-primary/20 rounded-full px-4 py-1.5 mb-5">
-            <span className="text-sm">🇧🇷</span>
-            <span className="text-xs font-medium text-foreground">Trusted by {displayCount}+ foreigners moving to Brazil</span>
-          </div>
-
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
             <span className="text-primary font-serif italic">CPF</span>{" "}
@@ -78,11 +98,19 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             </a>
           </div>
 
-          {/* Stats row */}
+          {/* Stats row with count-up */}
           <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-6 justify-center lg:justify-start">
             {proofItems.map((item) => (
               <div key={item.label} className="text-center lg:text-left">
-                <div className="text-lg font-bold text-foreground">{item.num}</div>
+                <div className="text-lg font-bold text-foreground">
+                  {item.isCount ? (
+                    <CountUp end={item.num} suffix={item.suffix} />
+                  ) : item.text ? (
+                    item.text
+                  ) : (
+                    `${item.prefix || ""}${item.num}${item.suffix}`
+                  )}
+                </div>
                 <div className="text-[10px] text-muted-foreground font-medium">{item.label}</div>
               </div>
             ))}

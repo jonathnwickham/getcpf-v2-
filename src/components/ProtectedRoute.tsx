@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,8 +8,6 @@ interface ProtectedRouteProps {
   requirePayment?: boolean;
   requireAdmin?: boolean;
 }
-
-const ADMIN_EMAIL = "jonathan@getcpf.com";
 
 const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
@@ -44,13 +42,10 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
           setIsPaid(true);
         }
 
-        // Check admin
+        // Check admin via database role only
         if (needsAdminCheck) {
           const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
-          console.log("[ProtectedRoute] Admin check:", { rpcData: adminRes.data, rpcError: adminRes.error, email: user.email, expected: ADMIN_EMAIL });
-          const roleOk = adminRes.data === true;
-          const emailOk = user.email === ADMIN_EMAIL;
-          setIsAdmin(roleOk && emailOk);
+          setIsAdmin(adminRes.data === true);
         } else {
           setIsAdmin(true);
         }
@@ -81,9 +76,9 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <VerifyEmailScreen />;
   }
 
-  // Admin check — if not admin, go home (not ready-pack)
+  // Admin check — show access denied
   if (needsAdminCheck && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <AccessDeniedScreen />;
   }
 
   // Payment check
@@ -92,6 +87,32 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
   }
 
   return <>{children}</>;
+};
+
+const AccessDeniedScreen = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <div className="w-full max-w-md text-center">
+        <a href="/" className="text-2xl font-bold tracking-tight inline-block mb-8">
+          GET <span className="text-primary">CPF</span>
+        </a>
+        <div className="bg-card border border-border rounded-2xl p-8">
+          <div className="text-5xl mb-4">🚫</div>
+          <h1 className="text-xl font-extrabold mb-2">Access denied</h1>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            You do not have permission to view this page. If you believe this is an error, please contact support.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+          >
+            Go to homepage
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const VerifyEmailScreen = () => {

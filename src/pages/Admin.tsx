@@ -153,13 +153,17 @@ const Admin = () => {
   );
 };
 
-const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
-const getDataStatus = (profile: Profile): "Active" | "Due for deletion" | "Retained" => {
+const getDataStatus = (profile: Profile, applications: Application[] = []): "Active" | "Due for deletion" | "Retained" => {
   if (!profile.created_at) return "Active";
   const age = Date.now() - new Date(profile.created_at).getTime();
-  if (profile.plan === "active_subscriber") return "Retained";
-  if (age > THIRTY_DAYS_MS) return "Due for deletion";
+  // Paying customers are never flagged for deletion
+  const hasPaidApp = applications.some(
+    a => a.user_id === profile.id && ["paid", "prepared", "office_visited", "cpf_issued"].includes(a.status || "")
+  );
+  if (hasPaidApp || profile.plan === "active_subscriber") return "Retained";
+  if (age > NINETY_DAYS_MS) return "Due for deletion";
   return "Active";
 };
 
@@ -315,7 +319,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             className="w-full md:w-80 px-4 py-2.5 bg-secondary border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
           />
           {(() => {
-            const dueForDeletion = filtered.filter(p => getDataStatus(p) === "Due for deletion");
+            const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
             if (dueForDeletion.length === 0) return null;
             return (
               <div className="flex gap-2 items-center">
@@ -377,7 +381,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                   </TableCell>
                   <TableCell>
                     {(() => {
-                      const status = getDataStatus(p);
+                      const status = getDataStatus(p, applications);
                       return (
                         <span className={`text-xs font-semibold px-2 py-0.5 rounded ${DATA_STATUS_COLORS[status]}`}>
                           {status}

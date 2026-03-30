@@ -23,6 +23,7 @@ import Admin from "./pages/Admin.tsx";
 import Guides from "./pages/Guides.tsx";
 import GuideDetail from "./pages/GuideDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Contact from "./pages/Contact.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/guides/:slug" element={<GuideDetail />} />
+            <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
