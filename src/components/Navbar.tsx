@@ -47,12 +47,14 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
               {link.label}
             </a>
           ))}
-          <button
-            onClick={() => navigate("/login")}
-            className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
-          >
-            Sign in
-          </button>
+          {!user && (
+            <button
+              onClick={() => navigate("/login")}
+              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
+            >
+              Sign in
+            </button>
+          )}
           <button
             onClick={handlePrimaryAction}
             className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
