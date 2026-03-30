@@ -63,7 +63,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
             <span className="text-sm">🛡️</span>
-            If you follow our steps and get rejected, we fix it free. No questions asked.
+            If you follow our steps and get rejected, we'll refund you in full. No questions asked.
           </div>
 
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
