@@ -582,6 +582,10 @@ const PromosTab = () => {
   const [adding, setAdding] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [expandedAffiliate, setExpandedAffiliate] = useState<string | null>(null);
+  const [editingAffiliate, setEditingAffiliate] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editCommission, setEditCommission] = useState("");
+  const [confirmDeleteAffiliate, setConfirmDeleteAffiliate] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
