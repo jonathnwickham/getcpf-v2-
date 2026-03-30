@@ -128,7 +128,7 @@ const Dashboard = () => {
         {/* Share */}
         <section className="bg-card border border-border rounded-2xl p-6 text-center">
           <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
-          <p className="text-sm text-muted-foreground mb-4">Send them this — they'll thank you later.</p>
+          <p className="text-sm text-muted-foreground mb-4">Send them this, they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText("https://getcpf.lovable.app")}

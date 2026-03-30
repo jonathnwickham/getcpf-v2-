@@ -48,7 +48,7 @@ const ForgotPassword = () => {
             GET <span className="text-primary">CPF</span>
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
-          <p className="text-muted-foreground mt-2 text-sm">No worries — enter your email and we'll send you a link to reset it</p>
+          <p className="text-muted-foreground mt-2 text-sm">No worries, enter your email and we'll send you a link to reset it</p>
         </div>
 
         <form onSubmit={handleReset} className="space-y-4">
