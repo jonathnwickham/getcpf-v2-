@@ -180,13 +180,15 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       {/* Nationality flags */}
       <div className="animate-fade-up-4 mt-14 flex flex-col items-center gap-3">
-        <div className="flex gap-2 flex-wrap justify-center">
+        <div className="flex gap-2 flex-wrap justify-center items-center">
+          <span className="text-3xl">🇧🇷</span>
+          <span className="text-muted-foreground mx-1">←</span>
           {flags.map((flag) => (
             <span key={flag} className="text-2xl">{flag}</span>
           ))}
           <span className="text-sm text-muted-foreground font-medium self-center ml-1">+40 more</span>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality</p>
+        <p className="text-xs text-muted-foreground">Works for any nationality moving to Brazil</p>
       </div>
     </section>
   );
