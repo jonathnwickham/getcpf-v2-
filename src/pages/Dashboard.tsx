@@ -200,7 +200,7 @@ const PARTNERS = [
     name: "iTalki",
     category: "Learn Portuguese",
     summary: "1-on-1 video lessons with native Brazilian Portuguese speakers.",
-    detail: "Even 5 lessons makes a massive difference — at the Receita Federal office, at restaurants, with landlords. Brazilian Portuguese is different from European Portuguese and very different from Spanish. R$30-60/hour for a private tutor.",
+    detail: "Even 5 lessons makes a massive difference, at the Receita Federal office, at restaurants, with landlords. Brazilian Portuguese is different from European Portuguese and very different from Spanish. R$30-60/hour for a private tutor.",
     tip: "Book a few lessons before your office visit. Learn numbers, greetings, and how to say 'I'm here for my CPF'.",
     url: "https://www.italki.com",
   },
