@@ -92,6 +92,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             If you follow our steps and get rejected — full refund. No questions asked.
           </div>
 
+          <p
+            className={`text-sm italic text-muted-foreground/70 mb-4 h-5 transition-opacity duration-400 ${empathyVisible ? "opacity-100" : "opacity-0"}`}
+          >
+            {empathyLines[empathyIndex]}
+          </p>
+
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
             <span className="text-primary font-serif italic">CPF</span>{" "}
