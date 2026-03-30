@@ -139,7 +139,7 @@ const Admin = () => {
         </div>
 
         {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
-        {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} />}
+        {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
         {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
         {tab === "promos" && <PromosTab />}
         {tab === "settings" && <SettingsTab />}
