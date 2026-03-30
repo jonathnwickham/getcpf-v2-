@@ -50,7 +50,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         height={800}
       />
 
-      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-8 lg:gap-12 items-center">
+      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
           {/* Trust pill */}
