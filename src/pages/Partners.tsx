@@ -27,6 +27,18 @@ const Partners = () => {
   const [form, setForm] = useState({ name: "", email: "", business: "", city: "", why: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const cpfCount = useCpfCount();
+
+  const cities = [
+    { name: "São Paulo", state: "SP", emoji: "🏙️" },
+    { name: "Rio de Janeiro", state: "RJ", emoji: "🏖️" },
+    { name: "Florianópolis", state: "SC", emoji: "🌊" },
+    { name: "Curitiba", state: "PR", emoji: "🌲" },
+    { name: "Salvador", state: "BA", emoji: "🎭" },
+    { name: "Recife", state: "PE", emoji: "🌴" },
+    { name: "Brasília", state: "DF", emoji: "🏛️" },
+    { name: "Belo Horizonte", state: "MG", emoji: "⛰️" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
