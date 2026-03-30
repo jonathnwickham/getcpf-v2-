@@ -15,7 +15,7 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
 
   return (
     <section className="py-24 px-8 text-center relative bg-primary/[0.03] overflow-hidden">
-      {/* Faint Brazilian flag outline on the left */}
+      {/* Faint Brazilian flag on the left */}
       <img
         src={brazilFlag}
         alt=""
