@@ -90,7 +90,7 @@ const WhoIsThisFor = () => (
           </p>
           <p>
             That's what GET CPF is. It's the guide I wish existed when I started. I turned a full day of 
-            confusion into a five-minute preparation process. And it worked — I got my CPF on the first try.
+            confusion into a five-minute preparation process. And it worked. I got my CPF on the first try.
           </p>
         </div>
       </div>

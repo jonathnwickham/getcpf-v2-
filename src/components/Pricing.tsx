@@ -18,7 +18,7 @@ const tiers = [
     comingSoon: false,
     features: [
       "Pre-filled forms, office finder & document checklist",
-      "AI document scanner — checks before you go",
+      "AI document scanner, checks before you go",
       "Portuguese cheat sheet for the office visit",
       "Host declaration letter generator",
       "Post-CPF setup guide (bank, SIM, Pix)",
