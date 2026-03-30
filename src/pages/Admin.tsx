@@ -966,7 +966,11 @@ const PromosTab = () => {
                           </>
                         ) : (
                           <>
-                            <TableCell className="font-semibold">{a.name}</TableCell>
+                            <TableCell>
+                              <button onClick={() => openProfile(a)} className="font-semibold text-primary hover:underline cursor-pointer text-left">
+                                {a.name}
+                              </button>
+                            </TableCell>
                             <TableCell className="text-sm text-muted-foreground">{a.email || "No email"}</TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
                             <TableCell>{a.commission}%</TableCell>
