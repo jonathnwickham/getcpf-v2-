@@ -15,15 +15,17 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
 
   return (
     <section className="py-24 px-8 text-center relative bg-primary/[0.03] overflow-hidden">
-      {/* Faint Brazilian flag on the left */}
+      {/* Green glow behind stencil */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse,hsl(var(--primary)/0.08)_0%,transparent_70%)] pointer-events-none" />
+      {/* Flag + Cristo stencil */}
       <img
-        src={brazilFlag}
+        src={brazilStencil}
         alt=""
         aria-hidden="true"
         loading="lazy"
-        width={600}
-        height={1067}
-        className="absolute left-0 top-0 h-full w-auto max-w-none opacity-[0.12] pointer-events-none select-none object-cover object-center"
+        width={1024}
+        height={1024}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] max-w-none opacity-[0.05] pointer-events-none select-none"
       />
 
       <div className="relative z-10">
