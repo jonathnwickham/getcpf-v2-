@@ -63,8 +63,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         height={800}
       />
 
-      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left, Copy */}
+      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start">
+        {/* Left, Copy + proof */}
         <div className="text-center lg:text-left">
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
@@ -89,9 +89,43 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <span>🛡️</span>
             If you follow our steps and get rejected, full refund. No questions asked.
           </div>
+
+          {/* Stats */}
+          <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-8 justify-center lg:justify-start">
+            {proofItems.map((item) => (
+              <div key={item.label} className="text-center lg:text-left">
+                <div className="text-lg font-bold text-foreground">{item.num}</div>
+                <div className="text-[10px] text-muted-foreground font-medium">{item.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Brand logos */}
+          <div className="animate-fade-up-4 mt-5">
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start items-center">
+              {[
+                { src: nubankLogo, alt: "Nubank" },
+                { src: ifoodLogo, alt: "iFood" },
+                { src: mercadoLivreLogo, alt: "Mercado Livre" },
+                { src: rappiLogo, alt: "Rappi" },
+                { src: vivoLogo, alt: "Vivo" },
+                { src: quintoAndarLogo, alt: "QuintoAndar" },
+                { src: amazonLogo, alt: "Amazon BR" },
+                { src: correiosLogo, alt: "Correios" },
+              ].map((logo) => (
+                <img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-5 w-auto rounded object-contain opacity-60 hover:opacity-100 transition-all duration-300"
+                />
+              ))}
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-1.5 lg:text-left text-center">Your CPF unlocks all of these</p>
+          </div>
         </div>
 
-        {/* Right, Product Mockup */}
+        {/* Right, Product Mockup — bigger */}
         <div className="animate-fade-up-3 hidden lg:block relative">
           <div className="animate-float">
           <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden">
@@ -107,31 +141,31 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               </div>
             </div>
             {/* Mock dashboard content */}
-            <div className="p-5 space-y-4">
+            <div className="p-6 space-y-5">
               <div className="text-sm font-bold text-foreground">Your Ready Pack</div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
+                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3.5 flex items-start gap-2">
                   <FileCheck className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">Your forms, pre-filled</div>
                     <div className="text-[10px] text-muted-foreground">Ready to print</div>
                   </div>
                 </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
+                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3.5 flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">Nearest Receita Federal</div>
                     <div className="text-[10px] text-muted-foreground transition-all duration-500">{offices[officeIndex].city}, {offices[officeIndex].office}</div>
                   </div>
                 </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
+                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3.5 flex items-start gap-2">
                   <Languages className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">What to say</div>
                     <div className="text-[10px] text-muted-foreground">Portuguese cheat sheet</div>
                   </div>
                 </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
+                <div className="bg-primary/5 border border-primary/10 rounded-lg p-3.5 flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">Doc checklist</div>
@@ -169,55 +203,22 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             </div>
           </div>
           </div>
-          {/* Shadow that stays in place while card floats */}
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-primary/5 rounded-[50%] blur-xl" />
         </div>
       </div>
 
-      {/* Stats row */}
-      <div className="animate-fade-up-4 flex flex-wrap gap-8 sm:gap-12 mt-10 justify-center">
-        {proofItems.map((item) => (
-          <div key={item.label} className="text-center">
-            <div className="text-xl font-bold text-foreground">{item.num}</div>
-            <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">{item.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Logo strip + orbit in one compact block */}
-      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-4">
-        <div className="flex flex-wrap gap-4 justify-center items-center">
-          {[
-            { src: nubankLogo, alt: "Nubank" },
-            { src: ifoodLogo, alt: "iFood" },
-            { src: mercadoLivreLogo, alt: "Mercado Livre" },
-            { src: rappiLogo, alt: "Rappi" },
-            { src: vivoLogo, alt: "Vivo" },
-            { src: quintoAndarLogo, alt: "QuintoAndar" },
-            { src: amazonLogo, alt: "Amazon BR" },
-            { src: correiosLogo, alt: "Correios" },
-          ].map((logo) => (
-            <img
-              key={logo.alt}
-              src={logo.src}
-              alt={logo.alt}
-              className="h-6 w-auto rounded object-contain opacity-70 hover:opacity-100 transition-all duration-300"
-            />
-          ))}
-        </div>
-        <p className="text-[11px] text-muted-foreground">Your CPF unlocks all of these</p>
-
-        {/* Linear flag marquee */}
-        <div className="w-full max-w-[600px] overflow-hidden relative">
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10" />
+      {/* Flag marquee — full width below grid */}
+      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-1.5 w-full max-w-[1100px]">
+        <div className="w-full overflow-hidden relative">
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10" />
           <div className="flex gap-3 animate-marquee w-max">
             {[...orbitFlags, ...orbitFlags].map((flag, i) => (
               <span key={i} className="text-lg shrink-0">{flag}</span>
             ))}
           </div>
         </div>
-        <p className="text-[11px] text-muted-foreground font-medium -mt-1">🇧🇷 50+ countries supported</p>
+        <p className="text-[11px] text-muted-foreground font-medium">🇧🇷 50+ countries supported</p>
       </div>
     </section>
   );
