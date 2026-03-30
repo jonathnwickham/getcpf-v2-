@@ -205,6 +205,9 @@ const Dashboard = () => {
             </a>
           </div>
         </section>
+
+        {/* My Data */}
+        <MyDataSection user={user} application={application} />
       </div>
     </div>
   );
