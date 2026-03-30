@@ -372,6 +372,12 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
               <div className="space-y-2">
                 <img src={photoPreview} alt="CPF printout" className="w-full max-w-xs rounded-xl border border-border" />
                 <p className="text-xs text-primary font-semibold">✓ Photo saved</p>
+                <button
+                  onClick={() => { setPhotoPreview(null); localStorage.removeItem("cpf-saved-photo"); }}
+                  className="text-xs text-destructive font-semibold hover:underline"
+                >
+                  Remove photo
+                </button>
               </div>
             ) : (
               <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
