@@ -1,6 +1,6 @@
 const steps = [
   { num: 1, title: "Tell us about you", desc: "Where are you? What's your nationality? We ask the right questions so we can figure out the fastest path for your specific situation.", time: "~2 minutes" },
-  { num: 2, title: "We check everything", desc: "Passport, proof of address, mother's name — we make sure everything is exactly right before you go anywhere. No wasted trips.", time: "~2 minutes" },
+  { num: 2, title: "We check everything", desc: "Passport, proof of address, mother's name, we make sure everything is exactly right before you go anywhere. No wasted trips.", time: "~2 minutes" },
   { num: 3, title: "Get your Ready Pack", desc: "Your personalised application pack: pre-filled forms, the right office for your state, a Portuguese cheat sheet, and exactly what to say when you get there.", time: "Instant" },
   { num: 4, title: "Walk in, walk out with your CPF", desc: "Show up prepared, hand over your documents, and walk out with your CPF number. Most people are done in under an hour.", time: "Same day" },
 ];

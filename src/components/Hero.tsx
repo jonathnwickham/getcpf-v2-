@@ -39,7 +39,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       />
 
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left — Copy */}
+        {/* Left, Copy */}
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
             <span className="w-1.5 h-1.5 bg-primary rounded-full" />

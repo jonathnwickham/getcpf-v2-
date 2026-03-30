@@ -25,7 +25,7 @@ const testimonials = [
     country: "British",
     location: "Rio de Janeiro",
     rating: 5,
-    text: "We're a couple who just moved to Rio. We both needed CPFs and were dreading the bureaucracy. The document checklist saved us — we almost forgot the passport copies! The day-of guide was spot on: arrive early, take a number, wait about 30 minutes. We both got our CPFs and immediately set up Pix through Nubank. Game changer for daily life here.",
+    text: "We're a couple who just moved to Rio. We both needed CPFs and were dreading the bureaucracy. The document checklist saved us, we almost forgot the passport copies! The day-of guide was spot on: arrive early, take a number, wait about 30 minutes. We both got our CPFs and immediately set up Pix through Nubank. Game changer for daily life here.",
     result: "Both got CPFs, set up Pix, and ordered delivery on iFood that evening",
     timeAgo: "3 weeks ago",
   },

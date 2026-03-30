@@ -129,7 +129,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             >
               {tier.cta} {tier.comingSoon ? "" : "→"}
             </button>
-            {/* Trust signals — only on highlighted tier */}
+            {/* Trust signals, only on highlighted tier */}
             {tier.highlighted && (
               <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
                 {trustSignals.map((s) => {
