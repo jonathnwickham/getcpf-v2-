@@ -43,22 +43,24 @@ const Login = () => {
         return;
       }
 
-      // Check if user has a completed application → ready-pack, otherwise → get-started
-      const app = await fetchLatestApplication(userId);
-      if (app && applicationHasReadyPack(app)) {
-        navigate("/ready-pack");
-      } else {
-        // Also check local storage as fallback
-        const localData = readPersistedOnboardingData();
-        if (localData && hasReadyPackData(localData)) {
-          // Save local data to DB then go to ready-pack
-          try {
-            await saveLatestApplication(userId, localData, "prepared");
-          } catch {}
+      // Check if user has paid
+      const { data: paidApps } = await supabase
+        .from("applications")
+        .select("status")
+        .eq("user_id", userId)
+        .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
+        .limit(1);
+
+      if (paidApps && paidApps.length > 0) {
+        // Check if they have completed onboarding
+        const app = await fetchLatestApplication(userId);
+        if (app && applicationHasReadyPack(app)) {
           navigate("/ready-pack");
         } else {
           navigate("/get-started");
         }
+      } else {
+        navigate("/pricing");
       }
     } catch {
       navigate("/get-started");
