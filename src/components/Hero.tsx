@@ -211,17 +211,35 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
       </div>
 
-      {/* Nationality flags — tighter to logos */}
-      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-2">
-        <div className="flex gap-2 flex-wrap justify-center items-center">
-          <span className="text-3xl">🇧🇷</span>
-          <span className="text-muted-foreground mx-1">←</span>
-          {flags.map((flag) => (
-            <span key={flag} className="text-2xl">{flag}</span>
-          ))}
-          <span className="text-sm text-muted-foreground font-medium self-center ml-1">+43 more</span>
+      {/* Nationality orbit */}
+      <div className="animate-fade-up-4 mt-8 flex flex-col items-center gap-3">
+        <div className="relative w-[180px] h-[180px] md:w-[240px] md:h-[240px] lg:w-[280px] lg:h-[280px]">
+          {/* Centre Brazil flag */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="text-5xl md:text-6xl drop-shadow-lg">🇧🇷</span>
+          </div>
+          {/* Rotating ring */}
+          <div className="absolute inset-0 animate-[spin_20s_linear_infinite]">
+            {orbitFlags.map((flag, i) => {
+              const angle = (i / orbitFlags.length) * 360;
+              return (
+                <span
+                  key={i}
+                  className="absolute text-xl md:text-2xl"
+                  style={{
+                    left: "50%",
+                    top: "50%",
+                    transform: `rotate(${angle}deg) translateY(-50%) translateX(-50%) translateY(-${50}%) rotate(-${angle}deg)`,
+                    transformOrigin: "0 0",
+                  }}
+                >
+                  {flag}
+                </span>
+              );
+            })}
+          </div>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality</p>
+        <p className="text-xs text-muted-foreground">Works for any nationality — 50+ countries supported</p>
       </div>
     </section>
   );
