@@ -1,3 +1,5 @@
+import founderPhoto from "@/assets/founder-jonathan.jpg";
+
 const personas = [
   {
     emoji: "💻",
@@ -68,23 +70,26 @@ const WhoIsThisFor = () => (
       {/* Founder story */}
       <div className="mt-16 bg-card border border-border rounded-2xl p-8 md:p-10">
         <div className="flex items-start gap-4 mb-5">
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-xl shrink-0">
-            🧑‍💻
-          </div>
+          <img
+            src={founderPhoto}
+            alt="Jonathan Wickham"
+            className="w-14 h-14 rounded-full object-cover object-top shrink-0 border-2 border-primary/20"
+          />
           <div>
             <h3 className="font-bold text-base">Why I built this</h3>
-            <p className="text-xs text-muted-foreground">From the founder of GET CPF</p>
+            <p className="text-xs text-muted-foreground">Jonathan Wickham 🇿🇦 South African</p>
           </div>
         </div>
         <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
           <p>
-            I built GET CPF because I needed it myself. I moved to Brazil, had no idea where to go or what to bring, 
-            and spent days jumping between government sites, Reddit, and AI tools that gave me half the answer 
-            with none of the context.
+            I fell in love with Brazil, met my girlfriend, and now I come back as often as I can. I didn't want 
+            to spend days jumping between government sites, Reddit, and AI tools that each gave me half the answer 
+            but none of the context. I had to piece it all together myself.
           </p>
           <p>
-            So I documented every step, built it into a tool, and got my CPF on the first try. That's what this is. 
-            The price is fair, it's staying where it is, and it does exactly what it says.
+            So I documented every step, built it into a tool, and got my CPF on my first try using what I'd created. 
+            The price is fair, it's staying where it is, and it does exactly what it says. It builds out everything 
+            for you at a low cost.
           </p>
         </div>
       </div>
