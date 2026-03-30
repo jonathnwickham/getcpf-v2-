@@ -118,7 +118,7 @@ const GetStarted = () => {
       }
       case 2: return data.noMotherName ? data.motherAlternative.trim().length > 0 : data.motherName.trim().length > 2;
       case 3: return true; // father is optional
-      case 4: return /^[A-Z0-9]{5,15}$/i.test(data.passportNumber.trim());
+      case 4: return /^[A-Z0-9]{6,12}$/i.test(data.passportNumber.trim());
       case 5: return data.state !== "";
       case 6: return data.streetAddress.trim().length > 3 && data.city.trim().length > 1;
       case 7: return data.email.includes("@") && data.nationality.trim().length > 1;
