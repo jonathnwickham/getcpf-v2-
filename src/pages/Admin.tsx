@@ -872,12 +872,12 @@ const PromosTab = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Affiliate</TableHead>
+                    <TableHead>Email</TableHead>
                     <TableHead>Code</TableHead>
-                    <TableHead>Discount</TableHead>
-                    <TableHead>Commission rate</TableHead>
+                    <TableHead>Commission</TableHead>
                     <TableHead>Conversions</TableHead>
                     <TableHead>Revenue</TableHead>
-                    <TableHead>Commission owed</TableHead>
+                    <TableHead>Owed</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -891,18 +891,30 @@ const PromosTab = () => {
                               <input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="Name"
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-primary"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <input
+                                value={editEmail}
+                                onChange={(e) => setEditEmail(e.target.value)}
+                                placeholder="email@example.com"
+                                type="email"
+                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-primary"
                               />
                             </TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
-                            <TableCell>{a.discount}%</TableCell>
                             <TableCell>
-                              <input
-                                value={editCommission}
-                                onChange={(e) => setEditCommission(e.target.value)}
-                                type="number"
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-20 focus:outline-none focus:ring-2 focus:ring-primary"
-                              />%
+                              <div className="flex items-center gap-1">
+                                <input
+                                  value={editCommission}
+                                  onChange={(e) => setEditCommission(e.target.value)}
+                                  type="number"
+                                  className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                                <span className="text-sm text-muted-foreground">%</span>
+                              </div>
                             </TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
