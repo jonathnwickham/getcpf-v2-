@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   fetchLatestApplication,
   applicationHasReadyPack,
   mapApplicationToOnboardingData,
   persistOnboardingData,
 } from "@/lib/application-storage";
+import { maskPassport } from "@/lib/mask-passport";
 import { toast } from "sonner";
 
 const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string; existingCpf: string | null }) => {
@@ -153,7 +155,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
             {application.full_name && <InfoField label="Full name" value={application.full_name} />}
             {application.nationality && <InfoField label="Nationality" value={application.nationality} />}
-            {application.passport_number && <InfoField label="Passport" value={application.passport_number} />}
+            {application.passport_number && <InfoField label="Passport" value={maskPassport(application.passport_number)} />}
             {application.state_name && <InfoField label="State" value={application.state_name} />}
             {application.city && <InfoField label="City" value={application.city} />}
             {application.email && <InfoField label="Email" value={application.email} />}
@@ -203,8 +205,213 @@ const Dashboard = () => {
             </a>
           </div>
         </section>
+
+        {/* My Data */}
+        <MyDataSection user={user} application={application} />
       </div>
     </div>
+  );
+};
+
+/* ── My Data Section ── */
+const MyDataSection = ({ user, application }: { user: any; application: any }) => {
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [editData, setEditData] = useState({
+    full_name: application?.full_name || "",
+    mother_name: application?.mother_name || "",
+    father_name: application?.father_name || "",
+    nationality: application?.nationality || "",
+    street_address: application?.street_address || "",
+    city: application?.city || "",
+  });
+  const [saving, setSaving] = useState(false);
+
+  const handleDownload = async () => {
+    // Fetch consent log
+    const { data: consentData } = await supabase
+      .from("consent_log")
+      .select("*")
+      .eq("user_id", user.id);
+
+    const exportData = {
+      name: application?.full_name || null,
+      email: application?.email || user.email,
+      nationality: application?.nationality || null,
+      passport_number: application?.passport_number
+        ? "*".repeat(Math.max(0, application.passport_number.length - 4)) + application.passport_number.slice(-4)
+        : null,
+      mother_name: application?.mother_name || null,
+      father_name: application?.father_name || null,
+      address: application?.street_address || null,
+      city: application?.city || null,
+      state: application?.state_name || null,
+      application_status: application?.status || null,
+      document_generated_at: application?.submitted_at || null,
+      consent_log: consentData || [],
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "getcpf-my-data.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Your data has been downloaded.");
+  };
+
+  const handleSaveEdit = async () => {
+    setSaving(true);
+    const { error } = await supabase
+      .from("applications")
+      .update({
+        full_name: editData.full_name,
+        mother_name: editData.mother_name,
+        father_name: editData.father_name,
+        nationality: editData.nationality,
+        street_address: editData.street_address,
+        city: editData.city,
+      })
+      .eq("id", application.id);
+    setSaving(false);
+    if (error) {
+      toast.error("Could not save changes. Try again.");
+    } else {
+      toast.success("Your details have been updated.");
+      setShowEdit(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+
+    // Delete application data
+    await supabase.from("applications").delete().eq("user_id", user.id);
+
+    // Anonymise profile (set personal fields to null, keep id for audit)
+    await supabase
+      .from("profiles")
+      .update({
+        full_name: null,
+        email: `deleted-${user.id.slice(0, 8)}@deleted.getcpf.com`,
+        country_code: null,
+        location: null,
+      })
+      .eq("id", user.id);
+
+    // Sign out and redirect
+    await signOut();
+    navigate("/");
+    toast.success("Your account and data have been permanently deleted.");
+  };
+
+  return (
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">🔐</div>
+        <div>
+          <h2 className="font-bold text-lg">My Data</h2>
+          <p className="text-xs text-muted-foreground">Manage your personal data</p>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={handleDownload}
+          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+        >
+          📥 Download my data
+        </button>
+        <button
+          onClick={() => setShowEdit(true)}
+          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+        >
+          ✏️ Update my details
+        </button>
+        <button
+          onClick={() => setShowDelete(true)}
+          className="bg-destructive/10 text-destructive px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-destructive/20 transition-all"
+        >
+          🗑️ Delete my account
+        </button>
+      </div>
+
+      {/* Edit Modal */}
+      <Dialog open={showEdit} onOpenChange={setShowEdit}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Update my details</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 mt-2">
+            {(["full_name", "mother_name", "father_name", "nationality", "street_address", "city"] as const).map((field) => (
+              <div key={field}>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">
+                  {field.replace(/_/g, " ")}
+                </label>
+                <input
+                  type="text"
+                  value={(editData as any)[field]}
+                  onChange={(e) => setEditData((prev) => ({ ...prev, [field]: e.target.value }))}
+                  className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+                />
+              </div>
+            ))}
+            {application?.passport_number && (
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">
+                  Passport number
+                </label>
+                <input
+                  type="text"
+                  value={maskPassport(application.passport_number)}
+                  disabled
+                  className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm text-muted-foreground cursor-not-allowed"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">Passport number cannot be edited after submission</p>
+              </div>
+            )}
+            <button
+              onClick={handleSaveEdit}
+              disabled={saving}
+              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              {saving ? "Saving..." : "Save changes"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={showDelete} onOpenChange={setShowDelete}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-destructive">Delete my account</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+            This will permanently delete your account and all personal data including your documents. This cannot be undone. Your access to the Ready Pack will end immediately.
+          </p>
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={() => setShowDelete(false)}
+              className="flex-1 bg-secondary text-foreground py-2.5 rounded-lg font-semibold text-sm hover:bg-secondary/80 transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteAccount}
+              disabled={deleting}
+              className="flex-1 bg-destructive text-destructive-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              {deleting ? "Deleting..." : "Confirm deletion"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </section>
   );
 };
 

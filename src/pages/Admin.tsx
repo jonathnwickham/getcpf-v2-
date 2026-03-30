@@ -13,6 +13,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   AreaChart, Area,
 } from "recharts";
+import { maskPassport } from "@/lib/mask-passport";
 
 type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "waitlist" | "settings";
 
@@ -152,6 +153,33 @@ const Admin = () => {
   );
 };
 
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+const getDataStatus = (profile: Profile): "Active" | "Due for deletion" | "Retained" => {
+  if (!profile.created_at) return "Active";
+  const age = Date.now() - new Date(profile.created_at).getTime();
+  if (profile.plan === "active_subscriber") return "Retained";
+  if (age > THIRTY_DAYS_MS) return "Due for deletion";
+  return "Active";
+};
+
+const DATA_STATUS_COLORS: Record<string, string> = {
+  "Active": "bg-primary/10 text-primary",
+  "Due for deletion": "bg-destructive/10 text-destructive",
+  "Retained": "bg-secondary text-muted-foreground",
+};
+
+const anonymizeUser = async (userId: string, onRefresh: () => void) => {
+  await supabase.from("applications").delete().eq("user_id", userId);
+  await supabase.from("profiles").update({
+    full_name: null,
+    email: `deleted-${userId.slice(0, 8)}@deleted.getcpf.com`,
+    country_code: null,
+    location: null,
+  }).eq("id", userId);
+  onRefresh();
+};
+
 /* ── Users Tab with search and funnel ── */
 const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   profiles: Profile[];
@@ -161,6 +189,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   onRefresh: () => void;
 }) => {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedForBulk, setSelectedForBulk] = useState<Set<string>>(new Set());
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
@@ -277,7 +306,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 
       {/* Search + Table */}
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
-        <div className="p-4 border-b border-border">
+        <div className="p-4 border-b border-border flex flex-wrap gap-3 items-center">
           <input
             type="text"
             value={search}
@@ -285,6 +314,35 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             placeholder="Search by name or email..."
             className="w-full md:w-80 px-4 py-2.5 bg-secondary border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
           />
+          {(() => {
+            const dueForDeletion = filtered.filter(p => getDataStatus(p) === "Due for deletion");
+            if (dueForDeletion.length === 0) return null;
+            return (
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => setSelectedForBulk(new Set(dueForDeletion.map(p => p.id)))}
+                  className="text-xs font-semibold text-destructive bg-destructive/10 px-3 py-2 rounded-lg hover:bg-destructive/20 transition-colors"
+                >
+                  Select all due for deletion ({dueForDeletion.length})
+                </button>
+                {selectedForBulk.size > 0 && (
+                  <button
+                    onClick={async () => {
+                      if (!confirm(`Anonymize ${selectedForBulk.size} user(s)? This cannot be undone.`)) return;
+                      for (const uid of selectedForBulk) {
+                        await anonymizeUser(uid, () => {});
+                      }
+                      setSelectedForBulk(new Set());
+                      onRefresh();
+                    }}
+                    className="text-xs font-semibold text-destructive-foreground bg-destructive px-3 py-2 rounded-lg hover:opacity-90 transition-all"
+                  >
+                    Delete selected ({selectedForBulk.size})
+                  </button>
+                )}
+              </div>
+            );
+          })()}
         </div>
         <Table>
           <TableHeader>
@@ -293,7 +351,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <TableHead>Email</TableHead>
               <TableHead>Nationality</TableHead>
               <TableHead>Plan</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Data status</TableHead>
               <TableHead>Signed up</TableHead>
               <TableHead></TableHead>
             </TableRow>
@@ -318,11 +376,14 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     </span>
                   </TableCell>
                   <TableCell>
-                    {userApp ? (
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Onboarded</span>
-                    ) : (
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Paid — not started</span>
-                    )}
+                    {(() => {
+                      const status = getDataStatus(p);
+                      return (
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded ${DATA_STATUS_COLORS[status]}`}>
+                          {status}
+                        </span>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
@@ -331,14 +392,12 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     <button
                       onClick={async (e) => {
                         e.stopPropagation();
-                        if (!confirm(`Delete user ${p.email}? This removes their profile and application data.`)) return;
-                        await supabase.from("applications").delete().eq("user_id", p.id);
-                        await supabase.from("profiles").delete().eq("id", p.id);
-                        onRefresh();
+                        if (!confirm(`Delete user data for ${p.email}? This anonymizes their profile and removes application data. Consent log is retained.`)) return;
+                        await anonymizeUser(p.id, onRefresh);
                       }}
-                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors"
+                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors whitespace-nowrap"
                     >
-                      Delete
+                      Delete user data
                     </button>
                   </TableCell>
                 </TableRow>
@@ -346,7 +405,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             })}
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">
+                <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
                   No users found
                 </TableCell>
               </TableRow>
@@ -384,7 +443,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div><span className="text-xs text-muted-foreground">Name:</span> {app.full_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Passport:</span> {app.passport_number || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Passport:</span> {maskPassport(app.passport_number)}</div>
                       <div><span className="text-xs text-muted-foreground">Nationality:</span> {app.nationality || "—"}</div>
                       <div><span className="text-xs text-muted-foreground">State:</span> {app.state_name || "—"}</div>
                       <div><span className="text-xs text-muted-foreground">City:</span> {app.city || "—"}</div>

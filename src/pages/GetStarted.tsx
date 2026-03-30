@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
 import { getCitiesForState } from "@/lib/brazilian-cities";
@@ -24,6 +25,8 @@ const GetStarted = () => {
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const [ready, setReady] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
@@ -78,9 +81,29 @@ const GetStarted = () => {
   }
 
   const next = async () => {
+    // Consent required on step 1 (first personal data entry)
+    if (step === 1 && !consentChecked) {
+      setConsentError(true);
+      return;
+    }
+
     setDirection("forward");
     if (step < TOTAL_STEPS - 1) {
       setStep((s) => s + 1);
+
+      // Log consent on step 1 advance
+      if (step === 1 && user) {
+        try {
+          await supabase.from("consent_log").insert({
+            user_id: user.id,
+            consent_text: "I consent to GET CPF processing my personal data including my passport details to prepare my CPF application documents. I have read and agree to the Privacy Policy. I understand my data will be permanently deleted within 30 days.",
+            consent_version: "1.0",
+            consent: true,
+          });
+        } catch (e) {
+          console.error("Failed to log consent", e);
+        }
+      }
 
       // Save progress to DB after every step so login redirect works
       if (user) {
@@ -165,7 +188,7 @@ const GetStarted = () => {
           className="max-w-[520px] w-full animate-slide-in"
         >
           {step === 0 && <WelcomeStep />}
-          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} />}
+          {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} consentChecked={consentChecked} onConsentChange={(v) => { setConsentChecked(v); setConsentError(false); }} consentError={consentError} />}
           {step === 2 && (
             <MotherStep
               value={data.motherName}
@@ -265,7 +288,10 @@ const WelcomeStep = () => (
   </div>
 );
 
-const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: string; onChange: (v: string) => void; forceFullName: boolean; onForceFullName: (v: boolean) => void }) => {
+const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChecked, onConsentChange, consentError }: {
+  value: string; onChange: (v: string) => void; forceFullName: boolean; onForceFullName: (v: boolean) => void;
+  consentChecked: boolean; onConsentChange: (v: boolean) => void; consentError: boolean;
+}) => {
   const words = value.trim().split(/\s+/).filter(Boolean);
   const isFullName = words.length >= 2;
   const showWarning = value.trim().length > 2 && !isFullName && !forceFullName;
@@ -297,6 +323,35 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName }: { value: 
           </button>
         </div>
       )}
+
+      {/* Consent checkbox */}
+      <div className="mt-6 pt-6 border-t border-border">
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all shrink-0 mt-0.5 ${
+            consentChecked ? "bg-primary border-primary" : consentError ? "border-destructive" : "border-border group-hover:border-primary/50"
+          }`}>
+            {consentChecked && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+          </div>
+          <input
+            type="checkbox"
+            checked={consentChecked}
+            onChange={(e) => onConsentChange(e.target.checked)}
+            className="sr-only"
+          />
+          <span className="text-sm text-muted-foreground leading-relaxed">
+            I consent to GET CPF processing my personal data including my passport details to prepare my CPF application documents. I have read and agree to the{" "}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+              Privacy Policy
+            </a>
+            . I understand my data will be permanently deleted within 30 days.
+          </span>
+        </label>
+        {consentError && (
+          <p className="text-xs text-destructive font-semibold mt-2 ml-8">
+            Please confirm you have read and agree to our Privacy Policy to continue.
+          </p>
+        )}
+      </div>
     </div>
   );
 };
