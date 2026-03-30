@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
 import { useCpfCount } from "@/hooks/use-cpf-count";
+import nubankLogo from "@/assets/logos/nubank.png";
+import ifoodLogo from "@/assets/logos/ifood.png";
+import mercadoLivreLogo from "@/assets/logos/mercadolivre.png";
+import rappiLogo from "@/assets/logos/rappi.png";
+import vivoLogo from "@/assets/logos/vivo.png";
+import quintoAndarLogo from "@/assets/logos/quintoandar.png";
+import amazonLogo from "@/assets/logos/amazon.png";
+import correiosLogo from "@/assets/logos/correios.png";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
@@ -133,9 +141,23 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           {/* Logo trust strip */}
           <div className="animate-fade-up-4 mt-8">
             <p className="text-xs text-muted-foreground mb-3 text-center lg:text-left">Your CPF unlocks all of these and everything else in Brazil.</p>
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start items-center">
-              {["Nubank", "iFood", "Mercado Livre", "Rappi", "Vivo", "QuintoAndar", "Amazon BR", "Correios"].map((name) => (
-                <span key={name} className="text-xs font-semibold text-muted-foreground/50 tracking-wide uppercase">{name}</span>
+            <div className="flex flex-wrap gap-5 justify-center lg:justify-start items-center">
+              {[
+                { src: nubankLogo, alt: "Nubank" },
+                { src: ifoodLogo, alt: "iFood" },
+                { src: mercadoLivreLogo, alt: "Mercado Livre" },
+                { src: rappiLogo, alt: "Rappi" },
+                { src: vivoLogo, alt: "Vivo" },
+                { src: quintoAndarLogo, alt: "QuintoAndar" },
+                { src: amazonLogo, alt: "Amazon BR" },
+                { src: correiosLogo, alt: "Correios" },
+              ].map((logo) => (
+                <img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-8 w-auto rounded-md object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                />
               ))}
             </div>
           </div>
