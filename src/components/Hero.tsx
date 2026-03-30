@@ -75,9 +75,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </div>
         </div>
 
-        {/* Right — Product Mockup */}
-        <div className="animate-fade-up-3 hidden lg:block">
-          <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/5 overflow-hidden">
+        {/* Right, Product Mockup */}
+        <div className="animate-fade-up-3 hidden lg:block relative">
+          <div className="animate-float">
+          <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden">
             {/* Browser bar */}
             <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b border-border">
               <div className="flex gap-1.5">
