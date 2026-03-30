@@ -50,6 +50,60 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliates: {
+        Row: {
+          commission_percent: number
+          created_at: string
+          email: string
+          id: string
+          location: string | null
+          motivation: string | null
+          name: string
+          notes: string | null
+          platform: string | null
+          posting_frequency: string | null
+          promo_code: string | null
+          situation: string | null
+          source: string | null
+          status: string
+          why: string | null
+        }
+        Insert: {
+          commission_percent?: number
+          created_at?: string
+          email: string
+          id?: string
+          location?: string | null
+          motivation?: string | null
+          name: string
+          notes?: string | null
+          platform?: string | null
+          posting_frequency?: string | null
+          promo_code?: string | null
+          situation?: string | null
+          source?: string | null
+          status?: string
+          why?: string | null
+        }
+        Update: {
+          commission_percent?: number
+          created_at?: string
+          email?: string
+          id?: string
+          location?: string | null
+          motivation?: string | null
+          name?: string
+          notes?: string | null
+          platform?: string | null
+          posting_frequency?: string | null
+          promo_code?: string | null
+          situation?: string | null
+          source?: string | null
+          status?: string
+          why?: string | null
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           address_proof_url: string | null
