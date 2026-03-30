@@ -1040,6 +1040,101 @@ const PromosTab = () => {
           </div>
         )}
       </div>
+      {/* Affiliate Profile Dialog */}
+      {(() => {
+        const activeAffiliate = affiliateData.find(a => a.promoId === profileOpen);
+        if (!activeAffiliate) return null;
+        return (
+          <Dialog open={!!profileOpen} onOpenChange={(open) => { if (!open) setProfileOpen(null); }}>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="text-xl">{activeAffiliate.name}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-5 mt-2">
+                {/* Quick stats */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Conversions</div>
+                    <div className="text-xl font-extrabold">{activeAffiliate.uses}</div>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Revenue</div>
+                    <div className="text-xl font-extrabold">${activeAffiliate.totalRevenue.toFixed(2)}</div>
+                  </div>
+                  <div className="bg-secondary rounded-xl p-3 text-center">
+                    <div className="text-xs text-muted-foreground font-semibold">Owed</div>
+                    <div className="text-xl font-extrabold text-primary">${activeAffiliate.commissionOwed.toFixed(2)}</div>
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div>
+                    <div className="font-medium">{activeAffiliate.email || "Not set"}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Code</div>
+                    <div className="font-mono font-bold text-primary">{activeAffiliate.code}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Discount</div>
+                    <div>{activeAffiliate.discount}% off</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Commission</div>
+                    <div>{activeAffiliate.commission}%</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Added</div>
+                    <div>{new Date(activeAffiliate.createdAt).toLocaleDateString()}</div>
+                  </div>
+                </div>
+
+                {/* Editable fields */}
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Where did you find them?</label>
+                    <input
+                      value={profileSource}
+                      onChange={(e) => setProfileSource(e.target.value)}
+                      placeholder="YouTube, Instagram, referral, event..."
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
+                    <input
+                      value={profileLocation}
+                      onChange={(e) => setProfileLocation(e.target.value)}
+                      placeholder="São Paulo, Brazil / London, UK..."
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Notes</label>
+                    <textarea
+                      value={profileNotes}
+                      onChange={(e) => setProfileNotes(e.target.value)}
+                      placeholder="Any notes about this affiliate... deal terms, contact preferences, follow-up dates..."
+                      rows={4}
+                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => saveProfile(activeAffiliate.promoId)}
+                  disabled={profileSaving}
+                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                >
+                  {profileSaving ? "Saving..." : "Save profile"}
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        );
+      })()}
     </div>
   );
 };
