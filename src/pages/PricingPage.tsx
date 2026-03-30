@@ -429,7 +429,11 @@ const PricingPage = () => {
               </button>
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="mt-4 text-center text-xs text-primary font-semibold">
+              🛡️ If you follow our steps and get rejected, we fix it free. No questions asked.
+            </div>
+
+            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Secure checkout
