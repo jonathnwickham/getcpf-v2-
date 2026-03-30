@@ -36,7 +36,7 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
           Five minutes of preparation now saves you a wasted day later. Get everything sorted before you even walk in.
         </p>
         <button onClick={handleCTA} className="mt-10 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
-          Let's do this →
+          Get started →
         </button>
       </div>
     </section>
