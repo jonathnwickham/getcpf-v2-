@@ -1698,6 +1698,98 @@ const AffiliatesTab = () => {
   );
 };
 
+/* ── Partners Tab (affiliate_applications) ── */
+const PartnersTab = ({ userId }: { userId: string }) => {
+  const [apps, setApps] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedApp, setSelectedApp] = useState<any | null>(null);
+
+  useEffect(() => {
+    loadApps();
+  }, []);
+
+  const loadApps = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("affiliate_applications").select("*").order("created_at", { ascending: false });
+    if (data) setApps(data);
+    setLoading(false);
+  };
+
+  const totalApps = apps.length;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <StatCard label="Total applications" value={totalApps.toString()} icon="🌐" />
+      </div>
+
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+        {loading ? (
+          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">Loading...</div>
+        ) : apps.length === 0 ? (
+          <div className="p-8 text-center text-sm text-muted-foreground">No partner applications yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Platform</TableHead>
+                  <TableHead>Situation</TableHead>
+                  <TableHead>Applied</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {apps.map((a: any) => (
+                  <TableRow key={a.id}>
+                    <TableCell className="font-semibold">{a.name}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
+                    <TableCell className="text-sm">{a.platform || "—"}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{a.situation || "—"}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-right">
+                      <button onClick={() => setSelectedApp(a)} className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">View</button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+
+      {selectedApp && (
+        <Dialog open={!!selectedApp} onOpenChange={(open) => { if (!open) setSelectedApp(null); }}>
+          <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-xl">{selectedApp.name}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-2 text-sm">
+              <div className="grid grid-cols-2 gap-3">
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{selectedApp.email}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
+              </div>
+              {selectedApp.situation && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
+              )}
+              {selectedApp.why && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
+              )}
+              {selectedApp.motivation && (
+                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
 /* ── Settings Tab ── */
 const SettingsTab = () => {
   const [exporting, setExporting] = useState(false);
