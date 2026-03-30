@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PainPoints from "@/components/PainPoints";
+import WhoIsThisFor from "@/components/WhoIsThisFor";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import TrustBar from "@/components/TrustBar";
@@ -23,6 +24,7 @@ const Index = () => {
       <Navbar onOpenModal={handleOpenOnboarding} />
       <Hero onOpenModal={handleOpenOnboarding} />
       <PainPoints />
+      <WhoIsThisFor />
       <HowItWorks />
       <Pricing onOpenModal={handleOpenOnboarding} />
       <AfterCPF />
