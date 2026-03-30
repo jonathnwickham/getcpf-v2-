@@ -7,7 +7,7 @@ const personas = [
   {
     emoji: "🏠",
     title: "Expats settling in",
-    desc: "Renting an apartment, setting up utilities, getting health insurance — none of it works without a CPF.",
+    desc: "Renting an apartment, setting up utilities, getting health insurance. None of it works without a CPF.",
   },
   {
     emoji: "✈️",
@@ -17,7 +17,7 @@ const personas = [
   {
     emoji: "❤️",
     title: "Partners & spouses",
-    desc: "Moved for love? A CPF lets you build a life here — joint accounts, car insurance, even a gym membership.",
+    desc: "Moved for love? A CPF lets you build a life here. Joint accounts, car insurance, even a gym membership.",
   },
   {
     emoji: "🎓",
@@ -37,7 +37,7 @@ const personas = [
   {
     emoji: "🧳",
     title: "Snowbirds & seasonal visitors",
-    desc: "Spend a few months a year in Brazil? A CPF makes every return easier — banking, phone plans, and online shopping just work.",
+    desc: "Spend a few months a year in Brazil? A CPF makes every return easier. Banking, phone plans, and online shopping just work.",
   },
 ];
 
@@ -80,17 +80,17 @@ const WhoIsThisFor = () => (
           <p>
             I built GET CPF because I needed it myself. When I moved to Brazil, I had no idea where to go, 
             what to bring, or what to say. I spent days jumping between government websites, Reddit threads, 
-            and ChatGPT — but nothing gave me the full picture. Half the info was outdated, the other half 
+            and ChatGPT, but nothing gave me the full picture. Half the info was outdated, the other half 
             was for a different state.
           </p>
           <p>
-            So I documented the entire process — from signing up, to gathering documents, to printing everything, 
+            So I documented the entire process. From signing up, to gathering documents, to printing everything, 
             to walking into the Receita Federal office and actually getting my CPF. Every step, every mistake, 
             every "I wish someone had told me this."
           </p>
           <p>
             That's what GET CPF is. It's the guide I wish existed when I started. I turned a full day of 
-            confusion into a five-minute preparation process. And it worked — I got my CPF on the first try.
+            confusion into a five-minute preparation process. And it worked. I got my CPF on the first try.
           </p>
         </div>
       </div>

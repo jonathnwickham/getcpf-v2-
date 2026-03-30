@@ -5,7 +5,7 @@ const painPoints = [
   },
   {
     title: "Buying a SIM card",
-    text: "Every carrier needs a CPF to activate a plan. Without one you're on roaming. Your foreign card works fine — at around $15 a day until you sort this out.",
+    text: "Every carrier needs a CPF to activate a plan. Without one you're on roaming. Your foreign card works fine, at around $15 a day until you sort this out.",
   },
   {
     title: "Ordering food delivery",
@@ -13,19 +13,19 @@ const painPoints = [
   },
   {
     title: "Opening a bank account",
-    text: "Nubank, Inter, C6 — every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
+    text: "Nubank, Inter, C6. Every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
   },
   {
     title: "Buying event tickets",
-    text: "Football, concerts, shows — CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
+    text: "Football, concerts, shows. CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
   },
   {
     title: "Shopping online",
-    text: "Mercado Livre, Amazon Brazil, Shopee — CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
+    text: "Mercado Livre, Amazon Brazil, Shopee. CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
   },
   {
     title: "Getting contacts or medicine delivered",
-    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF — the checkout just stops.",
+    text: "Trying to order contact lenses, prescription items, or anything from a local pharmacy online? CPF required. Foreign address, foreign card, no CPF. The checkout just stops.",
   },
 ];
 
