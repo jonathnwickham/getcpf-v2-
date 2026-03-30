@@ -328,22 +328,23 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
   const firstName = data.fullName.split(" ")[0];
   const hasCpf = cpfNumber.replace(/\D/g, "").length >= 11 && animateCard;
 
-  // No CPF yet — waiting state
+  // No CPF yet — encouraging waiting state
   if (!hasCpf) {
     return (
       <div className="space-y-8 animate-slide-in">
         <section className="bg-card border border-border rounded-3xl p-8 text-center">
-          <div className="text-5xl mb-4">⏳</div>
+          <div className="text-5xl mb-4">🇧🇷</div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            We're waiting for you, {firstName}!
+            You're one step away, {firstName}.
           </h1>
           <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-            Once you've visited the office and received your CPF number, come back here and enter it below. This will be your safe place to keep it.
+            Once you visit the office and get your CPF number, come back here and save it below. This becomes your personal CPF space.
           </p>
         </section>
 
         <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
-          <h3 className="font-bold text-lg mb-4">🔐 Enter your CPF number</h3>
+          <h3 className="font-bold text-lg mb-2">🔐 Got your CPF? Enter it here.</h3>
+          <p className="text-sm text-muted-foreground mb-4">We'll store it safely and show you everything you can do next.</p>
           <div className="space-y-3">
             <input
               type="text"
@@ -376,19 +377,23 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
               <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
                 <span className="text-2xl">📷</span>
                 <span className="text-sm font-semibold">Upload a photo of your CPF printout</span>
-                <span className="text-xs text-muted-foreground">It'll be stored safely here so you always have a backup</span>
+                <span className="text-xs text-muted-foreground">Keep a backup here so you always have it</span>
                 <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
               </label>
             )}
           </div>
         </section>
 
-        <button
-          onClick={onOpenGuide}
-          className="w-full bg-secondary text-foreground px-4 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
-        >
-          📋 Open application guide — prepare for your visit →
-        </button>
+        <section className="bg-secondary rounded-2xl p-6 text-center">
+          <h3 className="font-bold text-base mb-1">Haven't visited the office yet?</h3>
+          <p className="text-sm text-muted-foreground mb-4">Your application guide has everything you need to walk in prepared.</p>
+          <button
+            onClick={onOpenGuide}
+            className="bg-card text-foreground border border-border px-6 py-3 rounded-xl font-semibold text-sm hover:bg-card/80 transition-all"
+          >
+            📋 Open application guide →
+          </button>
+        </section>
       </div>
     );
   }
