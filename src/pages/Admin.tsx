@@ -1246,7 +1246,8 @@ const SettingsTab = () => {
       const app = appMap.get(p.id) as any;
       return headers.map(h => {
         let val = "";
-        if (h === "nationality") val = app?.nationality || p.country_code || "";
+        if (h === "full_name") val = p.full_name || app?.full_name || "";
+        else if (h === "nationality") val = app?.nationality || p.country_code || "";
         else if (h === "state") val = app?.state_name || "";
         else if (h === "city") val = app?.city || "";
         else if (h === "status") val = app?.status || "";
