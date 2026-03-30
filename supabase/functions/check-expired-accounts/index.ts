@@ -16,14 +16,14 @@ Deno.serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Find accounts older than 30 days that aren't active subscribers
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    // Find accounts older than 90 days that never paid
+    const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
 
     const { data: expiredProfiles, error } = await supabase
       .from("profiles")
       .select("id, email, created_at, plan")
-      .lt("created_at", thirtyDaysAgo)
-      .not("plan", "eq", "active_subscriber");
+      .lt("created_at", ninetyDaysAgo)
+      .or("plan.is.null,plan.eq.free,plan.eq.self_service");
 
     if (error) {
       console.error("Query error:", error);
@@ -33,26 +33,39 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const expiredCount = expiredProfiles?.length || 0;
+    // Further filter: only accounts that never completed a payment
+    const neverPaidProfiles = [];
+    for (const profile of expiredProfiles || []) {
+      const { data: apps } = await supabase
+        .from("applications")
+        .select("status")
+        .eq("user_id", profile.id)
+        .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
+        .limit(1);
+      
+      if (!apps || apps.length === 0) {
+        neverPaidProfiles.push(profile);
+      }
+    }
+
+    const expiredCount = neverPaidProfiles.length;
 
     if (expiredCount > 0) {
-      // Build email body
-      const accountList = expiredProfiles!
+      const accountList = neverPaidProfiles
         .map(
           (p) =>
             `- User ID: ${p.id} | Created: ${new Date(p.created_at!).toLocaleDateString()} | Email: ${p.email}`
         )
         .join("\n");
 
-      const emailBody = `Data deletion due for ${expiredCount} account(s):\n\n${accountList}\n\nReview these in the admin dashboard and delete as needed.`;
+      const emailBody = `Data deletion due for ${expiredCount} account(s) (90+ days, never paid):\n\n${accountList}\n\nReview these in the admin dashboard and delete as needed.`;
 
-      // Log to console (admin notification — in production this would email jonathan@getcpf.com)
       console.log(`[check_expired_accounts] ${emailBody}`);
 
       return new Response(
         JSON.stringify({
           message: `${expiredCount} account(s) due for deletion`,
-          accounts: expiredProfiles!.map((p) => ({
+          accounts: neverPaidProfiles.map((p) => ({
             user_id: p.id,
             created_at: p.created_at,
           })),
