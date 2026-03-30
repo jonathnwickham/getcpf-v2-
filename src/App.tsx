@@ -20,6 +20,8 @@ import Affiliates from "./pages/Affiliates.tsx";
 import Partners from "./pages/Partners.tsx";
 import AffiliateApply from "./pages/AffiliateApply.tsx";
 import Admin from "./pages/Admin.tsx";
+import Guides from "./pages/Guides.tsx";
+import GuideDetail from "./pages/GuideDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
