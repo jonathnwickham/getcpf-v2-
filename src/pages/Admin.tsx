@@ -558,6 +558,215 @@ const RevenueTab = ({ profiles, applications }: { profiles: Profile[]; applicati
   );
 };
 
+/* ── Promo Codes Tab ── */
+interface PromoCode {
+  id: string;
+  code: string;
+  discount_percent: number;
+  affiliate_name: string | null;
+  affiliate_commission_percent: number;
+  is_active: boolean;
+  max_uses: number | null;
+  times_used: number;
+  created_at: string;
+}
+
+const PromosTab = () => {
+  const [promos, setPromos] = useState<PromoCode[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [newCode, setNewCode] = useState("");
+  const [newDiscount, setNewDiscount] = useState("10");
+  const [newAffiliate, setNewAffiliate] = useState("");
+  const [newCommission, setNewCommission] = useState("20");
+  const [adding, setAdding] = useState(false);
+
+  useEffect(() => {
+    loadPromos();
+  }, []);
+
+  const loadPromos = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("promo_codes").select("*").order("created_at", { ascending: false });
+    if (data) setPromos(data as PromoCode[]);
+    setLoading(false);
+  };
+
+  const addPromo = async () => {
+    if (!newCode.trim()) return;
+    setAdding(true);
+    await supabase.from("promo_codes").insert({
+      code: newCode.trim().toUpperCase(),
+      discount_percent: parseInt(newDiscount) || 10,
+      affiliate_name: newAffiliate.trim() || null,
+      affiliate_commission_percent: parseInt(newCommission) || 20,
+    });
+    setNewCode("");
+    setNewAffiliate("");
+    setNewDiscount("10");
+    setNewCommission("20");
+    setAdding(false);
+    loadPromos();
+  };
+
+  const toggleActive = async (id: string, currentlyActive: boolean) => {
+    await supabase.from("promo_codes").update({ is_active: !currentlyActive }).eq("id", id);
+    loadPromos();
+  };
+
+  // Calculate affiliate revenue from applications
+  const affiliateRevenue = useMemo(() => {
+    const revenue: Record<string, { name: string; uses: number; totalRevenue: number; commission: number }> = {};
+    promos.forEach(p => {
+      if (p.affiliate_name) {
+        revenue[p.code] = {
+          name: p.affiliate_name,
+          uses: p.times_used,
+          totalRevenue: p.times_used * (49 * (1 - p.discount_percent / 100)),
+          commission: p.times_used * (49 * (1 - p.discount_percent / 100)) * (p.affiliate_commission_percent / 100),
+        };
+      }
+    });
+    return Object.values(revenue);
+  }, [promos]);
+
+  return (
+    <div className="space-y-6">
+      {/* Add new promo */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <h2 className="font-bold text-lg mb-4">Create promo code</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Code</label>
+            <input
+              value={newCode}
+              onChange={(e) => setNewCode(e.target.value.toUpperCase())}
+              placeholder="BRAZILIANGRINGO"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Discount %</label>
+            <input
+              value={newDiscount}
+              onChange={(e) => setNewDiscount(e.target.value)}
+              placeholder="10"
+              type="number"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Affiliate name</label>
+            <input
+              value={newAffiliate}
+              onChange={(e) => setNewAffiliate(e.target.value)}
+              placeholder="Brazilian Gringo"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Commission %</label>
+            <input
+              value={newCommission}
+              onChange={(e) => setNewCommission(e.target.value)}
+              placeholder="20"
+              type="number"
+              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+        <button
+          onClick={addPromo}
+          disabled={adding || !newCode.trim()}
+          className="mt-4 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+        >
+          {adding ? "Adding..." : "Add promo code"}
+        </button>
+      </div>
+
+      {/* Existing promos */}
+      <div className="bg-card border border-border rounded-2xl p-6">
+        <h2 className="font-bold text-lg mb-4">Active promo codes</h2>
+        {loading ? (
+          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+        ) : promos.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No promo codes yet. Create one above.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Code</TableHead>
+                  <TableHead>Discount</TableHead>
+                  <TableHead>Affiliate</TableHead>
+                  <TableHead>Commission</TableHead>
+                  <TableHead>Uses</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {promos.map((p) => (
+                  <TableRow key={p.id}>
+                    <TableCell className="font-mono font-bold text-primary">{p.code}</TableCell>
+                    <TableCell>{p.discount_percent}% off</TableCell>
+                    <TableCell>{p.affiliate_name || "—"}</TableCell>
+                    <TableCell>{p.affiliate_commission_percent}%</TableCell>
+                    <TableCell>{p.times_used}{p.max_uses ? ` / ${p.max_uses}` : ""}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        p.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                      }`}>
+                        {p.is_active ? "Active" : "Disabled"}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        onClick={() => toggleActive(p.id, p.is_active)}
+                        className="text-xs font-semibold text-muted-foreground hover:text-foreground"
+                      >
+                        {p.is_active ? "Disable" : "Enable"}
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+
+      {/* Affiliate revenue summary */}
+      {affiliateRevenue.length > 0 && (
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <h2 className="font-bold text-lg mb-4">Affiliate revenue</h2>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Affiliate</TableHead>
+                  <TableHead>Uses</TableHead>
+                  <TableHead>Revenue generated</TableHead>
+                  <TableHead>Commission owed</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {affiliateRevenue.map((a) => (
+                  <TableRow key={a.name}>
+                    <TableCell className="font-semibold">{a.name}</TableCell>
+                    <TableCell>{a.uses}</TableCell>
+                    <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
+                    <TableCell className="font-bold text-primary">${a.commission.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 /* ── Settings Tab ── */
 const SettingsTab = () => {
   const [exporting, setExporting] = useState(false);
