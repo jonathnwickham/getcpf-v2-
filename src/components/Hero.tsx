@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
+import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
@@ -34,11 +35,14 @@ const Hero = ({ onOpenModal }: HeroProps) => {
     else navigate("/get-started");
   };
 
+  const cpfCount = useCpfCount();
+  const displayCount = cpfCount !== null ? `${cpfCount}+` : "200+";
+
   const proofItems = [
     { num: "~5 min", label: "Setup time" },
     { num: "R$7", label: "At Correios" },
     { num: "Same day", label: "When you go in" },
-    { num: "200+", label: "CPFs prepared" },
+    { num: displayCount, label: "CPFs prepared" },
   ];
 
   const flags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇳🇬", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷"];

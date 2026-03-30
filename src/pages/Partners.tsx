@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useCpfCount } from "@/hooks/use-cpf-count";
 
 const partnerQuotes = [
   {
@@ -26,6 +27,18 @@ const Partners = () => {
   const [form, setForm] = useState({ name: "", email: "", business: "", city: "", why: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const cpfCount = useCpfCount();
+
+  const cities = [
+    { name: "São Paulo", state: "SP", emoji: "🏙️" },
+    { name: "Rio de Janeiro", state: "RJ", emoji: "🏖️" },
+    { name: "Florianópolis", state: "SC", emoji: "🌊" },
+    { name: "Curitiba", state: "PR", emoji: "🌲" },
+    { name: "Salvador", state: "BA", emoji: "🎭" },
+    { name: "Recife", state: "PE", emoji: "🌴" },
+    { name: "Brasília", state: "DF", emoji: "🏛️" },
+    { name: "Belo Horizonte", state: "MG", emoji: "⛰️" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,6 +137,32 @@ const Partners = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Live counter + Cities */}
+      <section className="py-16 px-6">
+        <div className="max-w-[900px] mx-auto">
+          {/* Live counter */}
+          <div className="text-center mb-16">
+            <div className="text-5xl font-extrabold text-primary">{cpfCount !== null ? cpfCount : "..."}</div>
+            <p className="text-sm text-muted-foreground mt-2">foreigners arrived in Brazil prepared</p>
+          </div>
+
+          {/* Cities */}
+          <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-6 text-center">Cities we cover</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {cities.map((c) => (
+              <div key={c.name} className="bg-card border border-border rounded-xl p-4 text-center">
+                <div className="text-lg mb-1">{c.emoji}</div>
+                <div className="text-sm font-bold">{c.name}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{c.state}</div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground text-center mt-4">
+            GET CPF works for every Receita Federal office in Brazil. These are where most of our users go.
+          </p>
         </div>
       </section>
 
