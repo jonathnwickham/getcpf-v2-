@@ -564,6 +564,7 @@ interface PromoCode {
   code: string;
   discount_percent: number;
   affiliate_name: string | null;
+  affiliate_email: string | null;
   affiliate_commission_percent: number;
   is_active: boolean;
   max_uses: number | null;
