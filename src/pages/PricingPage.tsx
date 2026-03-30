@@ -282,12 +282,19 @@ const PricingPage = () => {
                   {tier.comingSoon ? (
                     !waitlistSubmitted ? (
                       <form onSubmit={handleWaitlist} className="space-y-2">
+                        <input
+                          type="email"
+                          value={waitlistEmail}
+                          onChange={(e) => setWaitlistEmail(e.target.value)}
+                          required
+                          placeholder="your@email.com"
+                          className="w-full bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        />
                         <button
                           type="submit"
-                          className="w-full py-3.5 rounded-xl font-semibold border border-border text-muted-foreground cursor-not-allowed opacity-60"
-                          disabled
+                          className="w-full py-3.5 rounded-xl font-semibold border border-border text-foreground hover:bg-secondary transition-all"
                         >
-                          Coming soon
+                          Join waitlist →
                         </button>
                       </form>
                     ) : (
