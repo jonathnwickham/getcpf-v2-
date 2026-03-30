@@ -46,7 +46,7 @@ const App = () => (
             <Route path="/sign-in" element={<Navigate to="/login" replace />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
-            <Route path="/contact" element={<Navigate to="mailto:support@getcpf.com" replace />} />
+            {/* /contact handled via mailto link in footer */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
