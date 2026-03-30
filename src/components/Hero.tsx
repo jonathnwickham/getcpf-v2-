@@ -20,6 +20,14 @@ interface HeroProps {
 
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
+  const [officeIndex, setOfficeIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOfficeIndex((prev) => (prev + 1) % offices.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
