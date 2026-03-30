@@ -78,9 +78,9 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <VerifyEmailScreen />;
   }
 
-  // Admin check
+  // Admin check — if not admin, go home (not ready-pack)
   if (needsAdminCheck && !isAdmin) {
-    return <Navigate to="/ready-pack" replace />;
+    return <Navigate to="/" replace />;
   }
 
   // Payment check
