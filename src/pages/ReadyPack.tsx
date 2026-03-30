@@ -237,6 +237,27 @@ const ReadyPack = () => {
   );
 };
 
+// === REFERRAL SHARE BUTTON ===
+const ReferralShareButton = ({ type, label, emoji, onClick }: { type: string; label: string; emoji: string; onClick: () => void }) => {
+  const [clicked, setClicked] = useState(false);
+  const handleClick = () => {
+    onClick();
+    if (type === "copy") {
+      setClicked(true);
+      setTimeout(() => setClicked(false), 2000);
+    }
+  };
+  return (
+    <button
+      onClick={handleClick}
+      className="inline-flex items-center gap-2 bg-card border border-border px-5 py-3 rounded-xl text-sm font-semibold hover:bg-secondary transition-all"
+    >
+      <span>{emoji}</span>
+      {type === "copy" && clicked ? "✓ Copied!" : label}
+    </button>
+  );
+};
+
 // === MY CPF TAB ===
 const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide }: {
   data: OnboardingData; stateName: string; motherDisplay: string; onOpenGuide: () => void; onOpenLifeGuide: () => void;
