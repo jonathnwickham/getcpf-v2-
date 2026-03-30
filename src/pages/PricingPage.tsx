@@ -172,8 +172,11 @@ const PricingPage = () => {
     }
   };
 
-  const handleWaitlist = (e: React.FormEvent) => {
+  const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
     e.preventDefault();
+    const wEmail = waitlistEmail.trim() || email.trim();
+    if (!wEmail) return;
+    await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
     setWaitlistSubmitted(true);
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
