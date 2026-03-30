@@ -27,38 +27,9 @@ interface HeroProps {
   onOpenModal?: () => void;
 }
 
-const empathyLines = [
-  "Turned away at Correios because you don't have a CPF?",
-  "Trying to open Nubank but they need your CPF first?",
-  "Can't order iFood without a CPF account?",
-  "Landlord asking for a CPF you don't have yet?",
-  "Trying to buy a SIM card but every carrier needs a CPF?",
-  "Can't buy event tickets without a CPF at checkout?",
-];
-
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
   const [officeIndex, setOfficeIndex] = useState(0);
-  const [empathyIndex, setEmpathyIndex] = useState(0);
-  const [empathyVisible, setEmpathyVisible] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOfficeIndex((prev) => (prev + 1) % offices.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEmpathyVisible(false);
-      setTimeout(() => {
-        setEmpathyIndex((prev) => (prev + 1) % empathyLines.length);
-        setEmpathyVisible(true);
-      }, 400);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
