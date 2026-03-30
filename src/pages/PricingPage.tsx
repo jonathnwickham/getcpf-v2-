@@ -284,7 +284,7 @@ const PricingPage = () => {
                   </ul>
                   {tier.comingSoon ? (
                     !waitlistSubmitted ? (
-                      <form onSubmit={handleWaitlist} className="space-y-2">
+                      <form onSubmit={(e) => handleWaitlist(e, tier.name)} className="space-y-2">
                         <input
                           type="email"
                           value={waitlistEmail}
