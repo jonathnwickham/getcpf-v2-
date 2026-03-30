@@ -144,6 +144,7 @@ const Admin = () => {
         {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
         {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
         {tab === "promos" && <PromosTab />}
+        {tab === "affiliates" && <AffiliatesTab />}
         {tab === "waitlist" && <WaitlistTab />}
         {tab === "settings" && <SettingsTab />}
       </div>
