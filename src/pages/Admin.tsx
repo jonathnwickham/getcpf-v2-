@@ -630,9 +630,28 @@ const PromosTab = () => {
     loadData();
   };
 
+  const updateAffiliate = async (promoId: string) => {
+    await supabase.from("promo_codes").update({
+      affiliate_name: editName.trim() || null,
+      affiliate_commission_percent: parseInt(editCommission) || 20,
+    }).eq("id", promoId);
+    setEditingAffiliate(null);
+    loadData();
+  };
+
+  const removeAffiliate = async (promoId: string) => {
+    await supabase.from("promo_codes").update({
+      affiliate_name: null,
+      affiliate_commission_percent: 0,
+    }).eq("id", promoId);
+    setConfirmDeleteAffiliate(null);
+    loadData();
+  };
+
   // Build affiliate performance from real application data
   const affiliateData = useMemo(() => {
     const data: Record<string, {
+      promoId: string;
       name: string;
       code: string;
       discount: number;
@@ -657,6 +676,7 @@ const PromosTab = () => {
         existing.conversions.push(...matchingApps);
       } else {
         data[p.affiliate_name] = {
+          promoId: p.id,
           name: p.affiliate_name,
           code: p.code,
           discount: p.discount_percent,
