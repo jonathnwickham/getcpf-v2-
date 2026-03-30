@@ -70,12 +70,6 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
     </div>
   );
 };
-import {
-  fetchLatestApplication,
-  applicationHasReadyPack,
-  mapApplicationToOnboardingData,
-  persistOnboardingData,
-} from "@/lib/application-storage";
 
 const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
