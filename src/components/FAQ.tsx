@@ -11,7 +11,7 @@ const faqs = [
 ];
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0, 1]));
 
   return (
     <section id="faq" className="py-24 px-8 max-w-[700px] mx-auto">
