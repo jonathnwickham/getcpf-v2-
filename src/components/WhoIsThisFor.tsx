@@ -70,10 +70,7 @@ const WhoIsThisFor = () => (
           >
             <div className="text-3xl mb-3">{p.emoji}</div>
             <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-            <Link to={p.guide} className="text-xs font-semibold text-primary mt-3 hover:underline inline-block">
-              Learn more →
-            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
           </div>
         ))}
       </div>
