@@ -19,7 +19,7 @@ const ComingSoon = () => (
         CPF is just the beginning
       </h2>
       <p className="text-muted-foreground mt-4 max-w-[600px] text-sm leading-relaxed">
-        We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy — whether you're a foreigner navigating the system for the first time or a Brazilian who's tired of jumping through hoops. Here's what's next.
+        We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy. Whether you're a foreigner navigating the system for the first time or a Brazilian who's tired of jumping through hoops. Here's what's next.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
