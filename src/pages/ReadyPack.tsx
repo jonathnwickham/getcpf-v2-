@@ -372,6 +372,12 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
               <div className="space-y-2">
                 <img src={photoPreview} alt="CPF printout" className="w-full max-w-xs rounded-xl border border-border" />
                 <p className="text-xs text-primary font-semibold">✓ Photo saved</p>
+                <button
+                  onClick={() => { setPhotoPreview(null); localStorage.removeItem("cpf-saved-photo"); }}
+                  className="text-xs text-destructive font-semibold hover:underline"
+                >
+                  Remove photo
+                </button>
               </div>
             ) : (
               <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
@@ -463,6 +469,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             <button
               onClick={() => {
                 setAnimateCard(false);
+                setCpfNumber("");
                 localStorage.removeItem("cpf-saved-number");
               }}
               className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
