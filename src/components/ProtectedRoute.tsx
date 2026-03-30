@@ -76,9 +76,9 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <VerifyEmailScreen />;
   }
 
-  // Admin check — if not admin, go home (not ready-pack)
+  // Admin check — show access denied
   if (needsAdminCheck && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <AccessDeniedScreen />;
   }
 
   // Payment check
