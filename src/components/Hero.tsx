@@ -1,16 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
+import { FileCheck, MapPin, Languages, CheckCircle } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
-import { useCpfCount } from "@/hooks/use-cpf-count";
-import nubankLogo from "@/assets/logos/nubank.png";
-import ifoodLogo from "@/assets/logos/ifood.png";
-import mercadoLivreLogo from "@/assets/logos/mercadolivre.png";
-import rappiLogo from "@/assets/logos/rappi.png";
-import vivoLogo from "@/assets/logos/vivo.png";
-import quintoAndarLogo from "@/assets/logos/quintoandar.png";
-import amazonLogo from "@/assets/logos/amazon.png";
-import correiosLogo from "@/assets/logos/correios.png";
 
 const offices = [
   { city: "São Paulo", office: "CAC Bela Vista" },
@@ -36,24 +27,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
     else navigate("/get-started");
   };
 
-  const cpfCount = useCpfCount();
-  const displayCount = cpfCount !== null ? `${cpfCount}+` : "200+";
-
-  const proofItems = [
-    { num: "~5 min", label: "Setup time" },
-    { num: "R$7", label: "At Correios" },
-    { num: "Same day", label: "When you go in" },
-    { num: displayCount, label: "CPFs prepared" },
-  ];
-
-  const orbitFlags = ["🇺🇸", "🇬🇧", "🇩🇪", "🇫🇷", "🇿🇦", "🇮🇹", "🇦🇺", "🇦🇷", "🇨🇴", "🇮🇳", "🇯🇵", "🇰🇷", "🇵🇹", "🇳🇱", "🇨🇦", "🇮🇪"];
-
   return (
-    <section className="flex flex-col justify-center items-center px-6 pt-32 pb-8 relative overflow-hidden bg-[hsl(160_84%_28%/0.03)]">
-      {/* Radial glow */}
+    <section className="flex flex-col justify-center items-center px-6 pt-32 pb-8 relative overflow-hidden bg-primary/[0.03]">
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
-      {/* Brazilian stencil background */}
       <img
         src={brazilStencil}
         alt=""
@@ -64,7 +41,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       />
 
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 items-center">
-        {/* Left, Copy + proof */}
+        {/* Left — copy only */}
         <div className="text-center lg:text-left">
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
@@ -89,120 +66,81 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <span>🛡️</span>
             If you follow our steps and get rejected, full refund. No questions asked.
           </div>
-
-          {/* Stats */}
-          <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-8 justify-center lg:justify-start">
-            {proofItems.map((item) => (
-              <div key={item.label} className="text-center lg:text-left">
-                <div className="text-lg font-bold text-foreground">{item.num}</div>
-                <div className="text-[10px] text-muted-foreground font-medium">{item.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Brand logos */}
-          <div className="animate-fade-up-4 mt-5">
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start items-center">
-              {[
-                { src: nubankLogo, alt: "Nubank" },
-                { src: ifoodLogo, alt: "iFood" },
-                { src: mercadoLivreLogo, alt: "Mercado Livre" },
-                { src: rappiLogo, alt: "Rappi" },
-                { src: vivoLogo, alt: "Vivo" },
-                { src: quintoAndarLogo, alt: "QuintoAndar" },
-                { src: amazonLogo, alt: "Amazon BR" },
-                { src: correiosLogo, alt: "Correios" },
-              ].map((logo) => (
-                <img
-                  key={logo.alt}
-                  src={logo.src}
-                  alt={logo.alt}
-                  className="h-5 w-auto rounded object-contain opacity-60 hover:opacity-100 transition-all duration-300"
-                />
-              ))}
-            </div>
-            <p className="text-[10px] text-muted-foreground mt-1.5 lg:text-left text-center">Your CPF unlocks all of these</p>
-          </div>
-
         </div>
 
-        {/* Right, Product Mockup — bigger */}
+        {/* Right — Product Mockup */}
         <div className="animate-fade-up-3 hidden lg:block relative">
           <div className="animate-float">
-          <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden">
-            {/* Browser bar */}
-            <div className="flex items-center gap-2 px-5 py-3.5 bg-muted/50 border-b border-border">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-destructive/40" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400/40" />
-                <div className="w-3 h-3 rounded-full bg-primary/40" />
-              </div>
-              <div className="flex-1 bg-background rounded-md px-3 py-1.5 text-[11px] text-muted-foreground text-center">
-                getcpf.com/ready-pack
-              </div>
-            </div>
-            {/* Mock dashboard content */}
-            <div className="p-7 space-y-5">
-              <div className="text-base font-bold text-foreground">Your Ready Pack</div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
-                  <FileCheck className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold">Your forms, pre-filled</div>
-                    <div className="text-xs text-muted-foreground">Ready to print</div>
-                  </div>
+            <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden">
+              <div className="flex items-center gap-2 px-5 py-3.5 bg-muted/50 border-b border-border">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-destructive/40" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-400/40" />
+                  <div className="w-3 h-3 rounded-full bg-primary/40" />
                 </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold">Nearest Receita Federal</div>
-                    <div className="text-xs text-muted-foreground transition-all duration-500">{offices[officeIndex].city}</div>
-                  </div>
-                </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
-                  <Languages className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold">What to say</div>
-                    <div className="text-xs text-muted-foreground">Portuguese cheat sheet</div>
-                  </div>
-                </div>
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold">Doc checklist</div>
-                    <div className="text-xs text-muted-foreground">3 of 4 ready</div>
-                  </div>
+                <div className="flex-1 bg-background rounded-md px-3 py-1.5 text-[11px] text-muted-foreground text-center">
+                  getcpf.com/ready-pack
                 </div>
               </div>
-              {/* Fake progress */}
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground font-medium">Application progress</span>
-                  <span className="text-primary font-bold">75%</span>
-                </div>
-                <div className="h-2.5 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full w-[75%]" />
-                </div>
-              </div>
-              {/* Mini document rows */}
-              <div className="space-y-2.5">
-                {[
-                  { label: "Passport copy", done: true },
-                  { label: "Proof of address", done: true },
-                  { label: "Host declaration", done: false },
-                ].map((doc) => (
-                  <div key={doc.label} className="flex items-center gap-2 text-xs">
-                    {doc.done ? (
-                      <CheckCircle className="w-4 h-4 text-primary" />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30" />
-                    )}
-                    <span className={doc.done ? "text-foreground" : "text-muted-foreground"}>{doc.label}</span>
+              <div className="p-7 space-y-5">
+                <div className="text-base font-bold text-foreground">Your Ready Pack</div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
+                    <FileCheck className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-semibold">Your forms, pre-filled</div>
+                      <div className="text-xs text-muted-foreground">Ready to print</div>
+                    </div>
                   </div>
-                ))}
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
+                    <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-semibold">Nearest Receita Federal</div>
+                      <div className="text-xs text-muted-foreground transition-all duration-500">{offices[officeIndex].city}</div>
+                    </div>
+                  </div>
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
+                    <Languages className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-semibold">What to say</div>
+                      <div className="text-xs text-muted-foreground">Portuguese cheat sheet</div>
+                    </div>
+                  </div>
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 flex items-start gap-2.5">
+                    <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-semibold">Doc checklist</div>
+                      <div className="text-xs text-muted-foreground">3 of 4 ready</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground font-medium">Application progress</span>
+                    <span className="text-primary font-bold">75%</span>
+                  </div>
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-primary rounded-full w-[75%]" />
+                  </div>
+                </div>
+                <div className="space-y-2.5">
+                  {[
+                    { label: "Passport copy", done: true },
+                    { label: "Proof of address", done: true },
+                    { label: "Host declaration", done: false },
+                  ].map((doc) => (
+                    <div key={doc.label} className="flex items-center gap-2 text-xs">
+                      {doc.done ? (
+                        <CheckCircle className="w-4 h-4 text-primary" />
+                      ) : (
+                        <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30" />
+                      )}
+                      <span className={doc.done ? "text-foreground" : "text-muted-foreground"}>{doc.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
           </div>
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-primary/5 rounded-[50%] blur-xl" />
         </div>
