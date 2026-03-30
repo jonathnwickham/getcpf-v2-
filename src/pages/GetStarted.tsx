@@ -25,6 +25,8 @@ const GetStarted = () => {
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [forceFullName, setForceFullName] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const [ready, setReady] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
