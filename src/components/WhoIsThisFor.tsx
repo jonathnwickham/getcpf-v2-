@@ -83,14 +83,21 @@ const WhoIsThisFor = () => (
         </div>
         <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
           <p>
-            I fell in love with Brazil, met my girlfriend, and now I come back as often as I can. I didn't want 
-            to spend days jumping between government sites, Reddit, and AI tools that each gave me half the answer 
-            but none of the context. I had to piece it all together myself.
+            I fell in love with Brazil, met my gorgeous girlfriend, and now I come back as often as I can.
           </p>
           <p>
-            So I documented every step, built it into a tool, and got my CPF on my first try using what I'd created. 
-            The price is fair, it's staying where it is, and it does exactly what it says. It builds out everything 
-            for you at a low cost.
+            When I needed my CPF I spent days jumping between government sites, Reddit threads, and AI tools 
+            that each gave me half the answer but none of the context. I had to piece it all together myself 
+            — and I still nearly got it wrong.
+          </p>
+          <p>
+            So I documented every step, built it into a tool, and got my CPF on my first try using what I'd created.
+          </p>
+          <p>
+            That was the test. If it worked for me it would work for anyone. So I cleaned it up, priced it fairly, and put it out there.
+          </p>
+          <p className="text-foreground font-medium">
+            Now you get the version I wish I'd had.
           </p>
         </div>
       </div>
