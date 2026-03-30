@@ -8,6 +8,7 @@ import {
   mapApplicationToOnboardingData,
   persistOnboardingData,
 } from "@/lib/application-storage";
+import { maskPassport } from "@/lib/mask-passport";
 import { toast } from "sonner";
 
 const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string; existingCpf: string | null }) => {
