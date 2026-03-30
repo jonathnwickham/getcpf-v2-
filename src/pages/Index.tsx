@@ -10,6 +10,7 @@ import AfterCPF from "@/components/AfterCPF";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
+import ComingSoon from "@/components/ComingSoon";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -32,6 +33,7 @@ const Index = () => {
       <TrustBar />
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
+      <ComingSoon />
       <Footer />
     </div>
   );

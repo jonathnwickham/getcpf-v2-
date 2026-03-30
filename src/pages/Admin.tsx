@@ -14,7 +14,7 @@ import {
   AreaChart, Area,
 } from "recharts";
 
-type AdminTab = "users" | "applications" | "revenue" | "promos" | "settings";
+type AdminTab = "users" | "applications" | "revenue" | "promos" | "waitlist" | "settings";
 
 interface Profile {
   id: string;
@@ -104,6 +104,7 @@ const Admin = () => {
     { key: "applications", label: "Applications", icon: "📋" },
     { key: "revenue", label: "Revenue", icon: "💰" },
     { key: "promos", label: "Promo Codes", icon: "🏷️" },
+    { key: "waitlist", label: "Waitlist", icon: "📧" },
     { key: "settings", label: "Settings", icon: "⚙️" },
   ];
 
@@ -142,6 +143,7 @@ const Admin = () => {
         {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
         {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
         {tab === "promos" && <PromosTab />}
+        {tab === "waitlist" && <WaitlistTab />}
         {tab === "settings" && <SettingsTab />}
       </div>
     </div>
@@ -1296,6 +1298,61 @@ const SettingsTab = () => {
         <p className="text-sm text-muted-foreground">
           Payment integration settings will appear here once connected. Price changes and webhook configuration will be manageable from this panel.
         </p>
+      </div>
+    </div>
+  );
+};
+
+/* ── Waitlist Tab ── */
+const WaitlistTab = () => {
+  const [entries, setEntries] = useState<{ id: string; email: string; plan: string; created_at: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.from("waitlist").select("*").order("created_at", { ascending: false })
+      .then(({ data }) => { if (data) setEntries(data as any); setLoading(false); });
+  }, []);
+
+  const byPlan = entries.reduce<Record<string, number>>((acc, e) => {
+    acc[e.plan] = (acc[e.plan] || 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Total signups" value={entries.length.toString()} icon="📧" />
+        {Object.entries(byPlan).map(([plan, count]) => (
+          <StatCard key={plan} label={plan} value={count.toString()} icon="📋" />
+        ))}
+      </div>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Email</TableHead>
+              <TableHead>Plan interest</TableHead>
+              <TableHead>Signed up</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">Loading...</TableCell></TableRow>
+            ) : entries.length === 0 ? (
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">No waitlist signups yet</TableCell></TableRow>
+            ) : entries.map(e => (
+              <TableRow key={e.id}>
+                <TableCell className="font-medium">{e.email}</TableCell>
+                <TableCell>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">{e.plan}</span>
+                </TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {new Date(e.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
