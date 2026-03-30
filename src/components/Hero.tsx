@@ -152,6 +152,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               </div>
             </div>
           </div>
+          </div>
+          {/* Shadow that stays in place while card floats */}
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-primary/5 rounded-[50%] blur-xl" />
         </div>
       </div>
 
