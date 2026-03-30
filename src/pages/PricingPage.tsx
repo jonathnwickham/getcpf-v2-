@@ -134,10 +134,9 @@ const PricingPage = () => {
 
   const handleMockPayment = (method: "card" | "paypal") => {
     setLoading(true);
-    // Simulate payment processing
     setTimeout(() => {
       setLoading(false);
-      toast({ title: "Payment sorted!", description: `$49 charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
+      toast({ title: "Payment sorted!", description: `$${finalPrice} charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
       setFlowStep("password");
     }, 1500);
   };
