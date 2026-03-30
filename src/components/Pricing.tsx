@@ -144,6 +144,10 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       <p className="text-xs text-muted-foreground mt-8 max-w-[500px] mx-auto">
         One payment, no subscriptions. You keep access to your Ready Pack forever.
       </p>
+      <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary font-semibold">
+        <span>🛡️</span>
+        100% Acceptance Guarantee — follow our steps or get your money back
+      </div>
     </section>
   );
 };
