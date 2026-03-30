@@ -983,7 +983,7 @@ const PromosTab = () => {
                                   onClick={(e) => { e.stopPropagation(); setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name); }}
                                   className="text-xs text-muted-foreground hover:text-foreground"
                                 >
-                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `View ▼`) : "No data"}
+                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `${a.conversions.length} sales ▼`) : "No sales yet"}
                                 </button>
                                 <button
                                   onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
