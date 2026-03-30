@@ -664,12 +664,33 @@ const PromosTab = () => {
     loadData();
   };
 
+  const saveProfile = async (promoId: string) => {
+    setProfileSaving(true);
+    await supabase.from("promo_codes").update({
+      affiliate_notes: profileNotes.trim() || null,
+      affiliate_source: profileSource.trim() || null,
+      affiliate_location: profileLocation.trim() || null,
+    } as any).eq("id", promoId);
+    setProfileSaving(false);
+    loadData();
+  };
+
+  const openProfile = (a: typeof affiliateData[0]) => {
+    setProfileOpen(a.promoId);
+    setProfileNotes(a.notes || "");
+    setProfileSource(a.source || "");
+    setProfileLocation(a.location || "");
+  };
+
   // Build affiliate performance from real application data
   const affiliateData = useMemo(() => {
     const data: Record<string, {
       promoId: string;
       name: string;
       email: string | null;
+      notes: string | null;
+      source: string | null;
+      location: string | null;
       code: string;
       discount: number;
       commission: number;
@@ -677,6 +698,7 @@ const PromosTab = () => {
       totalRevenue: number;
       commissionOwed: number;
       conversions: any[];
+      createdAt: string;
     }> = {};
 
     promos.forEach(p => {
@@ -696,6 +718,9 @@ const PromosTab = () => {
           promoId: p.id,
           name: p.affiliate_name,
           email: p.affiliate_email,
+          notes: p.affiliate_notes,
+          source: p.affiliate_source,
+          location: p.affiliate_location,
           code: p.code,
           discount: p.discount_percent,
           commission: p.affiliate_commission_percent,
@@ -703,6 +728,7 @@ const PromosTab = () => {
           totalRevenue,
           commissionOwed,
           conversions: matchingApps,
+          createdAt: p.created_at,
         };
       }
     });
