@@ -66,7 +66,7 @@ const WhoIsThisFor = () => (
         {personas.map((p) => (
           <div
             key={p.title}
-            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all flex flex-col"
+            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all"
           >
             <div className="text-3xl mb-3">{p.emoji}</div>
             <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
