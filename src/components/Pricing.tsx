@@ -18,7 +18,7 @@ const tiers = [
       "Pre-filled form data with copy buttons",
       "Portuguese email template with your details",
       "Document storage (passport, address proof)",
-      "AI document scanner — checks your docs are correct",
+      "AI document scanner, checks your docs are correct",
       "Correct Receita Federal office for your state",
       "Document checklist with quality tips",
       "Portuguese cheat sheet for office visits",
