@@ -76,12 +76,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out. No wasted trips, no rejected forms, no showing up to the wrong office.
           </p>
 
-          <p className="animate-fade-up-2 text-sm text-muted-foreground/60 mt-3 max-w-[520px] mx-auto lg:mx-0 italic">
-            "I spent three hours on Reddit and still showed up to the wrong office."
-          </p>
-
-          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-2 max-w-[520px] mx-auto lg:mx-0">
-            You still need to visit an office in person. We make sure that visit works.
+          <p className="animate-fade-up-2 text-sm text-muted-foreground/70 mt-3 max-w-[520px] mx-auto lg:mx-0">
+            You still need to visit an office in person. We make sure that visit works the first time.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center lg:justify-start">
