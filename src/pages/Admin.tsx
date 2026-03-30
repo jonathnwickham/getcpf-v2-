@@ -1239,6 +1239,256 @@ const PromosTab = () => {
   );
 };
 
+/* ── Affiliates Tab ── */
+interface Affiliate {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  platform: string | null;
+  why: string | null;
+  posting_frequency: string | null;
+  situation: string | null;
+  motivation: string | null;
+  promo_code: string | null;
+  commission_percent: number;
+  status: string;
+  notes: string | null;
+  location: string | null;
+  source: string | null;
+}
+
+const frequencyOptions = ["One-off post", "Multiple posts", "Monthly posts", "Weekly posts", "Daily posts"];
+const statusOptions = ["pending", "approved", "rejected"];
+
+const AffiliatesTab = () => {
+  const [affiliates, setAffiliates] = useState<Affiliate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: "", email: "", platform: "", why: "", posting_frequency: "",
+    situation: "", motivation: "", promo_code: "", commission_percent: "20",
+    status: "approved", notes: "", location: "", source: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+
+  const loadAffiliates = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("affiliates").select("*").order("created_at", { ascending: false });
+    if (data) setAffiliates(data as any);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadAffiliates(); }, []);
+
+  const resetForm = () => {
+    setForm({ name: "", email: "", platform: "", why: "", posting_frequency: "", situation: "", motivation: "", promo_code: "", commission_percent: "20", status: "approved", notes: "", location: "", source: "" });
+    setShowAdd(false);
+    setEditId(null);
+  };
+
+  const startEdit = (a: Affiliate) => {
+    setEditId(a.id);
+    setShowAdd(true);
+    setForm({
+      name: a.name, email: a.email, platform: a.platform || "", why: a.why || "",
+      posting_frequency: a.posting_frequency || "", situation: a.situation || "",
+      motivation: a.motivation || "", promo_code: a.promo_code || "",
+      commission_percent: String(a.commission_percent), status: a.status,
+      notes: a.notes || "", location: a.location || "", source: a.source || "",
+    });
+  };
+
+  const saveAffiliate = async () => {
+    if (!form.name.trim() || !form.email.trim()) return;
+    setSaving(true);
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      platform: form.platform.trim() || null,
+      why: form.why.trim() || null,
+      posting_frequency: form.posting_frequency || null,
+      situation: form.situation.trim() || null,
+      motivation: form.motivation.trim() || null,
+      promo_code: form.promo_code.trim().toUpperCase() || null,
+      commission_percent: parseInt(form.commission_percent) || 20,
+      status: form.status,
+      notes: form.notes.trim() || null,
+      location: form.location.trim() || null,
+      source: form.source.trim() || null,
+    };
+    if (editId) {
+      await supabase.from("affiliates").update(payload as any).eq("id", editId);
+    } else {
+      await supabase.from("affiliates").insert(payload as any);
+    }
+    setSaving(false);
+    resetForm();
+    loadAffiliates();
+  };
+
+  const deleteAffiliate = async (id: string) => {
+    await supabase.from("affiliates").delete().eq("id", id);
+    setConfirmDelete(null);
+    loadAffiliates();
+  };
+
+  const update = (field: string, value: string) => setForm(f => ({ ...f, [field]: value }));
+
+  const approved = affiliates.filter(a => a.status === "approved").length;
+  const pending = affiliates.filter(a => a.status === "pending").length;
+
+  return (
+    <div className="space-y-6">
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Total affiliates" value={affiliates.length.toString()} icon="🤝" />
+        <StatCard label="Approved" value={approved.toString()} icon="✅" />
+        <StatCard label="Pending" value={pending.toString()} icon="⏳" />
+        <StatCard label="With promo code" value={affiliates.filter(a => a.promo_code).length.toString()} icon="🏷️" />
+      </div>
+
+      {/* Add / Edit form */}
+      {showAdd ? (
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <h2 className="font-bold text-lg mb-4">{editId ? "Edit affiliate" : "Add new affiliate"}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Name *</label>
+              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Email *</label>
+              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Platform</label>
+              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
+              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Promo code</label>
+              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Commission %</label>
+              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Source</label>
+              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Status</label>
+              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+              </select>
+            </div>
+          </div>
+          {/* Posting frequency */}
+          <div className="mt-4">
+            <label className="text-xs font-semibold text-muted-foreground block mb-1.5">Posting frequency</label>
+            <div className="flex flex-wrap gap-2">
+              {frequencyOptions.map(opt => (
+                <button key={opt} type="button" onClick={() => update("posting_frequency", form.posting_frequency === opt ? "" : opt)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-primary bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground hover:border-primary/40"}`}
+                >{opt}</button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Why they want to be an affiliate</label>
+              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground block mb-1">Their situation</label>
+              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className="text-xs font-semibold text-muted-foreground block mb-1">Internal notes</label>
+            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+          </div>
+          <div className="flex gap-3 mt-5">
+            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50">
+              {saving ? "Saving..." : editId ? "Update affiliate" : "Add affiliate"}
+            </button>
+            <button onClick={resetForm} className="px-6 py-2.5 rounded-xl font-semibold text-sm border border-border text-muted-foreground hover:text-foreground transition-all">Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <button onClick={() => setShowAdd(true)} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all">
+          + Add affiliate
+        </button>
+      )}
+
+      {/* Affiliates table */}
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+        {loading ? (
+          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">Loading...</div>
+        ) : affiliates.length === 0 ? (
+          <div className="p-8 text-center text-sm text-muted-foreground">No affiliates yet. Add one above.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Platform</TableHead>
+                  <TableHead>Code</TableHead>
+                  <TableHead>Commission</TableHead>
+                  <TableHead>Frequency</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {affiliates.map(a => (
+                  <TableRow key={a.id}>
+                    <TableCell className="font-semibold">{a.name}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{a.platform || "-"}</TableCell>
+                    <TableCell className="font-mono text-primary font-bold">{a.promo_code || "-"}</TableCell>
+                    <TableCell>{a.commission_percent}%</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{a.posting_frequency || "-"}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        a.status === "approved" ? "bg-primary/10 text-primary" :
+                        a.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                        "bg-muted text-muted-foreground"
+                      }`}>{a.status}</span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button onClick={() => startEdit(a)} className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors">Edit</button>
+                        {confirmDelete === a.id ? (
+                          <div className="flex items-center gap-1">
+                            <button onClick={() => deleteAffiliate(a.id)} className="text-xs font-bold text-red-600 hover:text-red-700">Confirm</button>
+                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-muted-foreground">Cancel</button>
+                          </div>
+                        ) : (
+                          <button onClick={() => setConfirmDelete(a.id)} className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors">Delete</button>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 /* ── Settings Tab ── */
 const SettingsTab = () => {
   const [exporting, setExporting] = useState(false);
