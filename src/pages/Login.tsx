@@ -25,28 +25,40 @@ const Login = () => {
 
     toast({ title: "Good to see you again 👋" });
 
-    // Check if user has a completed application → ready-pack, otherwise → get-started
+    // Route admins to dashboard first, otherwise continue normal user flow
     try {
       const userId = authData.user?.id;
-      if (userId) {
-        const app = await fetchLatestApplication(userId);
-        if (app && applicationHasReadyPack(app)) {
+      if (!userId) {
+        navigate("/get-started");
+        return;
+      }
+
+      const { data: isAdmin } = await supabase.rpc("has_role", {
+        _user_id: userId,
+        _role: "admin",
+      });
+
+      if (isAdmin) {
+        navigate("/admin");
+        return;
+      }
+
+      // Check if user has a completed application → ready-pack, otherwise → get-started
+      const app = await fetchLatestApplication(userId);
+      if (app && applicationHasReadyPack(app)) {
+        navigate("/ready-pack");
+      } else {
+        // Also check local storage as fallback
+        const localData = readPersistedOnboardingData();
+        if (localData && hasReadyPackData(localData)) {
+          // Save local data to DB then go to ready-pack
+          try {
+            await saveLatestApplication(userId, localData, "prepared");
+          } catch {}
           navigate("/ready-pack");
         } else {
-          // Also check local storage as fallback
-          const localData = readPersistedOnboardingData();
-          if (localData && hasReadyPackData(localData)) {
-            // Save local data to DB then go to ready-pack
-            try {
-              await saveLatestApplication(userId, localData, "prepared");
-            } catch {}
-            navigate("/ready-pack");
-          } else {
-            navigate("/get-started");
-          }
+          navigate("/get-started");
         }
-      } else {
-        navigate("/get-started");
       }
     } catch {
       navigate("/get-started");
