@@ -35,7 +35,7 @@ const SocialProofBar = () => {
               key={logo.alt}
               src={logo.src}
               alt={logo.alt}
-              className="h-5 w-auto rounded object-contain hover:opacity-90 transition-opacity duration-300"
+              className="h-[25px] w-auto rounded object-contain hover:opacity-90 transition-opacity duration-300"
             />
           ))}
         </div>
