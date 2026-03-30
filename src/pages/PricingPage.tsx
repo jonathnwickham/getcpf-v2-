@@ -319,7 +319,7 @@ const PricingPage = () => {
             <div className="mt-8 space-y-4 max-w-[700px] mx-auto">
               <div className="flex items-center justify-center gap-2 text-sm text-primary font-semibold">
                 <span>🛡️</span>
-                If you follow our steps and get rejected, we'll refund you in full. No questions asked.
+                If you follow our steps and get rejected — full refund. No questions asked.
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
                 {[
