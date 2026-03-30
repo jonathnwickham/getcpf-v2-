@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 
 const upcoming = [
   { emoji: "🛂", title: "Digital Nomad Visa", desc: "Step-by-step guide to Brazil's digital nomad visa. Requirements, documents, and where to apply." },
