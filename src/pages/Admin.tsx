@@ -295,6 +295,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <TableHead>Plan</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Signed up</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -326,12 +327,26 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                   <TableCell className="text-xs text-muted-foreground">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
                   </TableCell>
+                  <TableCell>
+                    <button
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (!confirm(`Delete user ${p.email}? This removes their profile and application data.`)) return;
+                        await supabase.from("applications").delete().eq("user_id", p.id);
+                        await supabase.from("profiles").delete().eq("id", p.id);
+                        onRefresh();
+                      }}
+                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </TableCell>
                 </TableRow>
               );
             })}
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-sm text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">
                   No users found
                 </TableCell>
               </TableRow>
