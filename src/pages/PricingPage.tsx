@@ -433,7 +433,7 @@ const PricingPage = () => {
             </div>
 
             <div className="mt-4 text-center text-xs text-primary font-semibold">
-              🛡️ If you follow our steps and get rejected, we'll refund you in full. No questions asked.
+              🛡️ If you follow our steps and get rejected — full refund. No questions asked.
             </div>
 
             <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
