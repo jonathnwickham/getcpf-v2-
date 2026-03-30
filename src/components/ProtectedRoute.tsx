@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
     const check = async () => {
       try {
-        const promises: Array<Promise<void>> = [];
+        
 
         // Check payment status
         if (needsPaymentCheck) {
