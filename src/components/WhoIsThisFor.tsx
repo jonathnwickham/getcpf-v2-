@@ -80,7 +80,7 @@ const WhoIsThisFor = () => (
           <p>
             I built GET CPF because I needed it myself. When I moved to Brazil, I had no idea where to go, 
             what to bring, or what to say. I spent days jumping between government websites, Reddit threads, 
-            and ChatGPT — but nothing gave me the full picture. Half the info was outdated, the other half 
+            and ChatGPT, but nothing gave me the full picture. Half the info was outdated, the other half 
             was for a different state.
           </p>
           <p>
