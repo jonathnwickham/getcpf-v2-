@@ -154,7 +154,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
             {application.full_name && <InfoField label="Full name" value={application.full_name} />}
             {application.nationality && <InfoField label="Nationality" value={application.nationality} />}
-            {application.passport_number && <InfoField label="Passport" value={application.passport_number} />}
+            {application.passport_number && <InfoField label="Passport" value={maskPassport(application.passport_number)} />}
             {application.state_name && <InfoField label="State" value={application.state_name} />}
             {application.city && <InfoField label="City" value={application.city} />}
             {application.email && <InfoField label="Email" value={application.email} />}

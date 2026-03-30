@@ -385,7 +385,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div><span className="text-xs text-muted-foreground">Name:</span> {app.full_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Passport:</span> {app.passport_number || "—"}</div>
+                      <div><span className="text-xs text-muted-foreground">Passport:</span> {maskPassport(app.passport_number)}</div>
                       <div><span className="text-xs text-muted-foreground">Nationality:</span> {app.nationality || "—"}</div>
                       <div><span className="text-xs text-muted-foreground">State:</span> {app.state_name || "—"}</div>
                       <div><span className="text-xs text-muted-foreground">City:</span> {app.city || "—"}</div>
