@@ -124,15 +124,6 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <p className="text-[10px] text-muted-foreground mt-1.5 lg:text-left text-center">Your CPF unlocks all of these</p>
           </div>
 
-          {/* 50+ countries */}
-          <div className="animate-fade-up-4 mt-4 flex items-center gap-2 justify-center lg:justify-start">
-            <div className="flex -space-x-1">
-              {orbitFlags.slice(0, 10).map((flag, i) => (
-                <span key={i} className="text-sm">{flag}</span>
-              ))}
-            </div>
-            <span className="text-[11px] text-muted-foreground font-medium">50+ countries supported</span>
-          </div>
         </div>
 
         {/* Right, Product Mockup — bigger */}
