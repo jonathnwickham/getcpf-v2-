@@ -153,13 +153,17 @@ const Admin = () => {
   );
 };
 
-const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
-const getDataStatus = (profile: Profile): "Active" | "Due for deletion" | "Retained" => {
+const getDataStatus = (profile: Profile, applications: Application[] = []): "Active" | "Due for deletion" | "Retained" => {
   if (!profile.created_at) return "Active";
   const age = Date.now() - new Date(profile.created_at).getTime();
-  if (profile.plan === "active_subscriber") return "Retained";
-  if (age > THIRTY_DAYS_MS) return "Due for deletion";
+  // Paying customers are never flagged for deletion
+  const hasPaidApp = applications.some(
+    a => a.user_id === profile.id && ["paid", "prepared", "office_visited", "cpf_issued"].includes(a.status || "")
+  );
+  if (hasPaidApp || profile.plan === "active_subscriber") return "Retained";
+  if (age > NINETY_DAYS_MS) return "Due for deletion";
   return "Active";
 };
 
