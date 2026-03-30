@@ -62,7 +62,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         {/* Left, Copy */}
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
-            <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+            <span className="text-sm">🇧🇷</span>
             Trusted by 200+ foreigners moving to Brazil
           </div>
 
@@ -180,13 +180,15 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       {/* Nationality flags */}
       <div className="animate-fade-up-4 mt-14 flex flex-col items-center gap-3">
-        <div className="flex gap-2 flex-wrap justify-center">
+        <div className="flex gap-2 flex-wrap justify-center items-center">
+          <span className="text-3xl">🇧🇷</span>
+          <span className="text-muted-foreground mx-1">←</span>
           {flags.map((flag) => (
             <span key={flag} className="text-2xl">{flag}</span>
           ))}
           <span className="text-sm text-muted-foreground font-medium self-center ml-1">+40 more</span>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality</p>
+        <p className="text-xs text-muted-foreground">Works for any nationality moving to Brazil</p>
       </div>
     </section>
   );
