@@ -1,3 +1,5 @@
+import founderPhoto from "@/assets/founder-jonathan.jpg";
+
 const personas = [
   {
     emoji: "💻",
