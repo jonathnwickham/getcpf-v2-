@@ -723,14 +723,49 @@ const CITY_TIPS: Record<string, string> = {
   RJ: "Main offices handle foreigners regularly.",
 };
 
-const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
-  recommendedOffice?: OfficeInfo; alternativeOffices: OfficeInfo[]; stateName: string; data: OnboardingData;
+const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onChangeState }: {
+  recommendedOffice?: OfficeInfo; alternativeOffices: OfficeInfo[]; stateName: string; data: OnboardingData; onChangeState?: (newState: string) => void;
 }) => {
   const [troubleOpen, setTroubleOpen] = useState<string | null>(null);
+  const [showStateChange, setShowStateChange] = useState(false);
   const cityTip = CITY_TIPS[data.state] || "Walk-in should work. Arrive early.";
 
   return (
   <div className="space-y-6 animate-slide-in">
+    {/* State selector */}
+    <section className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
+      <div className="flex items-center gap-3">
+        <span className="text-lg">📍</span>
+        <div>
+          <div className="text-sm font-semibold">Showing offices for <span className="text-primary">{stateName}</span></div>
+          <div className="text-xs text-muted-foreground">Based on your application</div>
+        </div>
+      </div>
+      {showStateChange ? (
+        <div className="flex items-center gap-2">
+          <select
+            className="border border-border rounded-lg px-3 py-2 text-sm bg-background"
+            defaultValue={data.state}
+            onChange={(e) => {
+              if (onChangeState) onChangeState(e.target.value);
+              setShowStateChange(false);
+            }}
+          >
+            {BRAZILIAN_STATES.map((s) => (
+              <option key={s.value} value={s.value}>{s.label}</option>
+            ))}
+          </select>
+          <button onClick={() => setShowStateChange(false)} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setShowStateChange(true)}
+          className="text-xs text-primary font-semibold hover:underline"
+        >
+          Wrong state? Change it
+        </button>
+      )}
+    </section>
     {/* Walk-in is default */}
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
       <h3 className="font-bold text-lg flex items-center gap-2">🚶 Most offices accept walk-ins</h3>
