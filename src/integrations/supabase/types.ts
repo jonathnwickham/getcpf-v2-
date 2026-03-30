@@ -197,7 +197,10 @@ export type Database = {
         Row: {
           affiliate_commission_percent: number
           affiliate_email: string | null
+          affiliate_location: string | null
           affiliate_name: string | null
+          affiliate_notes: string | null
+          affiliate_source: string | null
           code: string
           created_at: string
           discount_percent: number
@@ -209,7 +212,10 @@ export type Database = {
         Insert: {
           affiliate_commission_percent?: number
           affiliate_email?: string | null
+          affiliate_location?: string | null
           affiliate_name?: string | null
+          affiliate_notes?: string | null
+          affiliate_source?: string | null
           code: string
           created_at?: string
           discount_percent?: number
@@ -221,7 +227,10 @@ export type Database = {
         Update: {
           affiliate_commission_percent?: number
           affiliate_email?: string | null
+          affiliate_location?: string | null
           affiliate_name?: string | null
+          affiliate_notes?: string | null
+          affiliate_source?: string | null
           code?: string
           created_at?: string
           discount_percent?: number
