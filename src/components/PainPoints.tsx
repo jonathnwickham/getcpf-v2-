@@ -35,7 +35,7 @@ const PainPoints = () => {
       <div className="max-w-[900px] mx-auto">
         <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[700px]">
-          Brazil is incredible. Until you try to do literally anything without a CPF.
+          Brazil is incredible. But without a CPF, everyday things become impossible.
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           {painPoints.map((point) => (
