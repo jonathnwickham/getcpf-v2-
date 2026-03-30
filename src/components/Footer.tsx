@@ -34,6 +34,7 @@ const Footer = () => (
             <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
             <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
             <li><Link to="/partners" className="hover:text-foreground transition-colors">Become a partner →</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Become an affiliate →</Link></li>
             <li><a href="mailto:support@getcpf.com" className="hover:text-foreground transition-colors">Contact us</a></li>
           </ul>
         </div>
