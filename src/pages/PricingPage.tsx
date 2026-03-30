@@ -313,8 +313,8 @@ const PricingPage = () => {
                   <span className="animate-pulse">Sorting your payment...</span>
                 ) : (
                   <>
-                    <span className="font-extrabold text-base tracking-tight">Pay</span>
-                    <span className="font-extrabold text-base tracking-tight text-[hsl(210,80%,45%)]">Pal</span>
+                    <span className="font-extrabold text-base tracking-tight">Pay with </span>
+                    <span className="font-extrabold text-base tracking-tight text-[hsl(210,80%,45%)]">PayPal</span>
                   </>
                 )}
               </button>

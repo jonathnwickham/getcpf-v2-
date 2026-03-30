@@ -499,7 +499,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
         <div className="py-6 space-y-3">
           <InfoField label="Full Name" value={data.fullName} />
           <InfoField label="Passport" value={data.passportNumber} />
-          <InfoField label="Nationality" value={`${data.nationality} / ${getNationalityPt(data.nationality)}`} />
+          <InfoField label="Nationality" value={data.nationality} />
           <InfoField label="Mother's Name" value={motherDisplay} />
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Email" value={data.email} />
@@ -733,9 +733,9 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data }: {
   <div className="space-y-6 animate-slide-in">
     {/* Walk-in is default */}
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
-      <h3 className="font-bold text-lg flex items-center gap-2">🚶 Walk-in is the default</h3>
+      <h3 className="font-bold text-lg flex items-center gap-2">🚶 Most offices accept walk-ins</h3>
       <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-        <li>• Most Receita Federal offices process CPF for foreigners <strong>without an appointment</strong></li>
+        <li>• Most Receita Federal offices process CPF for foreigners <strong>without an appointment</strong> — check your specific office below</li>
         <li>• The online booking system requires a CPF to use (which you don't have yet) — so walk-in is the only option</li>
         <li>• Just go in, take a queue number at reception, and wait</li>
       </ul>

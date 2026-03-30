@@ -9,6 +9,7 @@ import GetStarted from "./pages/GetStarted.tsx";
 import ReadyPack from "./pages/ReadyPack.tsx";
 import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
+import { Navigate } from "react-router-dom";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -35,7 +36,11 @@ const App = () => (
             <Route path="/ready-pack" element={<ProtectedRoute><ReadyPack /></ProtectedRoute>} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signin" element={<Navigate to="/login" replace />} />
+            <Route path="/sign-in" element={<Navigate to="/login" replace />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+            <Route path="/contact" element={<Navigate to="mailto:support@getcpf.com" replace />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
