@@ -134,6 +134,7 @@ const CATEGORIES: Category[] = [
           "Once approved, you can sign leases without a fiador (guarantor)",
         ],
         tips: ["This is the standard alternative to finding a Brazilian guarantor."],
+        link: { label: "Get a quote from Porto Seguro", url: "https://www.portoseguro.com.br/seguro-fianca-locaticia" },
       },
     ],
   },
