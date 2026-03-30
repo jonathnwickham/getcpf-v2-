@@ -26,7 +26,7 @@ const tiers = [
       "Post-CPF partner recommendations",
       "Application status tracking",
     ],
-    cta: "Get started — $49",
+    cta: "Get started, $49",
   },
   {
     name: "Concierge",
