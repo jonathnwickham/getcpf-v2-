@@ -1,6 +1,18 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileCheck, MapPin, Languages, CheckCircle, FileText, Search } from "lucide-react";
 import brazilStencil from "@/assets/brazil-stencil.png";
+
+const offices = [
+  { city: "São Paulo", office: "CAC Bela Vista" },
+  { city: "Rio de Janeiro", office: "CAC Centro" },
+  { city: "Florianópolis", office: "Receita Federal Centro" },
+  { city: "Curitiba", office: "Delegacia Centro" },
+  { city: "Salvador", office: "CAC Comércio" },
+  { city: "Belo Horizonte", office: "CAC Savassi" },
+  { city: "Brasília", office: "Delegacia Asa Sul" },
+  { city: "Recife", office: "CAC Boa Vista" },
+];
 
 interface HeroProps {
   onOpenModal?: () => void;
@@ -8,6 +20,14 @@ interface HeroProps {
 
 const Hero = ({ onOpenModal }: HeroProps) => {
   const navigate = useNavigate();
+  const [officeIndex, setOfficeIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOfficeIndex((prev) => (prev + 1) % offices.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCTA = () => {
     if (onOpenModal) onOpenModal();
@@ -105,7 +125,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                   <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <div className="text-xs font-semibold">Nearest Receita Federal</div>
-                    <div className="text-[10px] text-muted-foreground">São Paulo, CAC Bela Vista</div>
+                    <div className="text-[10px] text-muted-foreground transition-all duration-500">{offices[officeIndex].city}, {offices[officeIndex].office}</div>
                   </div>
                 </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 flex items-start gap-2">
