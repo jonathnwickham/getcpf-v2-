@@ -4,8 +4,8 @@ const painCards = [
   { icon: Smartphone, title: "Can't buy a SIM card", desc: "Carriers require a CPF to activate any SIM. No phone, no Uber, no maps, no WhatsApp." },
   { icon: UtensilsCrossed, title: "Can't order food delivery", desc: "iFood, Rappi, and most delivery apps require a CPF to create an account or pay." },
   { icon: Plane, title: "Can't buy domestic flights", desc: "GOL, LATAM, and Azul all require a CPF at checkout for domestic ticket purchases." },
-  { icon: Building2, title: "Can't open a bank account", desc: "Nubank, Inter, C6 — every bank and fintech in Brazil requires a CPF to sign up." },
-  { icon: Ticket, title: "Can't buy event tickets", desc: "Concert, football, theatre — ticket platforms demand a CPF. No workaround." },
+  { icon: Building2, title: "Can't open a bank account", desc: "Nubank, Inter, C6, every bank and fintech in Brazil requires a CPF to sign up." },
+  { icon: Ticket, title: "Can't buy event tickets", desc: "Concert, football, theatre, ticket platforms demand a CPF. No workaround." },
   { icon: ShoppingCart, title: "Can't shop online", desc: "Amazon Brazil, Mercado Livre, and most e-commerce sites require a CPF at checkout." },
 ];
 

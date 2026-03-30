@@ -39,7 +39,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       />
 
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left — Copy */}
+        {/* Left, Copy */}
         <div className="text-center lg:text-left">
           <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/5 border border-primary/15 px-4 py-1.5 rounded-full text-xs text-primary font-semibold mb-8">
             <span className="w-1.5 h-1.5 bg-primary rounded-full" />
@@ -53,7 +53,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-6 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            Most foreigners waste a full day figuring out their CPF. We cut that to five minutes. Answer a few questions and we prepare everything — the right forms, the nearest office, the exact words to say in Portuguese.
+            Most foreigners waste a full day figuring out their CPF. We cut that to five minutes. Answer a few questions and we prepare everything, the right forms, the nearest office, the exact words to say in Portuguese.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-8 flex-wrap justify-center lg:justify-start">
@@ -75,9 +75,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </div>
         </div>
 
-        {/* Right — Product Mockup */}
-        <div className="animate-fade-up-3 hidden lg:block">
-          <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/5 overflow-hidden">
+        {/* Right, Product Mockup */}
+        <div className="animate-fade-up-3 hidden lg:block relative">
+          <div className="animate-float">
+          <div className="bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden">
             {/* Browser bar */}
             <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b border-border">
               <div className="flex gap-1.5">
@@ -151,6 +152,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               </div>
             </div>
           </div>
+          </div>
+          {/* Shadow that stays in place while card floats */}
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-primary/5 rounded-[50%] blur-xl" />
         </div>
       </div>
 

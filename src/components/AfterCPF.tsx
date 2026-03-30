@@ -4,7 +4,7 @@ const cards = [
   {
     icon: CreditCard,
     title: "Open a bank account in 10 minutes",
-    desc: "Nubank, Inter, C6 — digital banks approve you instantly with a CPF. Get a debit card, Pix, and credit line.",
+    desc: "Nubank, Inter, C6, digital banks approve you instantly with a CPF. Get a debit card, Pix, and credit line.",
   },
   {
     icon: Smartphone,
@@ -14,7 +14,7 @@ const cards = [
   {
     icon: Home,
     title: "Start apartment hunting",
-    desc: "QuintoAndar, ZAP Imóveis, OLX — lease an apartment, sign contracts, set up utilities. All need a CPF.",
+    desc: "QuintoAndar, ZAP Imóveis, OLX, lease an apartment, sign contracts, set up utilities. All need a CPF.",
   },
 ];
 
@@ -27,7 +27,7 @@ const AfterCPF = () => {
           Your CPF unlocks everything
         </h2>
         <p className="text-muted-foreground mt-3 max-w-md mx-auto text-sm leading-relaxed">
-          Once you have your CPF, we show you exactly what to do next — step by step.
+          Once you have your CPF, we show you exactly what to do next, step by step.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left">

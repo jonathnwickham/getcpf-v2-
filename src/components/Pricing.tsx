@@ -18,7 +18,7 @@ const tiers = [
       "Pre-filled form data with copy buttons",
       "Portuguese email template with your details",
       "Document storage (passport, address proof)",
-      "AI document scanner — checks your docs are correct",
+      "AI document scanner, checks your docs are correct",
       "Correct Receita Federal office for your state",
       "Document checklist with quality tips",
       "Portuguese cheat sheet for office visits",
@@ -26,7 +26,7 @@ const tiers = [
       "Post-CPF partner recommendations",
       "Application status tracking",
     ],
-    cta: "Get started — $49",
+    cta: "Get started, $49",
   },
   {
     name: "Concierge",
@@ -83,7 +83,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Pricing</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[520px] text-sm leading-relaxed">
-        The CPF itself is free. You're paying for the preparation that makes it work first time — no rejected forms, no wasted trips.
+        The CPF itself is free. You're paying for the preparation that makes it work first time, no rejected forms, no wasted trips.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto mt-12">
         {tiers.map((tier) => (
@@ -129,7 +129,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             >
               {tier.cta} {tier.comingSoon ? "" : "→"}
             </button>
-            {/* Trust signals — only on highlighted tier */}
+            {/* Trust signals, only on highlighted tier */}
             {tier.highlighted && (
               <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
                 {trustSignals.map((s) => {
