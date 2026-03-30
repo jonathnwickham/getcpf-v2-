@@ -929,8 +929,8 @@ const PromosTab = () => {
                         ) : (
                           <>
                             <TableCell className="font-semibold">{a.name}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">{a.email || "No email"}</TableCell>
                             <TableCell className="font-mono text-primary">{a.code}</TableCell>
-                            <TableCell>{a.discount}%</TableCell>
                             <TableCell>{a.commission}%</TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
@@ -944,7 +944,7 @@ const PromosTab = () => {
                                   {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `View ▼`) : "No data"}
                                 </button>
                                 <button
-                                  onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditCommission(String(a.commission)); }}
+                                  onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
                                   className="text-xs font-semibold text-muted-foreground hover:text-foreground"
                                 >
                                   Edit
