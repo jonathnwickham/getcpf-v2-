@@ -188,15 +188,17 @@ const UsersTab = ({ profiles, applications, search, setSearch }: {
   // Nationality breakdown
   const nationalityData = useMemo(() => {
     const map = new Map<string, number>();
+    // Use nationality from applications where available, fall back to profile country_code
     profiles.forEach(p => {
-      const nat = p.country_code || "Unknown";
+      const app = applications.find(a => a.user_id === p.id);
+      const nat = app?.nationality || p.country_code || "Unknown";
       map.set(nat, (map.get(nat) || 0) + 1);
     });
     return Array.from(map.entries())
       .sort(([, a], [, b]) => b - a)
       .slice(0, 8)
       .map(([name, value]) => ({ name, value }));
-  }, [profiles]);
+  }, [profiles, applications]);
 
   return (
     <div className="space-y-6">
