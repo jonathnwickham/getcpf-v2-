@@ -20,6 +20,8 @@ import Affiliates from "./pages/Affiliates.tsx";
 import Partners from "./pages/Partners.tsx";
 import AffiliateApply from "./pages/AffiliateApply.tsx";
 import Admin from "./pages/Admin.tsx";
+import Guides from "./pages/Guides.tsx";
+import GuideDetail from "./pages/GuideDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
@@ -54,6 +56,8 @@ const App = () => (
             <Route path="/partners" element={<Partners />} />
             <Route path="/affiliates/apply" element={<AffiliateApply />} />
             <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+            <Route path="/guides" element={<Guides />} />
+            <Route path="/guides/:slug" element={<GuideDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
