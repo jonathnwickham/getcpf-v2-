@@ -296,9 +296,10 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             {filtered.map(p => {
               const userApp = applications.find(a => a.user_id === p.id);
               const nat = userApp?.nationality || p.country_code || "—";
+              const displayName = p.full_name || userApp?.full_name || "—";
               return (
                 <TableRow key={p.id} className="cursor-pointer hover:bg-secondary/50" onClick={() => setSelectedUser(p.id)}>
-                  <TableCell className="font-medium">{p.full_name || "—"}</TableCell>
+                  <TableCell className="font-medium">{displayName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
                   <TableCell className="text-sm">{nat}</TableCell>
                   <TableCell>
@@ -423,7 +424,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Paid" value={applications.filter(a => a.status === "paid").length.toString()} icon="💳" />
+        <StatCard label="Paid" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} icon="💳" />
         <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
       </div>
@@ -1245,7 +1246,8 @@ const SettingsTab = () => {
       const app = appMap.get(p.id) as any;
       return headers.map(h => {
         let val = "";
-        if (h === "nationality") val = app?.nationality || p.country_code || "";
+        if (h === "full_name") val = p.full_name || app?.full_name || "";
+        else if (h === "nationality") val = app?.nationality || p.country_code || "";
         else if (h === "state") val = app?.state_name || "";
         else if (h === "city") val = app?.city || "";
         else if (h === "status") val = app?.status || "";
