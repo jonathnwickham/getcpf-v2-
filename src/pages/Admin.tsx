@@ -148,11 +148,12 @@ const Admin = () => {
 
         {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
         {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
-        {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} />}
+        {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
         {tab === "promos" && <PromosTab />}
         {tab === "affiliates" && <AffiliatesTab />}
+        {tab === "partners" && <PartnersTab userId={user?.id || ""} />}
         {tab === "waitlist" && <WaitlistTab />}
-        {tab === "settings" && <SettingsTab />}
+        {tab === "settings" && <SettingsTab userId={user?.id || ""} />}
       </div>
     </div>
   );
