@@ -174,14 +174,44 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
       </div>
 
-      {/* Nationality orbit */}
-      <div className="animate-fade-up-4 mt-4 flex flex-col items-center gap-2">
-        <div className="relative w-[120px] h-[120px] md:w-[160px] md:h-[160px] lg:w-[200px] lg:h-[200px]">
-          {/* Centre Brazil flag */}
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <span className="text-3xl md:text-4xl lg:text-5xl">🇧🇷</span>
+      {/* Stats row */}
+      <div className="animate-fade-up-4 flex flex-wrap gap-8 sm:gap-12 mt-10 justify-center">
+        {proofItems.map((item) => (
+          <div key={item.label} className="text-center">
+            <div className="text-xl font-bold text-foreground">{item.num}</div>
+            <div className="text-[11px] text-muted-foreground mt-0.5 font-medium">{item.label}</div>
           </div>
-          {/* Rotating ring */}
+        ))}
+      </div>
+
+      {/* Logo strip + orbit in one compact block */}
+      <div className="animate-fade-up-4 mt-6 flex flex-col items-center gap-4">
+        <div className="flex flex-wrap gap-4 justify-center items-center">
+          {[
+            { src: nubankLogo, alt: "Nubank" },
+            { src: ifoodLogo, alt: "iFood" },
+            { src: mercadoLivreLogo, alt: "Mercado Livre" },
+            { src: rappiLogo, alt: "Rappi" },
+            { src: vivoLogo, alt: "Vivo" },
+            { src: quintoAndarLogo, alt: "QuintoAndar" },
+            { src: amazonLogo, alt: "Amazon BR" },
+            { src: correiosLogo, alt: "Correios" },
+          ].map((logo) => (
+            <img
+              key={logo.alt}
+              src={logo.src}
+              alt={logo.alt}
+              className="h-6 w-auto rounded object-contain opacity-70 hover:opacity-100 transition-all duration-300"
+            />
+          ))}
+        </div>
+        <p className="text-[11px] text-muted-foreground">Your CPF unlocks all of these</p>
+
+        {/* Compact orbit */}
+        <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px]">
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="text-2xl md:text-3xl">🇧🇷</span>
+          </div>
           <div className="absolute inset-0 animate-[spin_24s_linear_infinite]">
             {orbitFlags.map((flag, i) => {
               const angle = (i / orbitFlags.length) * 2 * Math.PI;
@@ -191,7 +221,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               return (
                 <span
                   key={i}
-                  className="absolute text-sm md:text-base lg:text-lg animate-[spin_24s_linear_infinite_reverse]"
+                  className="absolute text-xs md:text-sm animate-[spin_24s_linear_infinite_reverse]"
                   style={{
                     left: `${x}%`,
                     top: `${y}%`,
@@ -204,7 +234,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             })}
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">Works for any nationality — 50+ countries supported</p>
+        <p className="text-[11px] text-muted-foreground -mt-1">50+ countries supported</p>
       </div>
     </section>
   );
