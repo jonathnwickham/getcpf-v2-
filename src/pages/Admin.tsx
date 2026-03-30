@@ -33,10 +33,15 @@ interface Application {
   email: string | null;
   nationality: string | null;
   state_name: string | null;
+  state_code: string | null;
   city: string | null;
   status: string | null;
   created_at: string | null;
   submitted_at: string | null;
+  passport_number: string | null;
+  street_address: string | null;
+  mother_name: string | null;
+  father_name: string | null;
 }
 
 const CHART_COLORS = [
