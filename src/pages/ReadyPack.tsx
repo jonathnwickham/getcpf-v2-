@@ -772,6 +772,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
           Wrong state? Change it
         </button>
       )}
+      <span id="state-changed-toast" className="hidden text-xs text-primary font-semibold animate-fade-up">✓ State updated</span>
     </section>
     {/* Walk-in is default */}
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
