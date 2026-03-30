@@ -13,6 +13,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   AreaChart, Area,
 } from "recharts";
+import { maskPassport } from "@/lib/mask-passport";
 
 type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "waitlist" | "settings";
 
