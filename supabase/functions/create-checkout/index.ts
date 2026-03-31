@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
     }
 
     const fanbasisData = await fanbasisRes.json();
-    const secret = fanbasisData.checkout_session_secret;
+    const secret = fanbasisData.checkout_session_secret || fanbasisData.data?.checkout_session_secret;
 
     if (!secret) {
       console.error("No checkout_session_secret in response:", fanbasisData);
