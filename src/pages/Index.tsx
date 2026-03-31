@@ -6,6 +6,7 @@ import SocialProofBar from "@/components/SocialProofBar";
 import PainPoints from "@/components/PainPoints";
 import WhoIsThisFor from "@/components/WhoIsThisFor";
 import HowItWorks from "@/components/HowItWorks";
+import ProductPreview from "@/components/ProductPreview";
 import Transformation from "@/components/Transformation";
 
 import Pricing from "@/components/Pricing";
@@ -61,6 +62,7 @@ const Index = () => {
       <MidCTA onOpenModal={handleOpenOnboarding} text="Five minutes of prep. One visit. Done." buttonText="Get started →" />
       <WhoIsThisFor />
       <HowItWorks />
+      <ProductPreview />
       <Transformation />
       {/* CTA after showing the transformation */}
       <MidCTA onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} text="Ready to skip the headache?" buttonText="See pricing ↓" />

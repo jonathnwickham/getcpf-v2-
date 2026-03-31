@@ -1505,6 +1505,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
     </section>
 
+    {/* Protocol Preview — shows after submission */}
+    <ProtocolPreviewSection data={data} />
+
     {/* Host declaration letter */}
     {hasHost && declaration && (
       <DeclarationSection declaration={declaration} declarationCopied={declarationCopied} setDeclarationCopied={setDeclarationCopied} data={data} />
@@ -1517,6 +1520,115 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
     {/* AI Document Scanner */}
     <DocumentScanner />
   </div>
+  );
+};
+
+// === PROTOCOL PREVIEW SECTION ===
+const FIELD_TRANSLATIONS = [
+  { pt: "Nome", en: "Full name", tip: "Your full name as it appears on your passport" },
+  { pt: "Nascimento", en: "Date of birth", tip: "Format: DD/MM/YYYY" },
+  { pt: "Documento", en: "Document type", tip: "Select 'Passaporte'" },
+  { pt: "Número", en: "Document number", tip: "Your passport number" },
+  { pt: "Nacionalidade", en: "Nationality", tip: "Your country of citizenship" },
+  { pt: "Sexo", en: "Gender", tip: "M = Masculino (Male), F = Feminino (Female)" },
+  { pt: "Nome da Mãe", en: "Mother's full name", tip: "As it appears on your birth certificate" },
+  { pt: "País de Residência", en: "Country of residence", tip: "Select 'Brasil' if you're living here" },
+  { pt: "CEP", en: "Postal code (ZIP)", tip: "The CEP of your Brazilian address — auto-fills city and state" },
+  { pt: "Município", en: "City / Municipality", tip: "The city you're staying in" },
+  { pt: "UF", en: "State code", tip: "Two-letter state abbreviation (e.g. SP, RJ, SC)" },
+  { pt: "Logradouro", en: "Street type + name", tip: "e.g. Rua, Avenida — select the type, then enter the street name" },
+  { pt: "Número", en: "House/building number", tip: "Your street number" },
+  { pt: "Complemento", en: "Apartment / suite", tip: "Apt number, block, or leave blank" },
+  { pt: "Bairro", en: "Neighbourhood", tip: "The neighbourhood or district" },
+  { pt: "E-mail", en: "Email address", tip: "Your email — they may send confirmation here" },
+  { pt: "DDI", en: "Country calling code", tip: "e.g. +1 for US, +44 for UK, +61 for Australia" },
+  { pt: "DDD", en: "Area code", tip: "Brazilian area code if you have a local number, otherwise your home area code" },
+  { pt: "Telefone / Celular", en: "Phone / Mobile number", tip: "Your phone number without the country or area code" },
+];
+
+const ProtocolPreviewSection = ({ data }: { data: OnboardingData }) => {
+  const [showFieldGuide, setShowFieldGuide] = useState(false);
+
+  return (
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h2 className="font-bold">📋 Your protocol document</h2>
+        <p className="text-xs text-muted-foreground mt-1">This is the document you print and bring to the Receita Federal office</p>
+      </div>
+      <div className="p-6 space-y-4">
+        {/* Green banner */}
+        <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
+          <span className="text-2xl">✅</span>
+          <div>
+            <p className="font-bold text-sm text-primary">Your protocol is ready. Print this before you go to the office.</p>
+          </div>
+        </div>
+
+        {/* Document preview placeholder with user data */}
+        <div className="bg-secondary rounded-xl p-5 border border-border">
+          <div className="bg-white rounded-lg p-4 border border-border/50">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Inscrição CPF Estrangeiro</p>
+            <div className="font-mono text-xs space-y-1.5 text-foreground">
+              <div><span className="text-muted-foreground">Nome:</span> <strong>{data.fullName}</strong></div>
+              <div><span className="text-muted-foreground">Documento:</span> Passaporte — {data.passportNumber}</div>
+              <div><span className="text-muted-foreground">Nacionalidade:</span> {getNationalityPt(data.nationality)}</div>
+              <div><span className="text-muted-foreground">Nome da Mãe:</span> {data.noMotherName ? data.motherAlternative : data.motherName}</div>
+              <div><span className="text-muted-foreground">Endereço:</span> {data.streetAddress}, {data.city}, {data.state}</div>
+              <div><span className="text-muted-foreground">E-mail:</span> {data.email}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Download button */}
+        <button
+          onClick={() => {
+            // Will link to actual PDF generation when protocol is available
+            window.print();
+          }}
+          className="w-full bg-primary text-primary-foreground px-6 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all flex items-center justify-center gap-2"
+        >
+          🖨️ Download my protocol to print →
+        </button>
+
+        {/* Warning box */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex items-start gap-3">
+          <span className="text-xl mt-0.5">⚠️</span>
+          <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
+            The Receita Federal requires a physical printed copy. Your phone is not accepted at the counter.
+          </p>
+        </div>
+
+        {/* Field guide toggle */}
+        <button
+          onClick={() => setShowFieldGuide(!showFieldGuide)}
+          className="w-full flex items-center justify-between bg-secondary rounded-xl p-4 hover:bg-secondary/80 transition-all"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-lg">🔤</span>
+            <div className="text-left">
+              <h4 className="font-semibold text-sm">Field-by-field translation guide</h4>
+              <p className="text-xs text-muted-foreground">Every Portuguese field explained in plain English</p>
+            </div>
+          </div>
+          <span className={`text-muted-foreground transition-transform ${showFieldGuide ? "rotate-180" : ""}`}>▼</span>
+        </button>
+
+        {showFieldGuide && (
+          <div className="space-y-2 animate-slide-in">
+            {FIELD_TRANSLATIONS.map((f) => (
+              <div key={f.pt} className="bg-secondary/50 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <div className="flex items-center gap-2 min-w-[160px]">
+                  <span className="font-mono text-xs font-bold text-primary">{f.pt}</span>
+                  <span className="text-muted-foreground text-xs">→</span>
+                  <span className="text-xs font-semibold">{f.en}</span>
+                </div>
+                <p className="text-xs text-muted-foreground">{f.tip}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 
