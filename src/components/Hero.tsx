@@ -82,9 +82,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         {/* Left — copy */}
         <div className="text-center lg:text-left">
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
-            Get your Brazilian{" "}
-            <span className="text-primary font-serif italic">CPF</span>{" "}
-            without the headache
+            Your Brazilian{" "}
+            <span className="text-primary font-serif italic">CPF,</span>{" "}
+            first visit, sorted
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-4 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
