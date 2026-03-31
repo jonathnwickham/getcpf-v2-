@@ -58,7 +58,7 @@ const Index = () => {
       <SocialProofBar />
       <PainPoints />
       {/* Mid-page CTA after pain is felt */}
-      <MidCTA onOpenModal={handleOpenOnboarding} text="Stop stressing — get your CPF sorted today" buttonText="Get started →" />
+      <MidCTA onOpenModal={handleOpenOnboarding} text="Stop stressing. Get your CPF sorted today." buttonText="Get started →" />
       <WhoIsThisFor />
       <HowItWorks />
       <Transformation />
