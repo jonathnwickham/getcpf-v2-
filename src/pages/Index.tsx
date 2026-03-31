@@ -7,7 +7,7 @@ import PainPoints from "@/components/PainPoints";
 import WhoIsThisFor from "@/components/WhoIsThisFor";
 import HowItWorks from "@/components/HowItWorks";
 import Transformation from "@/components/Transformation";
-import ScamObjection from "@/components/ScamObjection";
+
 import Pricing from "@/components/Pricing";
 import TrustBar from "@/components/TrustBar";
 import AfterCPF from "@/components/AfterCPF";
