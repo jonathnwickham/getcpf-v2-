@@ -50,8 +50,8 @@ const Checkout = () => {
       {/* Top bar */}
       <div className="border-b border-border bg-background">
         <div className="flex items-center justify-between px-6 py-4 max-w-[600px] mx-auto">
-          <a href="/" className="text-lg font-bold tracking-tight">
-            GET <span className="text-primary">CPF</span>
+          <a href="/">
+            <Logo className="h-10" />
           </a>
           <span className="text-xs text-muted-foreground font-medium">
             {step === "email" ? "Step 1 of 2" : "Step 2 of 2"}
