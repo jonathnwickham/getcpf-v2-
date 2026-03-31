@@ -7,6 +7,7 @@ import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
+import protocolResultImg from "@/assets/protocol-result.png";
 import RejectionFlow from "@/components/RejectionFlow";
 import UnlockGuide from "@/components/UnlockGuide";
 import {
