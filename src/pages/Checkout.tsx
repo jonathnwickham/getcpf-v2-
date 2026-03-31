@@ -45,9 +45,36 @@ const Checkout = () => {
     setLoadingCheckout(false);
   };
 
+  const [paymentVerified, setPaymentVerified] = useState(false);
+
   const handlePaymentComplete = () => {
     navigate("/get-started");
   };
+
+  // Poll verify-payment endpoint every 5 seconds once checkout is showing
+  useEffect(() => {
+    if (step !== "payment" || !email || paymentVerified) return;
+
+    const poll = async () => {
+      try {
+        const { data } = await supabase.functions.invoke("verify-payment", {
+          body: { email },
+        });
+        if (data?.paid) {
+          setPaymentVerified(true);
+          handlePaymentComplete();
+        }
+      } catch (err) {
+        console.error("Payment verification poll error:", err);
+      }
+    };
+
+    const interval = setInterval(poll, 5000);
+    // Also poll immediately
+    poll();
+
+    return () => clearInterval(interval);
+  }, [step, email, paymentVerified]);
 
   // Listen for postMessage from Fanbasis iframe
   useEffect(() => {
@@ -178,12 +205,10 @@ const Checkout = () => {
                       title="Fanbasis Checkout"
                     />
                   </div>
-                  <button
-                    onClick={handlePaymentComplete}
-                    className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
-                  >
-                    I've completed my payment ✓
-                  </button>
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
+                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <span>Waiting for payment confirmation...</span>
+                  </div>
                 </div>
               )}
 
