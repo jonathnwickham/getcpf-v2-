@@ -74,7 +74,7 @@ const ProductPreview = () => {
 
 const CalloutItem = ({ text }: { text: string }) => (
   <div className="flex items-start gap-3">
-    <span className="text-green-500 text-xl mt-0.5 shrink-0">✓</span>
+    <span className="text-primary text-xl mt-0.5 shrink-0">✓</span>
     <p className="text-sm text-foreground font-medium">{text}</p>
   </div>
 );
