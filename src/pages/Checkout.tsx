@@ -155,12 +155,14 @@ const Checkout = () => {
                     </p>
                   </div>
 
-                  <button
-                    onClick={handlePayNow}
-                    className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
+                  <a
+                    href={CHECKOUT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all flex items-center justify-center"
                   >
                     Reopen payment page ↗
-                  </button>
+                  </a>
 
                   {/* TODO: Replace this manual button with automatic webhook-based payment verification.
                       Set up a Fanbasis webhook subscription listening for payment.succeeded events
