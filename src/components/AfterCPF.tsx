@@ -13,7 +13,7 @@ const AfterCPF = () => {
         <p className="text-primary font-semibold mt-2">Many everyday services in Brazil will need it.</p>
 
         <p className="text-muted-foreground mt-6 max-w-2xl mx-auto text-[15px] leading-relaxed">
-          Nubank, iFood, Mercado Livre, Rappi, Vivo, QuintoAndar, Amazon, Correios, Pix payments — they all need your CPF. Your Ready Pack includes a full Life in Brazil guide that walks you through setting up each one.
+          Nubank, iFood, Mercado Livre, Rappi, Vivo, QuintoAndar, Amazon, Correios, Pix payments... they all need your CPF. Your Ready Pack includes a full Life in Brazil guide that walks you through setting up each one.
         </p>
       </div>
     </section>
