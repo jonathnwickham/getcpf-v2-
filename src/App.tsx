@@ -39,32 +39,33 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <CookieBanner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/get-started" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
-            <Route path="/ready-pack" element={<ProtectedRoute><ReadyPack /></ProtectedRoute>} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signin" element={<Navigate to="/login" replace />} />
-            <Route path="/sign-in" element={<Navigate to="/login" replace />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
-            {/* /contact handled via mailto link in footer */}
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/affiliates" element={<Affiliates />} />
-            <Route path="/partners" element={<Partners />} />
-            <Route path="/affiliates/apply" element={<AffiliateApply />} />
-            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-            <Route path="/guides" element={<Guides />} />
-            <Route path="/guides/:slug" element={<GuideDetail />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/get-started" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
+              <Route path="/ready-pack" element={<ProtectedRoute><ReadyPack /></ProtectedRoute>} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signin" element={<Navigate to="/login" replace />} />
+              <Route path="/sign-in" element={<Navigate to="/login" replace />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/affiliates" element={<Affiliates />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/affiliates/apply" element={<AffiliateApply />} />
+              <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+              <Route path="/guides" element={<Guides />} />
+              <Route path="/guides/:slug" element={<GuideDetail />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
