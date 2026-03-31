@@ -1,3 +1,5 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.100.1";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -18,6 +20,7 @@ Deno.serve(async (req) => {
       );
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
     const apiKey = Deno.env.get("FANBASIS_API_KEY");
     if (!apiKey) {
       console.error("FANBASIS_API_KEY not configured");
@@ -38,7 +41,7 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           product_id: "0LD5G",
           metadata: {
-            user_email: email,
+            user_email: normalizedEmail,
             source: "cpf-app",
           },
         }),
@@ -63,6 +66,23 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: "Invalid checkout response" }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+
+    // Save checkout session to database
+    try {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      await supabase.from("checkout_sessions").insert({
+        email: normalizedEmail,
+        checkout_session_secret: secret,
+        product_id: "0LD5G",
+      });
+      console.log(`Saved checkout session for ${normalizedEmail}`);
+    } catch (dbErr) {
+      // Non-fatal: log but don't fail the checkout
+      console.error("Failed to save checkout session to DB:", dbErr);
     }
 
     return new Response(
