@@ -13,29 +13,40 @@ const ProductPreview = () => {
           This is what you walk in with
         </h2>
 
-        {/* Document mockup */}
-        <div className="flex justify-center mb-10">
-          <div className="relative">
+        {/* Two document mockups */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
+          {/* Form (step 1) */}
+          <div className="relative flex-shrink-0">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — Fill in the form</p>
             <div
-              className="rounded-lg overflow-hidden shadow-2xl border border-border bg-white"
-              style={{ transform: "rotate(3deg)", maxWidth: 480 }}
+              className="rounded-lg overflow-hidden shadow-xl border border-border bg-white"
+              style={{ transform: "rotate(-2deg)", maxWidth: 340 }}
             >
               <img
-                src={protocolImg}
-                alt="CPF application protocol from Receita Federal — the official document you bring to the office"
+                src={protocolFormImg}
+                alt="CPF application form from Receita Federal"
                 className="w-full h-auto"
                 loading="lazy"
               />
-              {/* Overlay "Your Name Here" on the Nome field */}
-              <div
-                className="absolute text-[11px] md:text-sm font-semibold text-primary pointer-events-none"
-                style={{
-                  top: "12.5%",
-                  left: "30%",
-                }}
-              >
-                Your Name Here
-              </div>
+            </div>
+          </div>
+
+          {/* Arrow */}
+          <div className="text-3xl text-muted-foreground hidden md:block">→</div>
+
+          {/* Protocol result (step 2) */}
+          <div className="relative flex-shrink-0">
+            <p className="text-xs font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — Your protocol is generated</p>
+            <div
+              className="rounded-lg overflow-hidden shadow-2xl border-2 border-primary/30 bg-white"
+              style={{ transform: "rotate(3deg)", maxWidth: 380 }}
+            >
+              <img
+                src={protocolResultImg}
+                alt="CPF protocol document — the official receipt you print and bring to the Receita Federal office"
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
