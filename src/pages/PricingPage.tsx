@@ -139,23 +139,50 @@ const PricingPage = () => {
     }
   };
 
-  const handleSelectPlan = (tierName: string) => {
+  const handleSelectPlan = async (tierName: string) => {
     setSelectedPlan(tierName);
     setFlowStep("payment");
-  };
-
-  const handlePayNow = () => {
-    setPaymentOpened(true);
+    
+    // Start loading embedded checkout
+    setLoadingCheckout(true);
+    setCheckoutError(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: { email },
+      });
+      if (error || !data?.checkout_session_secret) {
+        console.error("Checkout error:", error, data);
+        setCheckoutError(true);
+      } else {
+        setCheckoutSecret(data.checkout_session_secret);
+      }
+    } catch (err) {
+      console.error("Checkout fetch error:", err);
+      setCheckoutError(true);
+    }
+    setLoadingCheckout(false);
   };
 
   const [paymentOpened, setPaymentOpened] = useState(false);
 
+  const EMBEDDED_URL = checkoutSecret
+    ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}`
+    : null;
+
   const handlePaymentComplete = () => {
-    // TODO: Replace this manual button with automatic webhook-based payment verification.
-    // Set up a Fanbasis webhook subscription listening for payment.succeeded events
-    // and verify payment server-side before advancing the user.
     setFlowStep("password");
   };
+
+  // Listen for postMessage from Fanbasis iframe for payment completion
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "fanbasis:payment_success" || event.data?.status === "success") {
+        handlePaymentComplete();
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
     e.preventDefault();
