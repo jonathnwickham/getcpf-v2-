@@ -35,10 +35,11 @@ const SocialProofBar = () => {
               key={logo.alt}
               src={logo.src}
               alt={logo.alt}
-              loading="lazy"
+              loading="eager"
+              decoding="async"
               width={80}
               height={25}
-              className="h-[25px] w-auto rounded object-contain hover:opacity-90 transition-opacity duration-300"
+              className="h-[25px] w-auto rounded object-contain"
             />
           ))}
         </div>
