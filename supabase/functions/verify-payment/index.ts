@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // 2. Fallback: check Fanbasis API directly for transactions
+    // 2. Fallback: check Fanbasis transactions API directly
     const apiKey = Deno.env.get("FANBASIS_API_KEY");
     if (apiKey) {
       try {
@@ -55,26 +55,28 @@ Deno.serve(async (req) => {
 
         if (fbRes.ok) {
           const fbData = await fbRes.json();
-          const transactions = fbData.data || fbData.transactions || fbData || [];
-          const txList = Array.isArray(transactions) ? transactions : [];
+          const txList = fbData?.data?.transactions || [];
 
-          // Find a successful transaction matching this email
+          // Transactions returned by this endpoint are already successful
+          // Email is in fan.email
           const match = txList.find((tx: any) => {
-            const txEmail = (tx.buyer_email || tx.email || tx.customer_email || tx.metadata?.user_email || "").toLowerCase().trim();
-            const txStatus = (tx.status || "").toLowerCase();
-            return txEmail === normalizedEmail && (txStatus === "succeeded" || txStatus === "paid" || txStatus === "completed");
+            const txEmail = (tx.fan?.email || "").toLowerCase().trim();
+            return txEmail === normalizedEmail;
           });
 
           if (match) {
-            console.log(`Fanbasis API confirmed payment for ${normalizedEmail}`);
-            
-            // Update DB so future checks are fast
+            const txId = String(match.id || "");
+            const paidAt = match.transaction_date || new Date().toISOString();
+            console.log(`Fanbasis API confirmed payment for ${normalizedEmail}, tx: ${txId}`);
+
+            // Update DB so future checks are instant
             await supabase
               .from("checkout_sessions")
               .update({
                 paid: true,
-                paid_at: new Date().toISOString(),
-                payment_id: match.transaction_id || match.id || null,
+                paid_at: paidAt,
+                payment_id: txId,
+                amount_cents: match.amount ? Math.round(match.amount * 100) : null,
               })
               .eq("email", normalizedEmail)
               .eq("paid", false);
@@ -94,12 +96,12 @@ Deno.serve(async (req) => {
             }
 
             return new Response(
-              JSON.stringify({ paid: true, paid_at: new Date().toISOString(), payment_id: match.transaction_id || match.id || null }),
+              JSON.stringify({ paid: true, paid_at: paidAt, payment_id: txId }),
               { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
         } else {
-          console.error("Fanbasis API error:", fbRes.status, await fbRes.text());
+          console.error("Fanbasis API error:", fbRes.status);
         }
       } catch (fbErr) {
         console.error("Fanbasis API check failed:", fbErr);
