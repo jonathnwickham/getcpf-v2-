@@ -162,7 +162,7 @@ const PricingPage = () => {
     setLoadingCheckout(false);
   };
 
-  const [paymentOpened, setPaymentOpened] = useState(false);
+  const [paymentVerified, setPaymentVerified] = useState(false);
 
   const EMBEDDED_URL = checkoutSecret
     ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}`
@@ -171,6 +171,30 @@ const PricingPage = () => {
   const handlePaymentComplete = () => {
     setFlowStep("password");
   };
+
+  // Poll verify-payment endpoint every 5 seconds once on payment step
+  useEffect(() => {
+    if (flowStep !== "payment" || !email || paymentVerified) return;
+
+    const poll = async () => {
+      try {
+        const { data } = await supabase.functions.invoke("verify-payment", {
+          body: { email },
+        });
+        if (data?.paid) {
+          setPaymentVerified(true);
+          handlePaymentComplete();
+        }
+      } catch (err) {
+        console.error("Payment verification poll error:", err);
+      }
+    };
+
+    const interval = setInterval(poll, 5000);
+    poll();
+
+    return () => clearInterval(interval);
+  }, [flowStep, email, paymentVerified]);
 
   // Listen for postMessage from Fanbasis iframe for payment completion
   useEffect(() => {
