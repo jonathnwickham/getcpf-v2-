@@ -157,6 +157,46 @@ const PricingPage = () => {
     setFlowStep("password");
   };
 
+  const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
+    e.preventDefault();
+    const wEmail = waitlistEmail.trim() || email.trim();
+    if (!wEmail) return;
+    await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
+    setWaitlistSubmitted(true);
+    toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
+  };
+
+  const handleCreateAccount = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length < 6) {
+      toast({ title: "Password too short", description: "Make it at least 6 characters.", variant: "destructive" });
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast({ title: "Those don't match", description: "Check your passwords and try again.", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/get-started`,
+        data: { plan: "self-service" },
+      },
+    });
+
+    if (error) {
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
+      setLoading(false);
+    } else {
+      toast({ title: "You're in! 🎉", description: "Let's get your CPF sorted." });
+      navigate("/get-started");
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Top bar */}
