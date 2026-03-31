@@ -62,6 +62,7 @@ const Index = () => {
       <MidCTA onOpenModal={handleOpenOnboarding} text="Five minutes of prep. One visit. Done." buttonText="Get started →" />
       <WhoIsThisFor />
       <HowItWorks />
+      <ProductPreview />
       <Transformation />
       {/* CTA after showing the transformation */}
       <MidCTA onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} text="Ready to skip the headache?" buttonText="See pricing ↓" />
