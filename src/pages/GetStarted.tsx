@@ -638,8 +638,8 @@ const AddressStep = ({
             />
           )}
           {isCityOpen && filteredCities.length > 0 && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
-              {filteredCities.map((c) => (
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+              {(citySearch ? filteredCities : filteredCities.slice(0, 20)).map((c) => (
                 <button
                   key={c}
                   type="button"
@@ -652,7 +652,7 @@ const AddressStep = ({
             </div>
           )}
           {isCityOpen && filteredCities.length === 0 && citySearch && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl p-4">
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl p-4">
               <p className="text-sm text-muted-foreground">No match — your typed city will be used</p>
             </div>
           )}
@@ -748,8 +748,8 @@ const AddressStep = ({
                 />
               )}
               {isHostCityOpen && filteredHostCities.length > 0 && (
-                <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
-                  {filteredHostCities.slice(0, 30).map((c) => (
+                <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
+                  {(hostCitySearch ? filteredHostCities : filteredHostCities.slice(0, 20)).map((c) => (
                     <button
                       key={c}
                       type="button"
