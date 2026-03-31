@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const PRODUCT_ID = "0LD5G";
 const CREATOR_HANDLE = "telosmedia";
-const FALLBACK_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}/${PRODUCT_ID}`;
+const CHECKOUT_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}/${PRODUCT_ID}`;
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [step, setStep] = useState<"email" | "payment">("email");
-  const [checkoutSecret, setCheckoutSecret] = useState<string | null>(null);
-  const [checkoutError, setCheckoutError] = useState(false);
-  const [loadingCheckout, setLoadingCheckout] = useState(false);
+  const [paymentOpened, setPaymentOpened] = useState(false);
 
   // Pre-fill email from auth if available
   useEffect(() => {
@@ -27,29 +23,11 @@ const Checkout = () => {
   const handleEmailContinue = () => {
     if (!email.includes("@")) return;
     setStep("payment");
-    fetchCheckoutSession(email);
   };
 
-  const fetchCheckoutSession = async (userEmail: string) => {
-    setLoadingCheckout(true);
-    setCheckoutError(false);
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: { email: userEmail },
-      });
-
-      if (error || !data?.checkout_session_secret) {
-        console.error("Checkout session error:", error, data);
-        setCheckoutError(true);
-      } else {
-        setCheckoutSecret(data.checkout_session_secret);
-      }
-    } catch (err) {
-      console.error("Failed to create checkout:", err);
-      setCheckoutError(true);
-    } finally {
-      setLoadingCheckout(false);
-    }
+  const handlePayNow = () => {
+    window.open(CHECKOUT_URL, "_blank");
+    setPaymentOpened(true);
   };
 
   const handlePaymentComplete = () => {
@@ -58,14 +36,6 @@ const Checkout = () => {
     // and verify payment server-side before advancing the user.
     navigate("/get-started");
   };
-
-  const handleFallbackPay = () => {
-    window.open(FALLBACK_URL, "_blank");
-  };
-
-  const embeddedUrl = checkoutSecret
-    ? `https://embedded.fanbasis.io/session/${CREATOR_HANDLE}/${PRODUCT_ID}/${checkoutSecret}`
-    : null;
 
   if (authLoading) {
     return (
@@ -90,7 +60,7 @@ const Checkout = () => {
       </div>
 
       <div className="flex-1 flex items-start justify-center px-6 py-8 md:py-12">
-        <div className="w-full max-w-[600px]">
+        <div className="w-full max-w-[500px]">
           {step === "email" ? (
             /* Step 1: Email capture */
             <div className="space-y-6">
@@ -157,54 +127,39 @@ const Checkout = () => {
                 </div>
               </div>
 
-              {/* Embedded checkout or fallback */}
-              {loadingCheckout ? (
-                <div className="space-y-3">
-                  <Skeleton className="w-full h-[700px] rounded-xl" />
-                  <p className="text-xs text-center text-muted-foreground">Loading secure checkout...</p>
-                </div>
-              ) : checkoutError ? (
-                /* Fallback UI */
-                <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    We couldn't load the embedded checkout. You can complete your payment in a new tab instead.
-                  </p>
+              {!paymentOpened ? (
+                <div className="space-y-4">
                   <button
-                    onClick={handleFallbackPay}
-                    className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+                    onClick={handlePayNow}
+                    className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-3"
                   >
-                    Pay $49 →
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Pay $49 securely →
                   </button>
-                  <p className="text-xs text-muted-foreground">
-                    Complete your payment in the new tab, then click below to continue
+                  <p className="text-xs text-center text-muted-foreground">
+                    You'll be taken to our secure payment page to complete checkout
                   </p>
-                  {/* TODO: Replace this manual button with automatic webhook-based payment verification.
-                      Set up a Fanbasis webhook subscription listening for payment.succeeded events
-                      and verify payment server-side before advancing the user. */}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 text-center">
+                    <div className="text-2xl mb-2">💳</div>
+                    <p className="text-sm font-semibold text-foreground mb-1">Payment page is open</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Complete your payment in the tab that just opened. Once done, click below to continue.
+                    </p>
+                  </div>
+
                   <button
-                    onClick={handlePaymentComplete}
+                    onClick={handlePayNow}
                     className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
                   >
-                    I've completed my payment ✓
+                    Reopen payment page ↗
                   </button>
-                </div>
-              ) : embeddedUrl ? (
-                /* Embedded Fanbasis checkout */
-                <div className="space-y-4">
-                  <iframe
-                    src={embeddedUrl}
-                    title="Fanbasis Checkout"
-                    style={{
-                      width: "100%",
-                      minHeight: "700px",
-                      border: "none",
-                      borderRadius: "12px",
-                    }}
-                    allow="payment"
-                  />
-                  <p className="text-xs text-center text-muted-foreground">
-                    🔒 Secure payment powered by Fanbasis
-                  </p>
+
                   {/* TODO: Replace this manual button with automatic webhook-based payment verification.
                       Set up a Fanbasis webhook subscription listening for payment.succeeded events
                       and verify payment server-side before advancing the user. */}
@@ -215,10 +170,14 @@ const Checkout = () => {
                     I've completed my payment ✓
                   </button>
                 </div>
-              ) : null}
+              )}
+
+              <p className="text-xs text-center text-muted-foreground">
+                🔒 Secure payment powered by Fanbasis
+              </p>
 
               <button
-                onClick={() => setStep("email")}
+                onClick={() => { setStep("email"); setPaymentOpened(false); }}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 ← Back
