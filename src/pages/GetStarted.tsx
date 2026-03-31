@@ -652,7 +652,7 @@ const AddressStep = ({
             </div>
           )}
           {isCityOpen && filteredCities.length === 0 && citySearch && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl p-4">
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl p-4">
               <p className="text-sm text-muted-foreground">No match — your typed city will be used</p>
             </div>
           )}
