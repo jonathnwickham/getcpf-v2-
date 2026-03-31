@@ -633,7 +633,7 @@ const AddressStep = ({
               }}
               onFocus={() => setIsCityOpen(true)}
               placeholder="Search city… e.g. São Paulo"
-              autoComplete="address-level2"
+              autoComplete="off"
               className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
             />
           )}
