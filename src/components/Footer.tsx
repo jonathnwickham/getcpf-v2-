@@ -8,7 +8,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
         {/* Brand */}
         <div>
-          <img src={logo} alt="GET CPF" className="h-8 mb-3" />
+          <Logo className="h-8 mb-3" />
           <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF, the easy way. We handle the preparation so you just show up.
           </p>
