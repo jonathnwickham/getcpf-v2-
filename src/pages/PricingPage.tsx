@@ -490,11 +490,11 @@ const PricingPage = () => {
                   />
                 </div>
                 <button
-                  onClick={handlePaymentComplete}
-                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
-                >
-                  I've completed my payment ✓
-                </button>
+                    onClick={handlePaymentComplete}
+                    className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+                  >
+                    I've completed my payment ✓
+                  </button>
               </div>
             )}
 
