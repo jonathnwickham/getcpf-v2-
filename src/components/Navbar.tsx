@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo.svg";
+import Logo from "@/components/Logo";
 
 interface NavbarProps {
   onOpenModal?: () => void;
@@ -38,7 +38,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
     <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/90 border-b border-border">
       <div className="flex items-center justify-between">
         <a href="/" className="flex items-center">
-          <img src={logo} alt="GET CPF" className="h-10" />
+          <Logo className="h-10" />
         </a>
 
         {/* Desktop nav */}

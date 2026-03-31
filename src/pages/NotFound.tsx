@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import logo from "@/assets/logo.svg";
+import Logo from "@/components/Logo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,7 +13,7 @@ const NotFound = () => {
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="text-center max-w-[400px]">
         <Link to="/" className="mb-8 inline-block">
-          <img src={logo} alt="GET CPF" className="h-8" />
+          <Logo className="h-8" />
         </Link>
         <h1 className="text-5xl font-extrabold mb-4">404</h1>
         <p className="text-lg font-semibold mb-2">This page doesn't exist</p>
