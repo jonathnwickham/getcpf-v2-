@@ -142,15 +142,21 @@ export const saveLatestApplication = async (userId: string, data: OnboardingData
   if (existing?.id) {
     const { error } = await supabase.from("applications").update(payload).eq("id", existing.id);
     if (error) throw error;
+    // Transition status via secure RPC
+    await supabase.rpc("transition_application_status" as any, { _application_id: existing.id, _new_status: status });
     return existing.id;
   }
 
   const { data: inserted, error } = await supabase
     .from("applications")
-    .insert(payload)
+    .insert({ ...payload, status })
     .select("id")
     .limit(1);
 
   if (error) throw error;
-  return inserted?.[0]?.id ?? null;
+  const newId = inserted?.[0]?.id ?? null;
+  if (newId && status !== "draft") {
+    await supabase.rpc("transition_application_status" as any, { _application_id: newId, _new_status: status });
+  }
+  return newId;
 };
