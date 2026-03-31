@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 
 // Lazy-loaded routes (not needed on initial page load)
+const Checkout = lazy(() => import("./pages/Checkout.tsx"));
 const GetStarted = lazy(() => import("./pages/GetStarted.tsx"));
 const ReadyPack = lazy(() => import("./pages/ReadyPack.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/sign-in" element={<Navigate to="/login" replace />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
