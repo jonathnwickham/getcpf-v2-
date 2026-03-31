@@ -112,7 +112,6 @@ export const fetchLatestApplication = async (userId: string) => {
 export const saveLatestApplication = async (userId: string, data: OnboardingData, status = "prepared") => {
   const payload = {
     user_id: userId,
-    status,
     full_name: optionalText(data.fullName),
     mother_name: optionalText(data.motherName),
     no_mother: data.noMotherName,
