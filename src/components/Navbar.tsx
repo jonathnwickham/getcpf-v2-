@@ -37,8 +37,8 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/90 border-b border-border">
       <div className="flex items-center justify-between">
-        <a href="/" className="text-xl font-bold tracking-tight">
-          GET <span className="text-primary">CPF</span>
+        <a href="/" className="flex items-center">
+          <img src={logo} alt="GET CPF" className="h-8" />
         </a>
 
         {/* Desktop nav */}
