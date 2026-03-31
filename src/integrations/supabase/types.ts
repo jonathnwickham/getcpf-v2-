@@ -236,6 +236,51 @@ export type Database = {
         }
         Relationships: []
       }
+      checkout_sessions: {
+        Row: {
+          amount_cents: number | null
+          checkout_session_secret: string
+          created_at: string
+          currency: string | null
+          email: string
+          fanbasis_customer_id: string | null
+          id: string
+          paid: boolean
+          paid_at: string | null
+          payment_id: string | null
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents?: number | null
+          checkout_session_secret: string
+          created_at?: string
+          currency?: string | null
+          email: string
+          fanbasis_customer_id?: string | null
+          id?: string
+          paid?: boolean
+          paid_at?: string | null
+          payment_id?: string | null
+          product_id?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number | null
+          checkout_session_secret?: string
+          created_at?: string
+          currency?: string | null
+          email?: string
+          fanbasis_customer_id?: string | null
+          id?: string
+          paid?: boolean
+          paid_at?: string | null
+          payment_id?: string | null
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       consent_log: {
         Row: {
           consent: boolean
