@@ -128,7 +128,10 @@ const Checkout = () => {
 
               {!paymentOpened ? (
                 <div className="space-y-4">
-                  <button
+                  <a
+                    href={CHECKOUT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={handlePayNow}
                     className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-3"
                   >
@@ -137,7 +140,7 @@ const Checkout = () => {
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                     Pay $49 securely →
-                  </button>
+                  </a>
                   <p className="text-xs text-center text-muted-foreground">
                     You'll be taken to our secure payment page to complete checkout
                   </p>
