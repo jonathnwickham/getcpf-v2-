@@ -2172,6 +2172,18 @@ const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data:
             <div className="space-y-2">
               <img src={photoPreview} alt="CPF printout" className="w-full max-w-sm rounded-xl border border-border" />
               <p className="text-xs text-primary font-semibold">✓ Photo saved securely on this device</p>
+              <div className="flex gap-3">
+                <label className="text-xs text-primary font-semibold hover:underline cursor-pointer">
+                  📷 Change photo
+                  <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
+                </label>
+                <button
+                  onClick={() => { setPhotoPreview(null); localStorage.removeItem("cpf_photo"); }}
+                  className="text-xs text-destructive font-semibold hover:underline"
+                >
+                  Remove photo
+                </button>
+              </div>
             </div>
           ) : (
             <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
