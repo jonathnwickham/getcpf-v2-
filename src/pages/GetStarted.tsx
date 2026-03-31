@@ -188,7 +188,7 @@ const GetStarted = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-6 pt-24 pb-12">
+      <div className="flex-1 flex items-start md:items-center justify-center px-6 pt-24 pb-32 md:pb-12">
         <div
           key={step}
           className="max-w-[520px] w-full animate-slide-in"
