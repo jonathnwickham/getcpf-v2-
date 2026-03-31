@@ -6,14 +6,16 @@ const AfterCPF = () => {
 
       <div className="max-w-[1100px] mx-auto text-center">
         <div className="text-4xl mb-6">🇧🇷</div>
-        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">After you've got your CPF</div>
+        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Why you need a CPF</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
-          Your CPF unlocks all of these
+          This is what your CPF unlocks
         </h2>
-        <p className="text-primary font-semibold mt-2">200+ people have used GET CPF to get theirs.</p>
+        <p className="text-muted-foreground mt-2 max-w-2xl mx-auto text-[15px]">
+          Most everyday services in Brazil require a CPF. Without one, you're locked out.
+        </p>
 
         <p className="text-muted-foreground mt-6 max-w-2xl mx-auto text-[15px] leading-relaxed">
-          Once you have your CPF, everything opens up. Nubank in 10 minutes, a real SIM card, iFood, Mercado Livre, QuintoAndar for rentals, Pix for payments. Your Ready Pack includes a full Life in Brazil guide that walks you through all of it.
+          Nubank, iFood, Mercado Livre, Rappi, Vivo, QuintoAndar, Amazon, Correios, Pix payments — they all need your CPF. Your Ready Pack includes a full Life in Brazil guide that walks you through setting up each one.
         </p>
       </div>
     </section>
