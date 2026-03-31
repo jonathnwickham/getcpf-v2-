@@ -52,7 +52,7 @@ const Signup = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/get-started`,
+        emailRedirectTo: `${window.location.origin}/checkout`,
         data: { full_name: fullName },
       },
     });
@@ -64,7 +64,7 @@ const Signup = () => {
     }
 
     toast({ title: "You're in! 🎉", description: "Account created — let's get your CPF sorted." });
-    navigate("/get-started");
+    navigate("/checkout");
     setLoading(false);
   };
 
