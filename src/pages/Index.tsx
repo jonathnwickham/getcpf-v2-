@@ -67,7 +67,7 @@ const Index = () => {
       <AfterCPF />
       <Testimonials />
       <TrustBar />
-      <ScamObjection />
+      
       <Pricing onOpenModal={handleOpenOnboarding} />
       {/* CTA after pricing for undecided visitors */}
       <FAQ />
