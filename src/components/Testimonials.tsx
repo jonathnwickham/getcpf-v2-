@@ -32,9 +32,6 @@ const Testimonials = () => {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground text-center mt-6">
-          Reviews coming soon. Be one of our first users.
-        </p>
       </div>
     </section>
   );
