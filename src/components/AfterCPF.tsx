@@ -8,8 +8,9 @@ const AfterCPF = () => {
         <div className="text-4xl mb-6">🇧🇷</div>
         <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">After you've got your CPF</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
-          This is where the fun starts
+          Your CPF unlocks all of these
         </h2>
+        <p className="text-primary font-semibold mt-2">200+ people have used GET CPF to get theirs.</p>
 
         <p className="text-muted-foreground mt-6 max-w-2xl mx-auto text-[15px] leading-relaxed">
           Once you have your CPF, everything opens up. Nubank in 10 minutes, a real SIM card, iFood, Mercado Livre, QuintoAndar for rentals, Pix for payments. Your Ready Pack includes a full Life in Brazil guide that walks you through all of it.
