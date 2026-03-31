@@ -190,13 +190,13 @@ const Dashboard = () => {
           <p className="text-sm text-muted-foreground mb-4">Send them this, they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
-              onClick={() => navigator.clipboard.writeText("https://getcpf.lovable.app")}
+              onClick={() => navigator.clipboard.writeText("https://getcpf.com")}
               className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
             >
               📋 Copy link
             </button>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent("If you're going to Brazil and need a CPF, this tool prepares everything for you: https://getcpf.lovable.app")}`}
+              href={`https://wa.me/?text=${encodeURIComponent("If you're going to Brazil and need a CPF, this tool prepares everything for you: https://getcpf.com")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[hsl(142,70%,49%)] text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
