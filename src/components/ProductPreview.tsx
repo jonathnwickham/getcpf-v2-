@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import protocolImg from "@/assets/protocol-preview.png";
+import protocolResultImg from "@/assets/protocol-result.png";
+import protocolFormImg from "@/assets/protocol-preview.png";
 
 const ProductPreview = () => {
   const navigate = useNavigate();
