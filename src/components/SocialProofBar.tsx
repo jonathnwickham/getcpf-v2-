@@ -26,7 +26,7 @@ const SocialProofBar = () => {
   return (
     <section className="py-10 px-6 bg-background border-y border-border/50">
       <div className="max-w-[900px] mx-auto text-center">
-        <h2 className="text-lg font-bold tracking-tight mb-1">This is what your CPF unlocks</h2>
+        
         <p className="text-xs text-muted-foreground font-medium mb-5">
           Many everyday services in Brazil will need it.
         </p>
