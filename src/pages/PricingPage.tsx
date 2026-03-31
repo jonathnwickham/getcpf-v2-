@@ -140,16 +140,44 @@ const PricingPage = () => {
   const handleSelectPlan = (tierName: string) => {
     setSelectedPlan(tierName);
     setFlowStep("payment");
+    fetchCheckoutSession();
   };
 
-  const handleMockPayment = (method: "card" | "paypal") => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast({ title: "Payment sorted!", description: `$${finalPrice} charged via ${method === "card" ? "card" : "PayPal"}. Let's set up your account.` });
-      setFlowStep("password");
-    }, 1500);
+  const fetchCheckoutSession = async () => {
+    setLoadingCheckout(true);
+    setCheckoutError(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: { email },
+      });
+      if (error || !data?.checkout_session_secret) {
+        console.error("Checkout session error:", error, data);
+        setCheckoutError(true);
+      } else {
+        setCheckoutSecret(data.checkout_session_secret);
+      }
+    } catch (err) {
+      console.error("Failed to create checkout:", err);
+      setCheckoutError(true);
+    } finally {
+      setLoadingCheckout(false);
+    }
   };
+
+  const handlePaymentComplete = () => {
+    // TODO: Replace this manual button with automatic webhook-based payment verification.
+    // Set up a Fanbasis webhook subscription listening for payment.succeeded events
+    // and verify payment server-side before advancing the user.
+    setFlowStep("password");
+  };
+
+  const handleFallbackPay = () => {
+    window.open(FALLBACK_URL, "_blank");
+  };
+
+  const embeddedUrl = checkoutSecret
+    ? `https://embedded.fanbasis.io/session/${CREATOR_HANDLE}/${PRODUCT_ID}/${checkoutSecret}`
+    : null;
 
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
