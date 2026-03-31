@@ -51,6 +51,7 @@ const App = () => (
               <Route path="/sign-in" element={<Navigate to="/login" replace />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
