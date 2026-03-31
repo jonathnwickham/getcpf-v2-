@@ -70,10 +70,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
       <img
         src={brazilStencil}
-        alt="Outline map of Brazil"
+        alt=""
+        fetchPriority="low"
+        loading="eager"
         className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-[100em] max-w-none opacity-[0.04] pointer-events-none select-none"
-        width={1200}
-        height={800}
+        width={1600}
+        height={1067}
       />
 
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center">
