@@ -181,7 +181,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       </p>
       <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary font-semibold">
         <span>🛡️</span>
-        If you follow our steps and get rejected — full refund. No questions asked.
+        If you follow our steps and get rejected, full refund. No questions asked.
       </div>
     </section>
   );
