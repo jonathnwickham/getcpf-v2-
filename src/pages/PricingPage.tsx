@@ -143,8 +143,7 @@ const PricingPage = () => {
   };
 
   const handlePayNow = () => {
-    // Direct redirect to Fanbasis checkout (avoids popup blocker)
-    window.location.href = FALLBACK_URL;
+    setPaymentOpened(true);
   };
 
   const [paymentOpened, setPaymentOpened] = useState(false);
@@ -409,7 +408,10 @@ const PricingPage = () => {
             {/* Pay button */}
             {!paymentOpened ? (
               <div className="space-y-4">
-                <button
+                <a
+                  href={FALLBACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={handlePayNow}
                   className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-3"
                 >
@@ -418,7 +420,7 @@ const PricingPage = () => {
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                   </svg>
                   Pay ${finalPrice} securely →
-                </button>
+                </a>
                 <p className="text-xs text-muted-foreground">
                   You'll be taken to our secure payment page to complete checkout
                 </p>
@@ -433,12 +435,14 @@ const PricingPage = () => {
                   </p>
                 </div>
 
-                <button
-                  onClick={handlePayNow}
-                  className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
+                <a
+                  href={FALLBACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all flex items-center justify-center"
                 >
                   Reopen payment page ↗
-                </button>
+                </a>
 
                 {/* TODO: Replace this manual button with automatic webhook-based payment verification.
                     Set up a Fanbasis webhook subscription listening for payment.succeeded events
