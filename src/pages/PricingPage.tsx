@@ -379,30 +379,32 @@ const PricingPage = () => {
           </div>
         )}
 
-        {/* STEP 3: Payment */}
+        {/* STEP 3: Payment — Fanbasis Embedded Checkout */}
         {flowStep === "payment" && (
-          <div className="max-w-md mx-auto text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
+          <div className="max-w-[600px] mx-auto">
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3 text-center">One quick payment</h1>
 
-            {/* Price display */}
-            {appliedPromo ? (
-              <div className="mb-2">
-                <p className="text-muted-foreground text-sm">
-                  {selectedPlan} plan —{" "}
-                  <span className="line-through text-muted-foreground">$49</span>{" "}
-                  <span className="font-bold text-primary text-lg">${finalPrice} USD</span>
-                </p>
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mt-1">
-                  🎉 {appliedPromo.code} applied, you save ${discount}
-                  <button onClick={removePromo} className="hover:text-primary/70 transition-colors">✕</button>
+            {/* Order summary */}
+            <div className="bg-card border border-border rounded-xl p-5 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-semibold text-sm">{selectedPlan} — CPF Application Service</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">{email}</p>
                 </div>
+                {appliedPromo ? (
+                  <div className="text-right">
+                    <span className="line-through text-muted-foreground text-sm">$49</span>{" "}
+                    <span className="font-bold text-primary text-xl">${finalPrice}</span>
+                    <div className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full mt-1">
+                      🎉 {appliedPromo.code} −${discount}
+                      <button onClick={removePromo} className="hover:text-primary/70">✕</button>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="text-xl font-bold">$49</span>
+                )}
               </div>
-            ) : (
-              <p className="text-muted-foreground text-sm mb-2">
-                {selectedPlan} plan — <span className="font-bold text-foreground">$49 USD</span>
-              </p>
-            )}
-            <p className="text-xs text-muted-foreground mb-6">for {email}</p>
+            </div>
 
             {/* Promo code input */}
             {!appliedPromo && (
@@ -427,63 +429,71 @@ const PricingPage = () => {
               </div>
             )}
 
-            <div className="space-y-3">
-              {/* Card payment */}
-              <button
-                onClick={() => handleMockPayment("card")}
-                disabled={loading}
-                className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-3"
-              >
-                {loading ? (
-                  <span className="animate-pulse">Sorting your payment...</span>
-                ) : (
-                  <>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="20" height="14" x="2" y="5" rx="2" />
-                      <line x1="2" x2="22" y1="10" y2="10" />
-                    </svg>
-                    Pay ${finalPrice} with card
-                  </>
-                )}
-              </button>
-
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <div className="flex-1 h-px bg-border" />
-                or
-                <div className="flex-1 h-px bg-border" />
+            {/* Embedded checkout or fallback */}
+            {loadingCheckout ? (
+              <div className="space-y-3">
+                <Skeleton className="w-full h-[700px] rounded-xl" />
+                <p className="text-xs text-center text-muted-foreground">Loading secure checkout...</p>
               </div>
-
-              {/* PayPal payment */}
-              <button
-                onClick={() => handleMockPayment("paypal")}
-                disabled={loading}
-                className="w-full bg-[hsl(48,100%,50%)] text-[hsl(220,20%,20%)] py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <span className="animate-pulse">Sorting your payment...</span>
-                ) : (
-                  <>
-                    <span className="font-extrabold text-base tracking-tight">Pay ${finalPrice} with </span>
-                    <span className="font-extrabold text-base tracking-tight text-[hsl(210,80%,45%)]">PayPal</span>
-                  </>
-                )}
-              </button>
-            </div>
+            ) : checkoutError ? (
+              /* Fallback UI */
+              <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  We couldn't load the embedded checkout. You can complete your payment in a new tab instead.
+                </p>
+                <button
+                  onClick={handleFallbackPay}
+                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+                >
+                  Pay ${finalPrice} →
+                </button>
+                <p className="text-xs text-muted-foreground">
+                  Complete your payment in the new tab, then click below to continue
+                </p>
+                {/* TODO: Replace this manual button with automatic webhook-based payment verification.
+                    Set up a Fanbasis webhook subscription listening for payment.succeeded events
+                    and verify payment server-side before advancing the user. */}
+                <button
+                  onClick={handlePaymentComplete}
+                  className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
+                >
+                  I've completed my payment ✓
+                </button>
+              </div>
+            ) : embeddedUrl ? (
+              /* Embedded Fanbasis checkout */
+              <div className="space-y-4">
+                <iframe
+                  src={embeddedUrl}
+                  title="Fanbasis Checkout"
+                  style={{
+                    width: "100%",
+                    minHeight: "700px",
+                    border: "none",
+                    borderRadius: "12px",
+                  }}
+                  allow="payment"
+                />
+                <p className="text-xs text-center text-muted-foreground">
+                  🔒 Secure payment powered by Fanbasis
+                </p>
+                {/* TODO: Replace this manual button with automatic webhook-based payment verification.
+                    Set up a Fanbasis webhook subscription listening for payment.succeeded events
+                    and verify payment server-side before advancing the user. */}
+                <button
+                  onClick={handlePaymentComplete}
+                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+                >
+                  I've completed my payment ✓
+                </button>
+              </div>
+            ) : null}
 
             <div className="mt-4 text-center text-xs text-primary font-semibold">
               🛡️ If you follow our steps and get rejected — full refund. No questions asked.
             </div>
 
-            <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Secure checkout
-              </span>
-              <span>•</span>
-              <span>One-time payment</span>
-            </div>
-
-            <button onClick={() => setFlowStep("plan")} className="mt-8 text-sm text-muted-foreground hover:text-foreground">
+            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
               ← Back to plans
             </button>
           </div>
