@@ -1,31 +1,33 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
-import GetStarted from "./pages/GetStarted.tsx";
-import ReadyPack from "./pages/ReadyPack.tsx";
 import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
-import { Navigate } from "react-router-dom";
-import ForgotPassword from "./pages/ForgotPassword.tsx";
-import ResetPassword from "./pages/ResetPassword.tsx";
-import Dashboard from "./pages/Dashboard.tsx";
-import PricingPage from "./pages/PricingPage.tsx";
-import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
-import TermsOfService from "./pages/TermsOfService.tsx";
-import Affiliates from "./pages/Affiliates.tsx";
-import Partners from "./pages/Partners.tsx";
-import AffiliateApply from "./pages/AffiliateApply.tsx";
-import Admin from "./pages/Admin.tsx";
-import Guides from "./pages/Guides.tsx";
-import GuideDetail from "./pages/GuideDetail.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import Contact from "./pages/Contact.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
+
+// Lazy-loaded routes (not needed on initial page load)
+const GetStarted = lazy(() => import("./pages/GetStarted.tsx"));
+const ReadyPack = lazy(() => import("./pages/ReadyPack.tsx"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
+const PricingPage = lazy(() => import("./pages/PricingPage.tsx"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService.tsx"));
+const Affiliates = lazy(() => import("./pages/Affiliates.tsx"));
+const Partners = lazy(() => import("./pages/Partners.tsx"));
+const AffiliateApply = lazy(() => import("./pages/AffiliateApply.tsx"));
+const Admin = lazy(() => import("./pages/Admin.tsx"));
+const Guides = lazy(() => import("./pages/Guides.tsx"));
+const GuideDetail = lazy(() => import("./pages/GuideDetail.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const Contact = lazy(() => import("./pages/Contact.tsx"));
 
 const queryClient = new QueryClient();
 
