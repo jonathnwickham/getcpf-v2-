@@ -7,6 +7,7 @@ import officeVisitImg from "@/assets/office-visit.jpg";
 import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
+import protocolResultImg from "@/assets/protocol-result.png";
 import RejectionFlow from "@/components/RejectionFlow";
 import UnlockGuide from "@/components/UnlockGuide";
 import {
@@ -1564,19 +1565,13 @@ const ProtocolPreviewSection = ({ data }: { data: OnboardingData }) => {
           </div>
         </div>
 
-        {/* Document preview placeholder with user data */}
+        {/* Document preview — actual protocol */}
         <div className="bg-secondary rounded-xl p-5 border border-border">
-          <div className="bg-white rounded-lg p-4 border border-border/50">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Inscrição CPF Estrangeiro</p>
-            <div className="font-mono text-xs space-y-1.5 text-foreground">
-              <div><span className="text-muted-foreground">Nome:</span> <strong>{data.fullName}</strong></div>
-              <div><span className="text-muted-foreground">Documento:</span> Passaporte — {data.passportNumber}</div>
-              <div><span className="text-muted-foreground">Nacionalidade:</span> {getNationalityPt(data.nationality)}</div>
-              <div><span className="text-muted-foreground">Nome da Mãe:</span> {data.noMotherName ? data.motherAlternative : data.motherName}</div>
-              <div><span className="text-muted-foreground">Endereço:</span> {data.streetAddress}, {data.city}, {data.state}</div>
-              <div><span className="text-muted-foreground">E-mail:</span> {data.email}</div>
-            </div>
-          </div>
+          <img
+            src={protocolResultImg}
+            alt={`CPF protocol document for ${data.fullName}`}
+            className="w-full h-auto rounded-lg border border-border/50"
+          />
         </div>
 
         {/* Download button */}
