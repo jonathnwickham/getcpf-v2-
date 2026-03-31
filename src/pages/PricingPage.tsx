@@ -66,6 +66,10 @@ const tiers = [
 
 type FlowStep = "email" | "plan" | "payment" | "password" | "done";
 
+const PRODUCT_ID = "0LD5G";
+const CREATOR_HANDLE = "telosmedia";
+const FALLBACK_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}/${PRODUCT_ID}`;
+
 const PricingPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -78,6 +82,11 @@ const PricingPage = () => {
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
+
+  // Fanbasis checkout state
+  const [checkoutSecret, setCheckoutSecret] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState(false);
+  const [loadingCheckout, setLoadingCheckout] = useState(false);
 
   // Promo code state
   const [promoInput, setPromoInput] = useState("");
