@@ -15,7 +15,7 @@ const MidCTA = ({ onOpenModal, text, buttonText = "Get started →" }: MidCTAPro
   };
 
   return (
-    <section className="py-14 px-6 text-center bg-primary/[0.03] border-y border-border/30">
+    <section className="py-10 md:py-14 px-6 text-center bg-primary/[0.03] border-y border-border/30">
       <div className="max-w-[600px] mx-auto">
         <p className="text-lg md:text-xl font-semibold text-foreground mb-5">{text}</p>
         <button
