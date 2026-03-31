@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.svg";
 
 interface NavbarProps {
   onOpenModal?: () => void;
