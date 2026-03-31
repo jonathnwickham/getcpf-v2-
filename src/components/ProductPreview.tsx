@@ -27,11 +27,10 @@ const ProductPreview = () => {
               />
               {/* Overlay "Your Name Here" on the Nome field */}
               <div
-                className="absolute text-[11px] md:text-sm font-semibold text-blue-900 pointer-events-none"
+                className="absolute text-[11px] md:text-sm font-semibold text-primary pointer-events-none"
                 style={{
                   top: "12.5%",
                   left: "30%",
-                  transform: "rotate(0deg)",
                 }}
               >
                 Your Name Here
