@@ -20,7 +20,7 @@ const unlockedItems = [
 
 const Transformation = () => {
   return (
-    <section className="py-20 px-6 bg-background">
+    <section className="py-12 md:py-20 px-6 bg-background">
       <div className="max-w-[960px] mx-auto flex flex-col md:flex-row items-stretch">
         {/* Before */}
         <div className="flex-1 px-6 md:px-10 py-8">

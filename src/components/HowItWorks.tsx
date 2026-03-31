@@ -7,7 +7,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section id="how" className="py-24 px-8 max-w-[900px] mx-auto">
+    <section id="how" className="py-14 md:py-24 px-6 md:px-8 max-w-[900px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Four steps</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">From zero to CPF in one visit</h2>
       <p className="text-sm text-muted-foreground mt-3 italic">

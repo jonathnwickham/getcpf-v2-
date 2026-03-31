@@ -29,27 +29,18 @@ const CookieBanner = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] bg-card border-t border-border px-6 py-4 shadow-lg animate-slide-in">
-      <div className="max-w-3xl mx-auto flex items-center justify-between gap-4 flex-wrap">
-        <p className="text-sm text-muted-foreground flex-1 min-w-0">
-          We use essential cookies for authentication only. No advertising or tracking cookies. By continuing you accept this.
+    <div className="fixed bottom-4 left-4 right-4 md:bottom-0 md:left-0 md:right-0 z-[100] bg-card border border-border md:border-t md:border-x-0 md:border-b-0 rounded-xl md:rounded-none px-4 py-3 md:px-6 md:py-4 shadow-xl animate-slide-in">
+      <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
+        <p className="text-xs md:text-sm text-muted-foreground flex-1 min-w-0">
+          Essential cookies only. No tracking.{" "}
+          <a href="/privacy" className="underline hover:text-foreground">Learn more</a>
         </p>
-        <div className="flex gap-2 shrink-0">
-          <a
-            href="/privacy"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold text-muted-foreground hover:text-foreground px-4 py-2 rounded-lg border border-border transition-colors"
-          >
-            Learn more
-          </a>
-          <button
-            onClick={accept}
-            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-all"
-          >
-            Got it
-          </button>
-        </div>
+        <button
+          onClick={accept}
+          className="bg-primary text-primary-foreground px-4 py-1.5 md:px-5 md:py-2 rounded-lg text-xs md:text-sm font-semibold hover:opacity-90 transition-all shrink-0"
+        >
+          Got it
+        </button>
       </div>
     </div>
   );
