@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
+import Logo from "@/components/Logo";
 
 const tiers = [
   {
