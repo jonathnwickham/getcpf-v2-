@@ -88,7 +88,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-4 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            We don't get your CPF — only the government does that. We prepare you so it works on the first try.
+            Pre-filled forms, nearest office, what to say in Portuguese — everything you need to walk in and walk out with your CPF number.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
