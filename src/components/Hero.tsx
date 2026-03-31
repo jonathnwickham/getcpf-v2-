@@ -88,7 +88,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-4 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            Pre-filled forms, nearest office, what to say in Portuguese — everything you need to walk in and walk out with your CPF number.
+            A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
