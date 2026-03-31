@@ -566,11 +566,12 @@ const AddressStep = ({
 
   const cities = getCitiesForState(state);
   const selectedCity = city;
+  const stripAccents = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   const filteredCities = cities.filter((c) =>
-    c.toLowerCase().includes(citySearch.toLowerCase())
+    stripAccents(c).includes(stripAccents(citySearch))
   );
   const filteredHostCities = cities.filter((c) =>
-    c.toLowerCase().includes(hostCitySearch.toLowerCase())
+    stripAccents(c).includes(stripAccents(hostCitySearch))
   );
 
   useEffect(() => {
