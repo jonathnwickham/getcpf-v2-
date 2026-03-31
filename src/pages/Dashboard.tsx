@@ -21,10 +21,14 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
     const trimmed = cpf.trim();
     if (!trimmed) return;
     setSaving(true);
-    const { error } = await supabase
+    // First save the CPF number
+    await supabase
       .from("applications")
-      .update({ cpf_number: trimmed, status: "completed" })
+      .update({ cpf_number: trimmed })
       .eq("id", applicationId);
+    // Then transition status via secure RPC
+    const { error } = await supabase
+      .rpc("transition_application_status" as any, { _application_id: applicationId, _new_status: "completed" });
     setSaving(false);
     if (error) {
       toast.error("Could not save your CPF number. Try again.");
