@@ -63,7 +63,7 @@ const Index = () => {
       <HowItWorks />
       <Transformation />
       {/* CTA after showing the transformation */}
-      <MidCTA onOpenModal={handleOpenOnboarding} text="Ready to skip the headache?" buttonText="See pricing →" />
+      <MidCTA onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} text="Ready to skip the headache?" buttonText="See pricing ↓" />
       <AfterCPF />
       <Testimonials />
       <TrustBar />
