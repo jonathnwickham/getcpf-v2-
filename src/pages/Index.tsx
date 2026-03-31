@@ -56,14 +56,19 @@ const Index = () => {
       <Hero onOpenModal={handleOpenOnboarding} />
       <SocialProofBar />
       <PainPoints />
+      {/* Mid-page CTA after pain is felt */}
+      <MidCTA onOpenModal={handleOpenOnboarding} text="Stop stressing — get your CPF sorted today" buttonText="Get started →" />
       <WhoIsThisFor />
       <HowItWorks />
       <Transformation />
-      <ScamObjection />
-      <Pricing onOpenModal={handleOpenOnboarding} />
+      {/* CTA after showing the transformation */}
+      <MidCTA onOpenModal={handleOpenOnboarding} text="Ready to skip the headache?" buttonText="See pricing →" />
       <AfterCPF />
       <Testimonials />
       <TrustBar />
+      <ScamObjection />
+      <Pricing onOpenModal={handleOpenOnboarding} />
+      {/* CTA after pricing for undecided visitors */}
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
       <ComingSoon />
