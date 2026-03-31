@@ -138,23 +138,50 @@ const PricingPage = () => {
     }
   };
 
-  const handleSelectPlan = (tierName: string) => {
+  const handleSelectPlan = async (tierName: string) => {
     setSelectedPlan(tierName);
     setFlowStep("payment");
-  };
-
-  const handlePayNow = () => {
-    setPaymentOpened(true);
+    
+    // Start loading embedded checkout
+    setLoadingCheckout(true);
+    setCheckoutError(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: { email },
+      });
+      if (error || !data?.checkout_session_secret) {
+        console.error("Checkout error:", error, data);
+        setCheckoutError(true);
+      } else {
+        setCheckoutSecret(data.checkout_session_secret);
+      }
+    } catch (err) {
+      console.error("Checkout fetch error:", err);
+      setCheckoutError(true);
+    }
+    setLoadingCheckout(false);
   };
 
   const [paymentOpened, setPaymentOpened] = useState(false);
 
+  const EMBEDDED_URL = checkoutSecret
+    ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}`
+    : null;
+
   const handlePaymentComplete = () => {
-    // TODO: Replace this manual button with automatic webhook-based payment verification.
-    // Set up a Fanbasis webhook subscription listening for payment.succeeded events
-    // and verify payment server-side before advancing the user.
     setFlowStep("password");
   };
+
+  // Listen for postMessage from Fanbasis iframe for payment completion
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "fanbasis:payment_success" || event.data?.status === "success") {
+        handlePaymentComplete();
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const handleWaitlist = async (e: React.FormEvent, tierName: string) => {
     e.preventDefault();
@@ -406,48 +433,38 @@ const PricingPage = () => {
               </div>
             )}
 
-            {/* Pay button */}
-            {!paymentOpened ? (
+            {/* Embedded Fanbasis Checkout */}
+            {loadingCheckout ? (
+              <div className="flex flex-col items-center gap-3 py-8">
+                <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm text-muted-foreground">Loading secure checkout...</p>
+              </div>
+            ) : checkoutError || !EMBEDDED_URL ? (
               <div className="space-y-4">
+                <div className="bg-destructive/5 border border-destructive/20 rounded-xl p-5 text-center">
+                  <p className="text-sm font-semibold text-foreground mb-1">Checkout unavailable</p>
+                  <p className="text-xs text-muted-foreground">Please use the external payment link instead.</p>
+                </div>
                 <a
                   href={FALLBACK_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={handlePayNow}
                   className="w-full bg-foreground text-background py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-3"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                  Pay ${finalPrice} securely →
+                  Pay ${finalPrice} securely ↗
                 </a>
-                <p className="text-xs text-muted-foreground">
-                  You'll be taken to our secure payment page to complete checkout
-                </p>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="bg-primary/5 border border-primary/20 rounded-xl p-5">
-                  <div className="text-2xl mb-2">💳</div>
-                  <p className="text-sm font-semibold text-foreground mb-1">Payment page is open</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Complete your payment in the tab that just opened. Once done, click below to continue.
-                  </p>
+                <div className="rounded-xl overflow-hidden border border-border bg-card">
+                  <iframe
+                    src={EMBEDDED_URL}
+                    className="w-full border-0"
+                    style={{ height: "520px" }}
+                    allow="payment"
+                    title="Fanbasis Checkout"
+                  />
                 </div>
-
-                <a
-                  href={FALLBACK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full border border-border bg-secondary text-foreground py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all flex items-center justify-center"
-                >
-                  Reopen payment page ↗
-                </a>
-
-                {/* TODO: Replace this manual button with automatic webhook-based payment verification.
-                    Set up a Fanbasis webhook subscription listening for payment.succeeded events
-                    and verify payment server-side before advancing the user. */}
                 <button
                   onClick={handlePaymentComplete}
                   className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
@@ -470,7 +487,7 @@ const PricingPage = () => {
               <span>One-time payment</span>
             </div>
 
-            <button onClick={() => { setFlowStep("plan"); setPaymentOpened(false); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
+            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
               ← Back to plans
             </button>
           </div>
