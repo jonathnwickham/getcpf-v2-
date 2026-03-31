@@ -88,7 +88,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </h1>
 
           <p className="animate-fade-up-2 text-[clamp(1rem,2vw,1.15rem)] text-muted-foreground mt-4 leading-relaxed max-w-[520px] mx-auto lg:mx-0">
-            A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out.
+            We don't get your CPF — only the government does that. We prepare you so it works on the first try.
           </p>
 
           <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
