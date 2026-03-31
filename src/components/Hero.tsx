@@ -65,18 +65,20 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   ];
 
   return (
-    <section className="flex flex-col justify-center items-center px-6 pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]">
+    <section
+      className="flex flex-col justify-center items-center px-6 pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]"
+      style={{
+        backgroundImage: `url(${brazilStencil})`,
+        backgroundPosition: 'center 85%',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100em auto',
+      }}
+    >
+      {/* Reduce stencil opacity via overlay */}
+      <div className="absolute inset-0 bg-background/[0.96] pointer-events-none" />
       <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(var(--accent-glow)/0.08)_0%,transparent_70%)] pointer-events-none" />
 
-      <img
-        src={brazilStencil}
-        alt="Outline map of Brazil"
-        className="absolute bottom-[15%] left-1/2 -translate-x-1/2 w-[100em] max-w-none opacity-[0.04] pointer-events-none select-none"
-        width={1200}
-        height={800}
-      />
-
-      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center">
+      <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center relative z-10">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
