@@ -1557,42 +1557,6 @@ const ProtocolPreviewSection = ({ data }: { data: OnboardingData }) => {
         <p className="text-xs text-muted-foreground mt-1">This is the document you print and bring to the Receita Federal office</p>
       </div>
       <div className="p-6 space-y-4">
-        {/* Green banner */}
-        <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
-          <span className="text-2xl">✅</span>
-          <div>
-            <p className="font-bold text-sm text-primary">Your protocol is ready. Print this before you go to the office.</p>
-          </div>
-        </div>
-
-        {/* Document preview — actual protocol */}
-        <div className="bg-secondary rounded-xl p-5 border border-border">
-          <img
-            src={protocolResultImg}
-            alt={`CPF protocol document for ${data.fullName}`}
-            className="w-full h-auto rounded-lg border border-border/50"
-          />
-        </div>
-
-        {/* Download button */}
-        <button
-          onClick={() => {
-            // Will link to actual PDF generation when protocol is available
-            window.print();
-          }}
-          className="w-full bg-primary text-primary-foreground px-6 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all flex items-center justify-center gap-2"
-        >
-          🖨️ Download my protocol to print →
-        </button>
-
-        {/* Warning box */}
-        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex items-start gap-3">
-          <span className="text-xl mt-0.5">⚠️</span>
-          <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-            The Receita Federal requires a physical printed copy. Your phone is not accepted at the counter.
-          </p>
-        </div>
-
         {/* Field guide toggle */}
         <button
           onClick={() => setShowFieldGuide(!showFieldGuide)}
@@ -1622,6 +1586,18 @@ const ProtocolPreviewSection = ({ data }: { data: OnboardingData }) => {
             ))}
           </div>
         )}
+
+        {/* Document preview — what the final protocol looks like */}
+        <div className="mt-4">
+          <p className="text-sm font-semibold text-muted-foreground mb-3">This is what your final protocol will look like once it's generated:</p>
+          <div className="bg-secondary rounded-xl p-5 border border-border">
+            <img
+              src={protocolResultImg}
+              alt={`Example CPF protocol document`}
+              className="w-full h-auto rounded-lg border border-border/50"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
