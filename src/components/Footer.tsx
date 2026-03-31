@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "@/assets/logo.svg";
 
 const Footer = () => (
   <footer className="py-16 px-8 border-t border-border bg-card">
