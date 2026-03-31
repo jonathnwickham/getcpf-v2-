@@ -143,8 +143,7 @@ const PricingPage = () => {
   };
 
   const handlePayNow = () => {
-    // Direct redirect to Fanbasis checkout (avoids popup blocker)
-    window.location.href = FALLBACK_URL;
+    setPaymentOpened(true);
   };
 
   const [paymentOpened, setPaymentOpened] = useState(false);
