@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import Logo from "@/components/Logo";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
 import { getCitiesForState } from "@/lib/brazilian-cities";
@@ -166,12 +167,17 @@ const GetStarted = () => {
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
         <div className="flex items-center justify-between px-6 py-4">
-          <a href="/" className="text-lg font-bold tracking-tight">
-            GET <span className="text-primary">CPF</span>
+          <a href="/">
+            <Logo className="h-10" />
           </a>
-          <span className="text-xs text-muted-foreground font-medium">
-            {step + 1} of {TOTAL_STEPS}
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-muted-foreground font-medium">
+              {step + 1} of {TOTAL_STEPS}
+            </span>
+            <a href="/dashboard" className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium">
+              ✕
+            </a>
+          </div>
         </div>
         <div className="h-1 bg-border">
           <div
