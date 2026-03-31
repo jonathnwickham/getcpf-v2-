@@ -26,7 +26,7 @@ const Checkout = () => {
   };
 
   const handlePayNow = () => {
-    window.location.href = CHECKOUT_URL;
+    setPaymentOpened(true);
   };
 
   const handlePaymentComplete = () => {
