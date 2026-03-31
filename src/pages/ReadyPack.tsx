@@ -1505,6 +1505,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
     </section>
 
+    {/* Protocol Preview — shows after submission */}
+    <ProtocolPreviewSection data={data} />
+
     {/* Host declaration letter */}
     {hasHost && declaration && (
       <DeclarationSection declaration={declaration} declarationCopied={declarationCopied} setDeclarationCopied={setDeclarationCopied} data={data} />
