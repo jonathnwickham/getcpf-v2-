@@ -6,6 +6,7 @@ import SocialProofBar from "@/components/SocialProofBar";
 import PainPoints from "@/components/PainPoints";
 import WhoIsThisFor from "@/components/WhoIsThisFor";
 import HowItWorks from "@/components/HowItWorks";
+import ProductPreview from "@/components/ProductPreview";
 import Transformation from "@/components/Transformation";
 
 import Pricing from "@/components/Pricing";
