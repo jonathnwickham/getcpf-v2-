@@ -279,8 +279,26 @@ const PricingPage = () => {
     });
 
     if (error) {
-      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
-      setLoading(false);
+      if (error.message?.toLowerCase().includes("already registered") || error.message?.toLowerCase().includes("already been registered")) {
+        // Try signing in instead
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          toast({
+            title: "Account already exists",
+            description: "An account with this email already exists. Please sign in instead.",
+            variant: "destructive",
+          });
+          setLoading(false);
+          setTimeout(() => navigate("/login"), 2000);
+        } else {
+          toast({ title: "Welcome back!", description: "Signed in to your existing account." });
+          setLoading(false);
+          navigate("/get-started");
+        }
+      } else {
+        toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
+        setLoading(false);
+      }
     } else {
       setFlowStep("done");
       setLoading(false);
