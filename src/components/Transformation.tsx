@@ -91,7 +91,7 @@ const Transformation = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 pt-1">
+            <div className="flex flex-col gap-2 pt-1 min-w-0">
               {unlockedItems.map((item, i) => (
                 <div
                   key={i}
