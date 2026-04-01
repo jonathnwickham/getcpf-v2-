@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
+import { openCookiePreferences } from "@/components/CookieBanner";
 
 const Footer = () => (
   <footer className="py-16 px-8 border-t border-border bg-card">
