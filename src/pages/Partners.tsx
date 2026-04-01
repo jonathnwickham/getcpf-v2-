@@ -337,7 +337,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">City</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">City</label>
                 <input
                   type="text"
                   value={form.city}
