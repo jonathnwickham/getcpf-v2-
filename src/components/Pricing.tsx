@@ -171,7 +171,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
                     : "border border-border text-foreground hover:bg-secondary"
                 }`}
               >
-                {tier.cta} →
+                Get started, <span className="line-through opacity-60">$49</span> $29 →
               </button>
             )}
             {/* Trust signals, only on highlighted tier */}
