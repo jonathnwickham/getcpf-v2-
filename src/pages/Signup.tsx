@@ -18,7 +18,7 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -33,6 +33,24 @@ const Signup = () => {
       return;
     }
 
+    // If auto-confirm is enabled, user gets a session immediately — redirect
+    if (signUpData?.session) {
+      toast({ title: "Account created! 🎉" });
+      // Check if they already paid (e.g. paid before signing up)
+      try {
+        const { data: payRes } = await supabase.functions.invoke("verify-payment", {
+          body: { email },
+        });
+        if (payRes?.paid) {
+          window.location.href = "/get-started";
+          return;
+        }
+      } catch {}
+      window.location.href = "/get-started";
+      return;
+    }
+
+    // Otherwise email confirmation is required
     setEmailSent(true);
     setLoading(false);
   };
