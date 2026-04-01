@@ -17,6 +17,7 @@ import FinalCTA from "@/components/FinalCTA";
 import MidCTA from "@/components/MidCTA";
 
 import Footer from "@/components/Footer";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 const Index = () => {
   const navigate = useNavigate();
