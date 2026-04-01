@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "@/components/Logo";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -44,9 +45,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <a href="/" className="text-2xl font-bold tracking-tight inline-block mb-2">
-            GET <span className="text-primary">CPF</span>
-          </a>
+          <a href="/" className="inline-block mb-2"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
           <p className="text-muted-foreground mt-2 text-sm">No worries, enter your email and we'll send you a link to reset it</p>
         </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "@/components/Logo";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -39,9 +40,7 @@ const Signup = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-md text-center">
-          <a href="/" className="text-2xl font-bold tracking-tight">
-            GET <span className="text-primary">CPF</span>
-          </a>
+          <a href="/"><Logo className="h-10" /></a>
           <div className="mt-8 bg-card border border-border rounded-2xl p-8">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">✉️</span>
@@ -75,9 +74,7 @@ const Signup = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <a href="/" className="text-2xl font-bold tracking-tight">
-            GET <span className="text-primary">CPF</span>
-          </a>
+          <a href="/"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold mt-6">Let's set you up</h1>
           <p className="text-muted-foreground mt-2 text-sm">Create an account so your progress is saved</p>
         </div>
