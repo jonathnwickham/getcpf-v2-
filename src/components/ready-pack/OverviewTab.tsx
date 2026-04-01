@@ -38,6 +38,9 @@ export const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice,
           <InfoField label="City" value={data.city} />
           <InfoField label="Email" value={data.email} />
         </div>
+        <Link to="/dashboard" className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-primary hover:underline transition-all">
+          ✏️ Edit my details
+        </Link>
       </div>
     </section>
 
