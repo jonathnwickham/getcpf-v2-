@@ -238,8 +238,7 @@ const PricingPage = () => {
       toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
       setLoading(false);
     } else {
-      toast({ title: "You're in! 🎉", description: "Let's get your CPF sorted." });
-      navigate("/get-started");
+      setFlowStep("done");
       setLoading(false);
     }
   };
