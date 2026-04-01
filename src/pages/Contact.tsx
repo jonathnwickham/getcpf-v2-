@@ -70,6 +70,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="Contact Us — GET CPF" description="Have a question about getting your Brazilian CPF? Reach out and we'll respond within 24 hours." path="/contact" />
       <Navbar />
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-[500px] mx-auto">

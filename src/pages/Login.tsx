@@ -87,6 +87,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-start justify-center px-6 pt-24 pb-16"
+      <SEO title="Log In — GET CPF" description="Log in to your GET CPF account to access your CPF application documents and status." path="/login" />
       style={{ backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.04), transparent 60%)" }}
     >
       <div className="w-full max-w-md">
