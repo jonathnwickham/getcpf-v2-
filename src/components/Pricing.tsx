@@ -25,7 +25,7 @@ const tiers = [
       "Everything that comes next, already mapped out",
       "If it doesn't work, you pay nothing",
     ],
-    cta: "Get started, $29",
+    cta: "Get started, $29 →",
   },
   {
     name: "Concierge",
