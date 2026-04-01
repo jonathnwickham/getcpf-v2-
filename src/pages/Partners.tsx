@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
 import { supabase } from "@/integrations/supabase/client";
@@ -140,6 +141,7 @@ const Partners = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission ($9.80) on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-[900px] mx-auto px-6 py-4 flex items-center justify-between">

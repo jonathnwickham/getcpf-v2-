@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -34,11 +35,6 @@ const CpfChecker = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<CheckResult>("idle");
 
-  useEffect(() => {
-    document.title = "Free CPF Number Checker — GET CPF";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation. No data stored.");
-  }, []);
 
   const handleCheck = () => {
     const digits = input.replace(/\D/g, "");
@@ -56,6 +52,7 @@ const CpfChecker = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="Free CPF Number Checker — GET CPF" description="Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation." path="/cpf-checker" />
       <Navbar />
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-[560px] mx-auto">

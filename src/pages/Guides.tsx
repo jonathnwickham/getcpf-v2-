@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -12,14 +13,9 @@ const categoryColors: Record<string, string> = {
 };
 
 const Guides = () => {
-  useEffect(() => {
-    document.title = "CPF Guides for Foreigners — GET CPF";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Free guides on getting your Brazilian CPF as a foreigner. Step-by-step instructions, city-specific tips, and troubleshooting.");
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="CPF Guides for Foreigners — GET CPF" description="Free guides on getting your Brazilian CPF as a foreigner. Step-by-step instructions, city-specific tips, and troubleshooting." path="/guides" />
       <Navbar />
       <main className="pt-32 pb-24 px-6">
         <div className="max-w-[800px] mx-auto">

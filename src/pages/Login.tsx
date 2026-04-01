@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import Logo from "@/components/Logo";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -88,6 +89,7 @@ const Login = () => {
     <div className="min-h-screen bg-background flex items-start justify-center px-6 pt-24 pb-16"
       style={{ backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.04), transparent 60%)" }}
     >
+      <SEO title="Log In — GET CPF" description="Log in to your GET CPF account to access your CPF application documents and status." path="/login" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/"><Logo className="h-10" /></a>

@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getGuideBySlug, guides } from "@/lib/guides-data";
@@ -55,9 +56,7 @@ const GuideDetail = () => {
     scriptEl.textContent = JSON.stringify(schemas);
     document.head.appendChild(scriptEl);
 
-    document.title = `${guide.title} — GET CPF`;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", guide.metaDescription);
+    // SEO is handled by <SEO> component now
 
     return () => {
       const el = document.getElementById("guide-schema");
@@ -71,6 +70,7 @@ const GuideDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title={`${guide.title} — GET CPF`} description={guide.metaDescription} path={`/guides/${guide.slug}`} />
       <Navbar />
       <article className="pt-32 pb-24 px-6">
         <div className="max-w-[700px] mx-auto">

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 
 const PrivacyPolicy = () => (
   <div className="min-h-screen bg-background">
+    <SEO title="Privacy Policy — GET CPF" description="How GET CPF collects, uses, and protects your personal data during the CPF application process." path="/privacy" />
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const Affiliates = () => (
   <div className="overflow-x-hidden">
+    <SEO title="Affiliate Disclosure — GET CPF" description="GET CPF affiliate disclosure and partnership transparency information." path="/affiliates" />
     <Navbar />
     <div className="min-h-screen bg-background pt-28 pb-16 px-6">
       <div className="max-w-[700px] mx-auto">
