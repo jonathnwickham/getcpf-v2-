@@ -571,7 +571,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {applications.map(a => {
+            {paginatedApps.map(a => {
               const profile = profileMap.get(a.user_id);
               return (
                 <TableRow key={a.id}>
