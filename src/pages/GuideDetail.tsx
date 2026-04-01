@@ -189,6 +189,21 @@ const GuideDetail = () => {
             </Link>
           </div>
 
+          {/* CTA Block */}
+          <div className="mt-16 bg-primary/5 border border-primary/20 rounded-2xl p-8 text-center">
+            <h3 className="text-xl font-extrabold tracking-tight mb-2">Ready to get your CPF?</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
+              We prepare everything for your specific situation — documents, office, phrases — so you walk in and walk out with your CPF.
+            </p>
+            <Link
+              to="/pricing"
+              className="inline-block bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+            >
+              Get started — $49 →
+            </Link>
+            <p className="text-xs text-muted-foreground mt-3">100% acceptance guarantee or your money back</p>
+          </div>
+
           {/* More guides */}
           {otherGuides.length > 0 && (
             <div className="mt-16">
