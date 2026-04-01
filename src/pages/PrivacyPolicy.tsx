@@ -103,10 +103,24 @@ const PrivacyPolicy = () => (
           <p className="leading-relaxed mt-3">You may request immediate deletion of all your data at any time by emailing us.</p>
         </section>
 
-        <section>
-          <h2 className="text-xl font-bold mb-3">Cookies</h2>
-          <p className="leading-relaxed">
-            We use session cookies for authentication only. We do not use advertising cookies or third-party tracking cookies.
+        <section id="cookies">
+          <h2 className="text-xl font-bold mb-3">Cookies and cookie policy</h2>
+          <p className="leading-relaxed mb-3">
+            GET CPF uses <strong>essential cookies only</strong> for the following purpose:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li><strong>Authentication session cookie</strong> — keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
+            <li><strong>Cookie consent preference</strong> — remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
+          </ul>
+          <p className="leading-relaxed mt-3">We do <strong>not</strong> use:</p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li>Advertising or marketing cookies</li>
+            <li>Third-party tracking cookies</li>
+            <li>Analytics cookies (Google Analytics, Meta Pixel, etc.)</li>
+            <li>Social media cookies</li>
+          </ul>
+          <p className="leading-relaxed mt-3">
+            No third parties install, manage, or access cookies via GET CPF. You can reject all cookies using the banner at the bottom of the page, or change your preference at any time via the "Cookie preferences" link in our footer.
           </p>
         </section>
 
