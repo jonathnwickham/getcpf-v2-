@@ -343,7 +343,7 @@ const PricingPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Pricing — GET CPF" description="Get your Brazilian CPF for $49. AI-powered preparation, pre-filled forms, and 100% acceptance guarantee." path="/pricing" />
+      <SEO title="Pricing — GET CPF" description="Get your Brazilian CPF for $29 (beta pricing). AI-powered preparation, pre-filled forms, and 100% acceptance guarantee." path="/pricing" />
       {/* Top bar */}
       <div className="border-b border-border bg-background sticky top-0 z-50">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between px-6 py-4">
