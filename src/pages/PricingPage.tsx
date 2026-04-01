@@ -223,7 +223,11 @@ const PricingPage = () => {
     e.preventDefault();
     const wEmail = waitlistEmail.trim() || email.trim();
     if (!wEmail) return;
-    await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
+    const { error } = await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
+    if (error) {
+      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
+      return;
+    }
     setWaitlistSubmitted(true);
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
