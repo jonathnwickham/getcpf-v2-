@@ -5,6 +5,7 @@ import Logo from "@/components/Logo";
 
 const TermsOfService = () => (
   <div className="min-h-screen bg-background">
+    <SEO title="Terms of Service — GET CPF" description="Terms and conditions for using GET CPF's Brazilian CPF preparation service." path="/terms" />
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>

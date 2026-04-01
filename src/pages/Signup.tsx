@@ -73,6 +73,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <SEO title="Sign Up — GET CPF" description="Create your GET CPF account to start your Brazilian CPF application." path="/signup" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/"><Logo className="h-10" /></a>

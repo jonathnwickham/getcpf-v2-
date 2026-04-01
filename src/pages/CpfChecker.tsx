@@ -57,6 +57,7 @@ const CpfChecker = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="Free CPF Number Checker — GET CPF" description="Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation." path="/cpf-checker" />
       <Navbar />
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-[560px] mx-auto">
