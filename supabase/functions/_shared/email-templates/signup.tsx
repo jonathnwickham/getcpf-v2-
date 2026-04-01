@@ -32,23 +32,13 @@ export const SignupEmail = ({
     <Preview>Confirm your email for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Text style={brand}>GET <span style={{ color: 'hsl(160, 84%, 28%)' }}>CPF</span></Text>
+        <Heading style={h1}>You're almost in 🎉</Heading>
         <Text style={text}>
-          Thanks for signing up for{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
-        </Text>
-        <Text style={text}>
-          Please confirm your email address (
-          <Link href={`mailto:${recipient}`} style={link}>
-            {recipient}
-          </Link>
-          ) by clicking the button below:
+          Thanks for signing up for GET CPF! Just one quick step — confirm your email address ({recipient}) so we can get you started.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Verify Email
+          Confirm My Email
         </Button>
         <Text style={footer}>
           If you didn't create an account, you can safely ignore this email.
