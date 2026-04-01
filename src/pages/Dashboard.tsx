@@ -303,6 +303,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
   const { signOut } = useAuth();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [editData, setEditData] = useState({
     full_name: application?.full_name || "",
@@ -311,11 +312,42 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
     nationality: application?.nationality || "",
     street_address: application?.street_address || "",
     city: application?.city || "",
+    state_name: application?.state_name || "",
+    host_name: application?.host_name || "",
+    host_address: application?.host_address || "",
+    host_city: application?.host_city || "",
+    host_cpf: application?.host_cpf || "",
   });
   const [saving, setSaving] = useState(false);
 
+  // Password change state
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
+  const handleChangePassword = async () => {
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast.error("Passwords don't match.");
+      return;
+    }
+    setChangingPassword(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    setChangingPassword(false);
+    if (error) {
+      toast.error(error.message || "Could not update password.");
+    } else {
+      toast.success("Password updated successfully.");
+      setNewPassword("");
+      setConfirmNewPassword("");
+      setShowPassword(false);
+    }
+  };
+
   const handleDownload = async () => {
-    // Fetch consent log
     const { data: consentData } = await supabase
       .from("consent_log")
       .select("*")
@@ -359,6 +391,11 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
         nationality: editData.nationality,
         street_address: editData.street_address,
         city: editData.city,
+        state_name: editData.state_name,
+        host_name: editData.host_name,
+        host_address: editData.host_address,
+        host_city: editData.host_city,
+        host_cpf: editData.host_cpf,
       })
       .eq("id", application.id);
     setSaving(false);
@@ -372,11 +409,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
 
   const handleDeleteAccount = async () => {
     setDeleting(true);
-
-    // Delete application data
     await supabase.from("applications").delete().eq("user_id", user.id);
-
-    // Anonymise profile (set personal fields to null, keep id for audit)
     await supabase
       .from("profiles")
       .update({
@@ -386,12 +419,24 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
         location: null,
       })
       .eq("id", user.id);
-
-    // Sign out and redirect
     await signOut();
     navigate("/");
     toast.success("Your account and data have been permanently deleted.");
   };
+
+  const editableFields = [
+    { key: "full_name", label: "Full name" },
+    { key: "mother_name", label: "Mother's name" },
+    { key: "father_name", label: "Father's name" },
+    { key: "nationality", label: "Nationality" },
+    { key: "street_address", label: "Street address" },
+    { key: "city", label: "City" },
+    { key: "state_name", label: "State" },
+    { key: "host_name", label: "Host name" },
+    { key: "host_address", label: "Host address" },
+    { key: "host_city", label: "Host city" },
+    { key: "host_cpf", label: "Host CPF" },
+  ];
 
   return (
     <section className="bg-card border border-border rounded-2xl p-6">
@@ -399,11 +444,17 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
         <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">🔐</div>
         <div>
           <h2 className="font-bold text-lg">My Data</h2>
-          <p className="text-xs text-muted-foreground">Manage your personal data</p>
+          <p className="text-xs text-muted-foreground">Manage your personal data and account settings</p>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-3">
+        <button
+          onClick={() => setShowPassword(true)}
+          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+        >
+          🔑 Change password
+        </button>
         <button
           onClick={handleDownload}
           className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
@@ -424,22 +475,63 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
         </button>
       </div>
 
+      {/* Change Password Modal */}
+      <Dialog open={showPassword} onOpenChange={setShowPassword}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Change password</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 mt-2">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">New password</label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+                minLength={6}
+                className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+              />
+              <p className="text-[10px] text-muted-foreground mt-1">At least 6 characters</p>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">Confirm new password</label>
+              <input
+                type="password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                placeholder="••••••••"
+                minLength={6}
+                className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+              />
+            </div>
+            <button
+              onClick={handleChangePassword}
+              disabled={changingPassword || !newPassword || !confirmNewPassword}
+              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              {changingPassword ? "Updating..." : "Update password"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Edit Modal */}
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Update my details</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 mt-2">
-            {(["full_name", "mother_name", "father_name", "nationality", "street_address", "city"] as const).map((field) => (
-              <div key={field}>
+            {editableFields.map(({ key, label }) => (
+              <div key={key}>
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">
-                  {field.replace(/_/g, " ")}
+                  {label}
                 </label>
                 <input
                   type="text"
-                  value={(editData as any)[field]}
-                  onChange={(e) => setEditData((prev) => ({ ...prev, [field]: e.target.value }))}
+                  value={(editData as any)[key] || ""}
+                  onChange={(e) => setEditData((prev) => ({ ...prev, [key]: e.target.value }))}
                   className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
                 />
               </div>
@@ -455,7 +547,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
                   disabled
                   className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm text-muted-foreground cursor-not-allowed"
                 />
-                <p className="text-[10px] text-muted-foreground mt-1">Passport number cannot be edited after submission</p>
+                <p className="text-[10px] text-muted-foreground mt-1">Passport number cannot be edited after submission. Contact support if you need to change it.</p>
               </div>
             )}
             <button
