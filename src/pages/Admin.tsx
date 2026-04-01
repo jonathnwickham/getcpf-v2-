@@ -376,7 +376,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map(p => {
+            {paginatedUsers.map(p => {
               const userApp = applications.find(a => a.user_id === p.id);
               const nat = userApp?.nationality || p.country_code || "—";
               const displayName = p.full_name || userApp?.full_name || "—";
