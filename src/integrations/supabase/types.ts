@@ -125,6 +125,7 @@ export type Database = {
           nationality: string | null
           no_mother: boolean | null
           notes: string | null
+          partner_access_granted: boolean
           passport_number: string | null
           passport_photo_url: string | null
           promo_code: string | null
@@ -160,6 +161,7 @@ export type Database = {
           nationality?: string | null
           no_mother?: boolean | null
           notes?: string | null
+          partner_access_granted?: boolean
           passport_number?: string | null
           passport_photo_url?: string | null
           promo_code?: string | null
@@ -195,6 +197,7 @@ export type Database = {
           nationality?: string | null
           no_mother?: boolean | null
           notes?: string | null
+          partner_access_granted?: boolean
           passport_number?: string | null
           passport_photo_url?: string | null
           promo_code?: string | null
