@@ -29,6 +29,7 @@ const Index = () => {
 
   return (
     <div className="overflow-x-hidden">
+      <SEO />
       <Navbar onOpenModal={handleOpenOnboarding} />
       <Hero onOpenModal={handleOpenOnboarding} />
       <SocialProofBar />

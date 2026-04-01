@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
 import { supabase } from "@/integrations/supabase/client";
