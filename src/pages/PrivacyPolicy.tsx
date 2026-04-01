@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
 
 const PrivacyPolicy = () => (
   <div className="min-h-screen bg-background">
