@@ -95,7 +95,9 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
 
   return (
     <section id="pricing" className="py-24 px-8 text-center bg-secondary">
-      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Pricing</div>
+      <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+        🎉 Beta is live — get it for $29
+      </div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[560px] text-sm leading-relaxed">
         The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us <span className="line-through opacity-60">$49</span> <span className="text-primary font-bold">$29</span> to make sure that when you go in, it works.
