@@ -1,66 +1,93 @@
 
 
-# Landing Page Overhaul — From AI-Looking to Launch-Ready
+## Plan: RLS Security Audit + 5 Email Sequences
 
-## The Problem
-The audit identified specific issues that make the landing page look AI-generated and hurt conversion: no hero visual, generic copy, fake-feeling testimonials, no nationality flags, no post-CPF value section, no trust signals near the buy button, FAQ defaulting to all-closed, emoji-heavy pain points, and generic section headers.
+### Part 1: RLS Security Audit
 
-## Plan
+**Findings from full schema + security scan review:**
 
-### 1. Hero Section — Add Visual + Sharpen Copy
-**Hero.tsx** changes:
-- Replace the generic subhead with something specific: "Most foreigners waste a full day on their CPF. Our users are done by 9 AM."
-- Add a visual mockup of the Ready Pack dashboard using a styled browser-frame component with a screenshot-like preview (CSS-only, no real image needed — show a card grid with form fields, office finder, checklist icons to suggest the product). This sits to the right of the text on desktop, below on mobile.
-- Add a nationality flag row below the proof items: 🇺🇸 🇬🇧 🇩🇪 🇫🇷 🇿🇦 🇳🇬 🇦🇺 🇦🇷 🇨🇴 🇮🇳 🇯🇵 🇰🇷 with a "+40 more" label. Instantly communicates global coverage.
+#### CRITICAL — Must Fix
 
-### 2. Pain Points — Remove AI Pattern
-**PainPoints.tsx** changes:
-- Replace the emoji + "X" pattern with a cleaner design: a subtle red-tinted left border on each card, the service name bold, no emoji icons. Use lucide-react icons instead (Smartphone, UtensilsCrossed, Plane, Building2, Ticket, ShoppingCart).
-- Change section header from "The reality" to "Life without a CPF" — more specific, less generic.
+1. **Users can set their own application status to "paid"**
+   The `applications` table allows users to UPDATE any column on their own rows (RLS: `auth.uid() = user_id`). A user could run a direct query setting `status = 'paid'` without ever paying. The `transition_application_status` RPC exists but doesn't prevent direct updates. **Fix:** Replace the user UPDATE policy with one that excludes `status` changes, or use a trigger that prevents users from setting status to payment-related values.
 
-### 3. New Section — "What Happens After You Get Your CPF"
-**Create AfterCPF.tsx** — placed between Pricing and Testimonials in Index.tsx:
-- Three cards: "Open a bank account in 10 minutes" (Nubank), "Get a SIM card and data plan" (Claro/Vivo), "Start apartment hunting" (QuintoAndar).
-- Brief copy: "Your CPF unlocks everything. We show you exactly what to do next."
-- This extends perceived value of the $49 and references the existing unlock guide content.
+2. **Users can change their own `plan` on profiles**
+   The `profiles` UPDATE policy lets users modify any column, including `plan`. A user could set `plan = 'concierge'` without paying. **Fix:** Add a trigger or restricted column list.
 
-### 4. Testimonials — Make Them Feel Real
-**Testimonials.tsx** changes:
-- Remove the "Read more" expand pattern — show the full text for all testimonials (no click-to-expand). Dead interactive buttons destroy trust.
-- Add more friction/detail to quotes to make them feel authentic — e.g., add the specific office names, mention small frustrations that got resolved.
-- Keep the expand/collapse but default the first two to expanded so visitors see real content immediately.
+#### MEDIUM
 
-### 5. Trust Signals Near the Buy Button
-**Pricing.tsx** changes:
-- Add a row of micro trust signals directly below the Self-Service CTA button: a lock icon + "Secure payment", a clock icon + "5 min setup", a users icon + "200+ foreigners served".
-- These appear only on the highlighted (Self-Service) tier card.
+3. **Leaked password protection is disabled** — already flagged previously, still not enabled.
 
-### 6. FAQ — Open First Two by Default
-**FAQ.tsx** changes:
-- Default `openIndex` to show the first FAQ item open on load (index 0). Visitors who scroll to FAQ are close to buying — reduce friction.
-- Change section header from generic "FAQ" label to just keep the existing good subhead "Things you're probably wondering".
+4. **`public_promo_codes` view has no RLS** — it's a `security_barrier` view so it's acceptable, but worth confirming it only exposes `code`, `discount_percent`, `is_active` (it does).
 
-### 7. Section Headers — Remove Generic AI Patterns
-Across all components:
-- PainPoints: "The reality" → "Life without a CPF"
-- HowItWorks: "How it works" label + "Here's how it works" h2 → "Four steps" label + "From zero to CPF in one visit"
-- Pricing: "Simple pricing" → "One payment, done"  
-- These are small text changes but they remove the most obvious AI-generated patterns.
+5. **Messages table missing admin UPDATE** — admins can't mark messages as `read`. Minor but worth adding.
 
-### 8. Disclaimer Cleanup
-**Footer.tsx** — if there's a long disclaimer, trim it to two sentences max.
+#### LOW / Confirmed OK
 
-## Files Changed
-| File | Change |
-|------|--------|
-| `src/components/Hero.tsx` | Add product mockup, sharper copy, nationality flags row |
-| `src/components/PainPoints.tsx` | Lucide icons, remove emoji+X pattern, new header |
-| `src/components/AfterCPF.tsx` | **New** — post-CPF value section |
-| `src/pages/Index.tsx` | Insert AfterCPF between Pricing and Testimonials |
-| `src/components/Testimonials.tsx` | Default first 2 expanded, remove dead "Read more" buttons |
-| `src/components/Pricing.tsx` | Add trust signals below Self-Service CTA |
-| `src/components/FAQ.tsx` | Default first item open, tweak header |
-| `src/components/HowItWorks.tsx` | New header text |
+- `user_roles` — properly locked down, only admins can INSERT/UPDATE/DELETE
+- `checkout_sessions` — fully blocked from client (`false`), service-role only
+- `email tables` — service-role only, correct
+- `consent_log` — append-only, correct
+- `audit_log` — admin-only, correct
+- `waitlist` / `affiliate_applications` — public INSERT with validation, correct
 
-No database changes. No new dependencies. Pure frontend — all changes are visual and copy.
+---
+
+### Part 2: 5 Email Sequences
+
+The project already has 3 templates (purchase-confirmation, ready-pack-delivery, contact-form-confirmation) and the fanbasis webhook already triggers purchase-confirmation. Here's what needs building:
+
+#### Sequence 1: Waitlist Confirmation
+- **Template:** `waitlist-confirmation.tsx` — "You're on the list for [plan]"
+- **Trigger:** After successful waitlist insert on PricingPage
+
+#### Sequence 2: Post-Purchase Onboarding (Day 1)
+- Already partially done — `purchase-confirmation` fires from webhook
+- **Template:** `onboarding-welcome.tsx` — "Your Ready Pack is waiting, here's what to do first"
+- **Trigger:** Fire from fanbasis webhook after purchase-confirmation, with tips on completing onboarding
+
+#### Sequence 3: Contact Form Confirmation
+- Already exists and wired. No changes needed.
+
+#### Sequence 4: Ready Pack Delivery
+- Template exists (`ready-pack-delivery.tsx`) but need to verify it's triggered when the user completes onboarding
+- **Trigger:** Wire into GetStarted.tsx or wherever onboarding completes
+
+#### Sequence 5: Admin Deletion Alert
+- **Template:** `admin-deletion-alert.tsx` — notifies admin of accounts flagged for cleanup
+- **Trigger:** Called from the existing `check-expired-accounts` edge function
+
+---
+
+### Implementation Steps
+
+**Step 1 — Fix critical RLS vulnerabilities (database migrations)**
+- Add a trigger on `applications` that prevents non-admin users from changing `status` to payment-related values (`paid`, `prepared`, `office_visited`, `cpf_issued`)
+- Add a trigger on `profiles` that prevents non-admin users from changing the `plan` column
+
+**Step 2 — Add admin UPDATE policy on messages**
+- Allow admins to update messages (mark as read)
+
+**Step 3 — Create 3 new email templates**
+- `waitlist-confirmation.tsx`
+- `onboarding-welcome.tsx`
+- `admin-deletion-alert.tsx`
+- Update `registry.ts` with all new templates
+
+**Step 4 — Wire email triggers**
+- PricingPage.tsx: fire `waitlist-confirmation` after successful waitlist insert
+- fanbasis-webhook: fire `onboarding-welcome` alongside purchase-confirmation
+- check-expired-accounts: fire `admin-deletion-alert` to admin email
+- Verify ready-pack-delivery is triggered (wire if not)
+
+**Step 5 — Deploy all updated edge functions**
+
+**Step 6 — Enable leaked password protection**
+
+### Technical Details
+
+- All email templates use React Email components matching existing brand styling (green primary `#22c55e`, dark background aesthetic)
+- Triggers use `supabase.functions.invoke('send-transactional-email', ...)` with idempotency keys
+- RLS fixes use BEFORE UPDATE triggers (SECURITY DEFINER) rather than complex column-level policies, which Postgres doesn't natively support in RLS
+- The admin deletion alert is a transactional email (triggered by a specific system event for one admin recipient per run), not marketing
 
