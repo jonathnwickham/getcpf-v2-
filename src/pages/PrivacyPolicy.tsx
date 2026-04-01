@@ -103,30 +103,32 @@ const PrivacyPolicy = () => (
           <p className="leading-relaxed mt-3">You may request immediate deletion of all your data at any time by emailing us.</p>
         </section>
 
-        <section>
-          <h2 className="text-xl font-bold mb-3">Cookies</h2>
-          <p className="leading-relaxed">
-            We use session cookies for authentication only. We do not use advertising cookies or third-party tracking cookies.
+        <section id="cookies">
+          <h2 className="text-xl font-bold mb-3">Cookies and cookie policy</h2>
+          <p className="leading-relaxed mb-3">
+            GET CPF uses <strong>essential cookies only</strong> for the following purpose:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li><strong>Authentication session cookie</strong> — keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
+            <li><strong>Cookie consent preference</strong> — remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
+          </ul>
+          <p className="leading-relaxed mt-3">We do <strong>not</strong> use:</p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li>Advertising or marketing cookies</li>
+            <li>Third-party tracking cookies</li>
+            <li>Analytics cookies (Google Analytics, Meta Pixel, etc.)</li>
+            <li>Social media cookies</li>
+          </ul>
+          <p className="leading-relaxed mt-3">
+            No third parties install, manage, or access cookies via GET CPF. You can reject all cookies using the banner at the bottom of the page, or change your preference at any time via the "Cookie preferences" link in our footer.
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-3">Your rights</h2>
-          <p className="leading-relaxed mb-3">
-            Under the <strong>LGPD</strong> (Brazil), <strong>GDPR</strong> (EU), <strong>CCPA/CPRA</strong> (California), and <strong>POPIA</strong> (South Africa), you have the right to:
-          </p>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Access</strong> — request a copy of all data we hold about you</li>
-            <li><strong>Correction</strong> — ask us to fix any inaccurate information</li>
-            <li><strong>Deletion</strong> — ask us to delete your account and all associated data</li>
-            <li><strong>Portability</strong> — receive your data in a portable format (JSON export available in your dashboard)</li>
-            <li><strong>Withdraw consent</strong> — at any time, for any reason</li>
-            <li><strong>Limit use of sensitive personal information</strong> (CCPA) — your passport number is classified as Sensitive Personal Information under California law; we use it solely to prepare your CPF application</li>
-          </ul>
-          <p className="leading-relaxed mt-3">
-            To exercise any of these rights, email us at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
-            We'll respond within 15 business days.
+          <h2 className="text-xl font-bold mb-3">Do Not Sell or Share My Personal Information</h2>
+          <p className="leading-relaxed">
+            GET CPF does <strong>not sell or share</strong> your personal information with third parties for advertising, marketing, or any other commercial purpose. This applies to all users, including California residents under the CCPA/CPRA. Because we do not sell data, there is no need to submit a "Do Not Sell" request — but you may contact us at any time at{" "}
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a> to confirm this.
           </p>
         </section>
 
