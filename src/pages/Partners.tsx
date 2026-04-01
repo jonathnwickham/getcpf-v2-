@@ -70,7 +70,7 @@ const PartnerBenefitsSection = () => (
 );
 
 const FoundingPartnerSection = () => (
-  <section className="py-16 px-6 bg-primary/5 border-y border-primary/15">
+  <section className="py-12 md:py-16 px-6 bg-primary/5 border-y border-primary/15">
     <div className="max-w-[700px] mx-auto text-center">
       <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-[2px] px-4 py-1.5 rounded-full mb-6">
         <Users className="w-3.5 h-3.5" />
