@@ -76,6 +76,7 @@ const FALLBACK_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}
 const PricingPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Page meta
   useEffect(() => {
