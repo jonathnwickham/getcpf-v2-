@@ -84,7 +84,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           {/* Beta badge */}
           <div className="animate-fade-up-1 mb-4 inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            <span className="text-xs font-bold text-primary uppercase tracking-wider">Beta — Join for $29</span>
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">BETA IS LIVE - JOIN FOR $29</span>
           </div>
 
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
