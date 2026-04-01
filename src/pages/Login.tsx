@@ -47,25 +47,32 @@ const Login = () => {
         return;
       }
 
-      // Check if user has a completed application (paid/prepared/etc.)
-      const { data: paidApps } = await supabase
+      // Check if user has ANY application (draft or beyond)
+      const { data: allApps } = await supabase
         .from("applications")
         .select("status")
         .eq("user_id", userId)
-        .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
+        .order("created_at", { ascending: false })
         .limit(1);
 
-      if (paidApps && paidApps.length > 0) {
-        const app = await fetchLatestApplication(userId);
-        if (app && applicationHasReadyPack(app)) {
-          navigate("/ready-pack");
+      if (allApps && allApps.length > 0) {
+        const latestStatus = allApps[0].status;
+        // If they have a ready-pack-eligible status, go to ready-pack
+        if (["paid", "prepared", "office_visited", "cpf_issued"].includes(latestStatus || "")) {
+          const app = await fetchLatestApplication(userId);
+          if (app && applicationHasReadyPack(app)) {
+            navigate("/ready-pack");
+          } else {
+            navigate("/get-started");
+          }
         } else {
+          // Draft or other status — continue onboarding
           navigate("/get-started");
         }
         return;
       }
 
-      // Fallback: check if they paid via checkout_sessions (before creating an application)
+      // No application yet — check if they paid via checkout_sessions
       const userEmail = authData.user?.email;
       if (userEmail) {
         const { data: payRes } = await supabase.functions.invoke("verify-payment", {
