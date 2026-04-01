@@ -79,11 +79,6 @@ const PricingPage = () => {
   const { user } = useAuth();
 
   // Page meta
-  useEffect(() => {
-    document.title = "Pricing — GET CPF | $49 One-Time Payment";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Get your Brazilian CPF sorted for $49. AI-powered preparation, pre-filled forms, and step-by-step guidance. 100% acceptance guarantee.");
-  }, []);
   const [flowStep, setFlowStep] = useState<FlowStep>("email");
   const [email, setEmail] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
