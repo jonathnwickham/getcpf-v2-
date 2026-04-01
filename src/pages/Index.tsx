@@ -40,8 +40,9 @@ const Index = () => {
       "areaServed": "BR",
       "offers": {
         "@type": "Offer",
-        "price": "49",
+        "price": "49.00",
         "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
       },
     };
     const script = document.createElement("script");

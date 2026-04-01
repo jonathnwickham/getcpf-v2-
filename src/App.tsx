@@ -12,7 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 
 // Lazy-loaded routes (not needed on initial page load)
-const Checkout = lazy(() => import("./pages/Checkout.tsx"));
+
 const GetStarted = lazy(() => import("./pages/GetStarted.tsx"));
 const ReadyPack = lazy(() => import("./pages/ReadyPack.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
