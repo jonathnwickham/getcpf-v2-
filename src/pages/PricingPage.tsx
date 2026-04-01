@@ -606,21 +606,25 @@ const PricingPage = () => {
           </div>
         )}
 
-        {/* STEP 5: Done */}
+        {/* STEP 5: Done — Check your email */}
         {flowStep === "done" && (
           <div className="max-w-md mx-auto text-center">
-            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">🎉</span>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-3xl">✉️</span>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">You're all set!</h1>
-            <p className="text-muted-foreground text-sm mb-8">
-              Your account is ready — sign in and let's get your CPF sorted.
+            <h1 className="text-3xl font-extrabold tracking-tight mb-3">Check your email</h1>
+            <p className="text-muted-foreground text-sm mb-4">
+              We sent a verification link to <strong className="text-foreground">{email}</strong>.
+              Click the link to activate your account, then sign in to start your CPF application.
+            </p>
+            <p className="text-xs text-muted-foreground mb-8">
+              Didn't get it? Check your spam folder.
             </p>
             <button
               onClick={() => navigate("/login")}
               className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
             >
-              Sign in →
+              Go to sign in →
             </button>
           </div>
         )}
