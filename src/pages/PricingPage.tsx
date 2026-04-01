@@ -160,13 +160,20 @@ const PricingPage = () => {
   };
 
   const [paymentVerified, setPaymentVerified] = useState(false);
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [pollCount, setPollCount] = useState(0);
 
   const EMBEDDED_URL = checkoutSecret
     ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}`
     : null;
 
   const handlePaymentComplete = () => {
-    setFlowStep("password");
+    // Show celebration for 2.5 seconds before moving to account step
+    setShowPaymentSuccess(true);
+    setTimeout(() => {
+      setShowPaymentSuccess(false);
+      setFlowStep("password");
+    }, 2500);
   };
 
   // Poll verify-payment endpoint every 5 seconds once on payment step
@@ -175,6 +182,7 @@ const PricingPage = () => {
 
     const poll = async () => {
       try {
+        setPollCount(c => c + 1);
         const { data } = await supabase.functions.invoke("verify-payment", {
           body: { email },
         });
