@@ -571,7 +571,7 @@ const PricingPage = () => {
                 </div>
                 {appliedPromo ? (
                   <div className="text-right">
-                    <span className="line-through text-muted-foreground text-sm">$49</span>{" "}
+                    <span className="line-through text-muted-foreground text-sm">$29</span>{" "}
                     <span className="font-bold text-primary text-xl">${finalPrice}</span>
                     <div className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full mt-1">
                       🎉 {appliedPromo.code} -${discount}
@@ -579,7 +579,7 @@ const PricingPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-xl font-bold">$49</span>
+                  <span className="text-xl font-bold"><span className="line-through text-muted-foreground text-sm">$49</span> $29</span>
                 )}
               </div>
             </div>
