@@ -72,9 +72,7 @@ const Login = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <a href="/" className="text-2xl font-bold tracking-tight inline-block">
-            GET <span className="text-primary">CPF</span>
-          </a>
+          <a href="/"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold mt-6">Welcome back</h1>
           <p className="text-muted-foreground mt-2 text-sm">Pick up right where you left off</p>
         </div>

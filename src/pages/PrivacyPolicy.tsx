@@ -6,9 +6,7 @@ const PrivacyPolicy = () => (
   <div className="min-h-screen bg-background">
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
-        <Link to="/" className="text-lg font-bold tracking-tight">
-          GET <span className="text-primary">CPF</span>
-        </Link>
+        <Link to="/"><Logo className="h-10" /></Link>
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
           ← Back to home
         </Link>

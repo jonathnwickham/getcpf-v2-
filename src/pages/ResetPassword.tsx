@@ -48,9 +48,7 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <a href="/" className="text-2xl font-bold tracking-tight inline-block mb-6">
-            GET <span className="text-primary">CPF</span>
-          </a>
+          <a href="/" className="inline-block mb-6"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold">Pick a new password</h1>
           <p className="text-muted-foreground mt-2 text-sm">Choose something you'll remember — then you're back in</p>
         </div>

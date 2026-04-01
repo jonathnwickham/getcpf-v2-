@@ -142,9 +142,7 @@ const Partners = () => {
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="max-w-[900px] mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="text-lg font-bold tracking-tight">
-            GET <span className="text-primary">CPF</span>
-          </Link>
+          <Link to="/"><Logo className="h-10" /></Link>
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             ← Back to homepage
           </Link>
