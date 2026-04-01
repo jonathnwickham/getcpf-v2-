@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import type { OnboardingData, OfficeInfo } from "@/lib/onboarding-data";
 import { ProcessStep, InfoField, QuickAction, AfterCard, CopyButton, type Tab } from "./shared";
 import officeVisitImg from "@/assets/office-visit.jpg";
