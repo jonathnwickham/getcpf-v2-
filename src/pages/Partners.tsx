@@ -82,7 +82,7 @@ const FoundingPartnerSection = () => (
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
         {[
-          { label: "Higher commission", desc: "Locked in permanently — more than standard partners will ever get" },
+          { label: "20% commission", desc: "You earn 20% of every sale — that's $9.80 per referral, locked in permanently" },
           { label: "Named on the site", desc: "Your name, logo, and one-line bio featured on the partners page" },
           { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide — you promote it first" },
         ].map((item) => (
@@ -206,7 +206,7 @@ const Partners = () => {
             {[
               { step: "1", title: "Join the network", desc: "Fill in the form below. We review every application personally." },
               { step: "2", title: "Get your referral link", desc: "We set you up with a unique link and promo code for your students, clients, or community." },
-              { step: "3", title: "Earn on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn a commission." },
+              { step: "3", title: "Earn 20% on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn $9.80. Paid monthly." },
             ].map((s) => (
               <div key={s.step} className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
