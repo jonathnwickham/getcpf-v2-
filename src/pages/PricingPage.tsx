@@ -293,7 +293,7 @@ const PricingPage = () => {
       <div className="max-w-[1100px] mx-auto px-6 py-12">
         {/* Step indicator */}
         <div className="flex items-center justify-center gap-2 mb-12">
-          {["Email", "Plan", "Payment", "Account"].map((label, i) => {
+          {["Your email", "Choose plan", "Payment", "Create account"].map((label, i) => {
             const steps: FlowStep[] = ["email", "plan", "payment", "password"];
             const isActive = steps.indexOf(flowStep) >= i || flowStep === "done";
             const isCurrent = steps[i] === flowStep;

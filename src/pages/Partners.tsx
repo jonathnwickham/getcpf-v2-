@@ -49,7 +49,7 @@ const partnerBenefits = [
 ];
 
 const PartnerBenefitsSection = () => (
-  <section className="py-20 px-6">
+<section className="py-12 px-6">
     <div className="max-w-[800px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4 text-center">Beyond the commission</div>
       <h2 className="text-2xl font-bold tracking-tight mb-4 text-center">What partners actually get</h2>
