@@ -56,9 +56,7 @@ const GuideDetail = () => {
     scriptEl.textContent = JSON.stringify(schemas);
     document.head.appendChild(scriptEl);
 
-    document.title = `${guide.title} — GET CPF`;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", guide.metaDescription);
+    // SEO is handled by <SEO> component now
 
     return () => {
       const el = document.getElementById("guide-schema");
