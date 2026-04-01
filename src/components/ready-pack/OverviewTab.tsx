@@ -120,7 +120,7 @@ const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data:
               <div className="text-4xl mb-2">🎉</div>
               <p className="text-sm text-muted-foreground mb-1">Congratulations, {firstName}!</p>
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-2">Your CPF number</p>
-              <p className="text-3xl font-bold font-mono tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
+              <p className="text-xl sm:text-3xl font-bold font-mono tracking-wider sm:tracking-widest text-primary">{formatCpf(cpfNumber)}</p>
               <CopyButton text={cpfNumber.replace(/\D/g, "")} label="Copy CPF" className="mt-3" />
             </div>
             <button onClick={onCpfSaved} className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all">🎉 Go to my CPF section →</button>
