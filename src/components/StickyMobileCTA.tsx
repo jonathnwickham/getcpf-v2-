@@ -31,14 +31,16 @@ const StickyMobileCTA = () => {
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="bg-background/95 backdrop-blur-lg border-t border-border px-4 pt-3 pb-2 safe-bottom">
+      <div
+        className="bg-background/95 backdrop-blur-lg border-t border-border px-4 pt-3"
+        style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
+      >
         <button
           onClick={handleClick}
           className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]"
         >
-          {user ? "My CPF Pack →" : "Get My CPF Pack — $49 →"}
+          Get My CPF Pack — $49 →
         </button>
-        <div className="h-2" />
       </div>
     </div>
   );
