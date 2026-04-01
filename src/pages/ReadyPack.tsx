@@ -1348,6 +1348,36 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
 
   return (
   <div className="space-y-6 animate-slide-in">
+    {/* "This is what you walk in with" preview */}
+    <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-border bg-secondary">
+        <h2 className="font-bold">This is what you walk in with</h2>
+        <p className="text-xs text-muted-foreground mt-1">Your completed form generates a protocol number — your proof that everything was submitted correctly.</p>
+      </div>
+      <div className="p-6">
+        <img
+          src={walkInPreviewImg}
+          alt="Step 1: Fill in the Receita Federal form online. Step 2: Your protocol document is generated with a reference number valid for 90 days."
+          className="w-full rounded-xl border border-border"
+          loading="lazy"
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
+          <div className="flex items-start gap-2.5">
+            <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
+            <p className="text-xs text-muted-foreground">Your reference number — proof your application was submitted correctly</p>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
+            <p className="text-xs text-muted-foreground">Valid for 90 days — plenty of time to visit the office</p>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
+            <p className="text-xs text-muted-foreground">In Portuguese — we translate everything so you know exactly what to bring</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     {/* Visual checklist */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
