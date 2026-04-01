@@ -131,9 +131,9 @@ const PrivacyPolicy = () => (
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-3">Data Protection Officer (Encarregado)</h2>
+          <h2 className="text-xl font-bold mb-3">Data protection contact</h2>
           <p className="leading-relaxed">
-            As required by the LGPD, our designated Data Protection Officer (encarregado) can be contacted at:{" "}
+            For any questions or requests related to your personal data, including LGPD enquiries, contact us at{" "}
             <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
           </p>
         </section>
