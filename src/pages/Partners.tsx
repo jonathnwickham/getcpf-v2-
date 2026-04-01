@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
