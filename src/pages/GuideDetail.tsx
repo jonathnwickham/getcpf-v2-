@@ -70,6 +70,7 @@ const GuideDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title={`${guide.title} — GET CPF`} description={guide.metaDescription} path={`/guides/${guide.slug}`} />
       <Navbar />
       <article className="pt-32 pb-24 px-6">
         <div className="max-w-[700px] mx-auto">
