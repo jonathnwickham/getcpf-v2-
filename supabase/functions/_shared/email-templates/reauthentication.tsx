@@ -8,9 +8,12 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
+
+const LOGO_URL = 'https://hcewyrhlcpfozhnishlj.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
 interface ReauthenticationEmailProps {
   token: string
@@ -22,7 +25,7 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Preview>Your verification code</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Text style={brand}>GET <span style={{ color: 'hsl(160, 84%, 28%)' }}>CPF</span></Text>
+        <Img src={LOGO_URL} alt="GET CPF" width="140" height="auto" style={logo} />
         <Heading style={h1}>Confirm your identity</Heading>
         <Text style={text}>Use the code below to verify it's you:</Text>
         <Text style={codeStyle}>{token}</Text>
@@ -38,7 +41,7 @@ export default ReauthenticationEmail
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }
 const container = { padding: '20px 25px' }
-const brand = { fontSize: '18px', fontWeight: 'bold' as const, color: 'hsl(222, 47%, 11%)', margin: '0 0 24px', letterSpacing: '-0.02em' }
+const logo = { margin: '0 0 24px' }
 const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: 'hsl(222, 47%, 11%)', margin: '0 0 20px' }
 const text = { fontSize: '14px', color: 'hsl(220, 9%, 46%)', lineHeight: '1.5', margin: '0 0 25px' }
 const codeStyle = { fontFamily: 'Courier, monospace', fontSize: '22px', fontWeight: 'bold' as const, color: 'hsl(160, 84%, 28%)', margin: '0 0 30px' }
