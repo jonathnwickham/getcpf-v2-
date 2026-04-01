@@ -25,7 +25,7 @@ const Transformation = () => {
         {/* Before */}
         <div className="flex-1 px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-foreground mb-1">Without GET CPF</h3>
-          <p className="text-xs text-muted-foreground mb-6">What most foreigners experience</p>
+          <p className="text-sm text-muted-foreground mb-6">What most foreigners experience</p>
 
           {/* Rejected form card */}
           <div className="bg-card border border-destructive/20 rounded-xl p-3.5 shadow-sm mb-6 w-[170px]">
@@ -74,7 +74,7 @@ const Transformation = () => {
         {/* After */}
         <div className="flex-1 px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-primary mb-1">With GET CPF</h3>
-          <p className="text-xs text-muted-foreground mb-6">What our users experience</p>
+          <p className="text-sm text-muted-foreground mb-6">What our users experience</p>
 
           {/* Approved form + unlocked services */}
           <div className="flex items-start gap-3 mb-6">

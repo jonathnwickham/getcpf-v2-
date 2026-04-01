@@ -49,7 +49,7 @@ const partnerBenefits = [
 ];
 
 const PartnerBenefitsSection = () => (
-<section className="py-12 px-6">
+<section className="py-10 md:py-12 px-6">
     <div className="max-w-[800px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4 text-center">Beyond the commission</div>
       <h2 className="text-2xl font-bold tracking-tight mb-4 text-center">What partners actually get</h2>
@@ -70,7 +70,7 @@ const PartnerBenefitsSection = () => (
 );
 
 const FoundingPartnerSection = () => (
-  <section className="py-16 px-6 bg-primary/5 border-y border-primary/15">
+  <section className="py-12 md:py-16 px-6 bg-primary/5 border-y border-primary/15">
     <div className="max-w-[700px] mx-auto text-center">
       <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-[2px] px-4 py-1.5 rounded-full mb-6">
         <Users className="w-3.5 h-3.5" />
@@ -151,7 +151,7 @@ const Partners = () => {
       </nav>
 
       {/* Hero / Mission */}
-      <section className="py-20 px-6">
+      <section className="py-14 md:py-20 px-6">
         <div className="max-w-[700px] mx-auto">
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Partner with us</div>
           <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold tracking-tight leading-[1.1]">
@@ -305,7 +305,7 @@ const Partners = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Your name</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Your name</label>
                 <input
                   type="text"
                   required
@@ -316,7 +316,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Email</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Email</label>
                 <input
                   type="email"
                   required
@@ -327,7 +327,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Type of business</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Type of business</label>
                 <input
                   type="text"
                   value={form.business}
@@ -337,7 +337,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">City</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">City</label>
                 <input
                   type="text"
                   value={form.city}
@@ -347,7 +347,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Why do you want to join?</label>
+                <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">Why do you want to join?</label>
                 <textarea
                   value={form.why}
                   onChange={(e) => setForm({ ...form, why: e.target.value })}
@@ -359,7 +359,7 @@ const Partners = () => {
               <Button type="submit" disabled={submitting} className="w-full h-12 rounded-xl text-sm font-bold">
                 {submitting ? "Submitting..." : "Apply to become a founding partner"}
               </Button>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-sm text-muted-foreground text-center">
                 Only {20} founding spots available. After that, the terms change.
               </p>
             </form>

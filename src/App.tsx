@@ -10,6 +10,7 @@ import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Lazy-loaded routes (not needed on initial page load)
 
@@ -42,6 +43,7 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <CookieBanner />
+          <ScrollToTop />
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <Routes>
               <Route path="/" element={<Index />} />

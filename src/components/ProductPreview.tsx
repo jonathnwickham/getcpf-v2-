@@ -17,7 +17,7 @@ const ProductPreview = () => {
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
           {/* Form (step 1) */}
           <div className="relative flex-shrink-0">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — Fill in the form</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — Fill in the form</p>
             <div
               className="rounded-lg overflow-hidden shadow-xl border border-border bg-white"
               style={{ transform: "rotate(-2deg)", maxWidth: 340 }}
@@ -36,7 +36,7 @@ const ProductPreview = () => {
 
           {/* Protocol result (step 2) */}
           <div className="relative flex-shrink-0">
-            <p className="text-xs font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — Your protocol is generated</p>
+            <p className="text-sm font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — Your protocol is generated</p>
             <div
               className="rounded-lg overflow-hidden shadow-2xl border-2 border-primary/30 bg-white"
               style={{ transform: "rotate(3deg)", maxWidth: 380 }}

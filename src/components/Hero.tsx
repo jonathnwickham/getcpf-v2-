@@ -66,7 +66,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
   return (
     <section
-      className="flex flex-col justify-center items-center px-6 pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]"
+      className="flex flex-col justify-center items-center px-6 pt-24 md:pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]"
       style={{
         backgroundImage: `url(${brazilStencil})`,
         backgroundPosition: 'center 85%',
@@ -101,7 +101,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </div>
 
           {/* Stats row with count-up */}
-          <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-6 justify-center lg:justify-start">
+          <div className="animate-fade-up-4 grid grid-cols-4 gap-4 sm:flex sm:flex-wrap sm:gap-8 mt-6 justify-center lg:justify-start">
             {proofItems.map((item) => (
               <div key={item.label} className="text-center lg:text-left">
                 <div className="text-lg font-bold text-foreground">
@@ -113,7 +113,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                     `${item.prefix || ""}${item.num}${item.suffix}`
                   )}
                 </div>
-                <div className="text-[11px] sm:text-xs text-muted-foreground font-medium">{item.label}</div>
+                <div className="text-xs text-muted-foreground font-medium">{item.label}</div>
               </div>
             ))}
           </div>

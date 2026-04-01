@@ -21,26 +21,26 @@ const Footer = () => (
         {/* Quick links */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Quick links</h4>
-          <ul className="space-y-1 text-sm text-muted-foreground">
-            <li><a href="/#how" className="hover:text-foreground transition-colors inline-block py-1.5">How it works</a></li>
-            <li><a href="/#pricing" className="hover:text-foreground transition-colors inline-block py-1.5">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-1.5">FAQ</a></li>
-            <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-1.5">Guides</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-1.5">Contact us</Link></li>
-            <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-1.5">Sign in</Link></li>
+          <ul className="space-y-0.5 text-sm text-muted-foreground">
+            <li><a href="/#how" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">How it works</a></li>
+            <li><a href="/#pricing" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">FAQ</a></li>
+            <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Guides</Link></li>
+            <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Contact us</Link></li>
+            <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Sign in</Link></li>
           </ul>
         </div>
 
         {/* Legal */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Legal</h4>
-          <ul className="space-y-1 text-sm text-muted-foreground">
-            <li><Link to="/privacy" className="hover:text-foreground transition-colors inline-block py-1.5">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-foreground transition-colors inline-block py-1.5">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="hover:text-foreground transition-colors inline-block py-1.5">Affiliate Disclosure</Link></li>
-            <li><Link to="/partners" className="hover:text-foreground transition-colors inline-block py-1.5">Become a partner →</Link></li>
-            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors inline-block py-1.5">Apply as affiliate →</Link></li>
-            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left inline-block py-1.5">Cookie preferences</button></li>
+          <ul className="space-y-0.5 text-sm text-muted-foreground">
+            <li><Link to="/privacy" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Affiliate Disclosure</Link></li>
+            <li><Link to="/partners" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Become a partner →</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Apply as affiliate →</Link></li>
+            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left inline-block py-2 min-h-[44px] flex items-center">Cookie preferences</button></li>
           </ul>
         </div>
       </div>
