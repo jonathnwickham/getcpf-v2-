@@ -113,6 +113,22 @@ Deno.serve(async (req) => {
       console.log(`Updated profile plan for ${buyerEmail}`);
     }
 
+    // Send post-purchase confirmation email
+    try {
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "purchase-confirmation",
+          recipientEmail: buyerEmail,
+          idempotencyKey: `purchase-confirm-${paymentId || buyerEmail}`,
+          templateData: { name: profile ? undefined : undefined },
+        },
+      });
+      console.log(`Purchase confirmation email queued for ${buyerEmail}`);
+    } catch (emailErr) {
+      console.error("Failed to queue purchase confirmation email:", emailErr);
+      // Non-fatal — payment still processed successfully
+    }
+
     return new Response(JSON.stringify({ received: true, email: buyerEmail }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
