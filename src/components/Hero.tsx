@@ -81,6 +81,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       <div className="max-w-[1100px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-14 items-center relative z-10">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
+          {/* Beta badge */}
+          <div className="animate-fade-up-1 mb-4 inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5">
+            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Beta — Join for $29</span>
+          </div>
+
           <h1 className="animate-fade-up-1 text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.5px]">
             Get your Brazilian{" "}
             <span className="text-primary font-serif italic">CPF</span>{" "}
@@ -93,8 +99,12 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
           <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
-              Get started →
+              Get started — <span className="line-through opacity-60">$49</span> $29 →
             </button>
+            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all min-h-[52px] inline-flex items-center">
+              See how it works
+            </a>
+          </div>
             <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all min-h-[52px] inline-flex items-center">
               See how it works
             </a>

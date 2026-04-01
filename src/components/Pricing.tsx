@@ -121,8 +121,16 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             )}
             <div className="text-sm text-muted-foreground font-semibold mb-2">{tier.name}</div>
             <div className="text-4xl font-extrabold tracking-tight">
+              {(tier as any).originalPrice && (
+                <span className="text-2xl line-through text-muted-foreground/50 mr-2">{(tier as any).originalPrice}</span>
+              )}
               {tier.price} <span className="text-base font-normal text-muted-foreground">USD</span>
             </div>
+            {(tier as any).originalPrice && (
+              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mt-2">
+                🎉 Beta pricing — limited spots
+              </div>
+            )}
             <div className="text-sm text-muted-foreground mt-3 mb-6 leading-relaxed">{tier.description}</div>
             <ul className={`mb-8 space-y-2.5 ${tier.comingSoon ? "opacity-60" : ""}`}>
               {tier.features.map((f) => (

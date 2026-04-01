@@ -9,15 +9,18 @@ const ProductPreview = () => {
     <section className="py-20 bg-secondary/30">
       <div className="max-w-5xl mx-auto px-6">
         {/* Heading */}
-        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
-          This is what you walk in with
+        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-4">
+          We package everything for you
         </h2>
+        <p className="text-center text-muted-foreground max-w-[560px] mx-auto mb-12 text-sm leading-relaxed">
+          You fill in one form. We organise the rest — pre-filled documents, the right office, a Portuguese cheat sheet, and AI that checks everything before you go.
+        </p>
 
         {/* Two document mockups */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
           {/* Form (step 1) */}
           <div className="relative flex-shrink-0">
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — Fill in the form</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — You fill in the form</p>
             <div
               className="rounded-lg overflow-hidden shadow-xl border border-border bg-white"
               style={{ transform: "rotate(-2deg)", maxWidth: 340 }}
@@ -36,7 +39,7 @@ const ProductPreview = () => {
 
           {/* Protocol result (step 2) */}
           <div className="relative flex-shrink-0">
-            <p className="text-sm font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — Your protocol is generated</p>
+            <p className="text-sm font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — We build your Ready Pack</p>
             <div
               className="rounded-lg overflow-hidden shadow-2xl border-2 border-primary/30 bg-white"
               style={{ transform: "rotate(3deg)", maxWidth: 380 }}
@@ -54,19 +57,19 @@ const ProductPreview = () => {
         {/* Three callout items */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <CalloutItem
-            text="Your reference number — proof your application was submitted correctly"
+            text="AI checks your documents — know before you go that everything is correct"
           />
           <CalloutItem
-            text="Valid for 90 days — plenty of time to visit the office"
+            text="We tell you exactly where to go, what to say, and what to bring"
           />
           <CalloutItem
-            text="In Portuguese — we translate everything so you know exactly what to bring"
+            text="Every step translated into Portuguese — no surprises at the counter"
           />
         </div>
 
         {/* Muted line */}
         <p className="text-center text-sm text-muted-foreground italic mb-8">
-          Generated from the official Receita Federal system. Accepted at every office in Brazil.
+          All you do is show up. We handle the preparation so you don't have to figure it out alone.
         </p>
 
         {/* CTA */}
@@ -75,7 +78,7 @@ const ProductPreview = () => {
             onClick={() => navigate("/pricing")}
             className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-lg"
           >
-            Get My CPF Pack — $49 →
+            Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
           </button>
         </div>
       </div>
