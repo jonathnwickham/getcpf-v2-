@@ -182,6 +182,7 @@ const VerifyEmailScreen = () => {
 
 const PaymentRequiredScreen = () => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md text-center">
@@ -203,6 +204,12 @@ const PaymentRequiredScreen = () => {
           <p className="text-xs text-muted-foreground mt-4">
             Already paid? <a href="/contact" className="text-primary font-semibold hover:underline">Contact support</a>
           </p>
+          <button
+            onClick={signOut}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors mt-3"
+          >
+            Sign out
+          </button>
         </div>
       </div>
     </div>
