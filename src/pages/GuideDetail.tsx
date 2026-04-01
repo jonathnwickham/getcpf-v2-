@@ -92,6 +92,12 @@ const GuideDetail = () => {
               <span>·</span>
               <span>{guide.readTime}</span>
             </div>
+            {guide.attribution && (
+              <div className="mt-4 inline-flex items-center gap-2 bg-muted/60 border border-border rounded-lg px-3 py-1.5 text-xs text-muted-foreground">
+                <span>✨</span>
+                <span>{guide.attribution}</span>
+              </div>
+            )}
           </div>
 
           {/* Content */}

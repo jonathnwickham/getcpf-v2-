@@ -8,6 +8,7 @@ const categoryColors: Record<string, string> = {
   "Getting started": "bg-primary/10 text-primary",
   "City guides": "bg-blue-500/10 text-blue-600",
   "Troubleshooting": "bg-amber-500/10 text-amber-600",
+  "Reviews": "bg-emerald-500/10 text-emerald-600",
 };
 
 const Guides = () => {
