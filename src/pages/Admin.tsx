@@ -422,7 +422,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                 </TableRow>
               );
             })}
-            {filtered.length === 0 && (
+            {paginatedUsers.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
                   No users found
@@ -431,6 +431,9 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             )}
           </TableBody>
         </Table>
+        {totalPages > 1 && (
+          <TablePagination currentPage={currentPage} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPageChange={setCurrentPage} />
+        )}
       </div>
 
       {/* User drill-down dialog */}
