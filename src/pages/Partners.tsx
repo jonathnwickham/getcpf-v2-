@@ -206,7 +206,7 @@ const Partners = () => {
             {[
               { step: "1", title: "Join the network", desc: "Fill in the form below. We review every application personally." },
               { step: "2", title: "Get your referral link", desc: "We set you up with a unique link and promo code for your students, clients, or community." },
-              { step: "3", title: "Earn on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn a commission." },
+              { step: "3", title: "Earn 20% on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn $9.80. Paid monthly." },
             ].map((s) => (
               <div key={s.step} className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
