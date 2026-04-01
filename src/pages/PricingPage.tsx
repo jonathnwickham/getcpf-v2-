@@ -183,6 +183,7 @@ const PricingPage = () => {
 
   const handleSelectPlan = async (tierName: string) => {
     setSelectedPlan(tierName);
+    window.history.pushState(null, "", "/pricing?step=3");
     setFlowStep("payment");
     
     // Start loading embedded checkout
