@@ -79,6 +79,41 @@ const ForgotPassword = () => {
             ← Back to login
           </Link>
         </p>
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <a href="/" className="inline-block mb-2"><Logo className="h-10" /></a>
+          <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
+          <p className="text-muted-foreground mt-2 text-sm">No worries, enter your email and we'll send you a link to reset it</p>
+        </div>
+
+        <form onSubmit={handleReset} className="space-y-4">
+          <div>
+            <label className="text-sm font-semibold text-foreground block mb-1.5">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="you@email.com"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+          >
+            {loading ? "Sending..." : "Send me a reset link"}
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-muted-foreground mt-6">
+          <Link to="/login" className="text-primary font-semibold hover:underline">
+            ← Back to login
+          </Link>
+        </p>
+      </div>
       </div>
     </div>
   );
