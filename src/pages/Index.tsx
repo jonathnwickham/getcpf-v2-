@@ -26,33 +26,6 @@ const Index = () => {
     navigate("/pricing");
   };
 
-  // Service schema JSON-LD
-  useEffect(() => {
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "GET CPF",
-      "description": "CPF preparation service for foreigners in Brazil",
-      "provider": {
-        "@type": "Organization",
-        "name": "GET CPF",
-      },
-      "areaServed": "BR",
-      "offers": {
-        "@type": "Offer",
-        "price": "49.00",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-      },
-    };
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(schema);
-    script.id = "service-schema";
-    document.head.appendChild(script);
-    return () => { document.getElementById("service-schema")?.remove(); };
-  }, []);
-
   return (
     <div className="overflow-x-hidden">
       <Navbar onOpenModal={handleOpenOnboarding} />
