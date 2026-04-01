@@ -107,6 +107,9 @@ const Unsubscribe = () => {
             <p className="text-muted-foreground text-sm">
               This unsubscribe link is invalid or has expired.
             </p>
+            <a href="/" className="text-sm text-primary font-semibold hover:underline inline-block mt-2">
+              Back to homepage →
+            </a>
           </div>
         )}
 

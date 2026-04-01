@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import Logo from "@/components/Logo";
 
 interface NavbarProps {
@@ -10,7 +10,7 @@ interface NavbarProps {
 
 const Navbar = ({ onOpenModal }: NavbarProps) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handlePrimaryAction = () => {
@@ -48,12 +48,20 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
               {link.label}
             </a>
           ))}
-          {!user && (
-            <button
-              onClick={() => navigate("/login")}
+          {!user ? (
+            <Link
+              to="/login"
               className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
             >
               Sign in
+            </Link>
+          ) : (
+            <button
+              onClick={signOut}
+              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors inline-flex items-center gap-1.5"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Sign out
             </button>
           )}
           <button
@@ -88,12 +96,21 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
               {link.label}
             </a>
           ))}
-          {!user && (
-            <button
-              onClick={() => { setMobileOpen(false); navigate("/login"); }}
-              className="text-left text-foreground text-sm font-medium hover:text-primary transition-colors"
+          {!user ? (
+            <Link
+              to="/login"
+              onClick={() => setMobileOpen(false)}
+              className="text-foreground text-sm font-medium hover:text-primary transition-colors"
             >
               Sign in
+            </Link>
+          ) : (
+            <button
+              onClick={() => { setMobileOpen(false); signOut(); }}
+              className="text-left text-foreground text-sm font-medium hover:text-primary transition-colors inline-flex items-center gap-1.5"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Sign out
             </button>
           )}
           <button
