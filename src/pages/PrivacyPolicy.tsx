@@ -167,6 +167,7 @@ const PrivacyPolicy = () => (
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Authentication session cookie</strong> — keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
             <li><strong>Cookie consent preference</strong> — remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
+            <li><strong>Cloudflare Bot Management (<code>__cf_bm</code>)</strong> — set automatically by our CDN provider (Cloudflare) to distinguish legitimate users from bots. This is a strictly necessary cookie that expires after 1 hour. Cloudflare's privacy policy: <a href="https://www.cloudflare.com/privacypolicy/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">cloudflare.com/privacypolicy</a></li>
           </ul>
           <p className="leading-relaxed mt-3">We do <strong>not</strong> use:</p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
@@ -176,7 +177,7 @@ const PrivacyPolicy = () => (
             <li>Social media cookies</li>
           </ul>
           <p className="leading-relaxed mt-3">
-            No third parties install, manage, or access cookies via GET CPF. You can reject all cookies using the banner at the bottom of the page, or change your preference at any time via the "Cookie preferences" link in our footer.
+            You can reject non-essential cookies using the banner at the bottom of the page, or change your preference at any time via the "Cookie preferences" link in our footer.
           </p>
         </section>
 
