@@ -72,7 +72,7 @@ const Transformation = () => {
         </div>
 
         {/* After */}
-        <div className="flex-1 px-6 md:px-10 py-8">
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-primary mb-1">With GET CPF</h3>
           <p className="text-sm text-muted-foreground mb-6">What our users experience</p>
 
