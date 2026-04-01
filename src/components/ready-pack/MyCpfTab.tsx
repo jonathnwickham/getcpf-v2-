@@ -147,7 +147,7 @@ export const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLi
                 </div>
                 <div className="mb-6">
                   <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-1">Nº DO CPF</p>
-                  <p className="text-3xl font-bold font-mono tracking-[4px]">{formatCpf(cpfNumber.replace(/\D/g, ""))}</p>
+                  <p className="text-xl sm:text-3xl font-bold font-mono tracking-[2px] sm:tracking-[4px]">{formatCpf(cpfNumber.replace(/\D/g, ""))}</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-[9px] uppercase tracking-[2px] opacity-60 mb-1">NOME</p>
