@@ -36,7 +36,7 @@ const StickyMobileCTA = () => {
           onClick={handleClick}
           className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]"
         >
-          {user ? "My CPF pack →" : "Get started →"}
+          {user ? "My CPF Pack →" : "Get My CPF Pack — $49 →"}
         </button>
         <div className="h-2" />
       </div>
