@@ -28,7 +28,21 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
     const check = async () => {
       try {
-        
+        // Check admin first — admins bypass payment check
+        if (needsAdminCheck || needsPaymentCheck) {
+          const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
+          const userIsAdmin = adminRes.data === true;
+          setIsAdmin(userIsAdmin);
+
+          // Admins bypass payment requirement
+          if (userIsAdmin) {
+            setIsPaid(true);
+            setChecking(false);
+            return;
+          }
+        } else {
+          setIsAdmin(true);
+        }
 
         // Check payment status via applications table first
         if (needsPaymentCheck) {

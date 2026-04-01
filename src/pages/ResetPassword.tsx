@@ -38,8 +38,17 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="text-center">
+          <a href="/" className="inline-block mb-6"><Logo className="h-10" /></a>
           <h1 className="text-xl font-bold">This link isn't working</h1>
           <p className="text-muted-foreground mt-2 text-sm">It may have expired — request a new one and you'll be sorted in a minute.</p>
+          <div className="mt-6 flex flex-col gap-3">
+            <a href="/forgot-password" className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all inline-block">
+              Request a new link →
+            </a>
+            <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Back to homepage
+            </a>
+          </div>
         </div>
       </div>
     );

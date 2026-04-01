@@ -174,7 +174,13 @@ const GetStarted = () => {
             <span className="text-xs text-muted-foreground font-medium">
               {step + 1} of {TOTAL_STEPS}
             </span>
-            <a href="/dashboard" className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <button
+              onClick={() => supabase.auth.signOut().then(() => navigate("/"))}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Sign out
+            </button>
+            <a href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium">
               ✕
             </a>
           </div>

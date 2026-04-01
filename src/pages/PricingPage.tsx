@@ -315,9 +315,15 @@ const PricingPage = () => {
           <a href="/">
             <Logo className="h-10" />
           </a>
-          <a href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Already have an account? <span className="text-primary font-semibold">Sign in</span>
-          </a>
+          {!user ? (
+            <a href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Already have an account? <span className="text-primary font-semibold">Sign in</span>
+            </a>
+          ) : (
+            <button onClick={() => supabase.auth.signOut().then(() => window.location.href = "/")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Sign out
+            </button>
+          )}
         </div>
       </div>
 
