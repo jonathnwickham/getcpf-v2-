@@ -40,6 +40,7 @@ const Footer = () => (
             <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
             <li><Link to="/partners" className="hover:text-foreground transition-colors">Become a partner →</Link></li>
             <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Apply as affiliate →</Link></li>
+            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left">Cookie preferences</button></li>
           </ul>
         </div>
       </div>
