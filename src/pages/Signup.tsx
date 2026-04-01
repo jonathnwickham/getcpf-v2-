@@ -1,58 +1,26 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-// Replace with your real Cloudflare Turnstile site key
-const TURNSTILE_SITE_KEY = "0x4AAAAAAA_PLACEHOLDER_REPLACE_ME";
-
 const Signup = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const turnstileRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Load Turnstile script
-    if (document.getElementById("cf-turnstile-script")) return;
-    const script = document.createElement("script");
-    script.id = "cf-turnstile-script";
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-    script.async = true;
-    script.onload = () => {
-      if (turnstileRef.current && (window as any).turnstile) {
-        (window as any).turnstile.render(turnstileRef.current, {
-          sitekey: TURNSTILE_SITE_KEY,
-          callback: (token: string) => setTurnstileToken(token),
-          "expired-callback": () => setTurnstileToken(null),
-          theme: "auto",
-        });
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Skip CAPTCHA check if using placeholder key (dev mode)
-    if (!TURNSTILE_SITE_KEY.includes("PLACEHOLDER") && !turnstileToken) {
-      toast({ title: "Please complete the CAPTCHA", variant: "destructive" });
-      setLoading(false);
-      return;
-    }
-
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/checkout`,
+        emailRedirectTo: `${window.location.origin}/get-started`,
         data: { full_name: fullName },
       },
     });
@@ -63,10 +31,45 @@ const Signup = () => {
       return;
     }
 
-    toast({ title: "You're in! 🎉", description: "Account created — let's get your CPF sorted." });
-    navigate("/checkout");
+    setEmailSent(true);
     setLoading(false);
   };
+
+  if (emailSent) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="w-full max-w-md text-center">
+          <a href="/" className="text-2xl font-bold tracking-tight">
+            GET <span className="text-primary">CPF</span>
+          </a>
+          <div className="mt-8 bg-card border border-border rounded-2xl p-8">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">✉️</span>
+            </div>
+            <h1 className="text-xl font-extrabold mb-2">Check your email</h1>
+            <p className="text-sm text-muted-foreground mb-4">
+              We sent a verification link to <strong className="text-foreground">{email}</strong>. Click the link to activate your account.
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Didn't get it? Check your spam folder or{" "}
+              <button
+                onClick={() => setEmailSent(false)}
+                className="text-primary font-semibold hover:underline"
+              >
+                try again
+              </button>
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground mt-6">
+            Already verified?{" "}
+            <Link to="/login" className="text-primary font-semibold hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
@@ -76,7 +79,7 @@ const Signup = () => {
             GET <span className="text-primary">CPF</span>
           </a>
           <h1 className="text-2xl font-extrabold mt-6">Let's set you up</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Create an account so your progress is saved — pick up anytime</p>
+          <p className="text-muted-foreground mt-2 text-sm">Create an account so your progress is saved</p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-4">
@@ -115,9 +118,6 @@ const Signup = () => {
             />
             <p className="text-xs text-muted-foreground mt-1">At least 6 characters</p>
           </div>
-
-          {/* Cloudflare Turnstile CAPTCHA */}
-          <div ref={turnstileRef} className="flex justify-center" />
 
           <label className="flex items-start gap-2.5 cursor-pointer">
             <input

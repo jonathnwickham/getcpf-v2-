@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -8,13 +9,28 @@ const Contact = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`GET CPF contact: ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:support@getcpf.com?subject=${subject}&body=${body}`;
+    setLoading(true);
+
+    // Send confirmation email via transactional email system
+    try {
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "contact-form-confirmation",
+          recipientEmail: email,
+          idempotencyKey: `contact-confirm-${email}-${Date.now()}`,
+          templateData: { name },
+        },
+      });
+    } catch (err) {
+      console.error("Failed to send contact confirmation email:", err);
+    }
+
     setSubmitted(true);
+    setLoading(false);
   };
 
   return (
@@ -32,7 +48,7 @@ const Contact = () => {
               <div className="text-4xl mb-4">✉️</div>
               <h2 className="text-lg font-bold mb-2">Thanks for reaching out</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                We respond within 24 hours.
+                We've sent a confirmation to your email. We respond within 24 hours.
               </p>
               <Link to="/" className="text-sm text-primary font-semibold hover:underline">
                 Back to homepage
@@ -75,9 +91,10 @@ const Contact = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
+                disabled={loading}
+                className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
               >
-                Send message
+                {loading ? "Sending..." : "Send message"}
               </button>
             </form>
           )}

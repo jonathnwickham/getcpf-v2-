@@ -11,8 +11,10 @@ export interface TemplateEntry {
 
 import { template as purchaseConfirmation } from './purchase-confirmation.tsx'
 import { template as readyPackDelivery } from './ready-pack-delivery.tsx'
+import { template as contactFormConfirmation } from './contact-form-confirmation.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'purchase-confirmation': purchaseConfirmation,
   'ready-pack-delivery': readyPackDelivery,
+  'contact-form-confirmation': contactFormConfirmation,
 }
