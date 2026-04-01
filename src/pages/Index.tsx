@@ -50,6 +50,7 @@ const Index = () => {
       <FinalCTA onOpenModal={handleOpenOnboarding} />
       
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 };
