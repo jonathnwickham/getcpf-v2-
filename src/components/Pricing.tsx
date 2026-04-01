@@ -83,7 +83,11 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
     e.preventDefault();
     const email = waitlistEmail[tierName]?.trim();
     if (!email) return;
-    await supabase.from("waitlist").insert({ email, plan: tierName } as any);
+    const { error } = await supabase.from("waitlist").insert({ email, plan: tierName } as any);
+    if (error) {
+      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
+      return;
+    }
     setWaitlistSubmitted((s) => ({ ...s, [tierName]: true }));
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };

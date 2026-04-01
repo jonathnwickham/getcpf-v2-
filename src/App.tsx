@@ -52,6 +52,7 @@ const App = () => (
               <Route path="/sign-in" element={<Navigate to="/login" replace />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+              {/* Checkout.tsx removed — all checkout happens on /pricing */}
               <Route path="/checkout" element={<Navigate to="/pricing" replace />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
