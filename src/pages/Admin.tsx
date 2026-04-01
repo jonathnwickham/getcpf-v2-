@@ -205,11 +205,20 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
   const usersWithApps = new Set(applications.map(a => a.user_id)).size;
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 50;
+
   const filtered = profiles.filter(p =>
     !search || 
     (p.full_name || "").toLowerCase().includes(search.toLowerCase()) ||
     p.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginatedUsers = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // Reset page when search changes
+  useEffect(() => { setCurrentPage(1); }, [search]);
 
   // Funnel data
   const funnelData = [
