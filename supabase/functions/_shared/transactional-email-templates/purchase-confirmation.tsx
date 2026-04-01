@@ -1,10 +1,11 @@
 import * as React from 'npm:react@18.3.1'
 import {
-  Body, Container, Head, Heading, Html, Preview, Text, Button, Hr, Section,
+  Body, Container, Head, Heading, Html, Img, Preview, Text, Button, Hr, Section,
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
 const SITE_NAME = "GetCPF"
+const LOGO_URL = 'https://hcewyrhlcpfozhnishlj.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
 interface PurchaseConfirmationProps {
   name?: string
@@ -13,10 +14,10 @@ interface PurchaseConfirmationProps {
 const PurchaseConfirmationEmail = ({ name }: PurchaseConfirmationProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>You're in — let's get your CPF sorted</Preview>
+    <Preview>You're in! Let's get your CPF sorted</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Text style={emoji}>🇧🇷</Text>
+        <Img src={LOGO_URL} alt="GET CPF" width="140" height="auto" style={logo} />
         <Heading style={h1}>
           {name ? `Welcome, ${name}!` : 'Welcome to GetCPF!'}
         </Heading>
@@ -38,11 +39,11 @@ const PurchaseConfirmationEmail = ({ name }: PurchaseConfirmationProps) => (
         <Hr style={hr} />
 
         <Text style={text}>
-          If you have any questions, just reply to this email or reach out on WhatsApp — we're here to help.
+          If you have any questions, just reply to this email or reach out on WhatsApp. We're here to help.
         </Text>
 
         <Text style={footer}>
-          — Jonathan, Founder of {SITE_NAME}
+          Jonathan, Founder of {SITE_NAME}
         </Text>
       </Container>
     </Body>
@@ -51,14 +52,14 @@ const PurchaseConfirmationEmail = ({ name }: PurchaseConfirmationProps) => (
 
 export const template = {
   component: PurchaseConfirmationEmail,
-  subject: "You're in — let's get your CPF sorted",
+  subject: "You're in! Let's get your CPF sorted",
   displayName: 'Purchase confirmation',
   previewData: { name: 'Alex' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }
 const container = { padding: '30px 25px', maxWidth: '500px', margin: '0 auto' }
-const emoji = { fontSize: '36px', margin: '0 0 10px', textAlign: 'center' as const }
+const logo = { margin: '0 0 20px' }
 const h1 = { fontSize: '24px', fontWeight: '700', color: '#1a1a2e', margin: '0 0 16px', textAlign: 'center' as const }
 const text = { fontSize: '15px', color: '#555', lineHeight: '1.6', margin: '0 0 20px' }
 const highlightBox = { backgroundColor: '#f0faf5', borderRadius: '12px', padding: '20px', margin: '0 0 24px' }
