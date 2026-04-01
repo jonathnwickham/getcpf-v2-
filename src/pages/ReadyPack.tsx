@@ -8,6 +8,7 @@ import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
 import protocolResultImg from "@/assets/protocol-result.png";
+import protocolFormImg from "@/assets/protocol-preview.png";
 import walkInPreviewImg from "@/assets/walk-in-preview.png";
 import RejectionFlow from "@/components/RejectionFlow";
 import UnlockGuide from "@/components/UnlockGuide";
