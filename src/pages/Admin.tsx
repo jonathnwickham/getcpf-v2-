@@ -1805,8 +1805,8 @@ const SettingsTab = ({ userId }: { userId: string }) => {
     setExporting(true);
     await logAuditAction(userId, "Exported users CSV");
     const [profilesRes, appsRes] = await Promise.all([
-      supabase.from("profiles").select("*"),
-      supabase.from("applications").select("*"),
+      supabase.from("profiles").select("id, email, full_name, country_code, plan, created_at"),
+      supabase.from("applications").select("user_id, full_name, nationality, state_name, city, status"),
     ]);
     const profileData = profilesRes.data || [];
     const appData = appsRes.data || [];
