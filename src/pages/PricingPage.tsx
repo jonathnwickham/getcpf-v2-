@@ -597,7 +597,7 @@ const PricingPage = () => {
                   />
                 </div>
                 <div className="flex flex-col items-center gap-2 py-2">
-                {pollCount < MAX_POLLS ? (
+                {!paymentVerified && pollCount < MAX_POLLS ? (
                   <>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -615,7 +615,7 @@ const PricingPage = () => {
                       </p>
                     )}
                   </>
-                ) : (
+                ) : !paymentVerified ? (
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground mb-2">Payment not detected yet.</p>
                     <button

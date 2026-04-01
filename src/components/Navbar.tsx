@@ -67,8 +67,9 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-foreground"
+          className="md:hidden p-2 text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>

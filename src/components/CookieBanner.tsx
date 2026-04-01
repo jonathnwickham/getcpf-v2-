@@ -51,13 +51,13 @@ const CookieBanner = () => {
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={reject}
-            className="border border-border text-foreground px-4 py-1.5 md:px-5 md:py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-muted transition-all"
+            className="border border-border text-foreground px-4 py-2.5 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold hover:bg-muted transition-all min-h-[44px]"
           >
             Reject all
           </button>
           <button
             onClick={accept}
-            className="bg-primary text-primary-foreground px-4 py-1.5 md:px-5 md:py-2 rounded-lg text-xs md:text-sm font-semibold hover:opacity-90 transition-all"
+            className="bg-primary text-primary-foreground px-4 py-2.5 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold hover:opacity-90 transition-all min-h-[44px]"
           >
             Accept
           </button>
