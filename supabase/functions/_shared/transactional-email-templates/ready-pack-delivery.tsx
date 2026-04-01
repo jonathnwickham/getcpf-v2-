@@ -1,10 +1,11 @@
 import * as React from 'npm:react@18.3.1'
 import {
-  Body, Container, Head, Heading, Html, Preview, Text, Button, Hr, Section,
+  Body, Container, Head, Heading, Html, Img, Preview, Text, Button, Hr, Section,
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
 const SITE_NAME = "GetCPF"
+const LOGO_URL = 'https://hcewyrhlcpfozhnishlj.supabase.co/storage/v1/object/public/email-assets/logo.png'
 
 interface ReadyPackDeliveryProps {
   name?: string
@@ -13,10 +14,10 @@ interface ReadyPackDeliveryProps {
 const ReadyPackDeliveryEmail = ({ name }: ReadyPackDeliveryProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Your Ready Pack is ready — everything you need for the Receita Federal</Preview>
+    <Preview>Your Ready Pack is ready. Everything you need for the Receita Federal</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Text style={emoji}>📋</Text>
+        <Img src={LOGO_URL} alt="GET CPF" width="140" height="auto" style={logo} />
         <Heading style={h1}>
           {name ? `${name}, your Ready Pack is ready!` : 'Your Ready Pack is ready!'}
         </Heading>
@@ -28,7 +29,7 @@ const ReadyPackDeliveryEmail = ({ name }: ReadyPackDeliveryProps) => (
           <Text style={highlightTitle}>Your Ready Pack includes:</Text>
           <Text style={highlightText}>✓ Pre-filled Receita Federal protocol form</Text>
           <Text style={highlightText}>✓ Step-by-step office guide (in English)</Text>
-          <Text style={highlightText}>✓ Document checklist — what to bring</Text>
+          <Text style={highlightText}>✓ Document checklist: what to bring</Text>
           <Text style={highlightText}>✓ Office address & directions for your city</Text>
         </Section>
 
@@ -46,11 +47,11 @@ const ReadyPackDeliveryEmail = ({ name }: ReadyPackDeliveryProps) => (
         </Section>
 
         <Text style={text}>
-          Questions? Reply to this email or message us on WhatsApp — we're here until you have your CPF number in hand.
+          Questions? Reply to this email or message us on WhatsApp. We're here until you have your CPF number in hand.
         </Text>
 
         <Text style={footer}>
-          — Jonathan, Founder of {SITE_NAME}
+          Jonathan, Founder of {SITE_NAME}
         </Text>
       </Container>
     </Body>
@@ -59,14 +60,14 @@ const ReadyPackDeliveryEmail = ({ name }: ReadyPackDeliveryProps) => (
 
 export const template = {
   component: ReadyPackDeliveryEmail,
-  subject: 'Your Ready Pack is ready — download & print',
+  subject: 'Your Ready Pack is ready! Download & print',
   displayName: 'Ready Pack delivery',
   previewData: { name: 'Alex' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }
 const container = { padding: '30px 25px', maxWidth: '500px', margin: '0 auto' }
-const emoji = { fontSize: '36px', margin: '0 0 10px', textAlign: 'center' as const }
+const logo = { margin: '0 0 20px' }
 const h1 = { fontSize: '24px', fontWeight: '700', color: '#1a1a2e', margin: '0 0 16px', textAlign: 'center' as const }
 const text = { fontSize: '15px', color: '#555', lineHeight: '1.6', margin: '0 0 20px' }
 const highlightBox = { backgroundColor: '#f0faf5', borderRadius: '12px', padding: '20px', margin: '0 0 24px' }
