@@ -651,7 +651,7 @@ const PricingPage = () => {
               <span>One-time payment</span>
             </div>
 
-            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); setPollCount(0); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
+            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); setPollCount(0); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block min-h-[44px] flex items-center justify-center">
               ← Back to plans
             </button>
           </div>

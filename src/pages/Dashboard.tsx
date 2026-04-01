@@ -125,20 +125,12 @@ const Dashboard = () => {
       setChecking(false);
 
       if (!app) {
+        // No application at all — send to onboarding
         navigate("/get-started");
         return;
       }
 
-      if (applicationHasReadyPack(app)) {
-        // Persist to local so ReadyPack can load it
-        const mapped = mapApplicationToOnboardingData(app);
-        persistOnboardingData(mapped);
-        navigate("/ready-pack");
-        return;
-      }
-
-      // Draft — go to onboarding
-      navigate("/get-started");
+      // Stay on dashboard — show the user their data
     });
   }, [user, loading, navigate]);
 
