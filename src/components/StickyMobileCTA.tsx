@@ -39,7 +39,7 @@ const StickyMobileCTA = () => {
           onClick={handleClick}
           className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]"
         >
-          Get My CPF Pack — $49 →
+          Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
         </button>
       </div>
     </div>

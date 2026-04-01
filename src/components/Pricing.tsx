@@ -11,7 +11,8 @@ interface PricingProps {
 const tiers = [
   {
     name: "Self-Service",
-    price: "$49",
+    price: "$29",
+    originalPrice: "$49",
     description: "Everything automated. AI-powered, instant access.",
     highlighted: true,
     badge: "Available now",
@@ -24,7 +25,7 @@ const tiers = [
       "Everything that comes next, already mapped out",
       "If it doesn't work, you pay nothing",
     ],
-    cta: "Get started, $49",
+    cta: "Get started, $29",
   },
   {
     name: "Concierge",
@@ -97,7 +98,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Pricing</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
       <p className="text-muted-foreground mt-4 mx-auto max-w-[560px] text-sm leading-relaxed">
-        The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us $49 to make sure that when you go in, it works.
+        The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us <span className="line-through opacity-60">$49</span> <span className="text-primary font-bold">$29</span> to make sure that when you go in, it works.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto mt-12">
         {tiers.map((tier) => (
@@ -120,8 +121,16 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
             )}
             <div className="text-sm text-muted-foreground font-semibold mb-2">{tier.name}</div>
             <div className="text-4xl font-extrabold tracking-tight">
+              {(tier as any).originalPrice && (
+                <span className="text-2xl line-through text-muted-foreground/50 mr-2">{(tier as any).originalPrice}</span>
+              )}
               {tier.price} <span className="text-base font-normal text-muted-foreground">USD</span>
             </div>
+            {(tier as any).originalPrice && (
+              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mt-2">
+                🎉 Beta pricing — limited spots
+              </div>
+            )}
             <div className="text-sm text-muted-foreground mt-3 mb-6 leading-relaxed">{tier.description}</div>
             <ul className={`mb-8 space-y-2.5 ${tier.comingSoon ? "opacity-60" : ""}`}>
               {tier.features.map((f) => (
