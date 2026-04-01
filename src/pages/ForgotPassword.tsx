@@ -43,8 +43,9 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center px-6 pt-20 pb-16">
         <div className="text-center mb-8">
           <a href="/" className="inline-block mb-2"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold mt-6">Forgot your password?</h1>
