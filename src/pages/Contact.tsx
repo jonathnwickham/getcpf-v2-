@@ -14,6 +14,21 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
+  // Rate limiting: max 3 submissions per 10 minutes
+  const RATE_LIMIT_MAX = 3;
+  const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+
+  const isRateLimited = (): boolean => {
+    const key = "contact_form_timestamps";
+    const now = Date.now();
+    const stored = JSON.parse(localStorage.getItem(key) || "[]") as number[];
+    const recent = stored.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+    if (recent.length >= RATE_LIMIT_MAX) return true;
+    recent.push(now);
+    localStorage.setItem(key, JSON.stringify(recent));
+    return false;
+  };
+
   // Page meta
   useEffect(() => {
     document.title = "Contact Us — GET CPF";
@@ -26,6 +41,11 @@ const Contact = () => {
 
     // Honeypot check — bots fill hidden fields
     if (honeypot) return;
+
+    if (isRateLimited()) {
+      toast({ title: "Too many messages", description: "Please wait a few minutes before trying again.", variant: "destructive" });
+      return;
+    }
 
     setLoading(true);
 
