@@ -87,8 +87,8 @@ const Admin = () => {
 
   const loadData = async () => {
     const [profilesRes, appsRes] = await Promise.all([
-      supabase.from("profiles").select("*"),
-      supabase.from("applications").select("*"),
+      supabase.from("profiles").select("id, email, full_name, country_code, plan, created_at, stripe_customer_id"),
+      supabase.from("applications").select("id, user_id, full_name, email, nationality, state_name, state_code, city, status, created_at, submitted_at, passport_number, street_address, mother_name, father_name, cpf_number, protocol_number, promo_code, final_price, discount_amount"),
     ]);
     if (profilesRes.data) setProfiles(profilesRes.data);
     if (appsRes.data) setApplications(appsRes.data);
@@ -1805,8 +1805,8 @@ const SettingsTab = ({ userId }: { userId: string }) => {
     setExporting(true);
     await logAuditAction(userId, "Exported users CSV");
     const [profilesRes, appsRes] = await Promise.all([
-      supabase.from("profiles").select("*"),
-      supabase.from("applications").select("*"),
+      supabase.from("profiles").select("id, email, full_name, country_code, plan, created_at"),
+      supabase.from("applications").select("user_id, full_name, nationality, state_name, city, status"),
     ]);
     const profileData = profilesRes.data || [];
     const appData = appsRes.data || [];
