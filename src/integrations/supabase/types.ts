@@ -612,26 +612,22 @@ export type Database = {
       }
     }
     Views: {
-      public_promo_codes: {
-        Row: {
-          code: string | null
-          discount_percent: number | null
-          is_active: boolean | null
-        }
-        Insert: {
-          code?: string | null
-          discount_percent?: number | null
-          is_active?: boolean | null
-        }
-        Update: {
-          code?: string | null
-          discount_percent?: number | null
-          is_active?: boolean | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
+      can_user_update_application_fields: {
+        Args: {
+          _cpf_number: string
+          _discount_amount: number
+          _final_price: number
+          _id: string
+          _promo_code: string
+          _protocol_number: string
+          _status: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
