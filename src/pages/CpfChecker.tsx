@@ -35,11 +35,6 @@ const CpfChecker = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<CheckResult>("idle");
 
-  useEffect(() => {
-    document.title = "Free CPF Number Checker — GET CPF";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation. No data stored.");
-  }, []);
 
   const handleCheck = () => {
     const digits = input.replace(/\D/g, "");
