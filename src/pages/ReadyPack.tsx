@@ -1839,6 +1839,20 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
       a.download = `cpf-document-pack-${data.fullName.replace(/\s+/g, "-").toLowerCase()}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
+
+      // Send Ready Pack delivery email
+      try {
+        await supabase.functions.invoke('send-transactional-email', {
+          body: {
+            templateName: 'ready-pack-delivery',
+            recipientEmail: data.email,
+            idempotencyKey: `ready-pack-compile-${data.email}-${Date.now()}`,
+            templateData: { name: data.fullName?.split(' ')[0] },
+          },
+        });
+      } catch (emailErr) {
+        console.error("Ready Pack email failed:", emailErr);
+      }
     } catch (err) {
       console.error("PDF compilation failed:", err);
       alert("Something went wrong compiling your PDF. Please try again.");
