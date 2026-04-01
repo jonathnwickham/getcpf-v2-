@@ -1,4 +1,5 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,6 +84,7 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
   // Payment check
   if (needsPaymentCheck && !isPaid) {
+    toast.info("You need to complete your purchase first to access this page.");
     return <Navigate to="/pricing" replace />;
   }
 

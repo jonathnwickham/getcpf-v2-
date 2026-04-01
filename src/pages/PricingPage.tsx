@@ -135,11 +135,15 @@ const PricingPage = () => {
     setPromoError("");
   };
 
+  const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.includes("@")) {
-      setFlowStep("plan");
+    if (!isValidEmail(email)) {
+      toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
     }
+    setFlowStep("plan");
   };
 
   const handleSelectPlan = async (tierName: string) => {
@@ -183,13 +187,18 @@ const PricingPage = () => {
     }, 2500);
   };
 
-  // Poll verify-payment endpoint every 5 seconds once on payment step
+  const MAX_POLLS = 90; // ~3 minutes at 2s intervals
+
+  // Poll verify-payment endpoint every 2 seconds once on payment step
   useEffect(() => {
     if (flowStep !== "payment" || !email || paymentVerified) return;
 
     const poll = async () => {
+      setPollCount(c => {
+        if (c >= MAX_POLLS) return c;
+        return c + 1;
+      });
       try {
-        setPollCount(c => c + 1);
         const { data } = await supabase.functions.invoke("verify-payment", {
           body: { email },
         });
@@ -202,7 +211,9 @@ const PricingPage = () => {
       }
     };
 
-    const interval = setInterval(poll, 2000);
+    const interval = setInterval(() => {
+      if (pollCount < MAX_POLLS) poll();
+    }, 2000);
     poll();
 
     return () => clearInterval(interval);
@@ -268,8 +279,26 @@ const PricingPage = () => {
     });
 
     if (error) {
-      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
-      setLoading(false);
+      if (error.message?.toLowerCase().includes("already registered") || error.message?.toLowerCase().includes("already been registered")) {
+        // Try signing in instead
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          toast({
+            title: "Account already exists",
+            description: "An account with this email already exists. Please sign in instead.",
+            variant: "destructive",
+          });
+          setLoading(false);
+          setTimeout(() => navigate("/login"), 2000);
+        } else {
+          toast({ title: "Welcome back!", description: "Signed in to your existing account." });
+          setLoading(false);
+          navigate("/get-started");
+        }
+      } else {
+        toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
+        setLoading(false);
+      }
     } else {
       setFlowStep("done");
       setLoading(false);
@@ -568,21 +597,38 @@ const PricingPage = () => {
                   />
                 </div>
                 <div className="flex flex-col items-center gap-2 py-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    <span>
-                      {pollCount <= 2
-                        ? "Complete your payment above..."
-                        : pollCount <= 6
-                          ? "Waiting for payment confirmation..."
-                          : "Still checking, this can take a moment..."}
-                    </span>
-                  </div>
-                  {pollCount > 4 && (
-                    <p className="text-xs text-muted-foreground/70">
-                      Payments typically confirm within 30 seconds
+                {pollCount < MAX_POLLS ? (
+                  <>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                      <span>
+                        {pollCount <= 2
+                          ? "Complete your payment above..."
+                          : pollCount <= 6
+                            ? "Waiting for payment confirmation..."
+                            : "Still checking, this can take a moment..."}
+                      </span>
+                    </div>
+                    {pollCount > 4 && (
+                      <p className="text-xs text-muted-foreground/70">
+                        Payments typically confirm within 30 seconds
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground mb-2">Payment not detected yet.</p>
+                    <button
+                      onClick={() => setPollCount(0)}
+                      className="text-sm text-primary font-semibold hover:underline"
+                    >
+                      Check again
+                    </button>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Already paid? <a href="/contact" className="text-primary hover:underline">Contact support</a>
                     </p>
-                  )}
+                  </div>
+                )}
                 </div>
               </div>
             )}
