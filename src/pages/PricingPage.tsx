@@ -160,13 +160,20 @@ const PricingPage = () => {
   };
 
   const [paymentVerified, setPaymentVerified] = useState(false);
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [pollCount, setPollCount] = useState(0);
 
   const EMBEDDED_URL = checkoutSecret
     ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}`
     : null;
 
   const handlePaymentComplete = () => {
-    setFlowStep("password");
+    // Show celebration for 2.5 seconds before moving to account step
+    setShowPaymentSuccess(true);
+    setTimeout(() => {
+      setShowPaymentSuccess(false);
+      setFlowStep("password");
+    }, 2500);
   };
 
   // Poll verify-payment endpoint every 5 seconds once on payment step
@@ -175,6 +182,7 @@ const PricingPage = () => {
 
     const poll = async () => {
       try {
+        setPollCount(c => c + 1);
         const { data } = await supabase.functions.invoke("verify-payment", {
           body: { email },
         });
@@ -187,7 +195,7 @@ const PricingPage = () => {
       }
     };
 
-    const interval = setInterval(poll, 5000);
+    const interval = setInterval(poll, 3000);
     poll();
 
     return () => clearInterval(interval);
@@ -405,14 +413,63 @@ const PricingPage = () => {
 
         {/* STEP 3: Payment — Fanbasis Checkout */}
         {flowStep === "payment" && (
-          <div className="max-w-md mx-auto text-center">
+          <div className="max-w-md mx-auto text-center relative">
+            {/* Payment success overlay */}
+            {showPaymentSuccess && (
+              <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm rounded-2xl animate-fade-in">
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                  {Array.from({ length: 24 }).map((_, i) => {
+                    const colors = ["hsl(var(--primary))", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6"];
+                    const color = colors[i % colors.length];
+                    const left = Math.random() * 100;
+                    const delay = Math.random() * 0.5;
+                    const size = 5 + Math.random() * 5;
+                    const duration = 1.2 + Math.random() * 1;
+                    const drift = (Math.random() - 0.5) * 100;
+                    return (
+                      <div
+                        key={i}
+                        className="absolute rounded-sm"
+                        style={{
+                          left: `${left}%`,
+                          top: "-10px",
+                          width: `${size}px`,
+                          height: `${size}px`,
+                          backgroundColor: color,
+                          animation: `confetti-fall ${duration}s ease-out ${delay}s forwards`,
+                          opacity: 0,
+                          ["--drift" as string]: `${drift}px`,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+                <style>{`
+                  @keyframes confetti-fall {
+                    0% { opacity: 1; transform: translateY(0) translateX(0) rotate(0deg); }
+                    100% { opacity: 0; transform: translateY(320px) translateX(var(--drift)) rotate(720deg); }
+                  }
+                  @keyframes success-pop {
+                    0% { transform: scale(0); opacity: 0; }
+                    50% { transform: scale(1.2); }
+                    100% { transform: scale(1); opacity: 1; }
+                  }
+                `}</style>
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4" style={{ animation: "success-pop 0.5s ease-out forwards" }}>
+                  <span className="text-4xl">✓</span>
+                </div>
+                <h2 className="text-2xl font-extrabold tracking-tight mb-2">Payment received!</h2>
+                <p className="text-sm text-muted-foreground">Setting up your account...</p>
+              </div>
+            )}
+
             <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
 
             {/* Order summary */}
             <div className="bg-card border border-border rounded-xl p-5 mb-6 text-left">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="font-semibold text-sm">{selectedPlan} — CPF Application Service</h2>
+                  <h2 className="font-semibold text-sm">{selectedPlan} - CPF Application Service</h2>
                   <p className="text-xs text-muted-foreground mt-0.5">{email}</p>
                 </div>
                 {appliedPromo ? (
@@ -420,7 +477,7 @@ const PricingPage = () => {
                     <span className="line-through text-muted-foreground text-sm">$49</span>{" "}
                     <span className="font-bold text-primary text-xl">${finalPrice}</span>
                     <div className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full mt-1">
-                      🎉 {appliedPromo.code} −${discount}
+                      🎉 {appliedPromo.code} -${discount}
                       <button onClick={removePromo} className="hover:text-primary/70">✕</button>
                     </div>
                   </div>
@@ -485,15 +542,28 @@ const PricingPage = () => {
                     title="Fanbasis Checkout"
                   />
                 </div>
-                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
+                <div className="flex flex-col items-center gap-2 py-2">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    <span>Waiting for payment confirmation...</span>
+                    <span>
+                      {pollCount <= 2
+                        ? "Complete your payment above..."
+                        : pollCount <= 6
+                          ? "Waiting for payment confirmation..."
+                          : "Still checking, this can take a moment..."}
+                    </span>
                   </div>
+                  {pollCount > 4 && (
+                    <p className="text-xs text-muted-foreground/70">
+                      Payments typically confirm within 30 seconds
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 
             <div className="mt-6 text-center text-xs text-primary font-semibold">
-              🛡️ If you follow our steps and get rejected — full refund. No questions asked.
+              🛡️ If you follow our steps and get rejected - full refund. No questions asked.
             </div>
 
             <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted-foreground">
@@ -505,7 +575,7 @@ const PricingPage = () => {
               <span>One-time payment</span>
             </div>
 
-            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
+            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); setPollCount(0); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
               ← Back to plans
             </button>
           </div>
