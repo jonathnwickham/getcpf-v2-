@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -8,14 +9,26 @@ const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState(""); // spam trap
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  // Page meta
+  useEffect(() => {
+    document.title = "Contact Us — GET CPF";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Have a question about getting your Brazilian CPF? Contact the GET CPF team — we respond within 24 hours.");
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Honeypot check — bots fill hidden fields
+    if (honeypot) return;
+
     setLoading(true);
 
-    // Send confirmation email via transactional email system
     try {
       await supabase.functions.invoke("send-transactional-email", {
         body: {
@@ -25,11 +38,12 @@ const Contact = () => {
           templateData: { name },
         },
       });
+      setSubmitted(true);
     } catch (err) {
       console.error("Failed to send contact confirmation email:", err);
+      toast({ title: "Something went wrong", description: "Please try again or email us directly.", variant: "destructive" });
     }
 
-    setSubmitted(true);
     setLoading(false);
   };
 
@@ -56,6 +70,17 @@ const Contact = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Honeypot — hidden from humans, bots fill it */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
               <div>
                 <label className="text-sm font-semibold mb-1.5 block">Name</label>
                 <input
@@ -63,6 +88,7 @@ const Contact = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  maxLength={100}
                   className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   placeholder="Your name"
                 />
@@ -74,6 +100,7 @@ const Contact = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  maxLength={255}
                   className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   placeholder="you@example.com"
                 />
@@ -85,6 +112,7 @@ const Contact = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={5}
+                  maxLength={2000}
                   className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
                   placeholder="How can we help?"
                 />

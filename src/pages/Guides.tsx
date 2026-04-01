@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,63 +10,71 @@ const categoryColors: Record<string, string> = {
   "Troubleshooting": "bg-amber-500/10 text-amber-600",
 };
 
-const Guides = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <main className="pt-32 pb-24 px-6">
-      <div className="max-w-[800px] mx-auto">
-        <h1 className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight">
-          CPF Guides
-        </h1>
-        <p className="text-muted-foreground mt-3 text-base leading-relaxed max-w-[560px]">
-          Everything you need to know about getting your Brazilian CPF. Written by someone who's been through it.
-        </p>
+const Guides = () => {
+  useEffect(() => {
+    document.title = "CPF Guides for Foreigners — GET CPF";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Free guides on getting your Brazilian CPF as a foreigner. Step-by-step instructions, city-specific tips, and troubleshooting.");
+  }, []);
 
-        <div className="mt-12 space-y-4">
-          {guides.map((guide) => (
-            <Link
-              key={guide.slug}
-              to={`/guides/${guide.slug}`}
-              className="block bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all group"
-            >
-              <div className="flex items-start gap-4">
-                <span className="text-3xl shrink-0">{guide.heroEmoji}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${categoryColors[guide.category] || "bg-muted text-muted-foreground"}`}>
-                      {guide.category}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">{guide.readTime}</span>
-                  </div>
-                  <h2 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-                    {guide.title}
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
-                    {guide.metaDescription}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mt-16 text-center bg-primary/5 border border-primary/10 rounded-2xl p-8">
-          <p className="text-sm text-muted-foreground mb-1">Done reading?</p>
-          <h3 className="text-xl font-bold">Ready to get your CPF?</h3>
-          <p className="text-sm text-muted-foreground mt-2 mb-6 max-w-[400px] mx-auto">
-            We prepare everything so your office visit works first time. 5 minutes of setup, one visit, done.
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="pt-32 pb-24 px-6">
+        <div className="max-w-[800px] mx-auto">
+          <h1 className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight">
+            CPF Guides
+          </h1>
+          <p className="text-muted-foreground mt-3 text-base leading-relaxed max-w-[560px]">
+            Everything you need to know about getting your Brazilian CPF. Written by someone who's been through it.
           </p>
-          <Link
-            to="/pricing"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
-          >
-            Get started, $49 →
-          </Link>
+
+          <div className="mt-12 space-y-4">
+            {guides.map((guide) => (
+              <Link
+                key={guide.slug}
+                to={`/guides/${guide.slug}`}
+                className="block bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all group"
+              >
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl shrink-0">{guide.heroEmoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${categoryColors[guide.category] || "bg-muted text-muted-foreground"}`}>
+                        {guide.category}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">{guide.readTime}</span>
+                    </div>
+                    <h2 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                      {guide.title}
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+                      {guide.metaDescription}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-16 text-center bg-primary/5 border border-primary/10 rounded-2xl p-8">
+            <p className="text-sm text-muted-foreground mb-1">Done reading?</p>
+            <h3 className="text-xl font-bold">Ready to get your CPF?</h3>
+            <p className="text-sm text-muted-foreground mt-2 mb-6 max-w-[400px] mx-auto">
+              We prepare everything so your office visit works first time. 5 minutes of setup, one visit, done.
+            </p>
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+            >
+              Get started, $49 →
+            </Link>
+          </div>
         </div>
-      </div>
-    </main>
-    <Footer />
-  </div>
-);
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
 export default Guides;

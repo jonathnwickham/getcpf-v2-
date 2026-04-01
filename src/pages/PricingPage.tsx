@@ -74,6 +74,13 @@ const FALLBACK_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}
 const PricingPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Page meta
+  useEffect(() => {
+    document.title = "Pricing — GET CPF | $49 One-Time Payment";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Get your Brazilian CPF sorted for $49. AI-powered preparation, pre-filled forms, and step-by-step guidance. 100% acceptance guarantee.");
+  }, []);
   const [flowStep, setFlowStep] = useState<FlowStep>("email");
   const [email, setEmail] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -195,7 +202,7 @@ const PricingPage = () => {
       }
     };
 
-    const interval = setInterval(poll, 3000);
+    const interval = setInterval(poll, 2000);
     poll();
 
     return () => clearInterval(interval);
@@ -216,7 +223,11 @@ const PricingPage = () => {
     e.preventDefault();
     const wEmail = waitlistEmail.trim() || email.trim();
     if (!wEmail) return;
-    await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
+    const { error } = await supabase.from("waitlist").insert({ email: wEmail, plan: tierName } as any);
+    if (error) {
+      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
+      return;
+    }
     setWaitlistSubmitted(true);
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
   };
