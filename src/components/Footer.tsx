@@ -34,13 +34,13 @@ const Footer = () => (
         {/* Legal */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Legal</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
-            <li><Link to="/partners" className="hover:text-foreground transition-colors">Become a partner →</Link></li>
-            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Apply as affiliate →</Link></li>
-            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left">Cookie preferences</button></li>
+          <ul className="space-y-1 text-sm text-muted-foreground">
+            <li><Link to="/privacy" className="hover:text-foreground transition-colors inline-block py-1.5">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-foreground transition-colors inline-block py-1.5">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="hover:text-foreground transition-colors inline-block py-1.5">Affiliate Disclosure</Link></li>
+            <li><Link to="/partners" className="hover:text-foreground transition-colors inline-block py-1.5">Become a partner →</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors inline-block py-1.5">Apply as affiliate →</Link></li>
+            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left inline-block py-1.5">Cookie preferences</button></li>
           </ul>
         </div>
       </div>
