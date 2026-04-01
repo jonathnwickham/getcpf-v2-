@@ -16,7 +16,42 @@ Deno.serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Find accounts older than 90 days that never paid
+    // ── Phase 1: Purge sensitive identity data after 30 days ──
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: staleSensitive, error: purgeQueryErr } = await supabase
+      .from("applications")
+      .select("id, user_id, email, passport_number")
+      .lt("created_at", thirtyDaysAgo)
+      .not("passport_number", "is", null);
+
+    let purgedCount = 0;
+    if (!purgeQueryErr && staleSensitive && staleSensitive.length > 0) {
+      for (const app of staleSensitive) {
+        const { error: purgeErr } = await supabase
+          .from("applications")
+          .update({
+            passport_number: null,
+            mother_name: null,
+            mother_alternative: null,
+            father_name: null,
+            passport_photo_url: null,
+            selfie_url: null,
+            address_proof_url: null,
+          })
+          .eq("id", app.id);
+
+        if (!purgeErr) {
+          purgedCount++;
+          console.log(`[data_purge] Cleared sensitive data for application ${app.id}`);
+        } else {
+          console.error(`[data_purge] Failed for ${app.id}:`, purgeErr);
+        }
+      }
+      console.log(`[data_purge] Purged sensitive data from ${purgedCount} application(s)`);
+    }
+
+    // ── Phase 2: Flag never-paid accounts older than 90 days ──
     const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
 
     const { data: expiredProfiles, error } = await supabase
@@ -73,24 +108,17 @@ Deno.serve(async (req: Request) => {
       } catch (emailErr) {
         console.error("Failed to queue admin deletion alert:", emailErr);
       }
-
-      return new Response(
-        JSON.stringify({
-          message: `${expiredCount} account(s) due for deletion`,
-          accounts: neverPaidProfiles.map((p) => ({
-            user_id: p.id,
-            created_at: p.created_at,
-          })),
-        }),
-        {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
     }
 
     return new Response(
-      JSON.stringify({ message: "No accounts due for deletion" }),
+      JSON.stringify({
+        purged_sensitive_data: purgedCount,
+        accounts_due_for_deletion: expiredCount,
+        accounts: (neverPaidProfiles || []).map((p) => ({
+          user_id: p.id,
+          created_at: p.created_at,
+        })),
+      }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

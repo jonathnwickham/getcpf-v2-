@@ -97,8 +97,8 @@ const GetStarted = () => {
         try {
           await supabase.from("consent_log").insert({
             user_id: user.id,
-            consent_text: "I consent to GET CPF processing my personal data including my passport details to prepare my CPF application documents. I have read and agree to the Privacy Policy. I understand my data will be permanently deleted within 30 days.",
-            consent_version: "1.0",
+            consent_text: "I consent to GET CPF processing my personal data — including passport details, parent names, and date of birth — to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the Privacy Policy. I understand my sensitive data will be automatically and permanently deleted within 30 days.",
+            consent_version: "2.0",
             consent: true,
           });
         } catch (e) {
@@ -345,7 +345,7 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
             className="sr-only"
           />
           <span className="text-sm text-muted-foreground leading-relaxed">
-            I consent to GET CPF processing my personal data including my passport details to prepare my CPF application documents. I have read and agree to the{" "}
+            I consent to GET CPF processing my personal data — including passport details, parent names, and date of birth — to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the{" "}
             <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
               Privacy Policy
             </a>
