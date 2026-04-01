@@ -135,11 +135,15 @@ const PricingPage = () => {
     setPromoError("");
   };
 
+  const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.includes("@")) {
-      setFlowStep("plan");
+    if (!isValidEmail(email)) {
+      toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
     }
+    setFlowStep("plan");
   };
 
   const handleSelectPlan = async (tierName: string) => {
