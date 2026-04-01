@@ -37,6 +37,7 @@ const CpfChecker = lazy(() => import("./pages/CpfChecker.tsx"));
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
