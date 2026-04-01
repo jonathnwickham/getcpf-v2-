@@ -75,9 +75,14 @@ const Contact = () => {
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-[500px] mx-auto">
           <h1 className="text-3xl font-extrabold tracking-tight mb-2">Contact us</h1>
-          <p className="text-sm text-muted-foreground mb-8">
+          <p className="text-sm text-muted-foreground mb-6">
             Have a question about getting your CPF? We respond within 24 hours.
           </p>
+          <div className="bg-card border border-border rounded-xl p-4 mb-8 text-sm">
+            <p className="text-muted-foreground">Prefer email? Reach us directly at{" "}
+              <a href="mailto:support@getcpf.com" className="text-primary font-semibold hover:underline">support@getcpf.com</a>
+            </p>
+          </div>
 
           {submitted ? (
             <div className="bg-card border border-border rounded-2xl p-8 text-center">

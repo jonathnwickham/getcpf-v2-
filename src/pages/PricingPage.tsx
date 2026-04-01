@@ -80,6 +80,42 @@ const PricingPage = () => {
 
   // Page meta
   const [flowStep, setFlowStep] = useState<FlowStep>("email");
+
+  // Sync URL with step
+  useEffect(() => {
+    const stepNum = { email: 1, plan: 2, payment: 3, password: 4, done: 5 }[flowStep] || 1;
+    const url = stepNum > 1 ? `/pricing?step=${stepNum}` : "/pricing";
+    window.history.replaceState(null, "", url);
+  }, [flowStep]);
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePop = () => {
+      const params = new URLSearchParams(window.location.search);
+      const step = parseInt(params.get("step") || "1");
+      const steps: FlowStep[] = ["email", "plan", "payment", "password", "done"];
+      setFlowStep(steps[step - 1] || "email");
+    };
+    window.addEventListener("popstate", handlePop);
+    return () => window.removeEventListener("popstate", handlePop);
+  }, []);
+
+  // If logged in and paid, redirect to dashboard
+  useEffect(() => {
+    if (!user) return;
+    const checkPaid = async () => {
+      const { data: apps } = await supabase
+        .from("applications")
+        .select("status")
+        .eq("user_id", user.id)
+        .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
+        .limit(1);
+      if (apps && apps.length > 0) {
+        navigate("/dashboard");
+      }
+    };
+    checkPaid();
+  }, [user, navigate]);
   const [email, setEmail] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [password, setPassword] = useState("");
@@ -141,11 +177,13 @@ const PricingPage = () => {
       toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
       return;
     }
+    window.history.pushState(null, "", "/pricing?step=2");
     setFlowStep("plan");
   };
 
   const handleSelectPlan = async (tierName: string) => {
     setSelectedPlan(tierName);
+    window.history.pushState(null, "", "/pricing?step=3");
     setFlowStep("payment");
     
     // Start loading embedded checkout
@@ -651,7 +689,7 @@ const PricingPage = () => {
               <span>One-time payment</span>
             </div>
 
-            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); setPollCount(0); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block">
+            <button onClick={() => { setFlowStep("plan"); setCheckoutSecret(null); setCheckoutError(false); setPollCount(0); }} className="mt-6 text-sm text-muted-foreground hover:text-foreground mx-auto block min-h-[44px] flex items-center justify-center">
               ← Back to plans
             </button>
           </div>
