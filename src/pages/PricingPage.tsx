@@ -177,6 +177,7 @@ const PricingPage = () => {
       toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
       return;
     }
+    window.history.pushState(null, "", "/pricing?step=2");
     setFlowStep("plan");
   };
 
