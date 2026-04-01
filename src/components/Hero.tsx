@@ -105,10 +105,6 @@ const Hero = ({ onOpenModal }: HeroProps) => {
               See how it works
             </a>
           </div>
-            <a href="#how" className="bg-secondary text-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:bg-secondary/80 transition-all min-h-[52px] inline-flex items-center">
-              See how it works
-            </a>
-          </div>
 
           {/* Stats row with count-up */}
           <div className="animate-fade-up-4 grid grid-cols-4 gap-4 sm:flex sm:flex-wrap sm:gap-8 mt-6 justify-center lg:justify-start">
