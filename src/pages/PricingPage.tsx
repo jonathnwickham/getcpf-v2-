@@ -591,13 +591,13 @@ const PricingPage = () => {
                   <iframe
                     src={EMBEDDED_URL}
                     className="w-full border-0"
-                    style={{ minHeight: "620px", height: "calc(100vh - 320px)", maxHeight: "800px" }}
+                    style={{ minHeight: "450px", height: "calc(100vh - 320px)", maxHeight: "800px" }}
                     allow="payment"
                     title="Fanbasis Checkout"
                   />
                 </div>
                 <div className="flex flex-col items-center gap-2 py-2">
-                {pollCount < MAX_POLLS ? (
+                {!paymentVerified && pollCount < MAX_POLLS ? (
                   <>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -615,7 +615,7 @@ const PricingPage = () => {
                       </p>
                     )}
                   </>
-                ) : (
+                ) : !paymentVerified ? (
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground mb-2">Payment not detected yet.</p>
                     <button
@@ -628,7 +628,7 @@ const PricingPage = () => {
                       Already paid? <a href="/contact" className="text-primary hover:underline">Contact support</a>
                     </p>
                   </div>
-                )}
+                ) : null}
                 </div>
               </div>
             )}

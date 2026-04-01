@@ -95,10 +95,9 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <AccessDeniedScreen />;
   }
 
-  // Payment check
+  // Payment check — show explanation screen instead of silent redirect
   if (needsPaymentCheck && !isPaid) {
-    toast.info("You need to complete your purchase first to access this page.");
-    return <Navigate to="/pricing" replace />;
+    return <PaymentRequiredScreen />;
   }
 
   return <>{children}</>;
@@ -161,6 +160,35 @@ const VerifyEmailScreen = () => {
           >
             Sign out and try a different email
           </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PaymentRequiredScreen = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <div className="w-full max-w-md text-center">
+        <a href="/" className="text-2xl font-bold tracking-tight inline-block mb-8">
+          GET <span className="text-primary">CPF</span>
+        </a>
+        <div className="bg-card border border-border rounded-2xl p-8">
+          <div className="text-5xl mb-4">🔒</div>
+          <h1 className="text-xl font-extrabold mb-2">Purchase required</h1>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            You haven't completed your purchase yet. Get your CPF Ready Pack to access this page.
+          </p>
+          <button
+            onClick={() => navigate("/pricing")}
+            className="w-full bg-primary text-primary-foreground px-6 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+          >
+            Complete purchase — $49 →
+          </button>
+          <p className="text-xs text-muted-foreground mt-4">
+            Already paid? <a href="/contact" className="text-primary font-semibold hover:underline">Contact support</a>
+          </p>
         </div>
       </div>
     </div>

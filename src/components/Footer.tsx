@@ -21,26 +21,26 @@ const Footer = () => (
         {/* Quick links */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Quick links</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="/#how" className="hover:text-foreground transition-colors">How it works</a></li>
-            <li><a href="/#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-foreground transition-colors">FAQ</a></li>
-            <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact us</Link></li>
-            <li><Link to="/login" className="hover:text-foreground transition-colors">Sign in</Link></li>
+          <ul className="space-y-1 text-sm text-muted-foreground">
+            <li><a href="/#how" className="hover:text-foreground transition-colors inline-block py-1.5">How it works</a></li>
+            <li><a href="/#pricing" className="hover:text-foreground transition-colors inline-block py-1.5">Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-1.5">FAQ</a></li>
+            <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-1.5">Guides</Link></li>
+            <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-1.5">Contact us</Link></li>
+            <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-1.5">Sign in</Link></li>
           </ul>
         </div>
 
         {/* Legal */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Legal</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="hover:text-foreground transition-colors">Affiliate Disclosure</Link></li>
-            <li><Link to="/partners" className="hover:text-foreground transition-colors">Become a partner →</Link></li>
-            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors">Apply as affiliate →</Link></li>
-            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left">Cookie preferences</button></li>
+          <ul className="space-y-1 text-sm text-muted-foreground">
+            <li><Link to="/privacy" className="hover:text-foreground transition-colors inline-block py-1.5">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-foreground transition-colors inline-block py-1.5">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="hover:text-foreground transition-colors inline-block py-1.5">Affiliate Disclosure</Link></li>
+            <li><Link to="/partners" className="hover:text-foreground transition-colors inline-block py-1.5">Become a partner →</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors inline-block py-1.5">Apply as affiliate →</Link></li>
+            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left inline-block py-1.5">Cookie preferences</button></li>
           </ul>
         </div>
       </div>
