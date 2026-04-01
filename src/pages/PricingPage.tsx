@@ -230,6 +230,20 @@ const PricingPage = () => {
     }
     setWaitlistSubmitted(true);
     toast({ title: "You're on the list!", description: "We'll let you know the moment it's ready." });
+
+    // Send waitlist confirmation email
+    try {
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "waitlist-confirmation",
+          recipientEmail: wEmail,
+          idempotencyKey: `waitlist-${wEmail}-${tierName}`,
+          templateData: { plan: tierName },
+        },
+      });
+    } catch (emailErr) {
+      console.error("Waitlist confirmation email error:", emailErr);
+    }
   };
 
   const handleCreateAccount = async (e: React.FormEvent) => {

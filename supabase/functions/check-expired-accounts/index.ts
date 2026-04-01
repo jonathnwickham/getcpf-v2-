@@ -54,13 +54,25 @@ Deno.serve(async (req: Request) => {
       const accountList = neverPaidProfiles
         .map(
           (p) =>
-            `- User ID: ${p.id} | Created: ${new Date(p.created_at!).toLocaleDateString()} | Email: ${p.email}`
+            `- ${p.email} (created ${new Date(p.created_at!).toLocaleDateString()})`
         )
         .join("\n");
 
-      const emailBody = `Data deletion due for ${expiredCount} account(s) (90+ days, never paid):\n\n${accountList}\n\nReview these in the admin dashboard and delete as needed.`;
+      console.log(`[check_expired_accounts] ${expiredCount} account(s) due for deletion`);
 
-      console.log(`[check_expired_accounts] ${emailBody}`);
+      // Send admin deletion alert email
+      try {
+        await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "admin-deletion-alert",
+            idempotencyKey: `admin-deletion-${new Date().toISOString().split("T")[0]}`,
+            templateData: { count: expiredCount, accountList },
+          },
+        });
+        console.log("Admin deletion alert email queued");
+      } catch (emailErr) {
+        console.error("Failed to queue admin deletion alert:", emailErr);
+      }
 
       return new Response(
         JSON.stringify({

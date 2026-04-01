@@ -126,7 +126,20 @@ Deno.serve(async (req) => {
       console.log(`Purchase confirmation email queued for ${buyerEmail}`);
     } catch (emailErr) {
       console.error("Failed to queue purchase confirmation email:", emailErr);
-      // Non-fatal — payment still processed successfully
+    }
+
+    // Send onboarding welcome email
+    try {
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "onboarding-welcome",
+          recipientEmail: buyerEmail,
+          idempotencyKey: `onboarding-welcome-${paymentId || buyerEmail}`,
+        },
+      });
+      console.log(`Onboarding welcome email queued for ${buyerEmail}`);
+    } catch (emailErr) {
+      console.error("Failed to queue onboarding welcome email:", emailErr);
     }
 
     return new Response(JSON.stringify({ received: true, email: buyerEmail }), {
