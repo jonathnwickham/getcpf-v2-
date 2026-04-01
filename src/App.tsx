@@ -67,6 +67,7 @@ const App = () => (
               <Route path="/guides" element={<Guides />} />
               <Route path="/guides/:slug" element={<GuideDetail />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/cpf-checker" element={<CpfChecker />} />
               <Route path="/unsubscribe" element={<Unsubscribe />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
