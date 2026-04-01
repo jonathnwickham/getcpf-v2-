@@ -16,13 +16,13 @@ const PrivacyPolicy = () => (
 
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-extrabold tracking-tight mb-2">Privacy Policy</h1>
-      <p className="text-sm text-muted-foreground mb-12">Last updated: 29 March 2026</p>
+      <p className="text-sm text-muted-foreground mb-12">Last updated: 1 April 2026</p>
 
       <div className="prose prose-sm max-w-none space-y-8 text-foreground/90">
         <section>
           <h2 className="text-xl font-bold mb-3">Who we are</h2>
           <p className="leading-relaxed">
-            GET CPF ("we", "us", "our") is a private consulting service that helps foreigners navigate the Brazilian CPF registration process. We are not affiliated with the Brazilian Government, Receita Federal, or any government agency.
+            GET CPF is a document preparation service that helps foreigners navigate the Brazilian CPF registration process. We are operated by Jonathan [last name], based in São Paulo, Brazil. We are not affiliated with the Brazilian Government, Receita Federal, or any government agency.
           </p>
         </section>
 
@@ -45,25 +45,41 @@ const PrivacyPolicy = () => (
         </section>
 
         <section>
+          <h2 className="text-xl font-bold mb-3">Legal basis for processing</h2>
+          <p className="leading-relaxed mb-3">Under the LGPD (Lei Geral de Proteção de Dados), we process your data based on:</p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li><strong>Consent</strong> — which you provide when you create an account and submit your information</li>
+            <li><strong>Contractual necessity</strong> — processing required to deliver the document preparation service you purchased</li>
+          </ul>
+          <p className="leading-relaxed mt-3">You may withdraw consent at any time by emailing us. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-bold mb-3">How we store and protect it</h2>
           <p className="leading-relaxed mb-3">
             Your data is encrypted and stored securely in our database with row-level security — you can only access your own data. Specifically:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>All data is transmitted over HTTPS (TLS 1.2+)</li>
-            <li>Database access is restricted by row-level security</li>
+            <li>Database access is restricted by Supabase Row Level Security (RLS)</li>
             <li>Passwords are hashed using bcrypt</li>
             <li>Payment details are handled entirely by Fanbasis and never touch our servers</li>
             <li>Uploaded documents are stored in private, authenticated storage buckets</li>
+            <li>Sensitive fields are masked in the user interface</li>
+            <li>All data is stored on encrypted infrastructure</li>
           </ul>
           <p className="leading-relaxed mt-3 font-semibold">We never sell, rent, or share your personal data with third parties.</p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold mb-3">Data retention</h2>
-          <p className="leading-relaxed">
-            User data and generated documents are available for <strong>30 days after account creation</strong>, then permanently deleted. Raw passport data is not retained after document generation. Anonymous, aggregated data may be retained indefinitely.
-          </p>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li>Account data and generated documents are available for <strong>30 days after account creation</strong>, then permanently deleted.</li>
+            <li>Uploaded documents (passport photo, selfie, proof of address) are permanently deleted within 30 days of account creation, or immediately upon request.</li>
+            <li>Raw passport data is not retained after document generation.</li>
+            <li>Anonymous, aggregated data (e.g. number of users per country) may be retained indefinitely.</li>
+          </ul>
+          <p className="leading-relaxed mt-3">You may request immediate deletion of all your data at any time by emailing us.</p>
         </section>
 
         <section>
@@ -76,7 +92,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Your rights</h2>
           <p className="leading-relaxed mb-3">
-            Under the <strong>LGPD</strong> (Brazil's data protection law), <strong>GDPR</strong> (EU), and <strong>POPIA</strong> (South Africa), you have the right to:
+            Under the <strong>LGPD</strong> (Brazil), <strong>GDPR</strong> (EU), and <strong>POPIA</strong> (South Africa), you have the right to:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Access</strong> — request a copy of all data we hold about you</li>
@@ -93,6 +109,14 @@ const PrivacyPolicy = () => (
         </section>
 
         <section>
+          <h2 className="text-xl font-bold mb-3">Data Protection Officer (Encarregado)</h2>
+          <p className="leading-relaxed">
+            As required by the LGPD, our designated Data Protection Officer (encarregado) can be contacted at:{" "}
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-bold mb-3">POPIA compliance (South Africa)</h2>
           <p className="leading-relaxed">
             GET CPF complies with South Africa's Protection of Personal Information Act (POPIA). We process personal information lawfully, collect only what is necessary, and take reasonable measures to protect it. If you believe your rights under POPIA have been infringed, contact the Information Regulator of South Africa at{" "}
@@ -103,7 +127,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Data transfers</h2>
           <p className="leading-relaxed">
-            Your data is stored on Supabase infrastructure. Supabase is certified under SOC 2 Type II. Data may be processed in the United States. By using GET CPF you consent to this transfer in order to receive the service.
+            Your data is stored on Supabase infrastructure (SOC 2 Type II certified). Data is processed in the United States. By using GET CPF, you consent to this transfer. In addition, we rely on the adequate security guarantees provided by Supabase's SOC 2 Type II certification and encryption practices as a basis for international data transfer under LGPD Article 33.
           </p>
         </section>
 
@@ -117,7 +141,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Data breach notification</h2>
           <p className="leading-relaxed">
-            In the event of a data breach affecting your personal information GET CPF will notify you by email within 72 hours of becoming aware of the breach.
+            In the event of a data breach affecting your personal information, GET CPF will notify affected users by email and the relevant authorities within 72 hours of becoming aware of the breach, as required by applicable law.
           </p>
         </section>
 
