@@ -11,7 +11,8 @@ interface PricingProps {
 const tiers = [
   {
     name: "Self-Service",
-    price: "$49",
+    price: "$29",
+    originalPrice: "$49",
     description: "Everything automated. AI-powered, instant access.",
     highlighted: true,
     badge: "Available now",
