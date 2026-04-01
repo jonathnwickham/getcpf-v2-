@@ -113,7 +113,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                     `${item.prefix || ""}${item.num}${item.suffix}`
                   )}
                 </div>
-                <div className="text-[11px] sm:text-xs text-muted-foreground font-medium">{item.label}</div>
+                <div className="text-xs text-muted-foreground font-medium">{item.label}</div>
               </div>
             ))}
           </div>
