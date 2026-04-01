@@ -23,7 +23,7 @@ const Transformation = () => {
     <section className="py-12 md:py-20 px-6 bg-background">
       <div className="max-w-[960px] mx-auto flex flex-col md:flex-row items-stretch">
         {/* Before */}
-        <div className="flex-1 px-6 md:px-10 py-8">
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-foreground mb-1">Without GET CPF</h3>
           <p className="text-sm text-muted-foreground mb-6">What most foreigners experience</p>
 
@@ -72,13 +72,13 @@ const Transformation = () => {
         </div>
 
         {/* After */}
-        <div className="flex-1 px-6 md:px-10 py-8">
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-primary mb-1">With GET CPF</h3>
           <p className="text-sm text-muted-foreground mb-6">What our users experience</p>
 
           {/* Approved form + unlocked services */}
-          <div className="flex items-start gap-3 mb-6">
-            <div className="bg-card border border-primary/20 rounded-xl p-3.5 shadow-sm w-[170px] flex-shrink-0">
+          <div className="flex items-start gap-2 sm:gap-3 mb-6">
+            <div className="bg-card border border-primary/20 rounded-xl p-3.5 shadow-sm w-[140px] sm:w-[170px] flex-shrink-0">
               <div className="text-[9px] font-bold text-muted-foreground mb-1.5 tracking-wide uppercase">CPF Form</div>
               <div className="space-y-1">
                 <div className="h-1.5 bg-primary/20 rounded w-full" />
@@ -91,7 +91,7 @@ const Transformation = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 pt-1">
+            <div className="flex flex-col gap-2 pt-1 min-w-0">
               {unlockedItems.map((item, i) => (
                 <div
                   key={i}

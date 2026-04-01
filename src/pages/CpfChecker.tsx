@@ -123,7 +123,7 @@ const CpfChecker = () => {
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get my CPF Ready Pack — $49 →
+              Get My CPF Pack — $49 →
             </Link>
           </div>
 

@@ -75,7 +75,7 @@ const ProductPreview = () => {
             onClick={() => navigate("/pricing")}
             className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-lg"
           >
-            Get my Ready Pack — $49 →
+            Get My CPF Pack — $49 →
           </button>
         </div>
       </div>
