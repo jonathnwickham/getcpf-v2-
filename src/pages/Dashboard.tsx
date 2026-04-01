@@ -212,8 +212,64 @@ const Dashboard = () => {
 
         {/* My Data */}
         <MyDataSection user={user} application={application} />
+
+        {/* Partner Access */}
+        <PartnerAccessSection applicationId={application.id} initialValue={application.partner_access_granted ?? false} />
       </div>
     </div>
+  );
+};
+
+/* ── Partner Access Toggle ── */
+const PartnerAccessSection = ({ applicationId, initialValue }: { applicationId: string; initialValue: boolean }) => {
+  const [enabled, setEnabled] = useState(initialValue);
+  const [saving, setSaving] = useState(false);
+
+  const toggle = async () => {
+    const newVal = !enabled;
+    setSaving(true);
+    const { error } = await supabase
+      .from("applications")
+      .update({ partner_access_granted: newVal } as any)
+      .eq("id", applicationId);
+    setSaving(false);
+    if (error) {
+      toast.error("Could not update partner access. Try again.");
+    } else {
+      setEnabled(newVal);
+      toast.success(newVal ? "Partner access enabled." : "Partner access disabled.");
+    }
+  };
+
+  return (
+    <section className="bg-card border border-border rounded-2xl p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">🤝</div>
+        <div>
+          <h2 className="font-bold text-lg">Partner Access</h2>
+          <p className="text-xs text-muted-foreground">Control who can verify your CPF status</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-between bg-secondary rounded-xl p-4">
+        <div>
+          <p className="text-sm font-semibold">Allow partners to verify your CPF</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            When enabled, partner services (banks, eSIM providers) can confirm you have a valid CPF without seeing the number itself.
+          </p>
+        </div>
+        <button
+          onClick={toggle}
+          disabled={saving}
+          className={`relative w-12 h-7 rounded-full transition-colors duration-200 ${
+            enabled ? "bg-primary" : "bg-muted-foreground/30"
+          } ${saving ? "opacity-50" : ""}`}
+        >
+          <span className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
+            enabled ? "translate-x-5" : "translate-x-0"
+          }`} />
+        </button>
+      </div>
+    </section>
   );
 };
 
