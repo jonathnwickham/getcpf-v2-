@@ -77,8 +77,8 @@ const Transformation = () => {
           <p className="text-sm text-muted-foreground mb-6">What our users experience</p>
 
           {/* Approved form + unlocked services */}
-          <div className="flex items-start gap-3 mb-6">
-            <div className="bg-card border border-primary/20 rounded-xl p-3.5 shadow-sm w-[170px] flex-shrink-0">
+          <div className="flex items-start gap-2 sm:gap-3 mb-6">
+            <div className="bg-card border border-primary/20 rounded-xl p-3.5 shadow-sm w-[140px] sm:w-[170px] flex-shrink-0">
               <div className="text-[9px] font-bold text-muted-foreground mb-1.5 tracking-wide uppercase">CPF Form</div>
               <div className="space-y-1">
                 <div className="h-1.5 bg-primary/20 rounded w-full" />
