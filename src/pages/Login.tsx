@@ -44,7 +44,7 @@ const Login = () => {
         return;
       }
 
-      // Check if user has paid
+      // Check if user has a completed application (paid/prepared/etc.)
       const { data: paidApps } = await supabase
         .from("applications")
         .select("status")
@@ -53,16 +53,29 @@ const Login = () => {
         .limit(1);
 
       if (paidApps && paidApps.length > 0) {
-        // Check if they have completed onboarding
         const app = await fetchLatestApplication(userId);
         if (app && applicationHasReadyPack(app)) {
           navigate("/ready-pack");
         } else {
           navigate("/get-started");
         }
-      } else {
-        navigate("/pricing");
+        return;
       }
+
+      // Fallback: check if they paid via checkout_sessions (before creating an application)
+      const userEmail = authData.user?.email;
+      if (userEmail) {
+        const { data: payRes } = await supabase.functions.invoke("verify-payment", {
+          body: { email: userEmail },
+        });
+        if (payRes?.paid) {
+          navigate("/get-started");
+          return;
+        }
+      }
+
+      // No payment found — send to pricing
+      navigate("/pricing");
     } catch {
       navigate("/get-started");
     }

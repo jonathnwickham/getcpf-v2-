@@ -30,7 +30,7 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
       try {
         
 
-        // Check payment status
+        // Check payment status via applications table first
         if (needsPaymentCheck) {
           const payRes = await supabase
               .from("applications")
@@ -38,7 +38,20 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
               .eq("user_id", user.id)
               .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
               .limit(1);
-          setIsPaid(!!payRes.data && payRes.data.length > 0);
+          
+          if (payRes.data && payRes.data.length > 0) {
+            setIsPaid(true);
+          } else {
+            // Fallback: check checkout_sessions via verify-payment
+            try {
+              const { data: vpData } = await supabase.functions.invoke("verify-payment", {
+                body: { email: user.email },
+              });
+              setIsPaid(vpData?.paid === true);
+            } catch {
+              setIsPaid(false);
+            }
+          }
         } else {
           setIsPaid(true);
         }

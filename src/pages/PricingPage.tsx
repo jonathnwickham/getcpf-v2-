@@ -739,6 +739,11 @@ const PricingPage = () => {
               <button
                 type="submit"
                 disabled={loading || !agreed}
+                onClick={(e) => {
+                  // Fallback: if form submit doesn't fire, trigger manually
+                  const form = (e.target as HTMLElement).closest("form");
+                  if (form && !form.reportValidity()) return;
+                }}
                 className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
               >
                 {loading ? "Setting things up..." : "Create my account →"}
