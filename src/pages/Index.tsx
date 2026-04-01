@@ -16,7 +16,7 @@ import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import MidCTA from "@/components/MidCTA";
-import ComingSoon from "@/components/ComingSoon";
+
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -75,7 +75,7 @@ const Index = () => {
       {/* CTA after pricing for undecided visitors */}
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
-      <ComingSoon />
+      
       <Footer />
     </div>
   );
