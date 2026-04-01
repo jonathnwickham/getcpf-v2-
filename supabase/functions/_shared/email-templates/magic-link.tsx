@@ -27,13 +27,13 @@ export const MagicLinkEmail = ({
     <Preview>Your login link for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Text style={brand}>GET <span style={{ color: 'hsl(160, 84%, 28%)' }}>CPF</span></Text>
         <Heading style={h1}>Your login link</Heading>
         <Text style={text}>
-          Click the button below to log in to {siteName}. This link will expire
-          shortly.
+          Click below to sign in to your GET CPF account. This link expires shortly, so use it now!
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Log In
+          Sign In
         </Button>
         <Text style={footer}>
           If you didn't request this link, you can safely ignore this email.
