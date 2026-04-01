@@ -29,6 +29,7 @@ const Guides = lazy(() => import("./pages/Guides.tsx"));
 const GuideDetail = lazy(() => import("./pages/GuideDetail.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Contact = lazy(() => import("./pages/Contact.tsx"));
+const Unsubscribe = lazy(() => import("./pages/Unsubscribe.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/guides" element={<Guides />} />
               <Route path="/guides/:slug" element={<GuideDetail />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
