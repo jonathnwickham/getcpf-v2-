@@ -66,7 +66,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
   return (
     <section
-      className="flex flex-col justify-center items-center px-6 pt-[9.25rem] md:pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]"
+      className="flex flex-col justify-center items-center px-6 pt-[10.25rem] md:pt-36 pb-10 relative overflow-hidden bg-primary/[0.03]"
       style={{
         backgroundImage: `url(${brazilStencil})`,
         backgroundPosition: 'center 85%',
