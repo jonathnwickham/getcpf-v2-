@@ -92,6 +92,12 @@ const GuideDetail = () => {
               <span>·</span>
               <span>{guide.readTime}</span>
             </div>
+            {guide.attribution && (
+              <div className="mt-4 inline-flex items-center gap-2 bg-muted/60 border border-border rounded-lg px-3 py-1.5 text-xs text-muted-foreground">
+                <span>✨</span>
+                <span>{guide.attribution}</span>
+              </div>
+            )}
           </div>
 
           {/* Content */}
@@ -100,13 +106,23 @@ const GuideDetail = () => {
               <section key={i}>
                 <h2 className="text-xl font-bold tracking-tight mb-3">{section.heading}</h2>
                 <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line prose-strong:text-foreground prose-strong:font-semibold">
-                  {section.content.split(/(\*\*[^*]+\*\*)/).map((part, j) =>
-                    part.startsWith("**") && part.endsWith("**") ? (
-                      <strong key={j} className="text-foreground font-semibold">
-                        {part.slice(2, -2)}
-                      </strong>
+                  {section.content.split(/(<table[\s\S]*?<\/table>)/).map((chunk, ci) =>
+                    chunk.startsWith("<table") ? (
+                      <div
+                        key={ci}
+                        className="my-6 overflow-x-auto rounded-xl border border-border [&_table]:w-full [&_table]:text-sm [&_th]:bg-muted/60 [&_th]:px-4 [&_th]:py-2.5 [&_th]:text-left [&_th]:font-semibold [&_th]:text-foreground [&_td]:px-4 [&_td]:py-2.5 [&_td]:border-t [&_td]:border-border [&_td]:text-muted-foreground"
+                        dangerouslySetInnerHTML={{ __html: chunk }}
+                      />
                     ) : (
-                      <span key={j}>{part}</span>
+                      chunk.split(/(\*\*[^*]+\*\*)/).map((part, j) =>
+                        part.startsWith("**") && part.endsWith("**") ? (
+                          <strong key={`${ci}-${j}`} className="text-foreground font-semibold">
+                            {part.slice(2, -2)}
+                          </strong>
+                        ) : (
+                          <span key={`${ci}-${j}`}>{part}</span>
+                        )
+                      )
                     )
                   )}
                 </div>
