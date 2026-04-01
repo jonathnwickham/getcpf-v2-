@@ -591,7 +591,7 @@ const PricingPage = () => {
                   <iframe
                     src={EMBEDDED_URL}
                     className="w-full border-0"
-                    style={{ minHeight: "620px", height: "calc(100vh - 320px)", maxHeight: "800px" }}
+                    style={{ minHeight: "450px", height: "calc(100vh - 320px)", maxHeight: "800px" }}
                     allow="payment"
                     title="Fanbasis Checkout"
                   />
