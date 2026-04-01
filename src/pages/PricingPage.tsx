@@ -11,7 +11,7 @@ import Logo from "@/components/Logo";
 const tiers = [
   {
     name: "Self-Service",
-    price: "$49",
+    price: "$29",
     description: "Everything automated. AI-powered, instant access.",
     highlighted: true,
     badge: "Available now",
@@ -29,7 +29,7 @@ const tiers = [
       "Post-CPF partner recommendations",
       "Application status tracking",
     ],
-    cta: "Get started, $49",
+    cta: "Get started, $29",
   },
   {
     name: "Concierge",
@@ -343,7 +343,7 @@ const PricingPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Pricing — GET CPF" description="Get your Brazilian CPF for $49. AI-powered preparation, pre-filled forms, and 100% acceptance guarantee." path="/pricing" />
+      <SEO title="Pricing — GET CPF" description="Get your Brazilian CPF for $29 (beta pricing). AI-powered preparation, pre-filled forms, and 100% acceptance guarantee." path="/pricing" />
       {/* Top bar */}
       <div className="border-b border-border bg-background sticky top-0 z-50">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between px-6 py-4">
@@ -571,7 +571,7 @@ const PricingPage = () => {
                 </div>
                 {appliedPromo ? (
                   <div className="text-right">
-                    <span className="line-through text-muted-foreground text-sm">$49</span>{" "}
+                    <span className="line-through text-muted-foreground text-sm">$29</span>{" "}
                     <span className="font-bold text-primary text-xl">${finalPrice}</span>
                     <div className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full mt-1">
                       🎉 {appliedPromo.code} -${discount}
@@ -579,7 +579,7 @@ const PricingPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-xl font-bold">$49</span>
+                  <span className="text-xl font-bold"><span className="line-through text-muted-foreground text-sm">$49</span> $29</span>
                 )}
               </div>
             </div>

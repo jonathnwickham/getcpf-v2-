@@ -158,7 +158,7 @@ const GuideDetail = () => {
                 </ul>
               </div>
               <div className="p-6 bg-primary/[0.03] border-t border-border">
-                <div className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Ready Pack ($49)</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Ready Pack (<span className="line-through">$49</span> $29)</div>
                 <ul className="space-y-3">
                   {[
                     "Correct office auto-selected for your city",
@@ -185,7 +185,7 @@ const GuideDetail = () => {
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get My CPF Pack — $49 →
+              Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
             </Link>
           </div>
 
@@ -199,7 +199,7 @@ const GuideDetail = () => {
               to="/pricing"
               className="inline-block bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get started — $49 →
+              Get started — <span className="line-through opacity-60">$49</span> $29 →
             </Link>
             <p className="text-xs text-muted-foreground mt-3">100% acceptance guarantee or your money back</p>
           </div>
