@@ -515,7 +515,33 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
 
   const updateStatus = async (appId: string, newStatus: string) => {
     setUpdatingId(appId);
-    await supabase.from("applications").update({ status: newStatus } as any).eq("id", appId);
+    const { data, error } = await supabase.rpc("transition_application_status" as any, {
+      _application_id: appId,
+      _new_status: newStatus,
+    });
+    if (error) {
+      console.error("Status update failed:", error);
+    }
+    // If marking as cpf_issued, send notification email to user
+    if (newStatus === "cpf_issued" && !error) {
+      const app = applications.find(a => a.id === appId);
+      const profile = profileMap.get(app?.user_id || "");
+      const recipientEmail = app?.email || profile?.email;
+      if (recipientEmail) {
+        try {
+          await supabase.functions.invoke("send-transactional-email", {
+            body: {
+              templateName: "purchase-confirmation",
+              recipientEmail,
+              idempotencyKey: `cpf-issued-${appId}`,
+              templateData: { name: app?.full_name || profile?.full_name || "there" },
+            },
+          });
+        } catch (emailErr) {
+          console.error("CPF issued email error:", emailErr);
+        }
+      }
+    }
     setUpdatingId(null);
     onRefresh();
   };
