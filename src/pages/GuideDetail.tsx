@@ -8,6 +8,63 @@ const GuideDetail = () => {
   const { slug } = useParams();
   const guide = slug ? getGuideBySlug(slug) : undefined;
 
+  // Inject FAQ + HowTo JSON-LD schema
+  useEffect(() => {
+    if (!guide) return;
+    const faqItems = guide.sections
+      .filter(s => s.heading !== "The fastest way to get this right first time")
+      .map(s => ({
+        "@type": "Question",
+        name: s.heading,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: s.content.replace(/\*\*/g, "").slice(0, 500),
+        },
+      }));
+
+    const schemas: any[] = [];
+
+    if (faqItems.length > 0) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems,
+      });
+    }
+
+    if (guide.slug === "how-to-get-cpf-brazil-foreigner") {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: "How to Get a CPF in Brazil as a Foreigner",
+        description: guide.metaDescription,
+        step: guide.sections
+          .filter(s => s.heading !== "The fastest way to get this right first time")
+          .map((s, i) => ({
+            "@type": "HowToStep",
+            position: i + 1,
+            name: s.heading,
+            text: s.content.replace(/\*\*/g, "").slice(0, 300),
+          })),
+      });
+    }
+
+    const scriptEl = document.createElement("script");
+    scriptEl.type = "application/ld+json";
+    scriptEl.id = "guide-schema";
+    scriptEl.textContent = JSON.stringify(schemas);
+    document.head.appendChild(scriptEl);
+
+    document.title = `${guide.title} — GET CPF`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", guide.metaDescription);
+
+    return () => {
+      const el = document.getElementById("guide-schema");
+      if (el) el.remove();
+    };
+  }, [guide]);
+
   if (!guide) return <Navigate to="/guides" replace />;
 
   // Inject FAQ + HowTo JSON-LD schema
