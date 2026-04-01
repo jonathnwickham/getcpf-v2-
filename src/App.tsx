@@ -30,6 +30,7 @@ const GuideDetail = lazy(() => import("./pages/GuideDetail.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Contact = lazy(() => import("./pages/Contact.tsx"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe.tsx"));
+const CpfChecker = lazy(() => import("./pages/CpfChecker.tsx"));
 
 const queryClient = new QueryClient();
 
