@@ -158,7 +158,7 @@ const GuideDetail = () => {
                 </ul>
               </div>
               <div className="p-6 bg-primary/[0.03] border-t border-border">
-                <div className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Ready Pack ($49)</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Ready Pack (<span className="line-through">$49</span> $29)</div>
                 <ul className="space-y-3">
                   {[
                     "Correct office auto-selected for your city",
