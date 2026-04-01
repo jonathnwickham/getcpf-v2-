@@ -504,6 +504,12 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
+  const [appPage, setAppPage] = useState(1);
+  const APP_PAGE_SIZE = 50;
+
+  const totalAppPages = Math.max(1, Math.ceil(applications.length / APP_PAGE_SIZE));
+  const paginatedApps = applications.slice((appPage - 1) * APP_PAGE_SIZE, appPage * APP_PAGE_SIZE);
+
   const profileMap = new Map(profiles.map(p => [p.id, p]));
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
