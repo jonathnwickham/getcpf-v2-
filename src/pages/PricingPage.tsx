@@ -628,7 +628,7 @@ const PricingPage = () => {
                       Already paid? <a href="/contact" className="text-primary hover:underline">Contact support</a>
                     </p>
                   </div>
-                )}
+                ) : null}
                 </div>
               </div>
             )}
