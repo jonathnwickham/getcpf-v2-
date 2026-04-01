@@ -21,13 +21,13 @@ const Footer = () => (
         {/* Quick links */}
         <div>
           <h4 className="text-sm font-semibold mb-3">Quick links</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="/#how" className="hover:text-foreground transition-colors">How it works</a></li>
-            <li><a href="/#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-foreground transition-colors">FAQ</a></li>
-            <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact us</Link></li>
-            <li><Link to="/login" className="hover:text-foreground transition-colors">Sign in</Link></li>
+          <ul className="space-y-1 text-sm text-muted-foreground">
+            <li><a href="/#how" className="hover:text-foreground transition-colors inline-block py-1.5">How it works</a></li>
+            <li><a href="/#pricing" className="hover:text-foreground transition-colors inline-block py-1.5">Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-1.5">FAQ</a></li>
+            <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-1.5">Guides</Link></li>
+            <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-1.5">Contact us</Link></li>
+            <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-1.5">Sign in</Link></li>
           </ul>
         </div>
 
