@@ -1988,4 +1988,21 @@ const ChartCard = ({ title, subtitle, children }: { title: string; subtitle: str
   </div>
 );
 
+const TablePagination = ({ currentPage, totalPages, totalItems, pageSize, onPageChange }: {
+  currentPage: number; totalPages: number; totalItems: number; pageSize: number; onPageChange: (p: number) => void;
+}) => {
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
+  return (
+    <div className="flex items-center justify-between px-4 py-3 border-t border-border text-sm">
+      <span className="text-muted-foreground text-xs">{start}–{end} of {totalItems}</span>
+      <div className="flex gap-1">
+        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">← Prev</button>
+        <span className="px-2 py-1 text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">Next →</button>
+      </div>
+    </div>
+  );
+};
+
 export default Admin;
