@@ -112,3 +112,15 @@
 .animate-slide-in {
   animation: slideInRight 0.4s ease both;
 }
+
+/* Safe area for sticky mobile CTA (iPhone home bar) */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Extra bottom padding on mobile so footer content isn't hidden behind sticky CTA */
+@media (max-width: 767px) {
+  footer {
+    padding-bottom: 5rem;
+  }
+}
