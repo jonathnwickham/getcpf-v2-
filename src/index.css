@@ -124,3 +124,8 @@
     padding-bottom: 5rem;
   }
 }
+
+/* Hide scrollbar for tab navigation */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

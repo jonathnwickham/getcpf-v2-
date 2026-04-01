@@ -162,7 +162,7 @@ const ReadyPack = () => {
       {/* Tab navigation */}
       <div className="sticky top-0 z-40 bg-card border-b border-border">
         <div className="max-w-[960px] mx-auto px-6">
-          <div className="flex gap-1 overflow-x-auto py-2 -mx-6 px-6">
+          <div className="flex gap-1 overflow-x-auto py-2 -mx-6 px-6 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {isOnMyCpf ? (
               <>
                 <button
