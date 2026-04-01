@@ -205,11 +205,20 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
   const usersWithApps = new Set(applications.map(a => a.user_id)).size;
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 50;
+
   const filtered = profiles.filter(p =>
     !search || 
     (p.full_name || "").toLowerCase().includes(search.toLowerCase()) ||
     p.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginatedUsers = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // Reset page when search changes
+  useEffect(() => { setCurrentPage(1); }, [search]);
 
   // Funnel data
   const funnelData = [
@@ -367,7 +376,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map(p => {
+            {paginatedUsers.map(p => {
               const userApp = applications.find(a => a.user_id === p.id);
               const nat = userApp?.nationality || p.country_code || "—";
               const displayName = p.full_name || userApp?.full_name || "—";
@@ -413,7 +422,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                 </TableRow>
               );
             })}
-            {filtered.length === 0 && (
+            {paginatedUsers.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
                   No users found
@@ -422,6 +431,9 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             )}
           </TableBody>
         </Table>
+        {totalPages > 1 && (
+          <TablePagination currentPage={currentPage} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPageChange={setCurrentPage} />
+        )}
       </div>
 
       {/* User drill-down dialog */}
@@ -492,6 +504,12 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
+  const [appPage, setAppPage] = useState(1);
+  const APP_PAGE_SIZE = 50;
+
+  const totalAppPages = Math.max(1, Math.ceil(applications.length / APP_PAGE_SIZE));
+  const paginatedApps = applications.slice((appPage - 1) * APP_PAGE_SIZE, appPage * APP_PAGE_SIZE);
+
   const profileMap = new Map(profiles.map(p => [p.id, p]));
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
@@ -553,7 +571,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {applications.map(a => {
+            {paginatedApps.map(a => {
               const profile = profileMap.get(a.user_id);
               return (
                 <TableRow key={a.id}>
@@ -582,6 +600,9 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
             })}
           </TableBody>
         </Table>
+        {totalAppPages > 1 && (
+          <TablePagination currentPage={appPage} totalPages={totalAppPages} totalItems={applications.length} pageSize={APP_PAGE_SIZE} onPageChange={setAppPage} />
+        )}
       </div>
     </div>
   );
@@ -1975,5 +1996,22 @@ const ChartCard = ({ title, subtitle, children }: { title: string; subtitle: str
     {children}
   </div>
 );
+
+const TablePagination = ({ currentPage, totalPages, totalItems, pageSize, onPageChange }: {
+  currentPage: number; totalPages: number; totalItems: number; pageSize: number; onPageChange: (p: number) => void;
+}) => {
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
+  return (
+    <div className="flex items-center justify-between px-4 py-3 border-t border-border text-sm">
+      <span className="text-muted-foreground text-xs">{start}–{end} of {totalItems}</span>
+      <div className="flex gap-1">
+        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">← Prev</button>
+        <span className="px-2 py-1 text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
+        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">Next →</button>
+      </div>
+    </div>
+  );
+};
 
 export default Admin;
