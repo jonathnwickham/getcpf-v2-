@@ -8,6 +8,7 @@ import documentsReadyImg from "@/assets/documents-ready.jpg";
 import cpfSuccessImg from "@/assets/cpf-success.jpg";
 import DocumentScanner from "@/components/DocumentScanner";
 import protocolResultImg from "@/assets/protocol-result.png";
+import protocolFormImg from "@/assets/protocol-preview.png";
 import walkInPreviewImg from "@/assets/walk-in-preview.png";
 import RejectionFlow from "@/components/RejectionFlow";
 import UnlockGuide from "@/components/UnlockGuide";
@@ -1356,13 +1357,34 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <p className="text-xs text-muted-foreground mt-1">Your completed form generates a protocol number — your proof that everything was submitted correctly.</p>
       </div>
       <div className="p-6">
-        <img
-          src={walkInPreviewImg}
-          alt="Step 1: Fill in the Receita Federal form online. Step 2: Your protocol document is generated with a reference number valid for 90 days."
-          className="w-full rounded-xl border border-border"
-          loading="lazy"
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
+        {/* Actual document images */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
+          <div className="flex-shrink-0 text-center">
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Step 1 — Fill in the form</p>
+            <div className="rounded-lg overflow-hidden shadow-lg border border-border bg-white" style={{ maxWidth: 260 }}>
+              <img
+                src={protocolFormImg}
+                alt="CPF application form from Receita Federal"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div className="text-2xl text-muted-foreground hidden sm:block">→</div>
+          <div className="text-2xl text-muted-foreground sm:hidden">↓</div>
+          <div className="flex-shrink-0 text-center">
+            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Step 2 — Your protocol is generated</p>
+            <div className="rounded-lg overflow-hidden shadow-xl border-2 border-primary/30 bg-white" style={{ maxWidth: 280 }}>
+              <img
+                src={protocolResultImg}
+                alt="CPF protocol document with reference number"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="flex items-start gap-2.5">
             <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
             <p className="text-xs text-muted-foreground">Your reference number — proof your application was submitted correctly</p>
