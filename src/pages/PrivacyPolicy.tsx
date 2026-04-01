@@ -125,22 +125,10 @@ const PrivacyPolicy = () => (
         </section>
 
         <section>
-          <h2 className="text-xl font-bold mb-3">Your rights</h2>
-          <p className="leading-relaxed mb-3">
-            Under the <strong>LGPD</strong> (Brazil), <strong>GDPR</strong> (EU), <strong>CCPA/CPRA</strong> (California), and <strong>POPIA</strong> (South Africa), you have the right to:
-          </p>
-          <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Access</strong> — request a copy of all data we hold about you</li>
-            <li><strong>Correction</strong> — ask us to fix any inaccurate information</li>
-            <li><strong>Deletion</strong> — ask us to delete your account and all associated data</li>
-            <li><strong>Portability</strong> — receive your data in a portable format (JSON export available in your dashboard)</li>
-            <li><strong>Withdraw consent</strong> — at any time, for any reason</li>
-            <li><strong>Limit use of sensitive personal information</strong> (CCPA) — your passport number is classified as Sensitive Personal Information under California law; we use it solely to prepare your CPF application</li>
-          </ul>
-          <p className="leading-relaxed mt-3">
-            To exercise any of these rights, email us at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
-            We'll respond within 15 business days.
+          <h2 className="text-xl font-bold mb-3">Do Not Sell or Share My Personal Information</h2>
+          <p className="leading-relaxed">
+            GET CPF does <strong>not sell or share</strong> your personal information with third parties for advertising, marketing, or any other commercial purpose. This applies to all users, including California residents under the CCPA/CPRA. Because we do not sell data, there is no need to submit a "Do Not Sell" request — but you may contact us at any time at{" "}
+            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a> to confirm this.
           </p>
         </section>
 
