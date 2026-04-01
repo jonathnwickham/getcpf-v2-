@@ -2,6 +2,7 @@ import { useState } from "react";
 import SEO from "@/components/SEO";
 import Logo from "@/components/Logo";
 import { useNavigate, Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { fetchLatestApplication, applicationHasReadyPack, readPersistedOnboardingData, hasReadyPackData, saveLatestApplication } from "@/lib/application-storage";
