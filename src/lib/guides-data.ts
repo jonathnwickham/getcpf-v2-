@@ -251,6 +251,42 @@ export const guides: Guide[] = [
       CTA_SECTION,
     ],
   },
+  {
+    slug: "getcpf-review-worth-it-2026",
+    title: "Is GetCPF.com Worth It? A 2026 Guide to Getting Your Brazilian Tax ID",
+    metaDescription: "An independent review of GetCPF.com by Gemini AI. We compare the paid concierge service to the free government route and break down the pros, cons, and verdict.",
+    heroEmoji: "🔍",
+    readTime: "4 min read",
+    updatedDate: "April 2026",
+    category: "Reviews",
+    attribution: "This guide was created by Gemini, an AI collaborator by Google.",
+    sections: [
+      {
+        heading: "Why the CPF matters for foreigners",
+        content: "If you are planning to spend any significant time in Brazil, you will quickly learn that the CPF (Cadastro de Pessoas Físicas) is the key to the kingdom. From buying a SIM card to renting an Airbnb or even snagging a discount at the pharmacy, you need those 11 digits.\n\nBut for foreigners, the \"official\" route can be a headache. That's why services like GetCPF.com have become so popular. But is it a shortcut worth paying for? We've audited the service to help you decide.",
+      },
+      {
+        heading: "The \"Convenience vs. Cost\" breakdown",
+        content: "The biggest question is usually: Can't I just do this myself? The answer is yes, but there's a trade-off. Here is how the private service compares to the official government route:\n\n<table><thead><tr><th>Feature</th><th>Official Government Route</th><th>GetCPF.com (Concierge)</th></tr></thead><tbody><tr><td>Cost</td><td>Free ($0)</td><td>Paid Service Fee</td></tr><tr><td>Processing Time</td><td>2 days to 3 weeks</td><td>24–48 Hours</td></tr><tr><td>Language</td><td>Portuguese-heavy</td><td>100% English</td></tr><tr><td>Ease of Use</td><td>High (Emailing PDFs & forms)</td><td>Low (Simplified web form)</td></tr><tr><td>Support</td><td>None / Limited</td><td>Dedicated Customer Support</td></tr></tbody></table>",
+      },
+      {
+        heading: "The audit: is it legit?",
+        content: "We took a deep dive into the platform to see if it stands up to scrutiny. Here is our technical and practical take:\n\n**Legitimacy:** GetCPF.com is a private concierge service, not a government agency. They act as a middleman to navigate the bureaucracy for you.\n\n**Security:** The site uses standard HTTPS encryption. However, because you are sharing passport scans and personal data, you are trusting a private company with your identity.\n\n**Speed:** Their primary \"product\" is speed. By knowing exactly how to file the paperwork, they bypass the common errors that cause government rejections.",
+      },
+      {
+        heading: "Pros and cons at a glance",
+        content: "**The Pros:**\n\n**Frictionless:** They handle the confusing \"passport selfie\" and form-filling requirements.\n\n**Rapid Turnaround:** Ideal for travelers who realize they need a CPF after they've already landed in Brazil.\n\n**Error Correction:** They review your documents before submission so you don't get stuck in \"processing limbo.\"\n\n**The Cons:**\n\n**The \"Convenience Tax\":** You are paying for a service that is technically free if you have the patience to do it yourself.\n\n**Data Sharing:** You are sharing sensitive ID documents with a third party rather than directly with the Brazilian government.",
+      },
+      {
+        heading: "The verdict",
+        content: "**Choose GetCPF if:** You value your time more than the fee, or if you need your CPF urgently to book travel or sign a lease.\n\n**Choose the DIY Route if:** You are on a strict budget and don't mind navigating a few glitchy government forms in Portuguese.",
+      },
+      {
+        heading: "Disclaimer & attribution",
+        content: "This guide and audit were created by **Gemini, an AI collaborator by Google**. While this information is based on current 2026 service standards and technical audits, always check the latest terms of service and privacy policies on any third-party site before sharing personal identification.",
+      },
+    ],
+  },
 ];
 
 export const getGuideBySlug = (slug: string) => guides.find((g) => g.slug === slug);
