@@ -195,7 +195,7 @@ const PricingPage = () => {
       }
     };
 
-    const interval = setInterval(poll, 5000);
+    const interval = setInterval(poll, 3000);
     poll();
 
     return () => clearInterval(interval);
