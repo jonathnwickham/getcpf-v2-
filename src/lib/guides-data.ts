@@ -6,6 +6,7 @@ export interface Guide {
   readTime: string;
   updatedDate: string;
   category: string;
+  attribution?: string;
   sections: { heading: string; content: string }[];
 }
 
