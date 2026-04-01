@@ -187,13 +187,18 @@ const PricingPage = () => {
     }, 2500);
   };
 
-  // Poll verify-payment endpoint every 5 seconds once on payment step
+  const MAX_POLLS = 90; // ~3 minutes at 2s intervals
+
+  // Poll verify-payment endpoint every 2 seconds once on payment step
   useEffect(() => {
     if (flowStep !== "payment" || !email || paymentVerified) return;
 
     const poll = async () => {
+      setPollCount(c => {
+        if (c >= MAX_POLLS) return c;
+        return c + 1;
+      });
       try {
-        setPollCount(c => c + 1);
         const { data } = await supabase.functions.invoke("verify-payment", {
           body: { email },
         });
@@ -206,7 +211,9 @@ const PricingPage = () => {
       }
     };
 
-    const interval = setInterval(poll, 2000);
+    const interval = setInterval(() => {
+      if (pollCount < MAX_POLLS) poll();
+    }, 2000);
     poll();
 
     return () => clearInterval(interval);
