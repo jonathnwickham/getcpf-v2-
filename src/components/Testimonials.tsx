@@ -3,7 +3,7 @@ import { Shield } from "lucide-react";
 
 const Testimonials = () => {
   return (
-    <section className="py-24 px-8 bg-secondary">
+    <section className="py-14 md:py-24 px-6 md:px-8 bg-secondary">
       <div className="max-w-[700px] mx-auto">
         <div className="text-center mb-10">
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Our guarantee</div>

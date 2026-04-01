@@ -45,7 +45,7 @@ const FAQ = () => {
         {faqs.map((faq, i) => (
           <div key={i} className="border-b border-border py-5">
             <button
-              className="w-full flex justify-between items-center text-left font-semibold text-foreground min-h-[44px] py-2"
+              className="w-full flex justify-between items-center text-left font-semibold text-foreground min-h-[48px] py-3"
               onClick={() => setOpenIndices(prev => { const next = new Set(prev); if (next.has(i)) next.delete(i); else next.add(i); return next; })}
             >
               {faq.q}

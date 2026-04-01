@@ -359,7 +359,7 @@ const Partners = () => {
               <Button type="submit" disabled={submitting} className="w-full h-12 rounded-xl text-sm font-bold">
                 {submitting ? "Submitting..." : "Apply to become a founding partner"}
               </Button>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-sm text-muted-foreground text-center">
                 Only {20} founding spots available. After that, the terms change.
               </p>
             </form>

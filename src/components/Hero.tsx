@@ -101,7 +101,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </div>
 
           {/* Stats row with count-up */}
-          <div className="animate-fade-up-4 flex flex-wrap gap-6 sm:gap-8 mt-6 justify-center lg:justify-start">
+          <div className="animate-fade-up-4 grid grid-cols-4 gap-4 sm:flex sm:flex-wrap sm:gap-8 mt-6 justify-center lg:justify-start">
             {proofItems.map((item) => (
               <div key={item.label} className="text-center lg:text-left">
                 <div className="text-lg font-bold text-foreground">

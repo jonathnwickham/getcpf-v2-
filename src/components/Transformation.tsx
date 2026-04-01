@@ -74,7 +74,7 @@ const Transformation = () => {
         {/* After */}
         <div className="flex-1 px-6 md:px-10 py-8">
           <h3 className="text-lg font-bold text-primary mb-1">With GET CPF</h3>
-          <p className="text-xs text-muted-foreground mb-6">What our users experience</p>
+          <p className="text-sm text-muted-foreground mb-6">What our users experience</p>
 
           {/* Approved form + unlocked services */}
           <div className="flex items-start gap-3 mb-6">

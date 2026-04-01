@@ -75,10 +75,10 @@ const GuideDetail = () => {
       <article className="pt-32 pb-24 px-6">
         <div className="max-w-[700px] mx-auto">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-8">
-            <Link to="/guides" className="hover:text-foreground transition-colors">Guides</Link>
+          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8 min-h-[44px]">
+            <Link to="/guides" className="hover:text-foreground transition-colors py-2 min-h-[44px] inline-flex items-center">Guides</Link>
             <span>/</span>
-            <span className="text-foreground font-medium truncate">{guide.title}</span>
+            <span className="text-foreground font-medium line-clamp-1">{guide.category}</span>
           </nav>
 
           {/* Header */}
