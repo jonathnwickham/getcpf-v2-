@@ -29,7 +29,7 @@ const CookieBanner = () => {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:bottom-0 md:left-0 md:right-0 z-[100] bg-card border border-border md:border-t md:border-x-0 md:border-b-0 rounded-xl md:rounded-none px-4 py-3 md:px-6 md:py-4 shadow-xl animate-slide-in">
+    <div className="fixed bottom-4 left-4 right-4 md:bottom-0 md:left-0 md:right-0 z-[100] bg-card/70 backdrop-blur-xl border border-border/50 md:border-t md:border-x-0 md:border-b-0 rounded-xl md:rounded-none px-4 py-3 md:px-6 md:py-4 shadow-xl animate-slide-in">
       <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
         <p className="text-xs md:text-sm text-muted-foreground flex-1 min-w-0">
           Essential cookies only. No tracking.{" "}

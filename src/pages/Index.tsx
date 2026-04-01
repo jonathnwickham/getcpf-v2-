@@ -75,7 +75,7 @@ const Index = () => {
       {/* CTA after pricing for undecided visitors */}
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
-      <ComingSoon />
+      
       <Footer />
     </div>
   );
