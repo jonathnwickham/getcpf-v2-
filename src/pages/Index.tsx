@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SocialProofBar from "@/components/SocialProofBar";
