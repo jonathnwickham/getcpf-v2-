@@ -70,7 +70,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-6">
+    <div className="min-h-screen bg-background flex items-start justify-center px-6 pt-24 pb-16"
+      style={{ backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.04), transparent 60%)" }}
+    >
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/"><Logo className="h-10" /></a>

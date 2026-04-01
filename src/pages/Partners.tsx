@@ -158,6 +158,13 @@ const Partners = () => {
             We're making Brazil easier to arrive in.
           </h1>
           <p className="text-lg text-muted-foreground mt-6 leading-relaxed">One CPF at a time.</p>
+          <div className="mt-8 inline-flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-xl px-5 py-3">
+            <span className="text-2xl">💰</span>
+            <div>
+              <div className="text-sm font-bold text-primary">Earn 20% commission — $9.80 per referral</div>
+              <div className="text-xs text-muted-foreground">Paid monthly. No caps. No catches.</div>
+            </div>
+          </div>
 
           <div className="mt-12 space-y-6 text-[15px] text-muted-foreground leading-relaxed">
              <p>

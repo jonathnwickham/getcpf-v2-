@@ -17,9 +17,33 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
   const [showInput, setShowInput] = useState(!!existingCpf);
   const [saving, setSaving] = useState(false);
 
+  const validateCpfMod11 = (cpfStr: string): boolean => {
+    const digits = cpfStr.replace(/\D/g, "");
+    if (digits.length !== 11) return false;
+    // Reject all-same-digit CPFs
+    if (/^(\d)\1{10}$/.test(digits)) return false;
+    // First check digit
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    if (remainder !== parseInt(digits[9])) return false;
+    // Second check digit
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+    remainder = (sum * 10) % 11;
+    if (remainder === 10) remainder = 0;
+    if (remainder !== parseInt(digits[10])) return false;
+    return true;
+  };
+
   const handleSave = async () => {
     const trimmed = cpf.trim();
     if (!trimmed) return;
+    if (!validateCpfMod11(trimmed)) {
+      toast.error("Invalid CPF number. Please check the digits and try again.");
+      return;
+    }
     setSaving(true);
     // First save the CPF number
     await supabase
