@@ -95,10 +95,9 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <AccessDeniedScreen />;
   }
 
-  // Payment check
+  // Payment check — show explanation screen instead of silent redirect
   if (needsPaymentCheck && !isPaid) {
-    toast.info("You need to complete your purchase first to access this page.");
-    return <Navigate to="/pricing" replace />;
+    return <PaymentRequiredScreen />;
   }
 
   return <>{children}</>;
