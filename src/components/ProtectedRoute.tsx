@@ -84,6 +84,7 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
   // Payment check
   if (needsPaymentCheck && !isPaid) {
+    toast.info("You need to complete your purchase first to access this page.");
     return <Navigate to="/pricing" replace />;
   }
 
