@@ -600,6 +600,9 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
             })}
           </TableBody>
         </Table>
+        {totalAppPages > 1 && (
+          <TablePagination currentPage={appPage} totalPages={totalAppPages} totalItems={applications.length} pageSize={APP_PAGE_SIZE} onPageChange={setAppPage} />
+        )}
       </div>
     </div>
   );
