@@ -106,7 +106,7 @@ const Transformation = () => {
           </div>
 
           {/* Timeline */}
-          <div className="space-y-4 mb-4">
+          <div className="space-y-4 mb-6">
             {afterSteps.map((step, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
@@ -116,9 +116,6 @@ const Transformation = () => {
               </div>
             ))}
           </div>
-
-
-
 
           <p className="text-xs text-primary italic">
             1 trip. Same day. Done.

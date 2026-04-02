@@ -15,6 +15,14 @@ const painPoints = [
     title: "Opening a bank account",
     text: "Nubank, Inter, C6. Every bank and fintech in Brazil requires a CPF. No account means no Pix. No Pix in Brazil in 2026 means you are doing everything the hard way.",
   },
+  {
+    title: "Buying event tickets",
+    text: "Football, concerts, shows. CPF required at checkout. No workaround. You're paying a scalper or watching from outside.",
+  },
+  {
+    title: "Shopping online",
+    text: "Mercado Livre, Amazon Brazil, Shopee. CPF required. Even buying shoes from a Brazilian Reebok store online. You are locked out of the entire local e-commerce system.",
+  },
 ];
 
 const PainPoints = () => {
