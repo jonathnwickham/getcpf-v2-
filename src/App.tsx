@@ -34,6 +34,18 @@ const Contact = lazy(() => import("./pages/Contact.tsx"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe.tsx"));
 const CpfChecker = lazy(() => import("./pages/CpfChecker.tsx"));
 
+const ScrollToAnchor = ({ anchor }: { anchor: string }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/", { replace: true });
+    const timer = setTimeout(() => {
+      document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [anchor, navigate]);
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
