@@ -146,7 +146,7 @@ const Partners = () => {
       <Navbar />
 
       {/* Hero / Mission */}
-      <section className="py-14 md:py-20 px-6">
+      <section className="pt-28 pb-14 md:pt-32 md:pb-20 px-6">
         <div className="max-w-[700px] mx-auto">
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Partner with us</div>
           <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold tracking-tight leading-[1.1]">
