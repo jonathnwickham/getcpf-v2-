@@ -30,7 +30,7 @@ const SocialProofBar = () => {
         <p className="text-xs text-muted-foreground font-medium mb-5">
           Your CPF unlocks everyday services like these.
         </p>
-        <div className="grid grid-cols-4 gap-4 justify-items-center items-center max-w-[400px] md:max-w-none mx-auto md:flex md:flex-wrap md:gap-5 md:justify-center">
+        <div className="grid grid-cols-4 gap-2.5 justify-items-center items-center max-w-[360px] md:max-w-none mx-auto md:flex md:flex-wrap md:gap-5 md:justify-center">
           {logos.map((logo) => (
             <img
               key={logo.alt}
@@ -39,8 +39,8 @@ const SocialProofBar = () => {
               loading="eager"
               decoding="async"
               width={80}
-              height={25}
-              className="h-[25px] md:h-[36px] w-auto rounded object-contain"
+              height={31}
+              className="h-[31px] md:h-[36px] w-auto rounded object-contain"
             />
           ))}
         </div>
