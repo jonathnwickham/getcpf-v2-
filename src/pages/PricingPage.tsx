@@ -101,7 +101,7 @@ const PricingPage = () => {
     return () => window.removeEventListener("popstate", handlePop);
   }, []);
 
-  // If logged in and paid, redirect to dashboard
+  // If logged in: redirect paid users to dashboard, skip email step for unpaid users
   useEffect(() => {
     if (!user) return;
     const checkPaid = async () => {
@@ -113,6 +113,12 @@ const PricingPage = () => {
         .limit(1);
       if (apps && apps.length > 0) {
         navigate("/dashboard");
+      } else {
+        // Logged in but hasn't paid: pre-fill email and skip to plan selection
+        setEmail(user.email || "");
+        if (flowStep === "email") {
+          setFlowStep("plan");
+        }
       }
     };
     checkPaid();
