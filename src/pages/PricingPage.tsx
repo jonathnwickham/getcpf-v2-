@@ -131,6 +131,7 @@ const PricingPage = () => {
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [agreementError, setAgreementError] = useState(false);
 
   // Fanbasis checkout state
   const [checkoutSecret, setCheckoutSecret] = useState<string | null>(null);
@@ -302,6 +303,15 @@ const PricingPage = () => {
 
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreed) {
+      setAgreementError(true);
+      toast({
+        title: "Please accept the terms",
+        description: "Tick the box above to create your account.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (password.length < 6) {
       toast({ title: "Password too short", description: "Make it at least 6 characters.", variant: "destructive" });
       return;
@@ -312,7 +322,7 @@ const PricingPage = () => {
     }
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -343,10 +353,15 @@ const PricingPage = () => {
         setLoading(false);
       }
     } else {
-      // Auto-confirm is enabled, so sign in immediately and redirect
+      if (signUpData?.session) {
+        toast({ title: "Account created!", description: "Let's get your CPF sorted." });
+        setLoading(false);
+        navigate("/get-started");
+        return;
+      }
+
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) {
-        // Fallback: show done step if auto-sign-in fails
         setFlowStep("done");
         setLoading(false);
       } else {
@@ -797,21 +812,21 @@ const PricingPage = () => {
                   placeholder="••••••••"
                 />
               </div>
-              <label className={`flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border transition-colors ${agreed ? 'border-primary/30 bg-primary/5' : 'border-border bg-secondary/50'}`}>
-                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-border accent-primary" />
+              <label className={`flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border transition-colors ${agreed ? 'border-primary/30 bg-primary/5' : agreementError ? 'border-destructive/40 bg-destructive/5' : 'border-border bg-secondary/50'}`}>
+                <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setAgreementError(false); }} className="mt-0.5 w-4 h-4 rounded border-border accent-primary" />
                 <span className="text-sm text-muted-foreground leading-relaxed">
                   I agree to the <a href="/terms" className="text-primary hover:underline font-semibold">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</a>.
                 </span>
               </label>
               <button
                 type="submit"
-                disabled={loading || !agreed}
+                disabled={loading}
                 className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Setting things up..." : "Create my account →"}
               </button>
               {!agreed && (
-                <p className="text-sm text-muted-foreground text-center">☝️ Check the box above to continue</p>
+                <p className={`text-sm text-center ${agreementError ? 'text-destructive' : 'text-muted-foreground'}`}>☝️ Check the box above to continue</p>
               )}
             </form>
           </div>
