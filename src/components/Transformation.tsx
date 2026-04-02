@@ -117,20 +117,8 @@ const Transformation = () => {
             ))}
           </div>
 
-          {/* 4-step journey */}
-          <div className="bg-card border border-border rounded-xl p-4 mb-6">
-            <div className="space-y-2">
-              {journeySteps.map((s) => (
-                <div key={s.num} className="flex items-center gap-3">
-                  <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">
-                    {s.num}
-                  </span>
-                  <span className="text-xs text-foreground font-medium">{s.label}</span>
-                  <span className="text-[10px] text-muted-foreground ml-auto">{s.time}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+
+
 
           <p className="text-xs text-primary italic">
             1 trip. Same day. Done.
