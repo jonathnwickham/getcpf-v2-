@@ -10,10 +10,10 @@ const Footer = () => (
         {/* Brand */}
         <div>
           <Logo className="h-8 mb-3" />
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF, the easy way. We handle the preparation so you just show up.
           </p>
-          <p className="text-xs text-muted-foreground mt-3">
+          <p className="text-sm text-muted-foreground mt-3">
             We respond within 24 hours.
           </p>
         </div>
