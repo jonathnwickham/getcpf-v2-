@@ -337,8 +337,17 @@ const PricingPage = () => {
         setLoading(false);
       }
     } else {
-      setFlowStep("done");
-      setLoading(false);
+      // Auto-confirm is enabled, so sign in immediately and redirect
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        // Fallback: show done step if auto-sign-in fails
+        setFlowStep("done");
+        setLoading(false);
+      } else {
+        toast({ title: "Account created!", description: "Let's get your CPF sorted." });
+        setLoading(false);
+        navigate("/get-started");
+      }
     }
   };
 
