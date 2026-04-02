@@ -2,9 +2,10 @@ import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import PainPoints from "@/components/PainPoints";
-import MidCTA from "@/components/MidCTA";
 import Transformation from "@/components/Transformation";
+import MidCTA from "@/components/MidCTA";
+import JourneySteps from "@/components/JourneySteps";
+import PainPoints from "@/components/PainPoints";
 import ProductPreview from "@/components/ProductPreview";
 import WhoIsThisFor from "@/components/WhoIsThisFor";
 import Pricing from "@/components/Pricing";
@@ -28,23 +29,25 @@ const Index = () => {
       <main id="main-content">
         {/* 1. Hero */}
         <Hero onOpenModal={handleOpenOnboarding} />
-        {/* 2. Problem (trimmed to 4) */}
+        {/* 2. With/Without Comparison */}
+        <Transformation />
+        {/* 3. 4-step journey (standalone) */}
+        <JourneySteps />
+        {/* 4. Problem cards */}
         <PainPoints />
         <MidCTA onOpenModal={handleOpenOnboarding} text="Five minutes of prep. One visit. Done." buttonText="Get started →" />
-        {/* 3. With/Without Comparison */}
-        <Transformation />
-        <MidCTA onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} text="Ready to skip the headache?" buttonText="See pricing ↓" />
-        {/* 4. How It Works (visual) */}
+        {/* 5. How It Works (visual) */}
         <ProductPreview />
-        {/* 5. Who Is This For (trimmed to 4) */}
+        {/* 6. Who Is This For */}
         <WhoIsThisFor />
-        {/* 6. Pricing */}
+        <MidCTA onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} text="Ready to skip the headache?" buttonText="See pricing ↓" />
+        {/* 7. Pricing */}
         <Pricing onOpenModal={handleOpenOnboarding} />
-        {/* 7. Trust Stack */}
+        {/* 8. Trust Stack */}
         <TrustStack />
-        {/* 8. FAQ (trimmed to 5) */}
+        {/* 9. FAQ */}
         <FAQ />
-        {/* 9. Final CTA */}
+        {/* 10. Final CTA */}
         <FinalCTA onOpenModal={handleOpenOnboarding} />
       </main>
       <Footer />
