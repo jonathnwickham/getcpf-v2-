@@ -24,7 +24,7 @@ const SocialProofBar = () => {
   const displayCount = cpfCount !== null ? cpfCount : 200;
 
   return (
-    <section className="py-10 px-6 bg-background border-y border-border/50">
+    <section className="py-6 px-6 bg-background border-y border-border/50">
       <div className="max-w-[900px] mx-auto text-center">
         
         <p className="text-xs text-muted-foreground font-medium mb-5">

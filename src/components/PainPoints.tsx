@@ -31,7 +31,7 @@ const painPoints = [
 
 const PainPoints = () => {
   return (
-    <section className="py-16 px-8 relative bg-secondary">
+    <section className="py-12 px-8 relative bg-secondary">
       <div className="max-w-[900px] mx-auto">
         <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[700px]">
