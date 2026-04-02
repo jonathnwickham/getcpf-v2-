@@ -95,7 +95,7 @@ const FoundingPartnerSection = () => (
           </div>
         ))}
       </div>
-      <a href="#join" className="inline-flex items-center gap-1 text-sm font-bold text-primary mt-8 hover:underline">
+      <a href="#join" className="inline-flex items-center gap-1 text-sm font-bold text-primary mt-8 hover:underline py-2 min-h-[44px]">
         Apply for a founding spot <ArrowRight className="w-4 h-4" />
       </a>
     </div>
