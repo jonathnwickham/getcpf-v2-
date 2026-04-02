@@ -1,7 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,6 +34,18 @@ const Contact = lazy(() => import("./pages/Contact.tsx"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe.tsx"));
 const CpfChecker = lazy(() => import("./pages/CpfChecker.tsx"));
 
+const ScrollToAnchor = ({ anchor }: { anchor: string }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/", { replace: true });
+    const timer = setTimeout(() => {
+      document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [anchor, navigate]);
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -63,7 +75,7 @@ const App = () => (
               <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
               <Route path="/cookie-policy" element={<Navigate to="/privacy" replace />} />
               <Route path="/affiliate-disclosure" element={<Navigate to="/affiliates" replace />} />
-              <Route path="/faq" element={<Navigate to="/#faq" replace />} />
+              <Route path="/faq" element={<ScrollToAnchor anchor="faq" />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
