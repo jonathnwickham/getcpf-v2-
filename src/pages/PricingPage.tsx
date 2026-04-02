@@ -519,8 +519,8 @@ const PricingPage = () => {
                   { text: "We both got CPFs on the first try. The troubleshooter is genius.", name: "Lisa W.", loc: "Rio de Janeiro" },
                 ].map((t) => (
                   <div key={t.name} className="bg-card border border-border rounded-xl p-4">
-                    <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
-                    <p className="text-xs text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
+                    <p className="text-sm text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
                   </div>
                 ))}
               </div>
@@ -797,19 +797,22 @@ const PricingPage = () => {
                   placeholder="••••••••"
                 />
               </div>
-              <label className="flex items-start gap-2.5 cursor-pointer">
+              <label className={`flex items-start gap-2.5 cursor-pointer p-3 rounded-xl border transition-colors ${agreed ? 'border-primary/30 bg-primary/5' : 'border-border bg-secondary/50'}`}>
                 <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-border accent-primary" />
-                <span className="text-xs text-muted-foreground leading-relaxed">
+                <span className="text-sm text-muted-foreground leading-relaxed">
                   I agree to the <a href="/terms" className="text-primary hover:underline font-semibold">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</a>.
                 </span>
               </label>
               <button
                 type="submit"
                 disabled={loading || !agreed}
-                className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Setting things up..." : "Create my account →"}
               </button>
+              {!agreed && (
+                <p className="text-sm text-muted-foreground text-center">☝️ Check the box above to continue</p>
+              )}
             </form>
           </div>
         )}
