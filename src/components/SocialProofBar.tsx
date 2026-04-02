@@ -28,9 +28,9 @@ const SocialProofBar = () => {
       <div className="max-w-[900px] mx-auto text-center">
         
         <p className="text-xs text-muted-foreground font-medium mb-5">
-          Your CPF unlocks the everyday services you'll rely on in Brazil.
+          Your CPF unlocks everyday services like these.
         </p>
-        <div className="flex flex-wrap gap-5 justify-center items-center">
+        <div className="grid grid-cols-4 gap-4 justify-items-center items-center max-w-[400px] md:max-w-none mx-auto md:flex md:flex-wrap md:gap-5 md:justify-center">
           {logos.map((logo) => (
             <img
               key={logo.alt}
