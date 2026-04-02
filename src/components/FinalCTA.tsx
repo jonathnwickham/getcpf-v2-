@@ -46,7 +46,7 @@ const FinalCTA = ({ onOpenModal }: FinalCTAProps) => {
           </div>
         </div>
         <div className="text-sm text-muted-foreground font-medium mt-5">🇧🇷 50+ countries supported</div>
-        <button onClick={handleCTA} className="mt-6 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
+        <button onClick={handleCTA} className="mt-6 bg-primary text-primary-foreground px-10 py-4 rounded-full font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]">
           Get started — <span className="line-through opacity-60">$49</span> $29 →
         </button>
       </div>

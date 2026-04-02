@@ -20,7 +20,7 @@ const MidCTA = ({ onOpenModal, text, buttonText = "Get started →" }: MidCTAPro
         <p className="text-lg md:text-xl font-semibold text-foreground mb-5">{text}</p>
         <button
           onClick={handleClick}
-          className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+          className="bg-primary text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20"
         >
           {buttonText}
         </button>
