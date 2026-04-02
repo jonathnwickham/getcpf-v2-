@@ -10,7 +10,7 @@ const Unsubscribe = () => {
 
   useEffect(() => {
     if (!token) {
-      setStatus("invalid");
+      setStatus("no_token");
       return;
     }
 
