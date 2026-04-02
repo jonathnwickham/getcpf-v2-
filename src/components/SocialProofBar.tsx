@@ -40,7 +40,7 @@ const SocialProofBar = () => {
               decoding="async"
               width={80}
               height={25}
-              className="h-[25px] md:h-[38px] w-auto rounded object-contain"
+              className="h-[25px] md:h-[55px] w-auto rounded object-contain"
             />
           ))}
         </div>
