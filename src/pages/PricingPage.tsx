@@ -519,8 +519,8 @@ const PricingPage = () => {
                   { text: "We both got CPFs on the first try. The troubleshooter is genius.", name: "Lisa W.", loc: "Rio de Janeiro" },
                 ].map((t) => (
                   <div key={t.name} className="bg-card border border-border rounded-xl p-4">
-                    <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
-                    <p className="text-xs text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
+                    <p className="text-sm text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
                   </div>
                 ))}
               </div>
