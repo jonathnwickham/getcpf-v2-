@@ -101,7 +101,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
               Get started — <span className="line-through opacity-60">$49</span> $29 →
             </button>
-            <a href="#how" className="text-foreground px-8 py-3.5 rounded-xl font-semibold text-base transition-all min-h-[52px] inline-flex items-center bg-primary-foreground">
+            <a href="#how" className="text-foreground px-8 py-3.5 rounded-xl font-semibold text-base transition-all min-h-[52px] inline-flex items-center bg-muted border border-border">
               See how it works
             </a>
           </div>
