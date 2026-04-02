@@ -118,12 +118,12 @@ const CpfChecker = () => {
           {/* CTA */}
           <div className="mt-10 text-center bg-card border border-border rounded-2xl p-8">
             <h2 className="text-lg font-extrabold mb-2">Don't have a CPF yet?</h2>
-            <p className="text-sm text-muted-foreground mb-4">We prepare everything you need to get your CPF on the first visit. AI-powered, $49 one-time payment.</p>
+            <p className="text-sm text-muted-foreground mb-4">We prepare everything you need to get your CPF on the first visit. AI-powered, <span className="line-through opacity-60">$49</span> $29 one-time payment.</p>
             <Link
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get My CPF Pack — $49 →
+              Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
             </Link>
           </div>
 
