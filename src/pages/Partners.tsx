@@ -85,7 +85,7 @@ const FoundingPartnerSection = () => (
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
         {[
-          { label: "20% commission", desc: "You earn 20% of every sale — that's $9.80 per referral, locked in permanently" },
+          { label: "20% commission", desc: "You earn 20% of every sale — that's $5.80 per referral, locked in permanently" },
           { label: "Named on the site", desc: "Your name, logo, and one-line bio featured on the partners page" },
           { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide — you promote it first" },
         ].map((item) => (
