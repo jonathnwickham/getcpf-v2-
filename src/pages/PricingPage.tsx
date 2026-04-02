@@ -393,7 +393,7 @@ const PricingPage = () => {
         </div>
       </div>
 
-      <div className="max-w-[1100px] mx-auto px-6 py-12">
+      <div className={`mx-auto py-12 ${flowStep === "payment" ? "max-w-[1100px] px-0 sm:px-6" : "max-w-[1100px] px-6"}`}>
         {/* Step indicator */}
         <div className="flex items-center justify-center gap-2 mb-12">
           {["Your email", "Choose plan", "Payment", "Create account"].map((label, i) => {
@@ -549,7 +549,7 @@ const PricingPage = () => {
 
         {/* STEP 3: Payment — Fanbasis Checkout */}
         {flowStep === "payment" && (
-          <div className="max-w-lg mx-auto text-center relative">
+          <div className="w-full text-center relative px-3 sm:px-6 sm:max-w-lg sm:mx-auto">
             {/* Payment success overlay */}
             {showPaymentSuccess && (
               <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm animate-fade-in">
@@ -599,10 +599,10 @@ const PricingPage = () => {
               </div>
             )}
 
-            <h1 className="text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">One quick payment</h1>
 
             {/* Order summary */}
-            <div className="bg-card border border-border rounded-xl p-4 mb-4 text-left">
+            <div className="bg-card border border-border rounded-xl p-3 sm:p-4 mb-3 text-left">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-semibold text-sm">{selectedPlan} - CPF Application Service</h2>
@@ -668,12 +668,12 @@ const PricingPage = () => {
                 </a>
               </div>
             ) : (
-              <div className="space-y-3">
-                <div className="overflow-hidden bg-card">
+              <div className="space-y-2">
+                <div className="overflow-hidden -mx-3 sm:mx-0 sm:rounded-xl">
                   <iframe
                     src={EMBEDDED_URL}
-                    className="w-full border-0 rounded-xl"
-                    style={{ minHeight: "520px", height: "calc(100vh - 260px)", maxHeight: "900px" }}
+                    className="w-full border-0 sm:rounded-xl"
+                    style={{ minHeight: "580px", height: "calc(100vh - 200px)", maxHeight: "1000px" }}
                     allow="payment"
                     title="Fanbasis Checkout"
                   />
@@ -715,7 +715,7 @@ const PricingPage = () => {
               </div>
             )}
 
-            <div className="mt-4 text-center text-sm text-primary font-semibold">
+            <div className="mt-3 text-center text-xs sm:text-sm text-primary font-semibold">
               🛡️ If you follow our steps and get rejected - full refund. No questions asked.
             </div>
 
