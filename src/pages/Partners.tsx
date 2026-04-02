@@ -142,7 +142,7 @@ const Partners = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission ($5.80) on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
+      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
       <Navbar />
 
       {/* Hero / Mission */}
