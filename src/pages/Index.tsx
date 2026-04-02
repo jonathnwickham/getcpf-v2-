@@ -31,6 +31,7 @@ const Index = () => {
     <div className="overflow-x-hidden">
       <SEO />
       <Navbar onOpenModal={handleOpenOnboarding} />
+      <main id="main-content">
       <Hero onOpenModal={handleOpenOnboarding} />
       <SocialProofBar />
       <PainPoints />
@@ -50,6 +51,7 @@ const Index = () => {
       {/* CTA after pricing for undecided visitors */}
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
+      </main>
       
       <Footer />
       <StickyMobileCTA />

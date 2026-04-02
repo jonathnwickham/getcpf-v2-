@@ -35,6 +35,10 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
   ];
 
   return (
+    <>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
+        Skip to content
+      </a>
     <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/90 border-b border-border">
       <div className="flex items-center justify-between">
         <a href="/" className="flex items-center">
@@ -122,6 +126,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
         </div>
       )}
     </nav>
+    </>
   );
 };
 
