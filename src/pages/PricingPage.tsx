@@ -337,8 +337,17 @@ const PricingPage = () => {
         setLoading(false);
       }
     } else {
-      setFlowStep("done");
-      setLoading(false);
+      // Auto-confirm is enabled, so sign in immediately and redirect
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        // Fallback: show done step if auto-sign-in fails
+        setFlowStep("done");
+        setLoading(false);
+      } else {
+        toast({ title: "Account created!", description: "Let's get your CPF sorted." });
+        setLoading(false);
+        navigate("/get-started");
+      }
     }
   };
 
@@ -749,7 +758,7 @@ const PricingPage = () => {
             <p className="text-muted-foreground text-sm mb-8">
               Set a password so you can come back anytime — your progress will be saved.
             </p>
-            <form onSubmit={handleCreateAccount} className="space-y-4 text-left">
+            <form onSubmit={handleCreateAccount} className="space-y-4 text-left relative z-10">
               <div>
                 <label className="text-sm font-semibold text-foreground block mb-1.5">Email</label>
                 <div className="w-full bg-muted border border-border rounded-xl px-4 py-3 text-sm text-muted-foreground">
