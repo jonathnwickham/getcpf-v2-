@@ -87,13 +87,13 @@ const GuideDetail = () => {
             <h1 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold tracking-tight leading-tight mt-4">
               {guide.title}
             </h1>
-            <div className="flex items-center gap-3 mt-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-3 mt-4 text-[13px] text-muted-foreground">
               <span>Updated {guide.updatedDate}</span>
               <span>·</span>
               <span>{guide.readTime}</span>
             </div>
             {guide.attribution && (
-              <div className="mt-4 inline-flex items-center gap-2 bg-muted/60 border border-border rounded-lg px-3 py-1.5 text-xs text-muted-foreground">
+              <div className="mt-4 inline-flex items-center gap-2 bg-muted/60 border border-border rounded-lg px-3 py-1.5 text-[13px] text-muted-foreground">
                 <span>✨</span>
                 <span>{guide.attribution}</span>
               </div>
@@ -218,7 +218,7 @@ const GuideDetail = () => {
                     <span className="text-2xl">{g.heroEmoji}</span>
                     <div>
                       <h4 className="text-sm font-semibold group-hover:text-primary transition-colors">{g.title}</h4>
-                      <p className="text-xs text-muted-foreground">{g.readTime}</p>
+                      <p className="text-[13px] text-muted-foreground">{g.readTime}</p>
                     </div>
                   </Link>
                 ))}

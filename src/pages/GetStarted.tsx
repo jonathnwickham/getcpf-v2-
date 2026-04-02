@@ -286,15 +286,15 @@ const WelcomeStep = () => (
       <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
         <div className="bg-secondary rounded-xl p-3 text-center">
           <div className="text-lg font-bold">~5 min</div>
-          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">That's it</div>
+          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">That's it</div>
         </div>
         <div className="bg-secondary rounded-xl p-3 text-center">
           <div className="text-lg font-bold">100%</div>
-          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">Ready to go</div>
+          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">Ready to go</div>
         </div>
         <div className="bg-secondary rounded-xl p-3 text-center">
           <div className="text-lg font-bold">Same day</div>
-          <div className="text-[10px] text-muted-foreground font-medium mt-0.5">CPF in hand</div>
+          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">CPF in hand</div>
         </div>
       </div>
   </div>
