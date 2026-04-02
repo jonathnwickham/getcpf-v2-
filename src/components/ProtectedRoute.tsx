@@ -199,7 +199,7 @@ const PaymentRequiredScreen = () => {
             onClick={() => navigate("/pricing")}
             className="w-full bg-primary text-primary-foreground px-6 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
           >
-            Complete purchase — $49 →
+            Complete purchase — <span className="line-through opacity-60">$49</span> $29 →
           </button>
           <p className="text-xs text-muted-foreground mt-4">
             Already paid? <a href="/contact" className="text-primary font-semibold hover:underline">Contact support</a>
