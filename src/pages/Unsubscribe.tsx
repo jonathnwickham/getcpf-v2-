@@ -6,7 +6,7 @@ import Logo from "@/components/Logo";
 const Unsubscribe = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState<"loading" | "valid" | "already" | "invalid" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "valid" | "already" | "invalid" | "no_token" | "success" | "error">("loading");
 
   useEffect(() => {
     if (!token) {
