@@ -37,10 +37,10 @@ const Guides = () => {
                   <span className="text-3xl shrink-0">{guide.heroEmoji}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${categoryColors[guide.category] || "bg-muted text-muted-foreground"}`}>
+                      <span className={`text-[13px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${categoryColors[guide.category] || "bg-muted text-muted-foreground"}`}>
                         {guide.category}
                       </span>
-                      <span className="text-xs text-muted-foreground">{guide.readTime}</span>
+                      <span className="text-[13px] text-muted-foreground">{guide.readTime}</span>
                     </div>
                     <h2 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
                       {guide.title}
