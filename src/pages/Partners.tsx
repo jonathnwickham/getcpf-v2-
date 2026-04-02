@@ -365,7 +365,7 @@ const Partners = () => {
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-border">
         <div className="max-w-[700px] mx-auto text-center">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             © 2026 GET CPF. All rights reserved.
           </p>
         </div>

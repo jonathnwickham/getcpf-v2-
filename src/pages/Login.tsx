@@ -150,13 +150,13 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="text-center mt-6 space-y-2">
-          <Link to="/forgot-password" className="text-sm text-primary hover:underline block">
+        <div className="text-center mt-6 space-y-1">
+          <Link to="/forgot-password" className="text-sm text-primary hover:underline block py-2 min-h-[44px] inline-flex items-center justify-center">
             Forgot your password?
           </Link>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground py-2 min-h-[44px] flex items-center justify-center gap-1">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-primary font-semibold hover:underline">
+            <Link to="/signup" className="text-primary font-semibold hover:underline inline-flex items-center min-h-[44px] py-2">
               Sign up
             </Link>
           </p>
