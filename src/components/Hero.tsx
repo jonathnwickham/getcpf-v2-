@@ -97,7 +97,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             A few minutes of preparation is all it takes. We get everything ready so when you walk in, you walk out.
           </p>
 
-          <div className="animate-fade-up-3 flex gap-4 mt-6 flex-wrap justify-center lg:justify-start">
+          <div className="animate-fade-up-3 flex gap-4 mt-5 flex-wrap justify-center lg:justify-start">
             <button onClick={handleCTA} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-base hover:opacity-90 transition-all inline-flex items-center gap-2 shadow-lg shadow-primary/20 min-h-[52px]">
               Get started — <span className="line-through opacity-60">$49</span> $29 →
             </button>
@@ -107,7 +107,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </div>
 
           {/* Stats row with count-up */}
-          <div className="animate-fade-up-4 grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:gap-8 mt-6 justify-center lg:justify-start">
+          <div className="animate-fade-up-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:gap-8 mt-5 justify-center lg:justify-start">
             {proofItems.map((item) => (
               <div key={item.label} className="text-center lg:text-left">
                 <div className="text-lg font-bold text-foreground">
