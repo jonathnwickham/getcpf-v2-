@@ -23,7 +23,7 @@ const ProductPreview = () => {
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — You fill in the form</p>
             <div
               className="rounded-lg overflow-hidden shadow-xl border border-border bg-white"
-              style={{ transform: "rotate(-2deg)", maxWidth: 340 }}
+              style={{ maxWidth: 340 }}
             >
               <img
                 src={protocolFormImg}
