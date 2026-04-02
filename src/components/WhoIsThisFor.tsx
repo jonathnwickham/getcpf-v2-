@@ -5,55 +5,37 @@ const personas = [
     emoji: "💻",
     title: "Digital nomads",
     desc: "Working remotely from Brazil? You need a CPF to open a bank account, get a local SIM, and sign up for coworking spaces.",
-    guide: "/guides/cpf-digital-nomads-brazil",
   },
   {
     emoji: "🏠",
     title: "Expats settling in",
     desc: "Renting an apartment, setting up utilities, getting health insurance. None of it works without a CPF.",
-    guide: "/guides/how-to-get-cpf-brazil-foreigner",
   },
   {
     emoji: "✈️",
-    title: "People moving for work",
+    title: "Moving for work",
     desc: "Your employer needs your CPF for payroll. HR won't wait while you figure out the bureaucracy.",
-    guide: "/guides/cpf-work-permit-brazil",
   },
   {
     emoji: "❤️",
     title: "Partners & spouses",
     desc: "Moved for love? A CPF lets you build a life here. Joint accounts, car insurance, even a gym membership.",
-    guide: "/guides/cpf-spouse-dependent-brazil",
   },
   {
     emoji: "🎓",
     title: "Students",
     desc: "Brazilian universities require a CPF for enrollment. Get it sorted before classes start, not during.",
-    guide: "/guides/cpf-students-brazil",
   },
   {
     emoji: "🏖️",
-    title: "Long-stay travellers",
-    desc: "Staying more than a few weeks? A CPF unlocks local prices, Pix payments, and iFood delivery.",
-    guide: "/guides/cpf-long-stay-brazil",
-  },
-  {
-    emoji: "🌎",
-    title: "Tourists & short-stay visitors",
+    title: "Travellers & visitors",
     desc: "Even on a tourist visa, a CPF lets you buy a local SIM, use Pix, order on iFood, and skip gringo prices.",
-    guide: "/guides/cpf-tourists-brazil",
-  },
-  {
-    emoji: "🧳",
-    title: "Snowbirds & seasonal visitors",
-    desc: "Spend a few months a year in Brazil? A CPF makes every return easier. Banking, phone plans, and online shopping just work.",
-    guide: "/guides/cpf-retirees-snowbirds-brazil",
   },
 ];
 
 const WhoIsThisFor = () => (
   <section className="py-24 px-8 bg-secondary">
-    <div className="max-w-[900px] mx-auto">
+    <div className="max-w-[1100px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Who is this for</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
         If you're a foreigner in Brazil, this is for you

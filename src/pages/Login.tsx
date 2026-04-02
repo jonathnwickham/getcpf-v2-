@@ -58,14 +58,9 @@ const Login = () => {
 
       if (allApps && allApps.length > 0) {
         const latestStatus = allApps[0].status;
-        // If they have a ready-pack-eligible status, go to ready-pack
+        // If they have a ready-pack-eligible status, always go to ready-pack
         if (["paid", "prepared", "office_visited", "cpf_issued"].includes(latestStatus || "")) {
-          const app = await fetchLatestApplication(userId);
-          if (app && applicationHasReadyPack(app)) {
-            navigate("/ready-pack");
-          } else {
-            navigate("/get-started");
-          }
+          navigate("/ready-pack");
         } else {
           // Draft or other status — continue onboarding
           navigate("/get-started");
