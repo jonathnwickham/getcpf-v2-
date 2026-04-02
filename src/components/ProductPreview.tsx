@@ -78,7 +78,7 @@ const ProductPreview = () => {
             onClick={() => navigate("/pricing")}
             className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-lg"
           >
-            Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
+            Get started — <span className="line-through opacity-60">$49</span> $29 →
           </button>
         </div>
       </div>
