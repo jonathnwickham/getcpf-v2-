@@ -35,16 +35,16 @@ const personas = [
 
 const WhoIsThisFor = () => (
   <section className="py-24 px-8 bg-secondary">
-    <div className="max-w-[1100px] mx-auto text-center">
+    <div className="max-w-[1100px] mx-auto">
       <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Who is this for</div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight font-serif">
+      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
         If you're a foreigner in Brazil, this is for you
       </h2>
-      <p className="text-muted-foreground mt-4 max-w-[560px] text-sm leading-relaxed mx-auto">
+      <p className="text-muted-foreground mt-4 max-w-[560px] text-sm leading-relaxed">
         It doesn't matter why you're here. If you need a CPF and don't want to waste a day figuring it out, we've got you.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12 text-left">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
         {personas.map((p) => (
           <div
             key={p.title}
@@ -58,7 +58,7 @@ const WhoIsThisFor = () => (
       </div>
 
       {/* Founder story */}
-      <div className="mt-16 bg-card border border-border rounded-2xl p-8 md:p-10 text-left">
+      <div className="mt-16 bg-card border border-border rounded-2xl p-8 md:p-10">
         <div className="flex items-start gap-4 mb-5">
           <img
             src={founderPhoto}
