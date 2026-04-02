@@ -46,7 +46,7 @@ const CookieBanner = () => {
       <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground flex-1 min-w-0 leading-relaxed">
           We use essential cookies only for authentication. No tracking, no ads.{" "}
-          <a href="/privacy#cookies" className="underline hover:text-foreground inline-block py-1">Cookie policy</a>
+          <a href="/privacy#cookies" className="underline hover:text-foreground inline-block py-2 min-h-[44px]">Cookie policy</a>
         </p>
         <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
           <button

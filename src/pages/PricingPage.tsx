@@ -505,7 +505,7 @@ const PricingPage = () => {
                 ].map((t) => (
                   <div key={t.name} className="bg-card border border-border rounded-xl p-4">
                     <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
-                    <p className="text-[10px] text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                    <p className="text-xs text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
                   </div>
                 ))}
               </div>
@@ -685,11 +685,11 @@ const PricingPage = () => {
               </div>
             )}
 
-            <div className="mt-6 text-center text-xs text-primary font-semibold">
+            <div className="mt-6 text-center text-sm text-primary font-semibold">
               🛡️ If you follow our steps and get rejected - full refund. No questions asked.
             </div>
 
-            <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="mt-3 flex items-center justify-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Secure checkout

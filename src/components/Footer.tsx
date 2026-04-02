@@ -10,10 +10,10 @@ const Footer = () => (
         {/* Brand */}
         <div>
           <Logo className="h-8 mb-3" />
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-[280px]">
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-[280px]">
             Helping foreigners get their Brazilian CPF, the easy way. We handle the preparation so you just show up.
           </p>
-          <p className="text-xs text-muted-foreground mt-3">
+          <p className="text-sm text-muted-foreground mt-3">
             We respond within 24 hours.
           </p>
         </div>
@@ -47,10 +47,10 @@ const Footer = () => (
 
       {/* Divider */}
       <div className="border-t border-border pt-8">
-        <p className="text-xs text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
           GET CPF is not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance, only Receita Federal issues CPF numbers. Some links are affiliate links.
         </p>
-        <p className="text-xs text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
+        <p className="text-sm text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
       </div>
     </div>
   </footer>
