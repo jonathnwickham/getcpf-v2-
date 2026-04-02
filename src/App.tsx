@@ -75,7 +75,7 @@ const App = () => (
               <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
               <Route path="/cookie-policy" element={<Navigate to="/privacy" replace />} />
               <Route path="/affiliate-disclosure" element={<Navigate to="/affiliates" replace />} />
-              <Route path="/faq" element={<Navigate to="/#faq" replace />} />
+              <Route path="/faq" element={<ScrollToAnchor anchor="faq" />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
