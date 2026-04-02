@@ -669,11 +669,11 @@ const PricingPage = () => {
               </div>
             ) : (
               <div className="space-y-2">
-                <div className="overflow-hidden -mx-3 sm:mx-0 sm:rounded-xl">
+                <div className="overflow-hidden rounded-xl border border-border">
                   <iframe
                     src={EMBEDDED_URL}
-                    className="w-full border-0 sm:rounded-xl"
-                    style={{ minHeight: "580px", height: "calc(100vh - 200px)", maxHeight: "1000px" }}
+                    className="w-full border-0"
+                    style={{ minHeight: "900px", height: "1200px", maxHeight: "2000px" }}
                     allow="payment"
                     title="Fanbasis Checkout"
                   />
