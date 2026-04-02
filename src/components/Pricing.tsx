@@ -180,7 +180,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
                 {trustSignals.map((s) => {
                   const Icon = s.icon;
                   return (
-                    <div key={s.label} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <div key={s.label} className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <Icon className="w-3.5 h-3.5" />
                       {s.label}
                     </div>
