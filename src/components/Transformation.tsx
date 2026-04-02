@@ -12,13 +12,6 @@ const afterSteps = [
   "Walk in, walk out with your CPF number",
 ];
 
-const journeySteps = [
-  { num: 1, label: "Tell us about you", time: "~2 min" },
-  { num: 2, label: "We check everything", time: "~2 min" },
-  { num: 3, label: "Get your Ready Pack", time: "instant" },
-  { num: 4, label: "Walk in, walk out", time: "same day" },
-];
-
 const unlockedItems = [
   { emoji: "🏦", label: "Bank account" },
   { emoji: "🍔", label: "iFood" },
