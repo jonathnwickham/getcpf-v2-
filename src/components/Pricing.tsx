@@ -154,7 +154,7 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
                   />
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl font-semibold border border-border text-foreground hover:bg-secondary transition-all"
+                    className="w-full py-3.5 rounded-full font-semibold border border-border text-foreground hover:bg-secondary transition-all"
                   >
                     Join waitlist →
                   </button>
