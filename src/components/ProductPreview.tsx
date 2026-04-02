@@ -76,7 +76,7 @@ const ProductPreview = () => {
         <div className="flex justify-center">
           <button
             onClick={() => navigate("/pricing")}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-lg"
+            className="bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold text-base hover:opacity-90 transition-all shadow-lg"
           >
             Get started — <span className="line-through opacity-60">$49</span> $29 →
           </button>
