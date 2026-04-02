@@ -85,7 +85,7 @@ const FoundingPartnerSection = () => (
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
         {[
-          { label: "20% commission", desc: "You earn 20% of every sale — that's $5.80 per referral, locked in permanently" },
+          { label: "20% commission", desc: "You earn 20% of every sale, locked in permanently" },
           { label: "Named on the site", desc: "Your name, logo, and one-line bio featured on the partners page" },
           { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide — you promote it first" },
         ].map((item) => (
@@ -142,11 +142,11 @@ const Partners = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission ($5.80) on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
+      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
       <Navbar />
 
       {/* Hero / Mission */}
-      <section className="py-14 md:py-20 px-6">
+      <section className="pt-28 pb-14 md:pt-32 md:pb-20 px-6">
         <div className="max-w-[700px] mx-auto">
           <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Partner with us</div>
           <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold tracking-tight leading-[1.1]">
@@ -156,7 +156,7 @@ const Partners = () => {
           <div className="mt-8 inline-flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-xl px-5 py-3">
             <span className="text-2xl">💰</span>
             <div>
-              <div className="text-sm font-bold text-primary">Earn 20% commission — $5.80 per referral</div>
+              <div className="text-sm font-bold text-primary">Earn 20% commission on every referral</div>
               <div className="text-xs text-muted-foreground">Paid monthly. No caps. No catches.</div>
             </div>
           </div>
@@ -207,7 +207,7 @@ const Partners = () => {
             {[
               { step: "1", title: "Join the network", desc: "Fill in the form below. We review every application personally." },
               { step: "2", title: "Get your referral link", desc: "We set you up with a unique link and promo code for your students, clients, or community." },
-              { step: "3", title: "Earn 20% on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn $5.80. Paid monthly." },
+              { step: "3", title: "Earn 20% on every referral", desc: "Every time someone you refer gets their CPF sorted through GET CPF, you earn a commission. Paid monthly." },
             ].map((s) => (
               <div key={s.step} className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
