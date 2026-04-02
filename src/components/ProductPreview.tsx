@@ -42,7 +42,7 @@ const ProductPreview = () => {
             <p className="text-sm font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — We build your Ready Pack</p>
             <div
               className="rounded-lg overflow-hidden shadow-2xl border-2 border-primary/30 bg-white"
-              style={{ transform: "rotate(3deg)", maxWidth: 380 }}
+              style={{ maxWidth: 380 }}
             >
               <img
                 src={protocolResultImg}
