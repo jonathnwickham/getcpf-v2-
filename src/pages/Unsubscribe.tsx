@@ -6,11 +6,11 @@ import Logo from "@/components/Logo";
 const Unsubscribe = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState<"loading" | "valid" | "already" | "invalid" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "valid" | "already" | "invalid" | "no_token" | "success" | "error">("loading");
 
   useEffect(() => {
     if (!token) {
-      setStatus("invalid");
+      setStatus("no_token");
       return;
     }
 
@@ -101,11 +101,26 @@ const Unsubscribe = () => {
           </div>
         )}
 
+        {status === "no_token" && (
+          <div className="space-y-3">
+            <h1 className="text-2xl font-bold">Unsubscribe</h1>
+            <p className="text-muted-foreground text-sm">
+              To unsubscribe, use the personal link included at the bottom of any email from us.
+            </p>
+            <p className="text-muted-foreground text-sm">
+              Need help? Contact <a href="mailto:support@getcpf.com" className="text-primary font-semibold hover:underline">support@getcpf.com</a>
+            </p>
+            <a href="/" className="text-sm text-primary font-semibold hover:underline inline-block mt-2">
+              Back to homepage →
+            </a>
+          </div>
+        )}
+
         {status === "invalid" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Invalid Link</h1>
             <p className="text-muted-foreground text-sm">
-              This unsubscribe link is invalid or has expired.
+              This unsubscribe link is invalid or has expired. Please use the latest link from your most recent email.
             </p>
             <a href="/" className="text-sm text-primary font-semibold hover:underline inline-block mt-2">
               Back to homepage →
