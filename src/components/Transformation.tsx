@@ -12,6 +12,13 @@ const afterSteps = [
   "Walk in, walk out with your CPF number",
 ];
 
+const journeySteps = [
+  { num: 1, label: "Tell us about you", time: "~2 min" },
+  { num: 2, label: "We check everything", time: "~2 min" },
+  { num: 3, label: "Get your Ready Pack", time: "instant" },
+  { num: 4, label: "Walk in, walk out", time: "same day" },
+];
+
 const unlockedItems = [
   { emoji: "🏦", label: "Bank account" },
   { emoji: "🍔", label: "iFood" },
@@ -106,7 +113,7 @@ const Transformation = () => {
           </div>
 
           {/* Timeline */}
-          <div className="space-y-4 mb-6">
+          <div className="space-y-4 mb-4">
             {afterSteps.map((step, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
@@ -115,6 +122,21 @@ const Transformation = () => {
                 <p className="text-sm text-foreground leading-relaxed">{step}</p>
               </div>
             ))}
+          </div>
+
+          {/* 4-step journey */}
+          <div className="bg-card border border-border rounded-xl p-4 mb-6">
+            <div className="space-y-2">
+              {journeySteps.map((s) => (
+                <div key={s.num} className="flex items-center gap-3">
+                  <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">
+                    {s.num}
+                  </span>
+                  <span className="text-xs text-foreground font-medium">{s.label}</span>
+                  <span className="text-[10px] text-muted-foreground ml-auto">{s.time}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <p className="text-xs text-primary italic">

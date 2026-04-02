@@ -1,5 +1,3 @@
-import founderPhoto from "@/assets/founder-jonathan.jpg";
-
 const personas = [
   {
     emoji: "💻",
@@ -17,18 +15,8 @@ const personas = [
     desc: "Your employer needs your CPF for payroll. HR won't wait while you figure out the bureaucracy.",
   },
   {
-    emoji: "❤️",
-    title: "Partners & spouses",
-    desc: "Moved for love? A CPF lets you build a life here. Joint accounts, car insurance, even a gym membership.",
-  },
-  {
-    emoji: "🎓",
-    title: "Students",
-    desc: "Brazilian universities require a CPF for enrollment. Get it sorted before classes start, not during.",
-  },
-  {
     emoji: "🏖️",
-    title: "Travellers & visitors",
+    title: "Long-stay travellers",
     desc: "Even on a tourist visa, a CPF lets you buy a local SIM, use Pix, order on iFood, and skip gringo prices.",
   },
 ];
@@ -44,7 +32,7 @@ const WhoIsThisFor = () => (
         It doesn't matter why you're here. If you need a CPF and don't want to waste a day figuring it out, we've got you.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12">
         {personas.map((p) => (
           <div
             key={p.title}
@@ -55,41 +43,6 @@ const WhoIsThisFor = () => (
             <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
           </div>
         ))}
-      </div>
-
-      {/* Founder story */}
-      <div className="mt-16 bg-card border border-border rounded-2xl p-8 md:p-10">
-        <div className="flex items-start gap-4 mb-5">
-          <img
-            src={founderPhoto}
-            alt="Jonathan Wickham, founder of GET CPF"
-            className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-primary/20" style={{ objectPosition: "center 42%" }}
-          />
-          <div>
-            <div className="text-xs uppercase tracking-[2px] text-primary font-bold mb-1">Founder Story</div>
-            <h3 className="font-bold text-base">Why I built this</h3>
-            <p className="text-xs text-muted-foreground">Jonathan Wickham · 🇿🇦 South African</p>
-          </div>
-        </div>
-        <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-          <p>
-            I fell in love with Brazil, met my girlfriend, and now I come back as often as I can.
-          </p>
-          <p>
-            When I needed my CPF I spent days jumping between government sites, Reddit threads, and AI tools
-            that each gave me half the answer but none of the context. I had to piece it all together myself
-            and I still nearly got it wrong.
-          </p>
-          <p>
-            So I documented every step, built it into a tool, and got my CPF on my first try using what I'd created.
-          </p>
-          <p>
-            That was the test. If it worked for me, it would work for anyone. So I cleaned it up, priced it fairly, and put it out there.
-          </p>
-          <p className="text-foreground font-medium">
-            Now you get the version I wish I had.
-          </p>
-        </div>
       </div>
     </div>
   </section>
