@@ -27,6 +27,7 @@ const Footer = () => (
             <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">FAQ</a></li>
             <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Guides</Link></li>
             <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Contact us</Link></li>
+            <li><Link to="/cpf-checker" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">CPF checker</Link></li>
             <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Sign in</Link></li>
           </ul>
         </div>
