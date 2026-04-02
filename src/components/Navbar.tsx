@@ -126,6 +126,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
         </div>
       )}
     </nav>
+    </>
   );
 };
 
