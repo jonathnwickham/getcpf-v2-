@@ -505,7 +505,7 @@ const PricingPage = () => {
                 ].map((t) => (
                   <div key={t.name} className="bg-card border border-border rounded-xl p-4">
                     <p className="text-xs text-muted-foreground leading-relaxed">"{t.text}"</p>
-                    <p className="text-[10px] text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
+                    <p className="text-xs text-primary font-semibold mt-2">{t.name} — {t.loc}</p>
                   </div>
                 ))}
               </div>
