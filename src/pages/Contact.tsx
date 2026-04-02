@@ -96,7 +96,7 @@ const Contact = () => {
               </Link>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5 relative">
               {/* Honeypot — hidden from humans, bots fill it */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input
