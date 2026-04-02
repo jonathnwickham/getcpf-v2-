@@ -51,6 +51,7 @@ const Index = () => {
       {/* CTA after pricing for undecided visitors */}
       <FAQ />
       <FinalCTA onOpenModal={handleOpenOnboarding} />
+      </main>
       
       <Footer />
       <StickyMobileCTA />
