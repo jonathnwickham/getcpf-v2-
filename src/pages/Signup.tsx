@@ -24,8 +24,12 @@ const Signup = () => {
     if (error) { toast({ title: "Something went wrong", description: error.message, variant: "destructive" }); setLoading(false); return; }
     if (signUpData?.session) {
       toast({ title: "Account created!" });
-      try { const { data: payRes } = await supabase.functions.invoke("verify-payment", { body: { email } }); if (payRes?.paid) { window.location.href = "/get-started"; return; } } catch {}
-      window.location.href = "/get-started";
+      try {
+        const { data: payRes } = await supabase.functions.invoke("verify-payment", { body: { email } });
+        if (payRes?.paid) { window.location.href = "/get-started"; return; }
+      } catch {}
+      // Not paid yet, redirect to pricing
+      window.location.href = "/pricing";
       return;
     }
     setEmailSent(true);
