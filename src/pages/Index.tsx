@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -11,7 +12,7 @@ import FinalCTA from "@/components/FinalCTA";
 import MidCTA from "@/components/MidCTA";
 import Footer from "@/components/Footer";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import FadeIn, { FadeInStagger, FadeInChild } from "@/components/FadeIn";
 
 const cpfPills = [
   "🏦 Bank account", "📱 Phone plan", "🍔 iFood", "🏠 Rent an apartment",
@@ -21,7 +22,6 @@ const cpfPills = [
 
 const Index = () => {
   const navigate = useNavigate();
-  useScrollReveal();
 
   const handleOpenOnboarding = () => {
     navigate("/pricing");
@@ -36,62 +36,71 @@ const Index = () => {
         <Hero onOpenModal={handleOpenOnboarding} />
 
         {/* 2. Dark section — No CPF? Good luck. */}
-        <section className="reveal-on-scroll bg-[#0a0f0a] text-white py-24 sm:py-32 px-5 sm:px-8 rounded-2xl mx-3 sm:mx-6 mb-3">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-xs uppercase tracking-[3px] text-green-400 font-bold mb-4">Why every foreigner needs one</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">No CPF?<br />Good luck.</h2>
-            <p className="text-gray-400 mt-5 max-w-xl mx-auto leading-relaxed">
-              Whether you're here for two weeks or two years. Opening a bank account, ordering food, getting a SIM card, renting an apartment. It all starts with your CPF.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mt-10">
-              {cpfPills.map((pill, i) => (
-                <span key={pill} className={`reveal-on-scroll delay-${Math.min(i % 3 + 1, 3) as 1 | 2 | 3} bg-white/[0.06] backdrop-blur-xl rounded-full px-5 py-2.5 text-sm text-gray-300 border border-white/10 hover-lift cursor-default`}>
-                  {pill}
-                </span>
-              ))}
+        <FadeIn>
+          <section className="bg-[#0a0f0a] text-white py-24 sm:py-32 px-5 sm:px-8 rounded-2xl mx-3 sm:mx-6 mb-3">
+            <div className="max-w-4xl mx-auto text-center">
+              <FadeIn delay={0.1}>
+                <p className="text-xs uppercase tracking-[3px] text-green-400 font-bold mb-4">Why every foreigner needs one</p>
+              </FadeIn>
+              <FadeIn delay={0.2}>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">No CPF?<br />Good luck.</h2>
+              </FadeIn>
+              <FadeIn delay={0.3}>
+                <p className="text-gray-400 mt-5 max-w-xl mx-auto leading-relaxed">
+                  Whether you're here for two weeks or two years. Opening a bank account, ordering food, getting a SIM card, renting an apartment. It all starts with your CPF.
+                </p>
+              </FadeIn>
+              <FadeInStagger className="flex flex-wrap justify-center gap-3 mt-10">
+                {cpfPills.map((pill) => (
+                  <FadeInChild key={pill}>
+                    <span className="bg-white/[0.06] backdrop-blur-xl rounded-full px-5 py-2.5 text-sm text-gray-300 border border-white/10 hover-lift cursor-default inline-block">
+                      {pill}
+                    </span>
+                  </FadeInChild>
+                ))}
+              </FadeInStagger>
             </div>
-          </div>
-        </section>
+          </section>
+        </FadeIn>
 
-
-        {/* 4. Before / After */}
-        <div className="reveal-on-scroll">
+        {/* 3. Before / After */}
+        <FadeIn>
           <Transformation />
-        </div>
+        </FadeIn>
 
-        {/* 5. CTA bridge */}
-        <div className="reveal-on-scroll">
+        {/* 4. CTA bridge */}
+        <FadeIn>
           <MidCTA
             onOpenModal={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             text="Ready to skip the headache?"
             buttonText="See pricing"
           />
-        </div>
+        </FadeIn>
 
-        {/* 6. How It Works */}
-        <div className="reveal-on-scroll">
+        {/* 5. How It Works */}
+        <FadeIn>
           <ProductPreview />
-        </div>
+        </FadeIn>
 
-        {/* 7. Pricing */}
-        <div className="reveal-on-scroll">
+        {/* 6. Pricing */}
+        <FadeIn>
           <Pricing onOpenModal={handleOpenOnboarding} />
-        </div>
+        </FadeIn>
 
-        {/* 8. Founder + Trust */}
-        <div className="reveal-on-scroll">
+        {/* 7. Founder + Trust */}
+        <FadeIn>
           <TrustStack />
-        </div>
+        </FadeIn>
 
-        {/* 9. FAQ */}
-        <div className="reveal-on-scroll">
+        {/* 8. FAQ */}
+        <FadeIn>
           <FAQ />
-        </div>
+        </FadeIn>
 
-        {/* 10. Final CTA */}
-        <div className="reveal-on-scroll">
+        {/* 9. Final CTA */}
+        <FadeIn>
           <FinalCTA onOpenModal={handleOpenOnboarding} />
-        </div>
+        </FadeIn>
       </main>
       <Footer />
       <StickyMobileCTA />

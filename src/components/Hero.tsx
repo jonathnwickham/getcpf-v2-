@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import nubank from "@/assets/logos/nubank.png";
 import ifood from "@/assets/logos/ifood.png";
 import mercadolivre from "@/assets/logos/mercadolivre.png";
@@ -36,29 +37,50 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       {/* Hero — clean, one message */}
       <section className="pt-32 sm:pt-40 pb-20 sm:pb-24 px-5 sm:px-8 text-center">
         <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1.5 mb-8">
-            <span className="w-2 h-2 bg-green-800 rounded-full animate-pulse" />
-            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Beta is live</span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <div className="inline-flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1.5 mb-8">
+              <span className="w-2 h-2 bg-green-800 rounded-full animate-pulse" />
+              <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Beta is live</span>
+            </div>
+          </motion.div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.02] tracking-tight">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.02] tracking-tight"
+          >
             Get your Brazilian <span className="text-green-800">CPF</span> without the headache
-          </h1>
+          </motion.h1>
 
-          <p className="text-lg text-gray-500 mt-6 leading-relaxed max-w-lg mx-auto">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-lg text-gray-500 mt-6 leading-relaxed max-w-lg mx-auto"
+          >
             Everything foreigners in Brazil need to get their CPF on the first try. Five minutes of preparation. One visit. Done.
-          </p>
+          </motion.p>
 
-          <div className="mt-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mt-8"
+          >
             <button
               onClick={handleCTA}
-              className="bg-green-800 text-white px-9 py-4 rounded-full font-semibold text-lg hover:bg-green-900 transition-all btn-press hover-glow inline-flex items-center justify-center gap-2"
+              className="group bg-green-800 text-white px-9 py-4 rounded-full font-semibold text-lg hover:bg-green-900 transition-all btn-press hover-glow inline-flex items-center justify-center gap-2"
             >
               Get started · <s className="opacity-50">$49</s> $29
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+              <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
             </button>
             <p className="text-sm text-gray-400 mt-3">No Portuguese required. Money-back guarantee.</p>
-          </div>
+          </motion.div>
 
           {/* Brand logos — indirect credibility */}
           <div className="mt-12">

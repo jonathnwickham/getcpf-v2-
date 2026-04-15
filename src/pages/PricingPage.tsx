@@ -419,34 +419,15 @@ const PricingPage = () => {
                   <h2 className="font-semibold text-sm">{selectedPlan} · CPF Application Service</h2>
                   <p className="text-xs text-gray-400 mt-0.5">{email}</p>
                 </div>
-                {appliedPromo ? (
-                  <div className="text-right">
-                    <span className="line-through text-gray-300 text-sm">$29</span>{" "}
-                    <span className="font-bold text-green-800 text-xl">${finalPrice}</span>
-                    <div className="inline-flex items-center gap-1 bg-green-800/10 text-green-800 text-xs font-bold px-2 py-0.5 rounded-full mt-1">
-                      {appliedPromo.code} -${discount}
-                      <button onClick={removePromo} className="hover:opacity-70">✕</button>
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-xl font-bold"><span className="line-through text-gray-300 text-sm">$49</span> $29</span>
-                )}
+                <span className="text-xl font-bold"><span className="line-through text-gray-300 text-sm">$49</span> $29</span>
               </div>
             </div>
 
-            {!appliedPromo && (
-              <div className="mb-6">
-                <div className="flex gap-2">
-                  <input value={promoInput} onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(""); }}
-                    placeholder="Discount code" maxLength={30}
-                    className="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/20 font-mono tracking-wide" />
-                  <button onClick={applyPromo} disabled={promoLoading || !promoInput.trim()}
-                    className="bg-gray-50 border border-gray-100 px-5 py-3 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-all disabled:opacity-50">
-                    {promoLoading ? "..." : "Apply"}
-                  </button>
-                </div>
-                {promoError && <p className="text-xs text-red-500 mt-1.5 text-left">{promoError}</p>}
-              </div>
+            <div className="bg-green-800/5 border border-green-800/10 rounded-xl px-4 py-3 mb-4 text-left">
+              <p className="text-xs text-gray-600">
+                💡 <span className="font-semibold">Have a discount code?</span> You can enter it in the payment form below.
+              </p>
+            </div>
             )}
 
             {loadingCheckout ? (
