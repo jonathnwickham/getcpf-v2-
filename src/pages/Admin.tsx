@@ -14,6 +14,7 @@ import {
   AreaChart, Area,
 } from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
+import { TableSkeleton } from "@/components/Skeleton";
 
 const CHART_COLORS = ["#166534", "#3b82f6", "#3b7dd8", "#22c55e", "#ec4899", "#f59e0b", "#a855f7", "#06b6d4"];
 
@@ -77,8 +78,16 @@ const Admin = () => {
 
   if (authLoading || !dataLoaded) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Loading admin...</div>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="border-b border-gray-100 bg-white h-14" />
+        <div className="flex flex-1">
+          <aside className="hidden md:block w-60 shrink-0 bg-white border-r border-gray-100" />
+          <main className="flex-1 px-6 py-6 max-w-[1200px]">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <TableSkeleton rows={8} cols={6} />
+            </div>
+          </main>
+        </div>
       </div>
     );
   }
@@ -456,8 +465,9 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             })}
             {paginatedUsers.length === 0 && (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-sm text-gray-500 py-8">
-                  No users found
+                <TableCell colSpan={7} className="text-center py-12">
+                  <div className="text-gray-400 text-sm">No results found</div>
+                  <div className="text-gray-300 text-xs mt-1">Try adjusting your search or filters</div>
                 </TableCell>
               </TableRow>
             )}
@@ -695,6 +705,14 @@ const ApplicationsTab = ({ applications, profiles, onRefresh, adminUserId }: { a
             </TableRow>
           </TableHeader>
           <TableBody>
+            {paginatedApps.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-12">
+                  <div className="text-gray-400 text-sm">No results found</div>
+                  <div className="text-gray-300 text-xs mt-1">Try adjusting your search or filters</div>
+                </TableCell>
+              </TableRow>
+            )}
             {paginatedApps.map(a => {
               const profile = profileMap.get(a.user_id);
               return (

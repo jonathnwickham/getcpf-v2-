@@ -12,6 +12,7 @@ import Signup from "./pages/Signup.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 import ScrollToTop from "./components/ScrollToTop";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy-loaded routes (not needed on initial page load)
 
@@ -58,6 +59,7 @@ const App = () => (
         <BrowserRouter>
           <CookieBanner />
           <ScrollToTop />
+          <ErrorBoundary>
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -94,6 +96,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </ErrorBoundary>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
