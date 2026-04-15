@@ -1,96 +1,58 @@
 import { useNavigate } from "react-router-dom";
-import protocolResultImg from "@/assets/protocol-result.png";
-import protocolFormImg from "@/assets/protocol-preview.png";
 
 const ProductPreview = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-20 bg-secondary/30">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* Heading */}
-        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-4">
-          We package everything for you
-        </h2>
-        <p className="text-center text-muted-foreground max-w-[560px] mx-auto mb-12 text-sm leading-relaxed">
-          You fill in one form. We organise the rest — pre-filled documents, the right office, a Portuguese cheat sheet, and AI that checks everything before you go.
-        </p>
-
-        {/* Two document mockups */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
-          {/* Form (step 1) */}
-          <div className="relative flex-shrink-0">
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider text-center mb-3">Step 1 — You fill in the form</p>
-            <div
-              className="rounded-lg overflow-hidden shadow-xl border border-border bg-white"
-              style={{ maxWidth: 340 }}
-            >
-              <img
-                src={protocolFormImg}
-                alt="CPF application form from Receita Federal"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          {/* Arrow */}
-          <div className="text-3xl text-muted-foreground hidden md:block">→</div>
-
-          {/* Protocol result (step 2) */}
-          <div className="relative flex-shrink-0">
-            <p className="text-sm font-bold text-primary uppercase tracking-wider text-center mb-3">Step 2 — We build your Ready Pack</p>
-            <div
-              className="rounded-lg overflow-hidden shadow-2xl border-2 border-primary/30 bg-white"
-              style={{ maxWidth: 380 }}
-            >
-              <img
-                src={protocolResultImg}
-                alt="CPF protocol document — the official receipt you print and bring to the Receita Federal office"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          </div>
+    <section id="how" className="py-24 sm:py-32 px-5 sm:px-8 bg-white rounded-2xl mx-3 sm:mx-6 mb-3">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Three steps. Five minutes.</h2>
+          <p className="text-gray-500 mt-5 max-w-xl mx-auto leading-relaxed">
+            You fill in one form. We organise the rest.
+          </p>
         </div>
 
-        {/* Three callout items */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <CalloutItem
-            text="AI checks your documents — know before you go that everything is correct"
-          />
-          <CalloutItem
-            text="We tell you exactly where to go, what to say, and what to bring"
-          />
-          <CalloutItem
-            text="Every step translated into Portuguese — no surprises at the counter"
-          />
+        {/* Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
+          {[
+            { num: "1", title: "Answer a few questions", desc: "Your nationality, visa type, which state you're in." },
+            { num: "2", title: "Get your Ready Pack", desc: "Pre-filled forms, the right office, a Portuguese cheat sheet, all personalised." },
+            { num: "3", title: "Walk in, walk out", desc: "Show up with everything correct. Get your CPF the same day." },
+          ].map((step) => (
+            <div key={step.num} className="bg-white/80 backdrop-blur-xl rounded-xl p-8 text-center border border-gray-100 hover-lift">
+              <div className="text-4xl font-extrabold text-green-800 mb-4">{step.num}</div>
+              <h3 className="font-bold text-base mb-2">{step.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Muted line */}
-        <p className="text-center text-sm text-muted-foreground italic mb-8">
-          All you do is show up. We handle the preparation so you don't have to figure it out alone.
-        </p>
+        {/* Feature callouts */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          {[
+            "AI checks your documents. Know before you go that everything is correct",
+            "We tell you exactly where to go, what to say, and what to bring",
+            "Every step translated into Portuguese. No surprises at the counter",
+          ].map((text) => (
+            <div key={text} className="bg-white/80 backdrop-blur-xl rounded-xl p-6 border border-gray-100 hover-lift">
+              <span className="text-green-800 font-bold text-lg">✓</span>
+              <p className="text-sm text-gray-700 mt-2">{text}</p>
+            </div>
+          ))}
+        </div>
 
-        {/* CTA */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-10">
           <button
             onClick={() => navigate("/pricing")}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold text-base hover:opacity-90 transition-all shadow-lg"
+            className="bg-green-800 text-white px-8 py-4 rounded-full font-semibold text-base hover:bg-green-900 transition-all btn-press"
           >
-            Get started — <span className="line-through opacity-60">$49</span> $29 →
+            Get started · <s className="opacity-50">$49</s> $29
           </button>
         </div>
       </div>
     </section>
   );
 };
-
-const CalloutItem = ({ text }: { text: string }) => (
-  <div className="flex items-start gap-3">
-    <span className="text-primary text-xl mt-0.5 shrink-0">✓</span>
-    <p className="text-sm text-foreground font-medium">{text}</p>
-  </div>
-);
 
 export default ProductPreview;

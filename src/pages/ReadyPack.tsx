@@ -951,12 +951,33 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
       </div>
       <div className="p-6">
         <p className="text-sm text-muted-foreground mb-3">If Receita Federal is busy or redirects you, any Correios can process your CPF for R$7. Walk-in, no appointment needed.</p>
-        <ExternalLink
-          href={`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`}
-          className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
-        >
-          📍 Find nearest Correios
-        </ExternalLink>
+        <div className="flex flex-wrap gap-2">
+          <ExternalLink
+            href={`https://www.google.com/maps/search/Correios+${encodeURIComponent(data.city + ", " + data.state + ", Brazil")}`}
+            className="inline-flex items-center gap-2 bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+          >
+            📍 Find Correios in {data.city}
+          </ExternalLink>
+          <button
+            onClick={() => {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  (pos) => {
+                    window.open(`https://www.google.com/maps/search/Correios/@${pos.coords.latitude},${pos.coords.longitude},14z`, '_blank');
+                  },
+                  () => {
+                    window.open(`https://www.google.com/maps/search/Correios+near+me`, '_blank');
+                  }
+                );
+              } else {
+                window.open(`https://www.google.com/maps/search/Correios+near+me`, '_blank');
+              }
+            }}
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            📍 Find Correios near me
+          </button>
+        </div>
         <div className="mt-4 bg-secondary rounded-xl p-4">
           <p className="text-xs text-muted-foreground">
             <strong>Note about banks:</strong> Some Banco do Brasil and Caixa branches can process CPF, but availability for foreigners is inconsistent. We recommend Receita Federal or Correios instead.
@@ -1135,7 +1156,8 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
   ];
 
   const transportOptions = [
-    { id: "uber" as const, icon: "🚗", label: "Uber / 99", desc: "Door-to-door, ~R$15–40", badge: "Easiest" },
+    { id: "uber" as const, icon: "🚗", label: "Uber", desc: "Door-to-door, ~R$15–40", badge: "Popular" },
+    { id: "ninetynine" as const, icon: "🚕", label: "99", desc: "Often 20–30% cheaper", badge: "Local favourite" },
     { id: "metro" as const, icon: "🚇", label: "Metro / Train", desc: metro ? metro.fare : "Check locally", badge: metro ? "Available" : "Limited" },
     { id: "bus" as const, icon: "🚌", label: "City Bus", desc: bus.fare, badge: "Cheapest" },
     { id: "bike" as const, icon: "🚲", label: "Bikes / Scooters", desc: "Short distances", badge: "Quick" },
@@ -1150,7 +1172,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
 
       <div className="p-6 space-y-4">
         {/* Transport option cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {transportOptions.map((opt) => (
             <button
               key={opt.id}
@@ -1159,7 +1181,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-2xl">{opt.icon}</span>
-                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${opt.id === "uber" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{opt.badge}</span>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${opt.id === "uber" || opt.id === "ninetynine" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{opt.badge}</span>
               </div>
               <p className="font-semibold text-sm">{opt.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{opt.desc}</p>
@@ -1171,12 +1193,11 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
         {activeTransport === "uber" && (
           <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
             <div>
-              <h4 className="font-bold text-sm mb-2">🚗 Uber / 99 — Ride-hailing</h4>
+              <h4 className="font-bold text-sm mb-2">🚗 Uber</h4>
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>• <strong>Estimated cost:</strong> R$15–40 depending on distance and time of day</p>
-                <p>• <strong>Payment:</strong> Credit/debit card in the app — no cash needed</p>
+                <p>• <strong>Payment:</strong> Credit/debit card in the app, no cash needed</p>
                 <p>• <strong>Time:</strong> Usually arrives in 3–8 minutes</p>
-                <p>• <strong>Tip:</strong> 99 (local alternative) is often cheaper. Both apps work the same way.</p>
               </div>
             </div>
 
@@ -1195,8 +1216,42 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
               <p className="text-xs text-muted-foreground">
                 <strong>💡 Don't have Uber?</strong> Download it from the{" "}
                 <ExternalLink href="https://apps.apple.com/app/uber/id368677368" className="text-primary font-semibold" showHint={false}>App Store</ExternalLink>{" "}or{" "}
-                <ExternalLink href="https://play.google.com/store/apps/details?id=com.ubercab" className="text-primary font-semibold" showHint={false}>Google Play</ExternalLink>.{" "}
-                Also consider <ExternalLink href="https://99app.com" className="text-primary font-semibold" showHint={false}>99</ExternalLink> — Brazil's local ride-hailing app, often cheaper.
+                <ExternalLink href="https://play.google.com/store/apps/details?id=com.ubercab" className="text-primary font-semibold" showHint={false}>Google Play</ExternalLink>.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 99 details */}
+        {activeTransport === "ninetynine" && (
+          <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
+            <div>
+              <h4 className="font-bold text-sm mb-2">🚕 99 — Brazil's local ride app</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>• <strong>Estimated cost:</strong> R$10–35, often 20–30% cheaper than Uber</p>
+                <p>• <strong>Payment:</strong> Credit/debit card or Pix in the app</p>
+                <p>• <strong>Time:</strong> Usually arrives in 3–8 minutes</p>
+                <p>• <strong>Why locals use it:</strong> Brazilian-owned, more drivers in some areas, accepts Pix</p>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">📍 Destination pre-filled</p>
+              <p className="text-sm text-muted-foreground mb-3">{office.name} — {office.address}</p>
+              <ExternalLink
+                href={`https://99app.com`}
+                className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
+              >
+                🚕 Open 99 & book ride →
+              </ExternalLink>
+            </div>
+
+            <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
+              <p className="text-xs text-muted-foreground">
+                <strong>💡 Don't have 99?</strong> Download it from the{" "}
+                <ExternalLink href="https://apps.apple.com/app/99-car-ride/id553663691" className="text-primary font-semibold" showHint={false}>App Store</ExternalLink>{" "}or{" "}
+                <ExternalLink href="https://play.google.com/store/apps/details?id=com.taxis99" className="text-primary font-semibold" showHint={false}>Google Play</ExternalLink>.{" "}
+                Also download <ExternalLink href="https://www.indrive.com" className="text-primary font-semibold" showHint={false}>inDrive</ExternalLink> for negotiated prices on longer trips.
               </p>
             </div>
           </div>
@@ -1357,24 +1412,34 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <p className="text-xs text-muted-foreground mt-1">Your completed form generates a protocol number — your proof that everything was submitted correctly.</p>
       </div>
       <div className="p-6">
-        {/* Actual document images */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
-          <div className="flex-shrink-0 text-center">
+        {/* Step 1 + Step 2 side by side, compact */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          {/* Step 1 — Embedded form, compact */}
+          <div>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Step 1 — Fill in the form</p>
-            <div className="rounded-lg overflow-hidden shadow-lg border border-border bg-white" style={{ maxWidth: 260 }}>
-              <img
-                src={protocolFormImg}
-                alt="CPF application form from Receita Federal"
-                className="w-full h-auto"
+            <div className="rounded-lg overflow-hidden border border-border shadow-md bg-white" style={{ maxWidth: 300 }}>
+              <iframe
+                src="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
+                title="Receita Federal — Inscrição CPF Estrangeiro"
+                className="w-full border-0"
+                style={{ height: '280px', transform: 'scale(0.55)', transformOrigin: 'top left', width: '182%' }}
                 loading="lazy"
+                sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
               />
             </div>
+            <ExternalLink
+              href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
+              className="inline-flex items-center gap-2 mt-2 text-xs text-primary font-semibold"
+              showHint={false}
+            >
+              Open full form →
+            </ExternalLink>
           </div>
-          <div className="text-2xl text-muted-foreground hidden sm:block">→</div>
-          <div className="text-2xl text-muted-foreground sm:hidden">↓</div>
-          <div className="flex-shrink-0 text-center">
+
+          {/* Step 2 — Protocol result */}
+          <div>
             <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Step 2 — Your protocol is generated</p>
-            <div className="rounded-lg overflow-hidden shadow-xl border-2 border-primary/30 bg-white" style={{ maxWidth: 280 }}>
+            <div className="rounded-lg overflow-hidden shadow-md border-2 border-primary/30 bg-white" style={{ maxWidth: 300 }}>
               <img
                 src={protocolResultImg}
                 alt="CPF protocol document with reference number"
@@ -1382,6 +1447,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
                 loading="lazy"
               />
             </div>
+            <p className="text-xs text-muted-foreground mt-2">Print this and bring it to the office.</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

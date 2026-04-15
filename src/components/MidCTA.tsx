@@ -6,7 +6,7 @@ interface MidCTAProps {
   buttonText?: string;
 }
 
-const MidCTA = ({ onOpenModal, text, buttonText = "Get started →" }: MidCTAProps) => {
+const MidCTA = ({ onOpenModal, text, buttonText = "Get started" }: MidCTAProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -15,16 +15,17 @@ const MidCTA = ({ onOpenModal, text, buttonText = "Get started →" }: MidCTAPro
   };
 
   return (
-    <section className="py-10 md:py-14 px-6 text-center bg-primary/[0.03] border-y border-border/30">
-      <div className="max-w-[600px] mx-auto">
-        <p className="text-lg md:text-xl font-semibold text-foreground mb-5">{text}</p>
-        <button
-          onClick={handleClick}
-          className="bg-primary text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20"
-        >
-          {buttonText}
-        </button>
+    <section className="py-10 sm:py-12 px-5 text-center">
+      <div className="flex items-center justify-center py-2">
+        <div className="w-12 h-0.5 bg-green-800/20 rounded-full" />
       </div>
+      <p className="text-lg sm:text-xl font-semibold text-gray-900 mt-4 mb-4">{text}</p>
+      <button
+        onClick={handleClick}
+        className="bg-green-800 text-white px-8 py-3.5 rounded-full font-semibold text-base hover:bg-green-900 transition-all btn-press"
+      >
+        {buttonText}
+      </button>
     </section>
   );
 };

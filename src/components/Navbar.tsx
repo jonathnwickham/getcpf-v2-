@@ -39,93 +39,86 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
         Skip to content
       </a>
-    <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/90 border-b border-border">
-      <div className="flex items-center justify-between">
-        <a href="/" className="flex items-center">
-          <Logo className="h-14" />
-        </a>
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-white/90 border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+          <a href="/" className="flex items-center">
+            <Logo className="h-10" />
+          </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">
-              {link.label}
-            </a>
-          ))}
-          {!user ? (
-            <Link
-              to="/login"
-              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
-            >
-              Sign in
-            </Link>
-          ) : (
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="text-gray-500 text-sm hover:text-gray-900 transition-colors">
+                {link.label}
+              </a>
+            ))}
+            {!user ? (
+              <Link to="/login" className="text-gray-500 text-sm hover:text-gray-900 transition-colors">
+                Sign in
+              </Link>
+            ) : (
+              <button
+                onClick={signOut}
+                className="text-gray-500 text-sm hover:text-gray-900 transition-colors inline-flex items-center gap-1.5"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Sign out
+              </button>
+            )}
             <button
-              onClick={signOut}
-              className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors inline-flex items-center gap-1.5"
+              onClick={handlePrimaryAction}
+              className="bg-green-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-900 transition-colors btn-press"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              Sign out
+              {user ? "My CPF pack" : "Get started"}
             </button>
-          )}
+          </div>
+
+          {/* Mobile hamburger */}
           <button
-            onClick={handlePrimaryAction}
-            className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden p-2 text-gray-900 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
-            {user ? "My CPF pack" : "Get started"}
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="md:hidden mt-4 pb-4 border-t border-border pt-4 flex flex-col gap-4 animate-fade-up">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-foreground text-sm font-medium hover:text-primary transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-          {!user ? (
-            <Link
-              to="/login"
-              onClick={() => setMobileOpen(false)}
-              className="text-foreground text-sm font-medium hover:text-primary transition-colors"
-            >
-              Sign in
-            </Link>
-          ) : (
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-gray-100 bg-white px-5 pb-4 pt-2 flex flex-col gap-3">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="text-gray-700 text-sm py-2"
+              >
+                {link.label}
+              </a>
+            ))}
+            {!user ? (
+              <Link to="/login" onClick={() => setMobileOpen(false)} className="text-gray-700 text-sm py-2">
+                Sign in
+              </Link>
+            ) : (
+              <button
+                onClick={() => { setMobileOpen(false); signOut(); }}
+                className="text-left text-gray-700 text-sm py-2 inline-flex items-center gap-1.5"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Sign out
+              </button>
+            )}
             <button
-              onClick={() => { setMobileOpen(false); signOut(); }}
-              className="text-left text-foreground text-sm font-medium hover:text-primary transition-colors inline-flex items-center gap-1.5"
+              onClick={handlePrimaryAction}
+              className="bg-green-800 text-white px-5 py-3 rounded-lg text-sm font-semibold w-full"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              Sign out
+              {user ? "My CPF pack" : "Get started"}
             </button>
-          )}
-          <button
-            onClick={handlePrimaryAction}
-            className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all w-full"
-          >
-            {user ? "My CPF pack" : "Get started"}
-          </button>
-        </div>
-      )}
-    </nav>
+          </div>
+        )}
+      </nav>
     </>
   );
 };

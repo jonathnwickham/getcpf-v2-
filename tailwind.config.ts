@@ -13,8 +13,8 @@ export default {
       },
     },
     fontFamily: {
-      jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
-      serif: ['"Instrument Serif"', "Georgia", "serif"],
+      sans: ['Inter', 'system-ui', 'sans-serif'],
+      serif: ['Georgia', 'serif'],
     },
     extend: {
       colors: {

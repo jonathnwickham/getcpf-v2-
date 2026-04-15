@@ -3,55 +3,54 @@ import Logo from "@/components/Logo";
 import { openCookiePreferences } from "@/components/CookieBanner";
 
 const Footer = () => (
-  <footer className="py-16 px-8 border-t border-border bg-card">
+  <footer className="bg-[#0a0f0a] text-white py-20 px-5 sm:px-8 rounded-t-2xl mt-3">
     <div className="max-w-5xl mx-auto">
-      {/* Top section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-        {/* Brand */}
+      {/* Footer CTA */}
+      <div className="text-center mb-16 pb-16 border-b border-white/10">
+        <p className="text-sm text-gray-500 uppercase tracking-widest mb-4">Stop researching. Start preparing.</p>
+        <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Get your CPF sorted in 5 minutes.</h3>
+        <Link to="/pricing" className="mt-6 inline-flex items-center bg-white text-green-800 px-8 py-3.5 rounded-full font-semibold text-sm hover:bg-gray-100 transition-all">
+          Get started · <s className="opacity-50">$49</s> $29
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-14">
         <div>
-          <Logo className="h-8 mb-3" />
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-[280px]">
-            Helping foreigners get their Brazilian CPF, the easy way. We handle the preparation so you just show up.
-          </p>
-          <p className="text-sm text-muted-foreground mt-3">
-            We respond within 24 hours.
+          <Logo className="h-8 brightness-0 invert opacity-80 mb-4" />
+          <p className="text-sm text-gray-500 leading-relaxed max-w-[240px]">
+            Helping foreigners get their Brazilian CPF, the easy way.
           </p>
         </div>
-
-        {/* Quick links */}
         <div>
-          <h4 className="text-sm font-semibold mb-3">Quick links</h4>
-          <ul className="space-y-0.5 text-sm text-muted-foreground">
-            <li><a href="/#how" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">How it works</a></li>
-            <li><a href="/#pricing" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">FAQ</a></li>
-            <li><Link to="/guides" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Guides</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Contact us</Link></li>
-            <li><Link to="/cpf-checker" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">CPF checker</Link></li>
-            <li><Link to="/login" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Sign in</Link></li>
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Product</h4>
+          <ul className="space-y-2.5 text-sm text-gray-500">
+            <li><a href="/#how" className="hover:text-white transition-colors">How it works</a></li>
+            <li><a href="/#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
+            <li><Link to="/guides" className="hover:text-white transition-colors">Guides</Link></li>
           </ul>
         </div>
-
-        {/* Legal */}
         <div>
-          <h4 className="text-sm font-semibold mb-3">Legal</h4>
-          <ul className="space-y-0.5 text-sm text-muted-foreground">
-            <li><Link to="/privacy" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Affiliate Disclosure</Link></li>
-            <li><Link to="/partners" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Become a partner →</Link></li>
-            <li><Link to="/affiliates/apply" className="hover:text-foreground transition-colors inline-block py-2 min-h-[44px] flex items-center">Apply as affiliate →</Link></li>
-            <li><button onClick={openCookiePreferences} className="hover:text-foreground transition-colors text-left inline-block py-2 min-h-[44px] flex items-center">Cookie preferences</button></li>
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Company</h4>
+          <ul className="space-y-2.5 text-sm text-gray-500">
+            <li><Link to="/contact" className="hover:text-white transition-colors">Contact us</Link></li>
+            <li><Link to="/partners" className="hover:text-white transition-colors">Become a partner</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-white transition-colors">Affiliate programme</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Legal</h4>
+          <ul className="space-y-2.5 text-sm text-gray-500">
+            <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="hover:text-white transition-colors">Affiliate Disclosure</Link></li>
+            <li><button onClick={openCookiePreferences} className="hover:text-white transition-colors text-left">Cookie preferences</button></li>
           </ul>
         </div>
       </div>
-
-      {/* Divider */}
-      <div className="border-t border-border pt-8">
-        <p className="text-sm text-muted-foreground leading-relaxed max-w-[700px] mx-auto text-center">
-          GET CPF is not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance, only Receita Federal issues CPF numbers. Some links are affiliate links.
-        </p>
-        <p className="text-sm text-muted-foreground mt-4 text-center">© 2026 GET CPF. All rights reserved.</p>
+      <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p className="text-xs text-gray-600">© 2026 GET CPF. All rights reserved.</p>
+        <p className="text-xs text-gray-600 max-w-md text-center sm:text-right">Not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance only.</p>
       </div>
     </div>
   </footer>

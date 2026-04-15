@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0 0% 100%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 148 38% 50%;
+    --primary: 144 68% 30%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 14% 96%;
@@ -24,26 +24,26 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    --accent: 148 38% 50%;
+    --accent: 144 68% 30%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 148 38% 55%;
+    --success: 144 68% 35%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 148 38% 50%;
+    --border: 220 13% 94%;
+    --input: 220 13% 94%;
+    --ring: 144 68% 30%;
 
     --radius: 0.75rem;
-    --radius-lg: 1.25rem;
+    --radius-lg: 1rem;
 
     --text-secondary: 220 9% 46%;
     --text-tertiary: 218 11% 65%;
 
-    --accent-glow: 148 38% 55%;
+    --accent-glow: 144 68% 35%;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 11%;
@@ -62,7 +62,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-jakarta antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   html {
@@ -128,4 +129,55 @@
 /* Hide scrollbar for tab navigation */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* ===== Scroll-triggered reveal ===== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-on-scroll.delay-1 { transition-delay: 0.1s; }
+.reveal-on-scroll.delay-2 { transition-delay: 0.2s; }
+.reveal-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+/* ===== Hover interactions ===== */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.hover-glow {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hover-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(22,101,52,0.2);
+}
+
+/* ===== Button press effect ===== */
+.btn-press:active {
+  transform: scale(0.98);
+}
+
+/* ===== Subtle pulse for featured elements ===== */
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(22,101,52,0.08); }
+  50% { box-shadow: 0 0 60px rgba(22,101,52,0.15); }
+}
+.animate-subtle-pulse {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+/* ===== Marquee ===== */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
 }

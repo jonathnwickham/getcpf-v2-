@@ -9,7 +9,6 @@ const StickyMobileCTA = () => {
 
   useEffect(() => {
     const onScroll = () => {
-      // Show after scrolling past the hero (~600px)
       setVisible(window.scrollY > 600);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -32,14 +31,14 @@ const StickyMobileCTA = () => {
       }`}
     >
       <div
-        className="bg-background/95 backdrop-blur-lg border-t border-border px-4 pt-3"
+        className="bg-white/95 backdrop-blur-lg border-t border-gray-100 px-4 pt-3"
         style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
       >
         <button
           onClick={handleClick}
-          className="w-full bg-primary text-primary-foreground py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/20 min-h-[52px]"
+          className="w-full bg-green-800 text-white py-3.5 rounded-full font-semibold text-base hover:bg-green-900 transition-all min-h-[52px]"
         >
-          Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
+          Get started · <s className="opacity-50">$49</s> $29
         </button>
       </div>
     </div>

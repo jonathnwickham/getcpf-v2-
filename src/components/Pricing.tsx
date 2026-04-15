@@ -22,51 +22,45 @@ const tiers = [
       "Know before you go that it will work",
       "Say exactly the right thing at the counter",
       "Proof of address sorted in two minutes",
-      "Everything that comes next, already mapped out",
+      "Everything that comes next, mapped out",
       "If it doesn't work, you pay nothing",
     ],
-    cta: "Get started, $29 →",
+    cta: "strikethrough",
   },
   {
     name: "Concierge",
     price: "$97",
-    description: "Everything in Self-Service plus real human support via WhatsApp.",
+    description: "Self-Service + real human support via WhatsApp.",
     highlighted: false,
     badge: "Coming soon",
     comingSoon: true,
     features: [
       "Everything in Self-Service",
-      "WhatsApp / in-app messaging support",
-      "Location-specific advice for your office",
-      "Help troubleshooting if something goes wrong",
-      "Advice specific to your nationality & visa",
-      "Response within a few hours (Brazil time)",
+      "WhatsApp messaging support",
+      "Location-specific advice",
+      "Help if something goes wrong",
+      "Nationality & visa advice",
+      "Response within hours",
     ],
     cta: "Join waitlist",
   },
   {
     name: "Full Assist",
     price: "$197",
-    description: "A real person guides you through every single step until you have your CPF.",
+    description: "Personal guide through every step until you have your CPF.",
     highlighted: false,
     badge: "Coming soon",
     comingSoon: true,
     features: [
       "Everything in Concierge",
-      "Personal guide through each step",
-      "Document review before submission",
-      "Told exactly what to say at the office",
-      "Follow-up until CPF is confirmed",
-      "Priority response time",
+      "Personal guide each step",
+      "Document review",
+      "Told exactly what to say",
+      "Follow-up until confirmed",
+      "Priority response",
     ],
     cta: "Join waitlist",
   },
-];
-
-const trustSignals = [
-  { icon: Lock, label: "Secure payment" },
-  { icon: Clock, label: "5 min setup" },
-  { icon: Users, label: "200+ served" },
 ];
 
 const Pricing = ({ onOpenModal }: PricingProps) => {
@@ -94,109 +88,94 @@ const Pricing = ({ onOpenModal }: PricingProps) => {
   };
 
   return (
-    <section id="pricing" className="py-24 px-8 text-center bg-secondary">
-      <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-4 py-1.5 rounded-full mb-4">
-        🎉 Beta is live — get it for $29
-      </div>
-      <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mx-auto">One payment, done</h2>
-      <p className="text-muted-foreground mt-4 mx-auto max-w-[560px] text-sm leading-relaxed">
-        The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us <span className="line-through opacity-60">$49</span> <span className="text-primary font-bold">$29</span> to make sure that when you go in, it works.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto mt-12">
-        {tiers.map((tier) => (
-          <div
-            key={tier.name}
-            className={`bg-card rounded-2xl p-8 text-left relative ${
-              tier.highlighted
-                ? "border-2 border-primary shadow-lg shadow-primary/5"
-                : "border border-border"
-            }`}
-          >
-            {tier.badge && (
-              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold ${
-                tier.comingSoon
-                  ? "bg-muted text-muted-foreground border border-border"
-                  : "bg-primary text-primary-foreground"
-              }`}>
-                {tier.badge}
-              </div>
-            )}
-            <div className="text-sm text-muted-foreground font-semibold mb-2">{tier.name}</div>
-            <div className="text-4xl font-extrabold tracking-tight">
-              {(tier as any).originalPrice && (
-                <span className="text-2xl line-through text-muted-foreground/50 mr-2">{(tier as any).originalPrice}</span>
+    <section id="pricing" className="py-24 sm:py-32 px-5 sm:px-8">
+      <div className="max-w-5xl mx-auto text-center">
+        <div className="inline-flex items-center gap-1.5 border border-gray-300 text-gray-600 text-xs font-semibold px-4 py-1.5 rounded-full mb-5">
+          Beta is live · $29
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">One payment, done</h2>
+        <p className="text-gray-500 mt-5 max-w-lg mx-auto text-sm leading-relaxed">
+          The CPF costs R$7 at Correios or nothing at the Receita Federal. You're paying us <s className="opacity-50">$49</s> <span className="text-green-800 font-bold">$29</span> to make sure that when you go in, it works.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14">
+          {tiers.map((tier) => (
+            <div
+              key={tier.name}
+              className={`bg-white rounded-xl p-8 text-left relative ${
+                tier.highlighted
+                  ? "border-2 border-green-800 animate-subtle-pulse"
+                  : "border border-gray-100"
+              }`}
+            >
+              {tier.badge && (
+                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold ${
+                  tier.comingSoon
+                    ? "bg-gray-100 text-gray-500 border border-gray-200"
+                    : "bg-green-800 text-white"
+                }`}>
+                  {tier.badge}
+                </div>
               )}
-              {tier.price} <span className="text-base font-normal text-muted-foreground">USD</span>
-            </div>
-            {(tier as any).originalPrice && (
-              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mt-2">
-                🎉 Beta pricing — limited spots
+              <div className="text-sm text-gray-500 font-semibold mb-2">{tier.name}</div>
+              <div className="text-4xl font-extrabold tracking-tight">
+                {tier.originalPrice && (
+                  <span className="text-2xl line-through text-gray-300 mr-2">{tier.originalPrice}</span>
+                )}
+                {tier.price} <span className="text-base font-normal text-gray-400">USD</span>
               </div>
-            )}
-            <div className="text-sm text-muted-foreground mt-3 mb-6 leading-relaxed">{tier.description}</div>
-            <ul className={`mb-8 space-y-2.5 ${tier.comingSoon ? "opacity-60" : ""}`}>
-              {tier.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-foreground">
-                  <span className="text-primary font-bold shrink-0 mt-0.5">✓</span> {f}
-                </li>
-              ))}
-            </ul>
-            {tier.comingSoon ? (
-              !waitlistSubmitted[tier.name] ? (
-                <form onSubmit={(e) => handleWaitlist(e, tier.name)} className="space-y-2">
-                  <input
-                    type="email"
-                    value={waitlistEmail[tier.name] || ""}
-                    onChange={(e) => setWaitlistEmail((s) => ({ ...s, [tier.name]: e.target.value }))}
-                    required
-                    placeholder="your@email.com"
-                    className="w-full bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 rounded-full font-semibold border border-border text-foreground hover:bg-secondary transition-all"
-                  >
-                    Join waitlist →
-                  </button>
-                </form>
+              <p className="text-sm text-gray-500 mt-3 mb-7 leading-relaxed">{tier.description}</p>
+              <ul className={`mb-8 space-y-3 ${tier.comingSoon ? "opacity-50" : ""}`}>
+                {tier.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm">
+                    <span className="text-green-800 font-bold shrink-0 mt-0.5">✓</span> {f}
+                  </li>
+                ))}
+              </ul>
+              {tier.comingSoon ? (
+                !waitlistSubmitted[tier.name] ? (
+                  <form onSubmit={(e) => handleWaitlist(e, tier.name)} className="space-y-2">
+                    <input
+                      type="email"
+                      value={waitlistEmail[tier.name] || ""}
+                      onChange={(e) => setWaitlistEmail((s) => ({ ...s, [tier.name]: e.target.value }))}
+                      required
+                      placeholder="your@email.com"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/20"
+                    />
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 rounded-full font-semibold border border-gray-200 text-gray-600 hover:border-gray-300 transition-all btn-press"
+                    >
+                      Join waitlist
+                    </button>
+                  </form>
+                ) : (
+                  <div className="text-center text-sm text-green-800 font-semibold py-3.5">✓ On the waitlist</div>
+                )
               ) : (
-                <div className="text-center text-sm text-primary font-semibold py-3.5">✓ On the waitlist</div>
-              )
-            ) : (
-              <button
-                onClick={handleCTA}
-                className={`w-full py-3.5 rounded-full font-semibold transition-all ${
-                  tier.highlighted
-                    ? "bg-primary text-primary-foreground hover:opacity-90 shadow-md shadow-primary/20"
-                    : "border border-border text-foreground hover:bg-secondary"
-                }`}
-              >
-                Get started, <span className="line-through opacity-60">$49</span> $29 →
-              </button>
-            )}
-            {/* Trust signals, only on highlighted tier */}
-            {tier.highlighted && (
-              <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
-                {trustSignals.map((s) => {
-                  const Icon = s.icon;
-                  return (
-                    <div key={s.label} className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <Icon className="w-3.5 h-3.5" />
-                      {s.label}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      <p className="text-sm text-muted-foreground mt-8 max-w-[500px] mx-auto">
-        One payment, no subscriptions. You keep access to your Ready Pack forever.
-      </p>
-      <div className="flex items-center justify-center gap-2 mt-4 text-sm text-primary font-semibold">
-        <span>🛡️</span>
-        If you follow our steps and get rejected, full refund. No questions asked.
+                <button
+                  onClick={handleCTA}
+                  className="w-full py-3.5 rounded-full font-semibold bg-green-800 text-white hover:bg-green-900 transition-all btn-press"
+                >
+                  Get started · <s className="opacity-50">$49</s> $29
+                </button>
+              )}
+              {tier.highlighted && (
+                <div className="flex items-center justify-center gap-5 mt-5 pt-4 border-t border-gray-100 text-xs text-gray-400">
+                  <span>🔒 Secure</span>
+                  <span>⏱ 5 min setup</span>
+                  <span>👥 200+ served</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <p className="text-sm text-gray-400 mt-10">One payment, no subscriptions. You keep access forever.</p>
+        <div className="flex items-center justify-center gap-2 mt-3 text-sm text-green-800 font-semibold">
+          🛡️ Full refund if you follow our steps and get rejected.
+        </div>
       </div>
     </section>
   );
