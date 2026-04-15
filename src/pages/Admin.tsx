@@ -14,6 +14,7 @@ import {
   AreaChart, Area,
 } from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
+import Logo from "@/components/Logo";
 import { TableSkeleton } from "@/components/Skeleton";
 
 const CHART_COLORS = ["#166534", "#3b82f6", "#3b7dd8", "#22c55e", "#ec4899", "#f59e0b", "#a855f7", "#06b6d4"];
@@ -109,8 +110,8 @@ const Admin = () => {
       <div className="border-b border-gray-100 bg-white sticky top-0 z-50">
         <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">
-              &larr; GET CPF
+            <a href="/">
+              <Logo className="h-8" />
             </a>
             <span className="text-gray-200">|</span>
             <h1 className="text-sm font-semibold text-gray-900">Admin</h1>
@@ -124,11 +125,12 @@ const Admin = () => {
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar — desktop */}
         <aside className="hidden md:flex flex-col w-60 shrink-0 bg-white border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <nav className="p-3 space-y-0.5">
+          <nav role="navigation" aria-label="Admin sections" className="p-3 space-y-0.5">
             {navItems.map(item => (
               <button
                 key={item.key}
                 onClick={() => setTab(item.key)}
+                aria-current={tab === item.key ? "page" : undefined}
                 className={`w-full text-left px-3 py-2.5 rounded-lg transition-colors ${
                   tab === item.key
                     ? "bg-gray-100 text-gray-900"

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
@@ -20,9 +21,102 @@ import {
 
 const TOTAL_STEPS = 8;
 
+// Determine which step to resume at based on filled data
+const getResumeStep = (d: OnboardingData): number => {
+  // Walk forward through steps, return the first one that's incomplete
+  const words = d.fullName.trim().split(/\s+/).filter(Boolean);
+  if (words.length < 2) return 1; // name not filled
+  if (!d.noMotherName && d.motherName.trim().length < 3) return 2;
+  if (d.noMotherName && d.motherAlternative.trim().length === 0) return 2;
+  // step 3 (father) is optional, skip
+  if (!/^[A-Z0-9]{6,12}$/i.test(d.passportNumber.trim())) return 4;
+  if (!d.state) return 5;
+  if (d.streetAddress.trim().length < 4 || d.city.trim().length < 2) return 6;
+  if (!d.email.includes("@") || d.nationality.trim().length < 2) return 7;
+  return 7; // all filled, show last step to confirm
+};
+
+// Building screen — spinner morphs to checkmark then navigates
+const BuildingScreen = ({ onDone }: { onDone: () => void }) => {
+  const [phase, setPhase] = useState<"spinning" | "done">("spinning");
+
+  useEffect(() => {
+    const timer = setTimeout(() => setPhase("done"), 2200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (phase === "done") {
+      const nav = setTimeout(onDone, 900);
+      return () => clearTimeout(nav);
+    }
+  }, [phase, onDone]);
+
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="flex flex-col items-center gap-5">
+        <div className="relative w-16 h-16">
+          {/* Spinner */}
+          <motion.div
+            className="absolute inset-0 rounded-full border-[3px] border-gray-100 border-t-green-800"
+            animate={phase === "spinning" ? { rotate: 360 } : { rotate: 360, opacity: 0, scale: 0.5 }}
+            transition={phase === "spinning"
+              ? { rotate: { duration: 0.8, repeat: Infinity, ease: "linear" } }
+              : { opacity: { duration: 0.3 }, scale: { duration: 0.3 } }
+            }
+          />
+          {/* Checkmark */}
+          {phase === "done" && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <div className="w-16 h-16 bg-green-800 rounded-full flex items-center justify-center">
+                <motion.svg
+                  viewBox="0 0 24 24"
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <motion.path
+                    d="M5 13l4 4L19 7"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                  />
+                </motion.svg>
+              </div>
+            </motion.div>
+          )}
+        </div>
+        <motion.p
+          className="text-sm font-medium text-gray-500"
+          animate={phase === "done" ? { opacity: 0 } : { opacity: 1 }}
+        >
+          {phase === "spinning" ? "Building your Ready Pack..." : ""}
+        </motion.p>
+        {phase === "done" && (
+          <motion.p
+            className="text-sm font-semibold text-green-800"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            Your pack is ready
+          </motion.p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const GetStarted = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
@@ -30,6 +124,7 @@ const GetStarted = () => {
   const [consentChecked, setConsentChecked] = useState(false);
   const [consentError, setConsentError] = useState(false);
   const [ready, setReady] = useState(false);
+  const [building, setBuilding] = useState(false);
 
   const update = useCallback((field: keyof OnboardingData, value: string | boolean) => {
     setData((prev) => {
@@ -38,6 +133,17 @@ const GetStarted = () => {
       return next;
     });
   }, []);
+
+  // Focus the first interactive element when step changes (after animation)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const el = document.querySelector<HTMLElement>(
+        '.max-w-\\[520px\\] input, .max-w-\\[520px\\] button[type="button"]'
+      );
+      el?.focus();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [step]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -54,16 +160,22 @@ const GetStarted = () => {
     fetchLatestApplication(user.id)
       .then((application) => {
         if (application) {
-          const mapped = mapApplicationToOnboardingData(application);
-          setData(mapped);
-          persistOnboardingData(mapped);
-
           if (applicationHasReadyPack(application)) {
             navigate("/ready-pack", { replace: true });
             return;
           }
+
+          const mapped = mapApplicationToOnboardingData(application);
+          setData(mapped);
+          persistOnboardingData(mapped);
+
+          // Resume at the furthest incomplete step
+          const resumeStep = getResumeStep(mapped);
+          if (resumeStep > 0) {
+            setStep(resumeStep);
+            toast(`Welcome back, ${mapped.fullName.split(" ")[0] || ""}. Picking up where you left off.`);
+          }
         } else {
-          // Logged in but no application, start completely fresh
           localStorage.removeItem(ONBOARDING_LOCAL_KEY);
           sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
           setData(INITIAL_DATA);
@@ -71,8 +183,14 @@ const GetStarted = () => {
 
         setReady(true);
       })
-      .catch(() => setReady(true));
+      .catch(() => {
+        setReady(true);
+      });
   }, [user, authLoading, navigate]);
+
+  if (building) {
+    return <BuildingScreen onDone={() => navigate("/ready-pack")} />;
+  }
 
   if (!ready) {
     return (
@@ -101,12 +219,11 @@ const GetStarted = () => {
         try {
           await supabase.from("consent_log").insert({
             user_id: user.id,
-            consent_text: "I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the Privacy Policy. I understand my sensitive data will be automatically and permanently deleted within 30 days.",
-            consent_version: "2.0",
+            consent_text: "I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal, in accordance with Brazil's Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018). I have read and agree to the Privacy Policy. Sensitive data (passport number) will be automatically and permanently deleted within 30 days of CPF issuance.",
+            consent_version: "3.0",
             consent: true,
           });
-        } catch (e) {
-          console.error("Failed to log consent", e);
+        } catch {
         }
       }
 
@@ -114,8 +231,7 @@ const GetStarted = () => {
       if (user) {
         try {
           await saveLatestApplication(user.id, data, "draft");
-        } catch (error) {
-          console.error("Failed to save progress", error);
+        } catch {
         }
       }
       return;
@@ -126,12 +242,20 @@ const GetStarted = () => {
     if (user) {
       try {
         await saveLatestApplication(user.id, data, "prepared");
-      } catch (error) {
-        console.error("Failed to save application", error);
+        // Send "Ready Pack is ready" email
+        supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "ready-pack-complete",
+            recipientEmail: data.email || user.email,
+            idempotencyKey: `ready-pack-${user.id}-${Date.now()}`,
+            templateData: { name: data.fullName.split(" ")[0] || "there" },
+          },
+        }).catch(() => {}); // fire and forget
+      } catch {
       }
     }
 
-    navigate("/ready-pack");
+    setBuilding(true);
   };
 
   const back = () => {
@@ -179,7 +303,15 @@ const GetStarted = () => {
               {step + 1} of {TOTAL_STEPS}
             </span>
             <button
-              onClick={() => supabase.auth.signOut().then(() => navigate("/"))}
+              onClick={async () => {
+                try {
+                  await supabase.auth.signOut();
+                } catch {
+                }
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = "/";
+              }}
               className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
             >
               Sign out
@@ -201,7 +333,7 @@ const GetStarted = () => {
       </div>
 
       {/* Content with slide transitions */}
-      <div className="flex-1 flex items-start md:items-center justify-center px-5 sm:px-8 pt-24 pb-32 md:pb-12">
+      <div className="flex-1 flex items-start justify-center px-5 sm:px-8 pt-24 pb-32 overflow-y-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -228,10 +360,18 @@ const GetStarted = () => {
           {step === 5 && <StateStep value={data.state} onChange={(v) => update("state", v)} />}
           {step === 6 && (
             <AddressStep
+              cep={data.cep}
+              onCepChange={(v) => update("cep", v)}
               street={data.streetAddress}
+              addressNumber={data.addressNumber}
+              complement={data.complement}
+              neighbourhood={data.neighbourhood}
               city={data.city}
               state={data.state}
               onStreetChange={(v) => update("streetAddress", v)}
+              onNumberChange={(v) => update("addressNumber", v)}
+              onComplementChange={(v) => update("complement", v)}
+              onNeighbourhoodChange={(v) => update("neighbourhood", v)}
               onCityChange={(v) => update("city", v)}
               stayingWithFriend={data.stayingWithFriend}
               onToggleStaying={(v) => update("stayingWithFriend", v)}
@@ -252,8 +392,10 @@ const GetStarted = () => {
             <ContactStep
               email={data.email}
               nationality={data.nationality}
+              gender={data.gender}
               onEmailChange={(v) => update("email", v)}
               onNationalityChange={(v) => update("nationality", v)}
+              onGenderChange={(v) => update("gender", v)}
             />
           )}
           </motion.div>
@@ -285,33 +427,42 @@ const GetStarted = () => {
 
 // --- Step Components ---
 
-const WelcomeStep = () => (
-  <div className="text-center">
-    <div className="w-16 h-16 bg-green-800/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
-      🇧🇷
+const WelcomeStep = () => {
+  const [userCount, setUserCount] = useState<number | null>(null);
+  useEffect(() => {
+    supabase.from("applications").select("id", { count: "exact", head: true })
+      .neq("status", "draft")
+      .then(({ count }) => { if (count) setUserCount(count); });
+  }, []);
+
+  return (
+    <div className="text-center">
+      <div className="w-16 h-16 bg-green-800/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
+        🇧🇷
+      </div>
+      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
+        Let's get your <span className="text-green-800">CPF</span> sorted
+      </h1>
+      <p className="text-gray-500 leading-relaxed max-w-[420px] mx-auto">
+        We'll ask a few quick questions, takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
+      </p>
+      <div className="mt-8 grid grid-cols-3 gap-3 max-w-[360px] mx-auto">
+        <div className="bg-gray-50 rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">~5 min</div>
+          <div className="text-xs text-gray-400 mt-0.5">That's it</div>
+        </div>
+        <div className="bg-gray-50 rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">Same day</div>
+          <div className="text-xs text-gray-400 mt-0.5">CPF in hand</div>
+        </div>
+        <div className="bg-gray-50 rounded-xl p-3 text-center">
+          <div className="text-lg font-bold">{userCount ? `${userCount}+` : "50+"}</div>
+          <div className="text-xs text-gray-400 mt-0.5">People served</div>
+        </div>
+      </div>
     </div>
-    <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-      Let's get your <span className="text-green-800">CPF</span> sorted
-    </h1>
-    <p className="text-gray-500 leading-relaxed max-w-[420px] mx-auto">
-      We'll ask a few quick questions, takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
-    </p>
-    <div className="mt-8 grid grid-cols-3 gap-3 max-w-[360px] mx-auto">
-      <div className="bg-gray-50 rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">~5 min</div>
-        <div className="text-xs text-gray-400 mt-0.5">That's it</div>
-      </div>
-      <div className="bg-gray-50 rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">100%</div>
-        <div className="text-xs text-gray-400 mt-0.5">Ready to go</div>
-      </div>
-      <div className="bg-gray-50 rounded-xl p-3 text-center">
-        <div className="text-lg font-bold">Same day</div>
-        <div className="text-xs text-gray-400 mt-0.5">CPF in hand</div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChecked, onConsentChange, consentError }: {
   value: string; onChange: (v: string) => void; forceFullName: boolean; onForceFullName: (v: boolean) => void;
@@ -333,7 +484,7 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
         placeholder="e.g. John Michael Smith"
         autoFocus
         autoComplete="name"
-        className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+        className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
       />
       {showWarning && (
         <div className="mt-3 bg-red-500/10 border border-destructive/20 rounded-xl p-4">
@@ -364,11 +515,11 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
             className="sr-only"
           />
           <span className="text-sm text-gray-500 leading-relaxed">
-            I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the{" "}
+            I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal, in accordance with Brazil's Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018). I have read and agree to the{" "}
             <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-green-800 hover:underline font-semibold">
               Privacy Policy
             </a>
-            . I understand my data will be permanently deleted within 30 days.
+            . Sensitive data (passport number) will be automatically and permanently deleted within 30 days of CPF issuance.
           </span>
         </label>
         {consentError && (
@@ -406,7 +557,7 @@ const MotherStep = ({
             onChange={(e) => onChange(e.target.value)}
             placeholder="e.g. Maria Antonia Smith"
             autoFocus
-            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+            className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
           />
           {hasAbbreviation && (
             <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
@@ -427,7 +578,7 @@ const MotherStep = ({
             onChange={(e) => onAlternativeChange(e.target.value)}
             placeholder="Father's or guardian's full name"
             autoFocus
-            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+            className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
       )}
@@ -460,7 +611,7 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
       onChange={(e) => onChange(e.target.value)}
       placeholder="e.g. Robert James Smith"
       autoFocus
-      className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+      className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
     />
     <p className="text-xs text-gray-500 mt-3 italic">If you want to leave it out, just hit next</p>
   </div>
@@ -495,8 +646,8 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
         placeholder="e.g. AB1234567"
         autoFocus
         maxLength={12}
-        className={`w-full px-5 py-4 bg-card border rounded-xl text-gray-900 text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-gray-500/50 tracking-wider ${
-          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-gray-100 focus:border-green-800 focus:ring-primary/10"
+        className={`w-full px-5 py-4 bg-white border rounded-xl text-gray-900 text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-gray-500/50 tracking-wider ${
+          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-gray-100 focus:border-green-800 focus:ring-green-800/10"
         }`}
       />
       {errorMsg && (
@@ -527,7 +678,7 @@ const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) =
           className={`px-4 py-3 rounded-xl text-sm font-medium text-left transition-all border ${
             value === s.value
               ? "bg-green-800 text-white border-green-800 shadow-md"
-              : "bg-card border-gray-100 hover:border-green-800/30 hover:bg-green-800/5"
+              : "bg-white border-gray-100 hover:border-green-800/30 hover:bg-green-800/5"
           }`}
         >
           <span className="font-bold">{s.value}</span>{" "}
@@ -559,13 +710,17 @@ CPF: ${hostCpf || "[CPF do anfitrião]"}`;
 };
 
 const AddressStep = ({
-  street, city, state, onStreetChange, onCityChange,
+  cep, onCepChange,
+  street, addressNumber, complement, neighbourhood, city, state,
+  onStreetChange, onNumberChange, onComplementChange, onNeighbourhoodChange, onCityChange,
   stayingWithFriend, onToggleStaying,
   hostName, onHostNameChange, hostCpf, onHostCpfChange,
   hostAddress, onHostAddressChange, hostCity, onHostCityChange,
   guestName, passportNumber, nationality,
 }: {
-  street: string; city: string; state: string; onStreetChange: (v: string) => void; onCityChange: (v: string) => void;
+  cep: string; onCepChange: (v: string) => void;
+  street: string; addressNumber: string; complement: string; neighbourhood: string; city: string; state: string;
+  onStreetChange: (v: string) => void; onNumberChange: (v: string) => void; onComplementChange: (v: string) => void; onNeighbourhoodChange: (v: string) => void; onCityChange: (v: string) => void;
   stayingWithFriend: boolean; onToggleStaying: (v: boolean) => void;
   hostName: string; onHostNameChange: (v: string) => void;
   hostCpf: string; onHostCpfChange: (v: string) => void;
@@ -578,10 +733,39 @@ const AddressStep = ({
   const [showDeclaration, setShowDeclaration] = useState(false);
   const [hostCitySearch, setHostCitySearch] = useState("");
   const [isHostCityOpen, setIsHostCityOpen] = useState(false);
+  const [cepLoading, setCepLoading] = useState(false);
+  const [cepStatus, setCepStatus] = useState<"idle" | "found" | "not_found">("idle");
   const cityDropdownRef = useRef<HTMLDivElement>(null);
   const cityInputRef = useRef<HTMLInputElement>(null);
   const hostCityDropdownRef = useRef<HTMLDivElement>(null);
   const hostCityInputRef = useRef<HTMLInputElement>(null);
+
+  // CEP autofill via ViaCEP
+  const handleCepChange = (raw: string) => {
+    // Format: 12345-678
+    const digits = raw.replace(/\D/g, "").slice(0, 8);
+    const formatted = digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
+    onCepChange(formatted);
+    setCepStatus("idle");
+
+    if (digits.length === 8) {
+      setCepLoading(true);
+      fetch(`https://viacep.com.br/ws/${digits}/json/`)
+        .then((r) => r.json())
+        .then((result) => {
+          if (result.erro) {
+            setCepStatus("not_found");
+          } else {
+            if (result.logradouro) onStreetChange(result.logradouro);
+            if (result.bairro) onNeighbourhoodChange(result.bairro);
+            if (result.localidade) onCityChange(result.localidade);
+            setCepStatus("found");
+          }
+        })
+        .catch(() => setCepStatus("not_found"))
+        .finally(() => setCepLoading(false));
+    }
+  };
 
   const cities = getCitiesForState(state);
   const selectedCity = city;
@@ -618,15 +802,80 @@ const AddressStep = ({
       </p>
       <div className="space-y-4">
         <div>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">CEP (postal code)</label>
+          <div className="relative">
+            <input
+              type="text"
+              value={cep}
+              onChange={(e) => handleCepChange(e.target.value)}
+              placeholder="e.g. 01310-100"
+              autoFocus
+              inputMode="numeric"
+              autoComplete="postal-code"
+              aria-label="CEP postal code"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50 font-mono"
+            />
+            {cepLoading && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                <div className="w-4 h-4 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+            {cepStatus === "found" && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-800 text-sm font-bold">✓</div>
+            )}
+            {cepStatus === "not_found" && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-xs font-medium">CEP not found</div>
+            )}
+          </div>
+          <p className="text-[11px] text-gray-400 mt-1.5">Enter your CEP to auto-fill the address below. Don't know it? Just fill in manually.</p>
+        </div>
+        <div>
           <label className="text-xs font-semibold text-gray-500 mb-2 block">Street address</label>
           <input
             type="text"
             value={street}
             onChange={(e) => onStreetChange(e.target.value)}
             placeholder="e.g. Rua Augusta, 1234, Apt 501"
-            autoFocus
             autoComplete="street-address"
-            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+            className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs font-semibold text-gray-500 mb-2 block">Number</label>
+            <input
+              type="text"
+              value={addressNumber}
+              onChange={(e) => onNumberChange(e.target.value)}
+              placeholder="e.g. 1234"
+              inputMode="numeric"
+              autoComplete="address-line2"
+              aria-label="Address number"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-500 mb-2 block">Apt / Room <span className="text-gray-300 font-normal">(optional)</span></label>
+            <input
+              type="text"
+              value={complement}
+              onChange={(e) => onComplementChange(e.target.value)}
+              placeholder="e.g. Apt 501"
+              autoComplete="address-line3"
+              aria-label="Apartment or room number"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">Neighbourhood</label>
+          <input
+            type="text"
+            value={neighbourhood}
+            onChange={(e) => onNeighbourhoodChange(e.target.value)}
+            placeholder="e.g. Consolação"
+            autoComplete="address-level3"
+            className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
         <div ref={cityDropdownRef} className="relative">
@@ -635,7 +884,7 @@ const AddressStep = ({
             <button
               type="button"
               onClick={() => { setIsCityOpen(true); setTimeout(() => cityInputRef.current?.focus(), 50); }}
-              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-left flex items-center justify-between hover:border-green-800/30 transition-all"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-left flex items-center justify-between hover:border-green-800/30 transition-all"
             >
               <span className="font-medium">{selectedCity}</span>
               <span className="text-gray-500 text-sm">Change</span>
@@ -653,11 +902,11 @@ const AddressStep = ({
               onFocus={() => setIsCityOpen(true)}
               placeholder="Search city… e.g. São Paulo"
               autoComplete="off"
-              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
             />
           )}
           {isCityOpen && filteredCities.length > 0 && (
-            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
               {(citySearch ? filteredCities : filteredCities.slice(0, 20)).map((c) => (
                 <button
                   key={c}
@@ -671,7 +920,7 @@ const AddressStep = ({
             </div>
           )}
           {isCityOpen && filteredCities.length === 0 && citySearch && (
-            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl p-4">
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-white border border-gray-100 rounded-xl shadow-xl p-4">
               <p className="text-sm text-gray-500">No match, your typed city will be used</p>
             </div>
           )}
@@ -679,7 +928,11 @@ const AddressStep = ({
 
         {/* Staying with friend toggle */}
         <label className="flex items-center gap-3 mt-2 cursor-pointer group">
-          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${stayingWithFriend ? "bg-green-800 border-green-800" : "border-gray-100 group-hover:border-green-800/50"}`}>
+          <div
+            role="switch"
+            aria-checked={stayingWithFriend}
+            className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${stayingWithFriend ? "bg-green-800 border-green-800" : "border-gray-100 group-hover:border-green-800/50"}`}
+          >
             {stayingWithFriend && <span className="text-white text-xs font-bold">✓</span>}
           </div>
           <input
@@ -699,14 +952,14 @@ const AddressStep = ({
               value={hostName}
               onChange={(e) => onHostNameChange(e.target.value)}
               placeholder="Host's full name"
-              className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+              className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
             />
             <input
               type="text"
               value={hostCpf}
               onChange={(e) => onHostCpfChange(e.target.value)}
               placeholder="Host's CPF number (if known)"
-              className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm font-mono outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+              className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg text-gray-900 text-sm font-mono outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
             />
             <div>
               <div className="flex items-center justify-between mb-1">
@@ -726,7 +979,7 @@ const AddressStep = ({
                 value={hostAddress}
                 onChange={(e) => onHostAddressChange(e.target.value)}
                 placeholder="Host's full address"
-                className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+                className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
               />
             </div>
             <div ref={hostCityDropdownRef} className="relative">
@@ -746,7 +999,7 @@ const AddressStep = ({
                 <button
                   type="button"
                   onClick={() => { setIsHostCityOpen(true); setTimeout(() => hostCityInputRef.current?.focus(), 50); }}
-                  className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm text-left flex items-center justify-between hover:border-green-800/30 transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg text-gray-900 text-sm text-left flex items-center justify-between hover:border-green-800/30 transition-all"
                 >
                   <span className="font-medium">{hostCity}</span>
                   <span className="text-gray-500 text-xs">Change</span>
@@ -763,11 +1016,11 @@ const AddressStep = ({
                   }}
                   onFocus={() => setIsHostCityOpen(true)}
                   placeholder="Search city…"
-                  className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+                  className="w-full px-4 py-3 bg-white border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
                 />
               )}
               {isHostCityOpen && filteredHostCities.length > 0 && (
-                <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
+                <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
                   {(hostCitySearch ? filteredHostCities : filteredHostCities.slice(0, 20)).map((c) => (
                     <button
                       key={c}
@@ -821,12 +1074,12 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
 
   return (
     <div className="mt-3 space-y-4">
-      <div className="bg-card border border-gray-100 rounded-lg p-4">
+      <div className="bg-white border border-gray-100 rounded-lg p-4">
         <pre className="text-xs font-mono whitespace-pre-wrap text-gray-900 leading-relaxed">{declaration}</pre>
       </div>
 
-      {/* Two action buttons side by side */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      {/* Action buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <button
           type="button"
           onClick={handleCopy}
@@ -836,7 +1089,7 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
               : "bg-gray-50 text-gray-900 hover:bg-gray-50/80"
           }`}
         >
-          {copied ? "✓ Text copied!" : "📋 Copy text"}
+          {copied ? "✓ Copied!" : "📋 Copy text"}
         </button>
         <button
           type="button"
@@ -847,8 +1100,16 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
               : "bg-green-800/10 text-green-800 hover:bg-green-800/20"
           }`}
         >
-          {savedToPack ? "✓ Saved to your pack!" : "💾 Save to my documents"}
+          {savedToPack ? "✓ Saved!" : "💾 Save to pack"}
         </button>
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent("Hi! Can you please review and sign this declaration letter for my CPF application?\n\n" + declaration)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-3 rounded-xl font-semibold text-sm bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-all text-center"
+        >
+          Send via WhatsApp
+        </a>
       </div>
 
       {/* Detailed instructions */}
@@ -875,9 +1136,9 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
 };
 
 const ContactStep = ({
-  email, nationality, onEmailChange, onNationalityChange,
+  email, nationality, gender, onEmailChange, onNationalityChange, onGenderChange,
 }: {
-  email: string; nationality: string; onEmailChange: (v: string) => void; onNationalityChange: (v: string) => void;
+  email: string; nationality: string; gender: string; onEmailChange: (v: string) => void; onNationalityChange: (v: string) => void; onGenderChange: (v: string) => void;
 }) => {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -925,7 +1186,7 @@ const ContactStep = ({
             placeholder="you@example.com"
             autoFocus
             autoComplete="email"
-            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+            className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
         <div ref={dropdownRef} className="relative">
@@ -934,7 +1195,7 @@ const ContactStep = ({
             <button
               type="button"
               onClick={() => { setIsOpen(true); setTimeout(() => inputRef.current?.focus(), 50); }}
-              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-left flex items-center gap-3 hover:border-green-800/30 transition-all"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 text-left flex items-center gap-3 hover:border-green-800/30 transition-all"
             >
               <span className="text-2xl">{selectedCountry.flag}</span>
               <span className="font-medium">{selectedCountry.name}</span>
@@ -948,11 +1209,11 @@ const ContactStep = ({
               onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
               onFocus={() => setIsOpen(true)}
               placeholder="Search country… e.g. South Africa"
-              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+              className="w-full px-5 py-4 bg-white border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
             />
           )}
           {isOpen && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
               {filtered.length === 0 && (
                 <div className="px-5 py-4 text-sm text-gray-500">No countries found</div>
               )}
@@ -970,6 +1231,29 @@ const ContactStep = ({
               ))}
             </div>
           )}
+        </div>
+        <div>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">Gender <span className="text-gray-300 font-normal">(for Portuguese grammar)</span></label>
+          <div className="flex gap-2">
+            {([
+              { value: "m", label: "Male" },
+              { value: "f", label: "Female" },
+              { value: "unspecified", label: "Prefer not to say" },
+            ] as const).map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => onGenderChange(opt.value)}
+                className={`flex-1 px-4 py-3 rounded-xl text-sm font-medium border-2 transition-all ${
+                  gender === opt.value
+                    ? "border-green-800 bg-green-800/5 text-green-800"
+                    : "border-gray-100 text-gray-500 hover:border-gray-200"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
