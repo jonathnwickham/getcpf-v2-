@@ -87,7 +87,7 @@ const DocumentScanner = () => {
       <div className="px-6 py-4 border-b border-border bg-secondary">
         <h2 className="font-bold">🤖 AI Document Scanner</h2>
         <p className="text-xs text-muted-foreground mt-1">
-          Upload a photo or scan of your documents — our AI checks if they meet CPF requirements
+          Upload a photo or scan of your documents. our AI checks if they meet CPF requirements
         </p>
       </div>
       <div className="p-6">
@@ -108,7 +108,7 @@ const DocumentScanner = () => {
           <div className="text-3xl mb-2">📄</div>
           <p className="text-sm font-semibold">Drop a document here or tap to upload</p>
           <p className="text-xs text-muted-foreground mt-1">
-            Passport page, proof of address, CPF form — any document for your application
+            Passport page, proof of address, CPF form. any document for your application
           </p>
           <p className="text-[10px] text-muted-foreground mt-2">JPG, PNG, or PDF • Max 20MB</p>
         </div>

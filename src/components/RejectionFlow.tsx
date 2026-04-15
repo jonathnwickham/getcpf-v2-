@@ -21,11 +21,11 @@ type RootCause = "A" | "B" | "C" | "D" | "E" | "F" | "G";
 
 const LOCATIONS: { id: Location; label: string; icon: string }[] = [
   { id: "online", label: "Online (Receita Federal website)", icon: "💻" },
-  { id: "correios", label: "In person — Correios", icon: "📮" },
-  { id: "banco_brasil", label: "In person — Banco do Brasil", icon: "🏦" },
-  { id: "caixa", label: "In person — Caixa Econômica", icon: "🏛️" },
-  { id: "receita", label: "In person — Receita Federal office", icon: "🏢" },
-  { id: "cartorio", label: "In person — Cartório", icon: "📜" },
+  { id: "correios", label: "In person. Correios", icon: "📮" },
+  { id: "banco_brasil", label: "In person. Banco do Brasil", icon: "🏦" },
+  { id: "caixa", label: "In person. Caixa Econômica", icon: "🏛️" },
+  { id: "receita", label: "In person. Receita Federal office", icon: "🏢" },
+  { id: "cartorio", label: "In person. Cartório", icon: "📜" },
 ];
 
 const REASONS: { id: Reason; label: string; icon: string }[] = [
@@ -34,7 +34,7 @@ const REASONS: { id: Reason; label: string; icon: string }[] = [
   { id: "come_back", label: "I was told to come back with something different", icon: "🔄" },
   { id: "wouldnt_process", label: "I showed up and they wouldn't process me", icon: "🚪" },
   { id: "online_nothing", label: "I applied online and nothing happened", icon: "⏳" },
-  { id: "dont_know", label: "I don't know — they just said no", icon: "❓" },
+  { id: "dont_know", label: "I don't know. they just said no", icon: "❓" },
 ];
 
 // Eligible nationalities for online CPF
@@ -94,7 +94,7 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
           <h3 className="font-bold text-sm mb-1">Most common rejection reason</h3>
           <p className="text-sm text-muted-foreground">
-            Your mother's name must be written exactly as it appears on her birth certificate — no initials, no abbreviations. "Maria J. Santos" or "M. João Santos" will be rejected.
+            Your mother's name must be written exactly as it appears on her birth certificate. no initials, no abbreviations. "Maria J. Santos" or "M. João Santos" will be rejected.
           </p>
         </div>
         {data?.motherName && (
@@ -126,7 +126,7 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
         <div className="bg-secondary rounded-xl p-4 space-y-2">
           <h4 className="font-semibold text-sm">What is a cartório?</h4>
           <p className="text-xs text-muted-foreground">
-            A cartório is a Brazilian notary office — they certify copies of documents as authentic. You can find one in virtually every neighbourhood.
+            A cartório is a Brazilian notary office. they certify copies of documents as authentic. You can find one in virtually every neighbourhood.
           </p>
           <p className="text-xs font-semibold text-primary">💰 Cost: approximately R$30–50 per document</p>
         </div>
@@ -170,10 +170,10 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
         </div>
         <div className="bg-primary/5 border border-primary/15 rounded-xl p-4">
           <p className="text-xs text-muted-foreground mb-3">
-            <strong>💡 Tip:</strong> The declaração de residência is your best option if you're staying with friends or in an Airbnb. Take it to any cartório to have it notarised — costs roughly R$30–50.
+            <strong>💡 Tip:</strong> The declaração de residência is your best option if you're staying with friends or in an Airbnb. Take it to any cartório to have it notarised. costs roughly R$30–50.
           </p>
           <p className="text-xs text-muted-foreground">
-            Your Ready Pack can generate this letter for you — check the Documents tab.
+            Your Ready Pack can generate this letter for you. check the Documents tab.
           </p>
         </div>
       </div>
@@ -189,7 +189,7 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
         <div className="bg-card border border-border rounded-xl p-4 space-y-3">
           <h4 className="font-semibold text-sm">✅ Verified foreigner-friendly offices near {data?.city || "you"}</h4>
           <p className="text-xs text-muted-foreground">
-            Your Ready Pack's "Where to go" tab shows the recommended office for your state — one that's confirmed to process foreign CPF applications.
+            Your Ready Pack's "Where to go" tab shows the recommended office for your state. one that's confirmed to process foreign CPF applications.
           </p>
           <div className="bg-primary/5 rounded-lg p-3">
             <p className="text-xs font-semibold">💡 Capital city Receita Federal offices almost always accept walk-ins for foreigners. Try the largest office in your state capital.</p>
@@ -233,10 +233,10 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
         <div className="bg-secondary rounded-xl p-4 space-y-2">
           <h4 className="font-semibold text-sm">What each status means:</h4>
           {[
-            { status: "Regular", desc: "Your CPF is active — you're done! 🎉", color: "text-green-700 dark:text-green-400" },
-            { status: "Pendente de regularização", desc: "Action needed — contact your nearest Receita Federal office", color: "text-amber-700 dark:text-amber-400" },
-            { status: "Suspensa", desc: "Suspended — visit Receita Federal in person with your documents", color: "text-amber-700 dark:text-amber-400" },
-            { status: "Cancelada", desc: "Cancelled — visit Receita Federal. This can usually be reactivated", color: "text-red-700 dark:text-red-400" },
+            { status: "Regular", desc: "Your CPF is active. you're done! 🎉", color: "text-green-700 dark:text-green-400" },
+            { status: "Pendente de regularização", desc: "Action needed. contact your nearest Receita Federal office", color: "text-amber-700 dark:text-amber-400" },
+            { status: "Suspensa", desc: "Suspended. visit Receita Federal in person with your documents", color: "text-amber-700 dark:text-amber-400" },
+            { status: "Cancelada", desc: "Cancelled. visit Receita Federal. This can usually be reactivated", color: "text-red-700 dark:text-red-400" },
           ].map((s) => (
             <div key={s.status} className="flex items-start gap-2">
               <span className={`text-xs font-bold ${s.color}`}>{s.status}:</span>
@@ -255,11 +255,11 @@ const DiagnosisScreen = ({ cause, location, data, motherNameOverride, onMotherNa
     G: (
       <div className="space-y-4">
         <div className="bg-card border border-border rounded-xl p-4">
-          <h3 className="font-bold text-sm mb-3">Common form errors — check each one:</h3>
+          <h3 className="font-bold text-sm mb-3">Common form errors. check each one:</h3>
           <div className="space-y-2">
             {[
               "Título Eleitoral field left blank? (must be blank for foreigners)",
-              "CPF field left blank? (gets assigned — must not be pre-filled)",
+              "CPF field left blank? (gets assigned. must not be pre-filled)",
               "Date of birth in DD/MM/YYYY format? (not MM/DD/YYYY)",
               "No missing accents on Portuguese name fields?",
               "Mother's name fully written out, no abbreviations?",
@@ -325,8 +325,8 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     estimate: "1 visit",
     steps: [
       "Download your corrected form from the Documents tab",
-      "Print it — black and white is fine",
-      "Return to the same office — no new appointment needed for resubmissions at most offices",
+      "Print it. black and white is fine",
+      "Return to the same office. no new appointment needed for resubmissions at most offices",
       "Bring: passport (original), corrected form, proof of address",
       "Explain you're correcting a previous submission",
     ],
@@ -335,7 +335,7 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     estimate: "1–2 days",
     steps: [
       "Visit a cartório near you to get certified copies (cópia autenticada)",
-      "Bring the original documents — they'll create certified copies on the spot",
+      "Bring the original documents. they'll create certified copies on the spot",
       "Cost: approximately R$30–50 per document",
       "Return to the office with both originals AND certified copies",
       "Bring: passport (original + certified copy), proof of address (original + certified copy)",
@@ -346,7 +346,7 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     steps: [
       "Get one of the accepted proof of address documents listed above",
       "If using a declaração de residência: get it signed by your host and take it to a cartório for notarisation",
-      "Print the document — bring the original if it's a contract or bill",
+      "Print the document. bring the original if it's a contract or bill",
       "Return to the office with your corrected proof of address",
       "Bring: passport, original form, new proof of address",
     ],
@@ -356,7 +356,7 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     steps: [
       "Check your Ready Pack's 'Where to go' tab for verified foreigner-friendly offices",
       "Try the largest Receita Federal office in your state capital",
-      "Arrive early — before 9 AM is ideal",
+      "Arrive early. before 9 AM is ideal",
       "Bring all your original documents: passport, proof of address, any previous forms",
       "Ask for: 'Inscrição no CPF para estrangeiro, por favor'",
     ],
@@ -364,10 +364,10 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
   E: {
     estimate: "1 visit in person",
     steps: [
-      "Your data is already saved — go to your Ready Pack's 'Where to go' tab",
+      "Your data is already saved. go to your Ready Pack's 'Where to go' tab",
       "Visit the recommended Receita Federal office for your state",
       "Bring: passport (original), proof of address, passport copies",
-      "Your pre-filled form is ready in the Documents tab — download and print it",
+      "Your pre-filled form is ready in the Documents tab. download and print it",
       "You should get your CPF the same day",
     ],
   },
@@ -375,9 +375,9 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     estimate: "3–10 business days (or same day in person)",
     steps: [
       "Check your status at servicos.receita.fazenda.gov.br",
-      "If status shows 'Regular' — you're done, your CPF is active",
-      "If status shows 'Pendente' — visit a Receita Federal office with your protocol number",
-      "If it's been more than 10 business days — go in person, don't wait",
+      "If status shows 'Regular'. you're done, your CPF is active",
+      "If status shows 'Pendente'. visit a Receita Federal office with your protocol number",
+      "If it's been more than 10 business days. go in person, don't wait",
       "Bring: passport, protocol number, proof of address",
     ],
   },
@@ -386,8 +386,8 @@ const ACTION_PLANS: Record<RootCause, { estimate: string; steps: string[] }> = {
     steps: [
       "Review the form error checklist above and identify what was wrong",
       "Download the corrected form from your Ready Pack's Documents tab",
-      "Print it — black and white is fine",
-      "Return to the same office — resubmissions usually don't need a new appointment",
+      "Print it. black and white is fine",
+      "Return to the same office. resubmissions usually don't need a new appointment",
       "Bring: passport (original), corrected form, proof of address",
     ],
   },
@@ -471,7 +471,7 @@ const RejectionFlow = ({ onClose, data }: { onClose: () => void; data?: Onboardi
         <button onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground mb-4 font-medium">← Back to guide</button>
         <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Let's fix this.</h1>
         <p className="text-muted-foreground mt-2 max-w-lg">
-          Most rejections come down to one small thing. Tell us what happened and we'll give you the exact next step — no guessing.
+          Most rejections come down to one small thing. Tell us what happened and we'll give you the exact next step. no guessing.
         </p>
       </section>
 

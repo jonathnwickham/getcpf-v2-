@@ -96,8 +96,8 @@ const Admin = () => {
 
   if (authLoading || checking) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Checking access...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-pulse text-gray-500">Checking access...</div>
       </div>
     );
   }
@@ -116,15 +116,16 @@ const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-primary text-primary-foreground">
-        <div className="max-w-[1400px] mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← GET CPF</a>
-            <h1 className="text-xl font-extrabold mt-1">Admin Dashboard</h1>
+      <div className="border-b border-gray-100 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <a href="/" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">← GET CPF</a>
+            <span className="text-gray-200">|</span>
+            <h1 className="text-sm font-extrabold tracking-tight">Admin</h1>
           </div>
-          <button onClick={signOut} className="bg-primary-foreground/15 hover:bg-primary-foreground/25 px-4 py-2 rounded-xl text-sm font-semibold transition-all">
+          <button onClick={signOut} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
             Sign out
           </button>
         </div>
@@ -132,13 +133,13 @@ const Admin = () => {
 
       <div className="max-w-[1400px] mx-auto px-6 py-6">
         {/* Tabs */}
-        <div className="flex gap-1 bg-secondary rounded-xl p-1 mb-6 overflow-x-auto">
+        <div className="flex gap-1 bg-gray-50 rounded-xl p-1 mb-6 overflow-x-auto">
           {tabs.map(t => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
               className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-2 ${
-                tab === t.key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                tab === t.key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"
               }`}
             >
               <span>{t.icon}</span> {t.label}
@@ -174,9 +175,9 @@ const getDataStatus = (profile: Profile, applications: Application[] = []): "Act
 };
 
 const DATA_STATUS_COLORS: Record<string, string> = {
-  "Active": "bg-primary/10 text-primary",
+  "Active": "bg-green-800/10 text-green-800",
   "Due for deletion": "bg-destructive/10 text-destructive",
-  "Retained": "bg-secondary text-muted-foreground",
+  "Retained": "bg-gray-50 text-gray-500",
 };
 
 const anonymizeUser = async (userId: string, onRefresh: () => void) => {
@@ -324,14 +325,14 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
       </div>
 
       {/* Search + Table */}
-      <div className="bg-card border border-border rounded-2xl overflow-hidden">
-        <div className="p-4 border-b border-border flex flex-wrap gap-3 items-center">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+        <div className="p-4 border-b border-gray-100 flex flex-wrap gap-3 items-center">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="w-full md:w-80 px-4 py-2.5 bg-secondary border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            className="w-full md:w-80 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
           />
           {(() => {
             const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
@@ -381,15 +382,15 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               const nat = userApp?.nationality || p.country_code || "—";
               const displayName = p.full_name || userApp?.full_name || "—";
               return (
-                <TableRow key={p.id} className="cursor-pointer hover:bg-secondary/50" onClick={() => setSelectedUser(p.id)}>
+                <TableRow key={p.id} className="cursor-pointer hover:bg-gray-50/50" onClick={() => setSelectedUser(p.id)}>
                   <TableCell className="font-medium">{displayName}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{p.email}</TableCell>
+                  <TableCell className="text-sm text-gray-500">{p.email}</TableCell>
                   <TableCell className="text-sm">{nat}</TableCell>
                   <TableCell>
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
                       p.plan && p.plan !== "free"
-                        ? "bg-primary/10 text-primary"
-                        : "bg-secondary text-muted-foreground"
+                        ? "bg-green-800/10 text-green-800"
+                        : "bg-gray-50 text-gray-500"
                     }`}>
                       {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
                     </span>
@@ -404,7 +405,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                       );
                     })()}
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">
+                  <TableCell className="text-xs text-gray-500">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
                   </TableCell>
                   <TableCell>
@@ -424,7 +425,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             })}
             {paginatedUsers.length === 0 && (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-sm text-muted-foreground py-8">
+                <TableCell colSpan={8} className="text-center text-sm text-gray-500 py-8">
                   No users found
                 </TableCell>
               </TableRow>
@@ -449,35 +450,35 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               </DialogHeader>
               <div className="space-y-4 mt-2">
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
-                  <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
+                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
+                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
+                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
+                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
                 </div>
 
                 {userApps.length > 0 ? userApps.map(app => (
-                  <div key={app.id} className="bg-secondary rounded-xl p-4 space-y-3">
+                  <div key={app.id} className="bg-gray-50 rounded-xl p-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-bold text-sm">Application</h4>
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
-                        app.status === "prepared" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground border border-border"
+                        app.status === "prepared" ? "bg-green-800/10 text-green-800" : "bg-gray-50 text-gray-500 border border-gray-100"
                       }`}>{app.status || "draft"}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div><span className="text-xs text-muted-foreground">Name:</span> {app.full_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Passport:</span> {maskPassport(app.passport_number)}</div>
-                      <div><span className="text-xs text-muted-foreground">Nationality:</span> {app.nationality || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">State:</span> {app.state_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">City:</span> {app.city || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Address:</span> {app.street_address || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Mother:</span> {app.mother_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Father:</span> {app.father_name || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Email:</span> {app.email || "—"}</div>
-                      <div><span className="text-xs text-muted-foreground">Created:</span> {app.created_at ? new Date(app.created_at).toLocaleDateString() : "—"}</div>
+                      <div><span className="text-xs text-gray-500">Name:</span> {app.full_name || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Passport:</span> {maskPassport(app.passport_number)}</div>
+                      <div><span className="text-xs text-gray-500">Nationality:</span> {app.nationality || "—"}</div>
+                      <div><span className="text-xs text-gray-500">State:</span> {app.state_name || "—"}</div>
+                      <div><span className="text-xs text-gray-500">City:</span> {app.city || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Address:</span> {app.street_address || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Mother:</span> {app.mother_name || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Father:</span> {app.father_name || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Email:</span> {app.email || "—"}</div>
+                      <div><span className="text-xs text-gray-500">Created:</span> {app.created_at ? new Date(app.created_at).toLocaleDateString() : "—"}</div>
                     </div>
                   </div>
                 )) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">No application yet</p>
+                  <p className="text-sm text-gray-500 text-center py-4">No application yet</p>
                 )}
               </div>
             </DialogContent>
@@ -491,9 +492,9 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 /* ── Applications Tab ── */
 const APP_STATUSES = ["draft", "paid", "prepared", "office_visited", "cpf_issued", "rejected"] as const;
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-secondary text-muted-foreground",
+  draft: "bg-gray-50 text-gray-500",
   paid: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  prepared: "bg-primary/10 text-primary",
+  prepared: "bg-green-800/10 text-green-800",
   office_visited: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
   cpf_issued: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
   rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
@@ -583,7 +584,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       </ChartCard>
 
       {/* Table */}
-      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -602,7 +603,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
               return (
                 <TableRow key={a.id}>
                   <TableCell className="font-medium">{a.full_name || profile?.full_name || "—"}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{a.email || profile?.email || "—"}</TableCell>
+                  <TableCell className="text-sm text-gray-500">{a.email || profile?.email || "—"}</TableCell>
                   <TableCell className="text-sm">{a.nationality || "—"}</TableCell>
                   <TableCell className="text-sm">{a.state_name || "—"}</TableCell>
                   <TableCell className="text-sm">{a.city || "—"}</TableCell>
@@ -618,7 +619,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
                       ))}
                     </select>
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">
+                  <TableCell className="text-xs text-gray-500">
                     {a.created_at ? new Date(a.created_at).toLocaleDateString() : "—"}
                   </TableCell>
                 </TableRow>
@@ -784,54 +785,54 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
       </div>
 
       {/* Manual entry section */}
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="font-bold text-lg">Manual entries</h2>
-            <p className="text-xs text-muted-foreground">Add revenue or refund records manually</p>
+            <p className="text-xs text-gray-500">Add revenue or refund records manually</p>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Revenue</button>
+            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-green-800 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Revenue</button>
             <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="bg-destructive text-destructive-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Refund</button>
           </div>
         </div>
 
         {showForm && (
-          <div className="bg-secondary rounded-xl p-4 mb-4 space-y-3">
+          <div className="bg-gray-50 rounded-xl p-4 mb-4 space-y-3">
             <h3 className="font-semibold text-sm capitalize">{formType} entry</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Amount ($) *</label>
-                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="text-xs font-semibold text-gray-500 block mb-1">Amount ($) *</label>
+                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Date</label>
-                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="text-xs font-semibold text-gray-500 block mb-1">Date</label>
+                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">User email</label>
-                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="text-xs font-semibold text-gray-500 block mb-1">User email</label>
+                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Transaction ID</label>
-                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="text-xs font-semibold text-gray-500 block mb-1">Transaction ID</label>
+                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Notes</label>
-                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="text-xs font-semibold text-gray-500 block mb-1">Notes</label>
+                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-primary text-primary-foreground px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
-              <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-xl text-sm font-semibold border border-border text-muted-foreground hover:text-foreground">Cancel</button>
+              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-green-800 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
+              <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-xl text-sm font-semibold border border-gray-100 text-gray-500 hover:text-gray-900">Cancel</button>
             </div>
           </div>
         )}
 
         {loadingEntries ? (
-          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+          <p className="text-sm text-gray-500 animate-pulse">Loading...</p>
         ) : manualEntries.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No manual entries yet.</p>
+          <p className="text-sm text-gray-500">No manual entries yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -850,7 +851,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
                 {manualEntries.map((e: any) => (
                   <TableRow key={e.id}>
                     <TableCell>
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-green-800/10 text-green-800" : "bg-destructive/10 text-destructive"}`}>
                         {e.entry_type}
                       </span>
                     </TableCell>
@@ -858,9 +859,9 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
                     <TableCell className={`font-semibold ${e.entry_type === "refund" ? "text-destructive" : ""}`}>
                       {e.entry_type === "refund" ? "-" : ""}${Number(e.amount).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{e.user_email || "—"}</TableCell>
-                    <TableCell className="text-xs font-mono text-muted-foreground">{e.transaction_id || "—"}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{e.notes || "—"}</TableCell>
+                    <TableCell className="text-sm text-gray-500">{e.user_email || "—"}</TableCell>
+                    <TableCell className="text-xs font-mono text-gray-500">{e.transaction_id || "—"}</TableCell>
+                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate">{e.notes || "—"}</TableCell>
                     <TableCell className="text-right">
                       <button onClick={() => deleteEntry(e.id)} className="text-xs text-destructive hover:text-destructive/80 font-medium">Delete</button>
                     </TableCell>
@@ -888,23 +889,23 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
           </ResponsiveContainer>
         </ChartCard>
 
-        <div className="bg-card border border-border rounded-2xl p-5">
+        <div className="bg-white border border-gray-100 rounded-2xl p-5">
           <h3 className="font-bold text-sm mb-1">Recent Activity</h3>
-          <p className="text-xs text-muted-foreground mb-4">Latest signups and applications</p>
+          <p className="text-xs text-gray-500 mb-4">Latest signups and applications</p>
           <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2">
             {recentActivity.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No activity yet</p>
+              <p className="text-sm text-gray-500 text-center py-8">No activity yet</p>
             ) : (
               recentActivity.map((event, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-primary" : "bg-accent"}`} />
+                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-800" : "bg-accent"}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate">{event.detail}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-500">
                       {new Date(event.time).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </p>
                   </div>
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent-foreground"}`}>
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-green-800/10 text-green-800" : "bg-accent/10 text-accent-foreground"}`}>
                     {event.type}
                   </span>
                 </div>
@@ -1098,74 +1099,74 @@ const PromosTab = () => {
   return (
     <div className="space-y-6">
       {/* Add new promo */}
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-4">Create promo code</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Code</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Code</label>
             <input
               value={newCode}
               onChange={(e) => setNewCode(e.target.value.toUpperCase())}
               placeholder="BRAZILIANGRINGO"
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Discount %</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Discount %</label>
             <input
               value={newDiscount}
               onChange={(e) => setNewDiscount(e.target.value)}
               placeholder="10"
               type="number"
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Affiliate name</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Affiliate name</label>
             <input
               value={newAffiliate}
               onChange={(e) => setNewAffiliate(e.target.value)}
               placeholder="Brazilian Gringo"
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Affiliate email</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Affiliate email</label>
             <input
               value={newAffiliateEmail}
               onChange={(e) => setNewAffiliateEmail(e.target.value)}
               placeholder="gringo@email.com"
               type="email"
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Commission %</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Commission %</label>
             <input
               value={newCommission}
               onChange={(e) => setNewCommission(e.target.value)}
               placeholder="20"
               type="number"
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         </div>
         <button
           onClick={addPromo}
           disabled={adding || !newCode.trim()}
-          className="mt-4 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+          className="mt-4 bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
         >
           {adding ? "Adding..." : "Add promo code"}
         </button>
       </div>
 
       {/* Existing promos */}
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-4">All promo codes</h2>
         {loading ? (
-          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+          <p className="text-sm text-gray-500 animate-pulse">Loading...</p>
         ) : promos.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No promo codes yet. Create one above.</p>
+          <p className="text-sm text-gray-500">No promo codes yet. Create one above.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -1183,14 +1184,14 @@ const PromosTab = () => {
               <TableBody>
                 {promos.map((p) => (
                   <TableRow key={p.id}>
-                    <TableCell className="font-mono font-bold text-primary">{p.code}</TableCell>
+                    <TableCell className="font-mono font-bold text-green-800">{p.code}</TableCell>
                     <TableCell>{p.discount_percent}% off</TableCell>
                     <TableCell>{p.affiliate_name || "None"}</TableCell>
                     <TableCell>{p.affiliate_commission_percent}%</TableCell>
                     <TableCell>{p.times_used}{p.max_uses ? ` / ${p.max_uses}` : ""}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        p.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                        p.is_active ? "bg-green-800/10 text-green-800" : "bg-gray-100 text-gray-500"
                       }`}>
                         {p.is_active ? "Active" : "Disabled"}
                       </span>
@@ -1199,7 +1200,7 @@ const PromosTab = () => {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => toggleActive(p.id, p.is_active)}
-                          className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                          className="text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
                         >
                           {p.is_active ? "Disable" : "Enable"}
                         </button>
@@ -1213,7 +1214,7 @@ const PromosTab = () => {
                             </button>
                             <button
                               onClick={() => setConfirmDelete(null)}
-                              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                              className="text-xs text-gray-500 hover:text-gray-900 transition-colors"
                             >
                               Cancel
                             </button>
@@ -1237,26 +1238,26 @@ const PromosTab = () => {
       </div>
 
       {/* Affiliate performance */}
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-1">Affiliate performance</h2>
-        <p className="text-xs text-muted-foreground mb-4">Revenue and commission based on actual paid applications</p>
+        <p className="text-xs text-gray-500 mb-4">Revenue and commission based on actual paid applications</p>
         {affiliateData.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No affiliates yet. Add an affiliate name when creating a promo code.</p>
+          <p className="text-sm text-gray-500">No affiliates yet. Add an affiliate name when creating a promo code.</p>
         ) : (
           <div className="space-y-4">
             {/* Summary cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-secondary rounded-xl p-4">
-                <div className="text-xs text-muted-foreground font-semibold mb-1">Total affiliates</div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs text-gray-500 font-semibold mb-1">Total affiliates</div>
                 <div className="text-2xl font-extrabold">{affiliateData.length}</div>
               </div>
-              <div className="bg-secondary rounded-xl p-4">
-                <div className="text-xs text-muted-foreground font-semibold mb-1">Total affiliate revenue</div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs text-gray-500 font-semibold mb-1">Total affiliate revenue</div>
                 <div className="text-2xl font-extrabold">${affiliateData.reduce((s, a) => s + a.totalRevenue, 0).toFixed(2)}</div>
               </div>
-              <div className="bg-secondary rounded-xl p-4">
-                <div className="text-xs text-muted-foreground font-semibold mb-1">Total commission owed</div>
-                <div className="text-2xl font-extrabold text-primary">${affiliateData.reduce((s, a) => s + a.commissionOwed, 0).toFixed(2)}</div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs text-gray-500 font-semibold mb-1">Total commission owed</div>
+                <div className="text-2xl font-extrabold text-green-800">${affiliateData.reduce((s, a) => s + a.commissionOwed, 0).toFixed(2)}</div>
               </div>
             </div>
 
@@ -1286,7 +1287,7 @@ const PromosTab = () => {
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
                                 placeholder="Name"
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-primary"
                               />
                             </TableCell>
                             <TableCell>
@@ -1295,62 +1296,62 @@ const PromosTab = () => {
                                 onChange={(e) => setEditEmail(e.target.value)}
                                 placeholder="email@example.com"
                                 type="email"
-                                className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-primary"
                               />
                             </TableCell>
-                            <TableCell className="font-mono text-primary">{a.code}</TableCell>
+                            <TableCell className="font-mono text-green-800">{a.code}</TableCell>
                             <TableCell>
                               <div className="flex items-center gap-1">
                                 <input
                                   value={editCommission}
                                   onChange={(e) => setEditCommission(e.target.value)}
                                   type="number"
-                                  className="bg-secondary border border-border rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-primary"
+                                  className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-primary"
                                 />
-                                <span className="text-sm text-muted-foreground">%</span>
+                                <span className="text-sm text-gray-500">%</span>
                               </div>
                             </TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                            <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="font-bold text-green-800">${a.commissionOwed.toFixed(2)}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-2">
-                                <button onClick={() => updateAffiliate(a.promoId)} className="text-xs font-bold text-primary hover:opacity-80">Save</button>
-                                <button onClick={() => setEditingAffiliate(null)} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
+                                <button onClick={() => updateAffiliate(a.promoId)} className="text-xs font-bold text-green-800 hover:opacity-80">Save</button>
+                                <button onClick={() => setEditingAffiliate(null)} className="text-xs text-gray-500 hover:text-gray-900">Cancel</button>
                               </div>
                             </TableCell>
                           </>
                         ) : (
                           <>
                             <TableCell>
-                              <button onClick={() => openProfile(a)} className="font-semibold text-primary hover:underline cursor-pointer text-left">
+                              <button onClick={() => openProfile(a)} className="font-semibold text-green-800 hover:underline cursor-pointer text-left">
                                 {a.name}
                               </button>
                             </TableCell>
-                            <TableCell className="text-sm text-muted-foreground">{a.email || "No email"}</TableCell>
-                            <TableCell className="font-mono text-primary">{a.code}</TableCell>
+                            <TableCell className="text-sm text-gray-500">{a.email || "No email"}</TableCell>
+                            <TableCell className="font-mono text-green-800">{a.code}</TableCell>
                             <TableCell>{a.commission}%</TableCell>
                             <TableCell>{a.uses}</TableCell>
                             <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                            <TableCell className="font-bold text-primary">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="font-bold text-green-800">${a.commissionOwed.toFixed(2)}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-3">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name); }}
-                                  className="text-xs text-muted-foreground hover:text-foreground"
+                                  className="text-xs text-gray-500 hover:text-gray-900"
                                 >
                                   {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `${a.conversions.length} sales ▼`) : "No sales yet"}
                                 </button>
                                 <button
                                   onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
-                                  className="text-xs font-semibold text-muted-foreground hover:text-foreground"
+                                  className="text-xs font-semibold text-gray-500 hover:text-gray-900"
                                 >
                                   Edit
                                 </button>
                                 {confirmDeleteAffiliate === a.promoId ? (
                                   <div className="flex items-center gap-1">
                                     <button onClick={() => removeAffiliate(a.promoId)} className="text-xs font-bold text-red-600 hover:text-red-700">Remove</button>
-                                    <button onClick={() => setConfirmDeleteAffiliate(null)} className="text-xs text-muted-foreground">Cancel</button>
+                                    <button onClick={() => setConfirmDeleteAffiliate(null)} className="text-xs text-gray-500">Cancel</button>
                                   </div>
                                 ) : (
                                   <button
@@ -1367,20 +1368,20 @@ const PromosTab = () => {
                       </TableRow>
                       {expandedAffiliate === a.name && a.conversions.length > 0 && (
                         <TableRow key={`${a.name}-detail`}>
-                          <TableCell colSpan={9} className="bg-secondary/30 p-0">
+                          <TableCell colSpan={9} className="bg-gray-50/30 p-0">
                             <div className="p-5">
-                              <p className="text-xs font-bold text-muted-foreground mb-3">Conversions for {a.name}</p>
+                              <p className="text-xs font-bold text-gray-500 mb-3">Conversions for {a.name}</p>
                               <div className="space-y-2">
                                 {a.conversions.map((c: any, i: number) => (
-                                  <div key={i} className="flex flex-wrap items-center gap-4 text-xs bg-card rounded-lg px-4 py-3 border border-border">
+                                  <div key={i} className="flex flex-wrap items-center gap-4 text-xs bg-white rounded-lg px-4 py-3 border border-gray-100">
                                     <span className="font-semibold min-w-[120px]">{c.full_name || c.email || "Unknown"}</span>
-                                    <span className="text-muted-foreground">{c.email}</span>
-                                    <span className="text-primary font-bold">${Number(c.final_price || 0).toFixed(2)}</span>
-                                    <span className="text-muted-foreground">saved ${Number(c.discount_amount || 0).toFixed(2)}</span>
+                                    <span className="text-gray-500">{c.email}</span>
+                                    <span className="text-green-800 font-bold">${Number(c.final_price || 0).toFixed(2)}</span>
+                                    <span className="text-gray-500">saved ${Number(c.discount_amount || 0).toFixed(2)}</span>
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                      c.status === "paid" || c.status === "completed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                                      c.status === "paid" || c.status === "completed" ? "bg-green-800/10 text-green-800" : "bg-gray-100 text-gray-500"
                                     }`}>{c.status}</span>
-                                    <span className="text-muted-foreground ml-auto">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ""}</span>
+                                    <span className="text-gray-500 ml-auto">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ""}</span>
                                   </div>
                                 ))}
                               </div>
@@ -1409,40 +1410,40 @@ const PromosTab = () => {
               <div className="space-y-5 mt-2">
                 {/* Quick stats */}
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-secondary rounded-xl p-3 text-center">
-                    <div className="text-xs text-muted-foreground font-semibold">Conversions</div>
+                  <div className="bg-gray-50 rounded-xl p-3 text-center">
+                    <div className="text-xs text-gray-500 font-semibold">Conversions</div>
                     <div className="text-xl font-extrabold">{activeAffiliate.uses}</div>
                   </div>
-                  <div className="bg-secondary rounded-xl p-3 text-center">
-                    <div className="text-xs text-muted-foreground font-semibold">Revenue</div>
+                  <div className="bg-gray-50 rounded-xl p-3 text-center">
+                    <div className="text-xs text-gray-500 font-semibold">Revenue</div>
                     <div className="text-xl font-extrabold">${activeAffiliate.totalRevenue.toFixed(2)}</div>
                   </div>
-                  <div className="bg-secondary rounded-xl p-3 text-center">
-                    <div className="text-xs text-muted-foreground font-semibold">Owed</div>
-                    <div className="text-xl font-extrabold text-primary">${activeAffiliate.commissionOwed.toFixed(2)}</div>
+                  <div className="bg-gray-50 rounded-xl p-3 text-center">
+                    <div className="text-xs text-gray-500 font-semibold">Owed</div>
+                    <div className="text-xl font-extrabold text-green-800">${activeAffiliate.commissionOwed.toFixed(2)}</div>
                   </div>
                 </div>
 
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div>
+                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div>
                     <div className="font-medium">{activeAffiliate.email || "Not set"}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Code</div>
-                    <div className="font-mono font-bold text-primary">{activeAffiliate.code}</div>
+                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Code</div>
+                    <div className="font-mono font-bold text-green-800">{activeAffiliate.code}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Discount</div>
+                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Discount</div>
                     <div>{activeAffiliate.discount}% off</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Commission</div>
+                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Commission</div>
                     <div>{activeAffiliate.commission}%</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground font-semibold mb-0.5">Added</div>
+                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Added</div>
                     <div>{new Date(activeAffiliate.createdAt).toLocaleDateString()}</div>
                   </div>
                 </div>
@@ -1450,31 +1451,31 @@ const PromosTab = () => {
                 {/* Editable fields */}
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Where did you find them?</label>
+                    <label className="text-xs font-semibold text-gray-500 block mb-1">Where did you find them?</label>
                     <input
                       value={profileSource}
                       onChange={(e) => setProfileSource(e.target.value)}
                       placeholder="YouTube, Instagram, referral, event..."
-                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
+                    <label className="text-xs font-semibold text-gray-500 block mb-1">Location</label>
                     <input
                       value={profileLocation}
                       onChange={(e) => setProfileLocation(e.target.value)}
                       placeholder="São Paulo, Brazil / London, UK..."
-                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground block mb-1">Notes</label>
+                    <label className="text-xs font-semibold text-gray-500 block mb-1">Notes</label>
                     <textarea
                       value={profileNotes}
                       onChange={(e) => setProfileNotes(e.target.value)}
                       placeholder="Any notes about this affiliate... deal terms, contact preferences, follow-up dates..."
                       rows={4}
-                      className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                     />
                   </div>
                 </div>
@@ -1482,7 +1483,7 @@ const PromosTab = () => {
                 <button
                   onClick={() => saveProfile(activeAffiliate.promoId)}
                   disabled={profileSaving}
-                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                  className="w-full bg-green-800 text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
                 >
                   {profileSaving ? "Saving..." : "Save profile"}
                 </button>
@@ -1608,88 +1609,88 @@ const AffiliatesTab = () => {
 
       {/* Add / Edit form */}
       {showAdd ? (
-        <div className="bg-card border border-border rounded-2xl p-6">
+        <div className="bg-white border border-gray-100 rounded-2xl p-6">
           <h2 className="font-bold text-lg mb-4">{editId ? "Edit affiliate" : "Add new affiliate"}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Name *</label>
-              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Name *</label>
+              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Email *</label>
-              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Email *</label>
+              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Platform</label>
-              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Platform</label>
+              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Location</label>
-              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Location</label>
+              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Promo code</label>
-              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Promo code</label>
+              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Commission %</label>
-              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Commission %</label>
+              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Source</label>
-              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Source</label>
+              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Status</label>
-              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Status</label>
+              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
                 {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
               </select>
             </div>
           </div>
           {/* Posting frequency */}
           <div className="mt-4">
-            <label className="text-xs font-semibold text-muted-foreground block mb-1.5">Posting frequency</label>
+            <label className="text-xs font-semibold text-gray-500 block mb-1.5">Posting frequency</label>
             <div className="flex flex-wrap gap-2">
               {frequencyOptions.map(opt => (
                 <button key={opt} type="button" onClick={() => update("posting_frequency", form.posting_frequency === opt ? "" : opt)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-primary bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground hover:border-primary/40"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-primary bg-green-800/10 text-green-800" : "border-gray-100 bg-gray-50 text-gray-500 hover:border-primary/40"}`}
                 >{opt}</button>
               ))}
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Why they want to be an affiliate</label>
-              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Why they want to be an affiliate</label>
+              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground block mb-1">Their situation</label>
-              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+              <label className="text-xs font-semibold text-gray-500 block mb-1">Their situation</label>
+              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
             </div>
           </div>
           <div className="mt-4">
-            <label className="text-xs font-semibold text-muted-foreground block mb-1">Internal notes</label>
-            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+            <label className="text-xs font-semibold text-gray-500 block mb-1">Internal notes</label>
+            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
           </div>
           <div className="flex gap-3 mt-5">
-            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50">
+            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50">
               {saving ? "Saving..." : editId ? "Update affiliate" : "Add affiliate"}
             </button>
-            <button onClick={resetForm} className="px-6 py-2.5 rounded-xl font-semibold text-sm border border-border text-muted-foreground hover:text-foreground transition-all">Cancel</button>
+            <button onClick={resetForm} className="px-6 py-2.5 rounded-xl font-semibold text-sm border border-gray-100 text-gray-500 hover:text-gray-900 transition-all">Cancel</button>
           </div>
         </div>
       ) : (
-        <button onClick={() => setShowAdd(true)} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all">
+        <button onClick={() => setShowAdd(true)} className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all">
           + Add affiliate
         </button>
       )}
 
       {/* Affiliates table */}
-      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">Loading...</div>
+          <div className="p-8 text-center text-sm text-gray-500 animate-pulse">Loading...</div>
         ) : affiliates.length === 0 ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">No affiliates yet. Add one above.</div>
+          <div className="p-8 text-center text-sm text-gray-500">No affiliates yet. Add one above.</div>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -1709,25 +1710,25 @@ const AffiliatesTab = () => {
                 {affiliates.map(a => (
                   <TableRow key={a.id}>
                     <TableCell className="font-semibold">{a.name}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{a.platform || "-"}</TableCell>
-                    <TableCell className="font-mono text-primary font-bold">{a.promo_code || "-"}</TableCell>
+                    <TableCell className="text-sm text-gray-500">{a.email}</TableCell>
+                    <TableCell className="text-sm text-gray-500">{a.platform || "-"}</TableCell>
+                    <TableCell className="font-mono text-green-800 font-bold">{a.promo_code || "-"}</TableCell>
                     <TableCell>{a.commission_percent}%</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{a.posting_frequency || "-"}</TableCell>
+                    <TableCell className="text-sm text-gray-500">{a.posting_frequency || "-"}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        a.status === "approved" ? "bg-primary/10 text-primary" :
+                        a.status === "approved" ? "bg-green-800/10 text-green-800" :
                         a.status === "rejected" ? "bg-destructive/10 text-destructive" :
-                        "bg-muted text-muted-foreground"
+                        "bg-gray-100 text-gray-500"
                       }`}>{a.status}</span>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => startEdit(a)} className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors">Edit</button>
+                        <button onClick={() => startEdit(a)} className="text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">Edit</button>
                         {confirmDelete === a.id ? (
                           <div className="flex items-center gap-1">
                             <button onClick={() => deleteAffiliate(a.id)} className="text-xs font-bold text-red-600 hover:text-red-700">Confirm</button>
-                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-muted-foreground">Cancel</button>
+                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-gray-500">Cancel</button>
                           </div>
                         ) : (
                           <button onClick={() => setConfirmDelete(a.id)} className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors">Delete</button>
@@ -1770,11 +1771,11 @@ const PartnersTab = ({ userId }: { userId: string }) => {
         <StatCard label="Total applications" value={totalApps.toString()} icon="🌐" />
       </div>
 
-      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">Loading...</div>
+          <div className="p-8 text-center text-sm text-gray-500 animate-pulse">Loading...</div>
         ) : apps.length === 0 ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">No partner applications yet.</div>
+          <div className="p-8 text-center text-sm text-gray-500">No partner applications yet.</div>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -1792,12 +1793,12 @@ const PartnersTab = ({ userId }: { userId: string }) => {
                 {apps.map((a: any) => (
                   <TableRow key={a.id}>
                     <TableCell className="font-semibold">{a.name}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{a.email}</TableCell>
+                    <TableCell className="text-sm text-gray-500">{a.email}</TableCell>
                     <TableCell className="text-sm">{a.platform || "—"}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{a.situation || "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate">{a.situation || "—"}</TableCell>
+                    <TableCell className="text-xs text-gray-500">{new Date(a.created_at).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
-                      <button onClick={() => setSelectedApp(a)} className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">View</button>
+                      <button onClick={() => setSelectedApp(a)} className="text-xs font-semibold text-green-800 hover:text-green-800/80 transition-colors">View</button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1815,19 +1816,19 @@ const PartnersTab = ({ userId }: { userId: string }) => {
             </DialogHeader>
             <div className="space-y-4 mt-2 text-sm">
               <div className="grid grid-cols-2 gap-3">
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Email</div><div>{selectedApp.email}</div></div>
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div><div>{selectedApp.email}</div></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
               </div>
               {selectedApp.situation && (
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
               )}
               {selectedApp.why && (
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
               )}
               {selectedApp.motivation && (
-                <div><div className="text-xs text-muted-foreground font-semibold mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
+                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
               )}
             </div>
           </DialogContent>
@@ -1889,33 +1890,33 @@ const SettingsTab = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 space-y-6">
         <h2 className="font-bold text-lg">Data export</h2>
-        <p className="text-sm text-muted-foreground">Export all user data as CSV for LGPD compliance requests.</p>
+        <p className="text-sm text-gray-500">Export all user data as CSV for LGPD compliance requests.</p>
         <button
           onClick={exportCSV}
           disabled={exporting}
-          className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+          className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
         >
           {exporting ? "Exporting..." : "📥 Export users CSV"}
         </button>
       </div>
 
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-2">Payment integration</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-500">
           Payment integration settings will appear here once connected. Price changes and webhook configuration will be manageable from this panel.
         </p>
       </div>
 
       {/* Audit Log */}
-      <div className="bg-card border border-border rounded-2xl p-6">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6">
         <h2 className="font-bold text-lg mb-1">Audit log</h2>
-        <p className="text-xs text-muted-foreground mb-4">Recent admin actions (last 50)</p>
+        <p className="text-xs text-gray-500 mb-4">Recent admin actions (last 50)</p>
         {loadingLogs ? (
-          <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+          <p className="text-sm text-gray-500 animate-pulse">Loading...</p>
         ) : auditLogs.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No audit log entries yet. Actions will be recorded as you use the admin panel.</p>
+          <p className="text-sm text-gray-500">No audit log entries yet. Actions will be recorded as you use the admin panel.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -1930,8 +1931,8 @@ const SettingsTab = ({ userId }: { userId: string }) => {
                 {auditLogs.map((log: any) => (
                   <TableRow key={log.id}>
                     <TableCell className="font-semibold text-sm">{log.action}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-[300px] truncate">{log.details || "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                    <TableCell className="text-sm text-gray-500 max-w-[300px] truncate">{log.details || "—"}</TableCell>
+                    <TableCell className="text-xs text-gray-500 whitespace-nowrap">
                       {new Date(log.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </TableCell>
                   </TableRow>
@@ -1968,7 +1969,7 @@ const WaitlistTab = () => {
           <StatCard key={plan} label={plan} value={count.toString()} icon="📋" />
         ))}
       </div>
-      <div className="bg-card border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -1979,16 +1980,16 @@ const WaitlistTab = () => {
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-gray-500 py-8">Loading...</TableCell></TableRow>
             ) : entries.length === 0 ? (
-              <TableRow><TableCell colSpan={3} className="text-center text-sm text-muted-foreground py-8">No waitlist signups yet</TableCell></TableRow>
+              <TableRow><TableCell colSpan={3} className="text-center text-sm text-gray-500 py-8">No waitlist signups yet</TableCell></TableRow>
             ) : entries.map(e => (
               <TableRow key={e.id}>
                 <TableCell className="font-medium">{e.email}</TableCell>
                 <TableCell>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">{e.plan}</span>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-green-800/10 text-green-800">{e.plan}</span>
                 </TableCell>
-                <TableCell className="text-xs text-muted-foreground">
+                <TableCell className="text-xs text-gray-500">
                   {new Date(e.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                 </TableCell>
               </TableRow>
@@ -2002,23 +2003,23 @@ const WaitlistTab = () => {
 
 /* ── Shared components ── */
 const StatCard = ({ label, value, icon, trend, sub }: { label: string; value: string; icon?: string; trend?: "up" | "down"; sub?: string }) => (
-  <div className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
+  <div className="bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
-      <div className="text-xs text-muted-foreground font-medium">{label}</div>
+      <div className="text-xs text-gray-500 font-medium">{label}</div>
       {icon && <span className="text-lg">{icon}</span>}
     </div>
     <div className="text-2xl font-extrabold mt-1 flex items-center gap-2">
       {value}
       {trend === "up" && <span className="text-xs text-green-500 font-semibold">↑</span>}
     </div>
-    {sub && <div className="text-[10px] text-muted-foreground mt-1">{sub}</div>}
+    {sub && <div className="text-[10px] text-gray-500 mt-1">{sub}</div>}
   </div>
 );
 
 const ChartCard = ({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) => (
-  <div className="bg-card border border-border rounded-2xl p-5">
+  <div className="bg-white border border-gray-100 rounded-2xl p-5">
     <h3 className="font-bold text-sm mb-0.5">{title}</h3>
-    <p className="text-xs text-muted-foreground mb-4">{subtitle}</p>
+    <p className="text-xs text-gray-500 mb-4">{subtitle}</p>
     {children}
   </div>
 );
@@ -2029,12 +2030,12 @@ const TablePagination = ({ currentPage, totalPages, totalItems, pageSize, onPage
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-border text-sm">
-      <span className="text-muted-foreground text-xs">{start}–{end} of {totalItems}</span>
+    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 text-sm">
+      <span className="text-gray-500 text-xs">{start}–{end} of {totalItems}</span>
       <div className="flex gap-1">
-        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">← Prev</button>
-        <span className="px-2 py-1 text-xs text-muted-foreground">Page {currentPage} of {totalPages}</span>
-        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-semibold bg-secondary hover:bg-secondary/80 disabled:opacity-40 transition-all">Next →</button>
+        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-semibold bg-gray-50 hover:bg-gray-50/80 disabled:opacity-40 transition-all">← Prev</button>
+        <span className="px-2 py-1 text-xs text-gray-500">Page {currentPage} of {totalPages}</span>
+        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-semibold bg-gray-50 hover:bg-gray-50/80 disabled:opacity-40 transition-all">Next →</button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ interface SEOProps {
 }
 
 const SITE = "https://getcpf.com";
-const DEFAULT_TITLE = "GET CPF — Get Your Brazilian CPF in Minutes";
+const DEFAULT_TITLE = "GET CPF. Get Your Brazilian CPF in Minutes";
 const DEFAULT_DESC =
   "Get your Brazilian CPF number sorted in minutes. Personalised documents, the right office, and step-by-step guidance for foreigners.";
 const DEFAULT_OG = `${SITE}/og-image.png`;

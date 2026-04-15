@@ -52,7 +52,7 @@ const CpfChecker = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Free CPF Number Checker — GET CPF" description="Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation." path="/cpf-checker" />
+      <SEO title="Free CPF Number Checker. GET CPF" description="Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation." path="/cpf-checker" />
       <Navbar />
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-[560px] mx-auto">
@@ -62,7 +62,7 @@ const CpfChecker = () => {
               Free CPF Number Checker
             </h1>
             <p className="text-muted-foreground text-sm mt-3 leading-relaxed max-w-md mx-auto">
-              Enter a CPF number to verify if it's mathematically valid. This checks the Mod-11 checksum — the same algorithm Brazil's Receita Federal uses.
+              Enter a CPF number to verify if it's mathematically valid. This checks the Mod-11 checksum. the same algorithm Brazil's Receita Federal uses.
             </p>
           </div>
 
@@ -123,7 +123,7 @@ const CpfChecker = () => {
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
+              Get My CPF Pack. <span className="line-through opacity-60">$49</span> $29 →
             </Link>
           </div>
 

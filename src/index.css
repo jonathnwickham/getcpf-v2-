@@ -131,6 +131,28 @@
   display: none;
 }
 
+/* ===== Link hover underline grow ===== */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #166534;
+  transition: width 0.3s ease;
+}
+.link-underline:hover::after {
+  width: 100%;
+}
+.link-underline-light::after {
+  background-color: rgba(255,255,255,0.5);
+}
+
 /* ===== Scroll-triggered reveal ===== */
 .reveal-on-scroll {
   opacity: 0;

@@ -428,7 +428,6 @@ const PricingPage = () => {
                 💡 <span className="font-semibold">Have a discount code?</span> You can enter it in the payment form below.
               </p>
             </div>
-            )}
 
             {loadingCheckout ? (
               <div className="flex flex-col items-center gap-3 py-8">

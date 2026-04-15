@@ -12,7 +12,7 @@ export const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice,
   <div className="space-y-8 animate-slide-in">
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Your CPF journey — three steps and you're done</h2>
+        <h2 className="font-bold">Your CPF journey. three steps and you're done</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:divide-x divide-border">
         <ProcessStep num={1} title="Prepare your documents" desc="Print your forms and gather your passport, proof of address, and copies." image={documentsReadyImg} status="ready" />
@@ -33,7 +33,7 @@ export const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice,
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Passport" value={data.passportNumber} />
           <InfoField label="Nationality" value={data.nationality} />
-          <InfoField label="State" value={`${data.state} — ${stateName}`} />
+          <InfoField label="State" value={`${data.state}. ${stateName}`} />
           <InfoField label="Address" value={data.streetAddress} />
           <InfoField label="City" value={data.city} />
           <InfoField label="Email" value={data.email} />
@@ -150,7 +150,7 @@ const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data:
             <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
               <span className="text-2xl">📷</span>
               <span className="text-sm font-semibold">Upload a photo of your CPF printout</span>
-              <span className="text-xs text-muted-foreground">Keep it stored here safely — you'll always have a backup</span>
+              <span className="text-xs text-muted-foreground">Keep it stored here safely. you'll always have a backup</span>
               <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
             </label>
           )}

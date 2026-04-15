@@ -28,7 +28,7 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
     const check = async () => {
       try {
-        // Check admin first — admins bypass payment check
+        // Check admin first. admins bypass payment check
         if (needsAdminCheck || needsPaymentCheck) {
           const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
           const userIsAdmin = adminRes.data === true;
@@ -104,12 +104,12 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
     return <VerifyEmailScreen />;
   }
 
-  // Admin check — show access denied
+  // Admin check. show access denied
   if (needsAdminCheck && !isAdmin) {
     return <AccessDeniedScreen />;
   }
 
-  // Payment check — show explanation screen instead of silent redirect
+  // Payment check. show explanation screen instead of silent redirect
   if (needsPaymentCheck && !isPaid) {
     return <PaymentRequiredScreen />;
   }
@@ -199,7 +199,7 @@ const PaymentRequiredScreen = () => {
             onClick={() => navigate("/pricing")}
             className="w-full bg-primary text-primary-foreground px-6 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
           >
-            Complete purchase — <span className="line-through opacity-60">$49</span> $29 →
+            Complete purchase. <span className="line-through opacity-60">$49</span> $29 →
           </button>
           <p className="text-xs text-muted-foreground mt-4">
             Already paid? <a href="/contact" className="text-primary font-semibold hover:underline">Contact support</a>

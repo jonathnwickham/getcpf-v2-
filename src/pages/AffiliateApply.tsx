@@ -45,7 +45,7 @@ const AffiliateApply = () => {
         <div className="max-w-[600px] mx-auto">
           <h1 className="text-3xl font-extrabold tracking-tight mb-2">Become a GET CPF Affiliate</h1>
           <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-            We're selective about who we partner with — because the CPF process matters, and our users trust us.
+            We're selective about who we partner with, because the CPF process matters, and our users trust us.
             If you have an audience of expats, digital nomads, or people moving to Brazil, we'd love to hear from you.
           </p>
 

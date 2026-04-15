@@ -15,7 +15,7 @@ const categoryColors: Record<string, string> = {
 const Guides = () => {
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="CPF Guides for Foreigners — GET CPF" description="Free guides on getting your Brazilian CPF as a foreigner. Step-by-step instructions, city-specific tips, and troubleshooting." path="/guides" />
+      <SEO title="CPF Guides for Foreigners. GET CPF" description="Free guides on getting your Brazilian CPF as a foreigner. Step-by-step instructions, city-specific tips, and troubleshooting." path="/guides" />
       <Navbar />
       <main className="pt-24 md:pt-32 pb-16 md:pb-24 px-6">
         <div className="max-w-[800px] mx-auto">

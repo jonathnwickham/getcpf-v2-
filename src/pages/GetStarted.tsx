@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Logo from "@/components/Logo";
@@ -42,7 +43,7 @@ const GetStarted = () => {
     if (authLoading) return;
 
     if (!user) {
-      // Not logged in — start fresh, clear any stale test data
+      // Not logged in, start fresh, clear any stale test data
       localStorage.removeItem(ONBOARDING_LOCAL_KEY);
       sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
       setData(INITIAL_DATA);
@@ -62,7 +63,7 @@ const GetStarted = () => {
             return;
           }
         } else {
-          // Logged in but no application — start completely fresh
+          // Logged in but no application, start completely fresh
           localStorage.removeItem(ONBOARDING_LOCAL_KEY);
           sessionStorage.removeItem(ONBOARDING_SESSION_KEY);
           setData(INITIAL_DATA);
@@ -75,8 +76,11 @@ const GetStarted = () => {
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Getting things ready...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-6 h-6 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-gray-400">Getting things ready...</p>
+        </div>
       </div>
     );
   }
@@ -97,7 +101,7 @@ const GetStarted = () => {
         try {
           await supabase.from("consent_log").insert({
             user_id: user.id,
-            consent_text: "I consent to GET CPF processing my personal data — including passport details, parent names, and date of birth — to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the Privacy Policy. I understand my sensitive data will be automatically and permanently deleted within 30 days.",
+            consent_text: "I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the Privacy Policy. I understand my sensitive data will be automatically and permanently deleted within 30 days.",
             consent_version: "2.0",
             consent: true,
           });
@@ -163,42 +167,50 @@ const GetStarted = () => {
   const progress = ((step + 1) / TOTAL_STEPS) * 100;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" onKeyDown={handleKeyDown}>
+    <div className="min-h-screen bg-white flex flex-col" onKeyDown={handleKeyDown}>
       {/* Top bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
-        <div className="flex items-center justify-between px-6 py-4">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100">
+        <div className="flex items-center justify-between px-5 sm:px-8 h-16">
           <a href="/">
             <Logo className="h-10" />
           </a>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-muted-foreground font-medium">
+            <span className="text-xs text-gray-400 font-medium">
               {step + 1} of {TOTAL_STEPS}
             </span>
             <button
               onClick={() => supabase.auth.signOut().then(() => navigate("/"))}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+              className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
             >
               Sign out
             </button>
-            <a href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <a href="/" className="text-xs text-gray-400 hover:text-gray-700 transition-colors">
               ✕
             </a>
           </div>
         </div>
-        <div className="h-1 bg-border">
-          <div
-            className="h-full bg-primary transition-all duration-500 ease-out"
-            style={{ width: `${progress}%` }}
+        {/* Progress bar — prominent, green */}
+        <div className="h-1.5 bg-gray-100">
+          <motion.div
+            className="h-full bg-green-800 rounded-r-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           />
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex items-start md:items-center justify-center px-6 pt-24 pb-32 md:pb-12">
-        <div
-          key={step}
-          className="max-w-[520px] w-full animate-slide-in"
-        >
+      {/* Content with slide transitions */}
+      <div className="flex-1 flex items-start md:items-center justify-center px-5 sm:px-8 pt-24 pb-32 md:pb-12">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ x: direction === "forward" ? 60 : -60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: direction === "forward" ? -60 : 60, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="max-w-[520px] w-full"
+          >
           {step === 0 && <WelcomeStep />}
           {step === 1 && <NameStep value={data.fullName} onChange={(v) => update("fullName", v)} forceFullName={forceFullName} onForceFullName={setForceFullName} consentChecked={consentChecked} onConsentChange={(v) => { setConsentChecked(v); setConsentError(false); }} consentError={consentError} />}
           {step === 2 && (
@@ -244,25 +256,26 @@ const GetStarted = () => {
               onNationalityChange={(v) => update("nationality", v)}
             />
           )}
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border px-6 py-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 px-5 sm:px-8 py-4">
         <div className="max-w-[520px] mx-auto flex items-center justify-between">
           <button
             onClick={back}
             disabled={step === 0}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-0 disabled:pointer-events-none font-medium"
+            className="text-sm text-gray-400 hover:text-gray-700 transition-colors disabled:opacity-0 disabled:pointer-events-none font-medium"
           >
             ← Back
           </button>
           <button
             onClick={next}
             disabled={!canProceed()}
-            className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-primary/20"
+            className="bg-green-800 text-white px-8 py-3 rounded-xl font-semibold text-sm hover:bg-green-900 transition-all btn-press disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {step === TOTAL_STEPS - 1 ? "Build my Ready Pack →" : step === 0 ? "Let's go →" : "Got it — next step →"}
+            {step === TOTAL_STEPS - 1 ? "Build my Ready Pack →" : step === 0 ? "Let's go →" : "Got it, next step →"}
           </button>
         </div>
       </div>
@@ -274,29 +287,29 @@ const GetStarted = () => {
 
 const WelcomeStep = () => (
   <div className="text-center">
-    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
+    <div className="w-16 h-16 bg-green-800/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
       🇧🇷
     </div>
     <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-      Let's get your <span className="text-primary font-serif italic">CPF</span> sorted
+      Let's get your <span className="text-green-800">CPF</span> sorted
     </h1>
-    <p className="text-muted-foreground leading-relaxed max-w-[420px] mx-auto">
-      We'll ask a few quick questions — takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
+    <p className="text-gray-500 leading-relaxed max-w-[420px] mx-auto">
+      We'll ask a few quick questions, takes about 5 minutes. When you're done, you'll have everything you need to walk into the office and walk out with your CPF.
     </p>
-      <div className="mt-8 grid grid-cols-3 gap-4 max-w-[360px] mx-auto">
-        <div className="bg-secondary rounded-xl p-3 text-center">
-          <div className="text-lg font-bold">~5 min</div>
-          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">That's it</div>
-        </div>
-        <div className="bg-secondary rounded-xl p-3 text-center">
-          <div className="text-lg font-bold">100%</div>
-          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">Ready to go</div>
-        </div>
-        <div className="bg-secondary rounded-xl p-3 text-center">
-          <div className="text-lg font-bold">Same day</div>
-          <div className="text-[13px] text-muted-foreground font-medium mt-0.5">CPF in hand</div>
-        </div>
+    <div className="mt-8 grid grid-cols-3 gap-3 max-w-[360px] mx-auto">
+      <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="text-lg font-bold">~5 min</div>
+        <div className="text-xs text-gray-400 mt-0.5">That's it</div>
       </div>
+      <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="text-lg font-bold">100%</div>
+        <div className="text-xs text-gray-400 mt-0.5">Ready to go</div>
+      </div>
+      <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="text-lg font-bold">Same day</div>
+        <div className="text-xs text-gray-400 mt-0.5">CPF in hand</div>
+      </div>
+    </div>
   </div>
 );
 
@@ -310,9 +323,9 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 1</label>
+      <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 1</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your full name?</h2>
-      <p className="text-muted-foreground text-sm mb-8">Exactly as it appears on your passport. No nicknames — the form needs to match.</p>
+      <p className="text-gray-500 text-sm mb-8">Exactly as it appears on your passport. No nicknames, the form needs to match.</p>
       <input
         type="text"
         value={value}
@@ -320,29 +333,29 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
         placeholder="e.g. John Michael Smith"
         autoFocus
         autoComplete="name"
-        className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+        className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
       />
       {showWarning && (
-        <div className="mt-3 bg-destructive/10 border border-destructive/20 rounded-xl p-4">
-          <p className="text-sm font-semibold text-destructive mb-1">⚠️ Looks like a single name</p>
-          <p className="text-xs text-muted-foreground mb-3">We need your full name (first + last) exactly as it appears on your passport. CPF applications with incomplete names get rejected.</p>
+        <div className="mt-3 bg-red-500/10 border border-destructive/20 rounded-xl p-4">
+          <p className="text-sm font-semibold text-red-500 mb-1">⚠️ Looks like a single name</p>
+          <p className="text-xs text-gray-500 mb-3">We need your full name (first + last) exactly as it appears on your passport. CPF applications with incomplete names get rejected.</p>
           <button
             type="button"
             onClick={() => onForceFullName(true)}
-            className="text-xs font-semibold text-primary hover:underline"
+            className="text-xs font-semibold text-green-800 hover:underline"
           >
-            This is my full legal name — continue anyway →
+            This is my full legal name, continue anyway →
           </button>
         </div>
       )}
 
       {/* Consent checkbox */}
-      <div className="mt-6 pt-6 border-t border-border">
+      <div className="mt-6 pt-6 border-t border-gray-100">
         <label className="flex items-start gap-3 cursor-pointer group">
           <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all shrink-0 mt-0.5 ${
-            consentChecked ? "bg-primary border-primary" : consentError ? "border-destructive" : "border-border group-hover:border-primary/50"
+            consentChecked ? "bg-green-800 border-green-800" : consentError ? "border-destructive" : "border-gray-100 group-hover:border-green-800/50"
           }`}>
-            {consentChecked && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+            {consentChecked && <span className="text-white text-xs font-bold">✓</span>}
           </div>
           <input
             type="checkbox"
@@ -350,16 +363,16 @@ const NameStep = ({ value, onChange, forceFullName, onForceFullName, consentChec
             onChange={(e) => onConsentChange(e.target.checked)}
             className="sr-only"
           />
-          <span className="text-sm text-muted-foreground leading-relaxed">
-            I consent to GET CPF processing my personal data — including passport details, parent names, and date of birth — to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the{" "}
-            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+          <span className="text-sm text-gray-500 leading-relaxed">
+            I consent to GET CPF processing my personal data, including passport details, parent names, and date of birth, to prepare my CPF application documents for submission to the Brazilian Receita Federal. I have read and agree to the{" "}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-green-800 hover:underline font-semibold">
               Privacy Policy
             </a>
             . I understand my data will be permanently deleted within 30 days.
           </span>
         </label>
         {consentError && (
-          <p className="text-xs text-destructive font-semibold mt-2 ml-8">
+          <p className="text-xs text-red-500 font-semibold mt-2 ml-8">
             Please confirm you have read and agree to our Privacy Policy to continue.
           </p>
         )}
@@ -380,10 +393,10 @@ const MotherStep = ({
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 2</label>
+      <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 2</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your mother's full name?</h2>
-      <p className="text-muted-foreground text-sm mb-8">
-        No initials, no abbreviations — this is the #1 reason applications get rejected. We'll double-check it for you.
+      <p className="text-gray-500 text-sm mb-8">
+        No initials, no abbreviations, this is the #1 reason applications get rejected. We'll double-check it for you.
       </p>
       {!noMother ? (
         <>
@@ -393,7 +406,7 @@ const MotherStep = ({
             onChange={(e) => onChange(e.target.value)}
             placeholder="e.g. Maria Antonia Smith"
             autoFocus
-            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
           />
           {hasAbbreviation && (
             <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
@@ -405,7 +418,7 @@ const MotherStep = ({
         </>
       ) : (
         <div>
-          <p className="text-sm text-muted-foreground mb-3">
+          <p className="text-sm text-gray-500 mb-3">
             If your mother's name is unavailable, you can use your father's name or legal guardian's name instead.
           </p>
           <input
@@ -414,13 +427,13 @@ const MotherStep = ({
             onChange={(e) => onAlternativeChange(e.target.value)}
             placeholder="Father's or guardian's full name"
             autoFocus
-            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
       )}
       <label className="flex items-center gap-3 mt-4 cursor-pointer group">
-        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
-          {noMother && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${noMother ? "bg-green-800 border-green-800" : "border-gray-100 group-hover:border-green-800/50"}`}>
+          {noMother && <span className="text-white text-xs font-bold">✓</span>}
         </div>
         <input
           type="checkbox"
@@ -428,7 +441,7 @@ const MotherStep = ({
           onChange={(e) => onToggleNoMother(e.target.checked)}
           className="sr-only"
         />
-        <span className="text-sm text-muted-foreground">My mother's name is not available</span>
+        <span className="text-sm text-gray-500">My mother's name is not available</span>
       </label>
     </div>
   );
@@ -436,10 +449,10 @@ const MotherStep = ({
 
 const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 3</label>
+    <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 3</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your father's full name?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      This one's optional — skip it if you'd rather not include it. Some forms have a space for it, but it's not required.
+    <p className="text-gray-500 text-sm mb-8">
+      This one's optional, skip it if you'd rather not include it. Some forms have a space for it, but it's not required.
     </p>
     <input
       type="text"
@@ -447,9 +460,9 @@ const FatherStep = ({ value, onChange }: { value: string; onChange: (v: string) 
       onChange={(e) => onChange(e.target.value)}
       placeholder="e.g. Robert James Smith"
       autoFocus
-      className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+      className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-lg outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
     />
-    <p className="text-xs text-muted-foreground mt-3 italic">If you want to leave it out, just hit next</p>
+    <p className="text-xs text-gray-500 mt-3 italic">If you want to leave it out, just hit next</p>
   </div>
 );
 
@@ -464,16 +477,16 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
 
   let errorMsg = "";
   if (hasInput && hasSpaces) errorMsg = "Passport numbers can't contain spaces.";
-  else if (hasInput && hasSpecialChars) errorMsg = "Letters and numbers only — no special characters.";
-  else if (tooShort) errorMsg = "Too short — passport numbers are at least 6 characters.";
-  else if (tooLong) errorMsg = "Too long — passport numbers are at most 12 characters.";
+  else if (hasInput && hasSpecialChars) errorMsg = "Letters and numbers only, no special characters.";
+  else if (tooShort) errorMsg = "Too short, passport numbers are at least 6 characters.";
+  else if (tooLong) errorMsg = "Too long, passport numbers are at most 12 characters.";
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 4</label>
+      <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 4</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">What's your passport number?</h2>
-      <p className="text-muted-foreground text-sm mb-8">
-        We use this to pre-fill the official form for you — so you don't have to figure out which field goes where.
+      <p className="text-gray-500 text-sm mb-8">
+        We use this to pre-fill the official form for you, so you don't have to figure out which field goes where.
       </p>
       <input
         type="text"
@@ -482,17 +495,17 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
         placeholder="e.g. AB1234567"
         autoFocus
         maxLength={12}
-        className={`w-full px-5 py-4 bg-card border rounded-xl text-foreground text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/50 tracking-wider ${
-          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-border focus:border-primary focus:ring-primary/10"
+        className={`w-full px-5 py-4 bg-card border rounded-xl text-gray-900 text-lg font-mono outline-none focus:ring-2 transition-all placeholder:text-gray-500/50 tracking-wider ${
+          hasInput && !isValid ? "border-destructive focus:border-destructive focus:ring-destructive/10" : "border-gray-100 focus:border-green-800 focus:ring-primary/10"
         }`}
       />
       {errorMsg && (
-        <p className="text-xs text-destructive mt-2 font-medium">⚠️ {errorMsg}</p>
+        <p className="text-xs text-red-500 mt-2 font-medium">⚠️ {errorMsg}</p>
       )}
       {hasInput && isValid && (
-        <p className="text-xs text-primary mt-2 font-medium">✓ Looks good</p>
+        <p className="text-xs text-green-800 mt-2 font-medium">✓ Looks good</p>
       )}
-      <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
+      <div className="flex items-center gap-2 mt-4 text-xs text-gray-500">
         <span>🔒</span> Your passport number is used only to prepare your forms and is never stored after document generation.
       </div>
     </div>
@@ -501,10 +514,10 @@ const PassportStep = ({ value, onChange }: { value: string; onChange: (v: string
 
 const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
   <div>
-    <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 5</label>
+    <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 5</label>
     <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Which state are you in?</h2>
-    <p className="text-muted-foreground text-sm mb-8">
-      This tells us which office to send you to — we'll find the best one nearby.
+    <p className="text-gray-500 text-sm mb-8">
+      This tells us which office to send you to, we'll find the best one nearby.
     </p>
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[320px] overflow-y-auto pr-2">
       {BRAZILIAN_STATES.map((s) => (
@@ -513,12 +526,12 @@ const StateStep = ({ value, onChange }: { value: string; onChange: (v: string) =
           onClick={() => onChange(s.value)}
           className={`px-4 py-3 rounded-xl text-sm font-medium text-left transition-all border ${
             value === s.value
-              ? "bg-primary text-primary-foreground border-primary shadow-md"
-              : "bg-card border-border hover:border-primary/30 hover:bg-primary/5"
+              ? "bg-green-800 text-white border-green-800 shadow-md"
+              : "bg-card border-gray-100 hover:border-green-800/30 hover:bg-green-800/5"
           }`}
         >
           <span className="font-bold">{s.value}</span>{" "}
-          <span className={value === s.value ? "text-primary-foreground/80" : "text-muted-foreground"}>{s.label}</span>
+          <span className={value === s.value ? "text-white/80" : "text-gray-500"}>{s.label}</span>
         </button>
       ))}
     </div>
@@ -598,34 +611,34 @@ const AddressStep = ({
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Step 6</label>
+      <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Step 6</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Where are you staying?</h2>
-      <p className="text-muted-foreground text-sm mb-6">
-        Your address in Brazil — this goes on the form. Hotel, Airbnb, friend's place — all fine.
+      <p className="text-gray-500 text-sm mb-6">
+        Your address in Brazil, this goes on the form. Hotel, Airbnb, friend's place, all fine.
       </p>
       <div className="space-y-4">
         <div>
-          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Street address</label>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">Street address</label>
           <input
             type="text"
             value={street}
             onChange={(e) => onStreetChange(e.target.value)}
-            placeholder="e.g. Rua Augusta, 1234 — Apt 501"
+            placeholder="e.g. Rua Augusta, 1234, Apt 501"
             autoFocus
             autoComplete="street-address"
-            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
         <div ref={cityDropdownRef} className="relative">
-          <label className="text-xs font-semibold text-muted-foreground mb-2 block">City</label>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">City</label>
           {selectedCity && !isCityOpen ? (
             <button
               type="button"
               onClick={() => { setIsCityOpen(true); setTimeout(() => cityInputRef.current?.focus(), 50); }}
-              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-left flex items-center justify-between hover:border-primary/30 transition-all"
+              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-left flex items-center justify-between hover:border-green-800/30 transition-all"
             >
               <span className="font-medium">{selectedCity}</span>
-              <span className="text-muted-foreground text-sm">Change</span>
+              <span className="text-gray-500 text-sm">Change</span>
             </button>
           ) : (
             <input
@@ -640,17 +653,17 @@ const AddressStep = ({
               onFocus={() => setIsCityOpen(true)}
               placeholder="Search city… e.g. São Paulo"
               autoComplete="off"
-              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
             />
           )}
           {isCityOpen && filteredCities.length > 0 && (
-            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
               {(citySearch ? filteredCities : filteredCities.slice(0, 20)).map((c) => (
                 <button
                   key={c}
                   type="button"
                   onClick={() => { onCityChange(c); setCitySearch(""); setIsCityOpen(false); }}
-                  className="w-full px-5 py-3 hover:bg-primary/5 transition-colors text-left text-sm font-medium"
+                  className="w-full px-5 py-3 hover:bg-green-800/5 transition-colors text-left text-sm font-medium"
                 >
                   {c}
                 </button>
@@ -658,16 +671,16 @@ const AddressStep = ({
             </div>
           )}
           {isCityOpen && filteredCities.length === 0 && citySearch && (
-            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl p-4">
-              <p className="text-sm text-muted-foreground">No match — your typed city will be used</p>
+            <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl p-4">
+              <p className="text-sm text-gray-500">No match, your typed city will be used</p>
             </div>
           )}
         </div>
 
         {/* Staying with friend toggle */}
         <label className="flex items-center gap-3 mt-2 cursor-pointer group">
-          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${stayingWithFriend ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"}`}>
-            {stayingWithFriend && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${stayingWithFriend ? "bg-green-800 border-green-800" : "border-gray-100 group-hover:border-green-800/50"}`}>
+            {stayingWithFriend && <span className="text-white text-xs font-bold">✓</span>}
           </div>
           <input
             type="checkbox"
@@ -675,34 +688,34 @@ const AddressStep = ({
             onChange={(e) => onToggleStaying(e.target.checked)}
             className="sr-only"
           />
-          <span className="text-sm text-muted-foreground">I'm staying with a friend or family (no formal address proof)</span>
+          <span className="text-sm text-gray-500">I'm staying with a friend or family (no formal address proof)</span>
         </label>
 
         {stayingWithFriend && (
-          <div className="mt-3 bg-secondary rounded-xl p-5 space-y-3 animate-slide-in">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Host details — for the declaration letter</p>
+          <div className="mt-3 bg-gray-50 rounded-xl p-5 space-y-3 animate-slide-in">
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Host details, for the declaration letter</p>
             <input
               type="text"
               value={hostName}
               onChange={(e) => onHostNameChange(e.target.value)}
               placeholder="Host's full name"
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+              className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
             />
             <input
               type="text"
               value={hostCpf}
               onChange={(e) => onHostCpfChange(e.target.value)}
               placeholder="Host's CPF number (if known)"
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+              className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm font-mono outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
             />
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-semibold text-muted-foreground">Host's address</label>
+                <label className="text-xs font-semibold text-gray-500">Host's address</label>
                 {street && !hostAddress && (
                   <button
                     type="button"
                     onClick={() => onHostAddressChange(street)}
-                    className="text-[10px] text-primary font-bold hover:underline"
+                    className="text-[10px] text-green-800 font-bold hover:underline"
                   >
                     Use my address ↗
                   </button>
@@ -713,17 +726,17 @@ const AddressStep = ({
                 value={hostAddress}
                 onChange={(e) => onHostAddressChange(e.target.value)}
                 placeholder="Host's full address"
-                className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+                className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
               />
             </div>
             <div ref={hostCityDropdownRef} className="relative">
               <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-semibold text-muted-foreground">Host's city</label>
+                <label className="text-xs font-semibold text-gray-500">Host's city</label>
                 {city && !hostCity && (
                   <button
                     type="button"
                     onClick={() => onHostCityChange(city)}
-                    className="text-[10px] text-primary font-bold hover:underline"
+                    className="text-[10px] text-green-800 font-bold hover:underline"
                   >
                     Use my city ↗
                   </button>
@@ -733,10 +746,10 @@ const AddressStep = ({
                 <button
                   type="button"
                   onClick={() => { setIsHostCityOpen(true); setTimeout(() => hostCityInputRef.current?.focus(), 50); }}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm text-left flex items-center justify-between hover:border-primary/30 transition-all"
+                  className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm text-left flex items-center justify-between hover:border-green-800/30 transition-all"
                 >
                   <span className="font-medium">{hostCity}</span>
-                  <span className="text-muted-foreground text-xs">Change</span>
+                  <span className="text-gray-500 text-xs">Change</span>
                 </button>
               ) : (
                 <input
@@ -750,17 +763,17 @@ const AddressStep = ({
                   }}
                   onFocus={() => setIsHostCityOpen(true)}
                   placeholder="Search city…"
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+                  className="w-full px-4 py-3 bg-card border border-gray-100 rounded-lg text-gray-900 text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
                 />
               )}
               {isHostCityOpen && filteredHostCities.length > 0 && (
-                <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-border rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
+                <div className="absolute z-50 bottom-full left-0 right-0 mb-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[200px] overflow-y-auto">
                   {(hostCitySearch ? filteredHostCities : filteredHostCities.slice(0, 20)).map((c) => (
                     <button
                       key={c}
                       type="button"
                       onClick={() => { onHostCityChange(c); setHostCitySearch(""); setIsHostCityOpen(false); }}
-                      className="w-full px-4 py-2.5 hover:bg-primary/5 transition-colors text-left text-sm"
+                      className="w-full px-4 py-2.5 hover:bg-green-800/5 transition-colors text-left text-sm"
                     >
                       {c}
                     </button>
@@ -773,7 +786,7 @@ const AddressStep = ({
               <button
                 type="button"
                 onClick={() => setShowDeclaration(!showDeclaration)}
-                className="w-full bg-primary text-primary-foreground px-4 py-3 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
+                className="w-full bg-green-800 text-white px-4 py-3 rounded-lg font-semibold text-sm hover:opacity-90 transition-all"
               >
                 {showDeclaration ? "Hide declaration letter" : "📄 Generate host declaration letter"}
               </button>
@@ -808,8 +821,8 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
 
   return (
     <div className="mt-3 space-y-4">
-      <div className="bg-card border border-border rounded-lg p-4">
-        <pre className="text-xs font-mono whitespace-pre-wrap text-foreground leading-relaxed">{declaration}</pre>
+      <div className="bg-card border border-gray-100 rounded-lg p-4">
+        <pre className="text-xs font-mono whitespace-pre-wrap text-gray-900 leading-relaxed">{declaration}</pre>
       </div>
 
       {/* Two action buttons side by side */}
@@ -819,8 +832,8 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
           onClick={handleCopy}
           className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
             copied
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary text-foreground hover:bg-secondary/80"
+              ? "bg-green-800 text-white"
+              : "bg-gray-50 text-gray-900 hover:bg-gray-50/80"
           }`}
         >
           {copied ? "✓ Text copied!" : "📋 Copy text"}
@@ -830,8 +843,8 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
           onClick={handleSaveToPack}
           className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${
             savedToPack
-              ? "bg-primary text-primary-foreground"
-              : "bg-primary/10 text-primary hover:bg-primary/20"
+              ? "bg-green-800 text-white"
+              : "bg-green-800/10 text-green-800 hover:bg-green-800/20"
           }`}
         >
           {savedToPack ? "✓ Saved to your pack!" : "💾 Save to my documents"}
@@ -842,16 +855,16 @@ const DeclarationPreview = ({ declaration }: { declaration: string }) => {
       <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 space-y-3">
         <h4 className="font-bold text-sm text-amber-900 dark:text-amber-100">📋 What to do with this letter</h4>
         <ol className="text-xs text-amber-800 dark:text-amber-200 space-y-2 list-decimal list-inside">
-          <li><strong>Send it to your host</strong> — copy the text or share via WhatsApp so they can review it</li>
-          <li><strong>Your host prints it</strong> — they need to print the letter on paper</li>
-          <li><strong>Your host signs it</strong> — a handwritten signature at the bottom, above their name</li>
-          <li><strong>They give you a copy of their ID</strong> — a photocopy of their RG or CNH (Brazilian ID)</li>
-          <li><strong>Bring both to the office</strong> — the signed letter + their ID copy = your proof of address</li>
+          <li><strong>Send it to your host</strong>, copy the text or share via WhatsApp so they can review it</li>
+          <li><strong>Your host prints it</strong>, they need to print the letter on paper</li>
+          <li><strong>Your host signs it</strong>, a handwritten signature at the bottom, above their name</li>
+          <li><strong>They give you a copy of their ID</strong>, a photocopy of their RG or CNH (Brazilian ID)</li>
+          <li><strong>Bring both to the office</strong>, the signed letter + their ID copy = your proof of address</li>
         </ol>
       </div>
 
-      <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
-        <p className="text-xs text-muted-foreground">
+      <div className="bg-green-800/5 border border-green-800/10 rounded-xl p-4">
+        <p className="text-xs text-gray-500">
           <strong>💡 Important:</strong> Make sure your host checks that their name, CPF, and address are correct in the letter before signing. If anything is wrong, update the fields above and regenerate it.
         </p>
       </div>
@@ -897,14 +910,14 @@ const ContactStep = ({
 
   return (
     <div>
-      <label className="text-xs uppercase tracking-[2px] text-primary font-bold mb-3 block">Last step</label>
+      <label className="text-xs uppercase tracking-[2px] text-green-800 font-bold mb-3 block">Last step</label>
       <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Almost there!</h2>
-      <p className="text-muted-foreground text-sm mb-8">
+      <p className="text-gray-500 text-sm mb-8">
         Your email (for your Ready Pack) and your nationality (for the application form).
       </p>
       <div className="space-y-4">
         <div>
-          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Email address</label>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">Email address</label>
           <input
             type="email"
             value={email}
@@ -912,20 +925,20 @@ const ContactStep = ({
             placeholder="you@example.com"
             autoFocus
             autoComplete="email"
-            className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+            className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
           />
         </div>
         <div ref={dropdownRef} className="relative">
-          <label className="text-xs font-semibold text-muted-foreground mb-2 block">Nationality</label>
+          <label className="text-xs font-semibold text-gray-500 mb-2 block">Nationality</label>
           {selectedCountry && !isOpen ? (
             <button
               type="button"
               onClick={() => { setIsOpen(true); setTimeout(() => inputRef.current?.focus(), 50); }}
-              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground text-left flex items-center gap-3 hover:border-primary/30 transition-all"
+              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 text-left flex items-center gap-3 hover:border-green-800/30 transition-all"
             >
               <span className="text-2xl">{selectedCountry.flag}</span>
               <span className="font-medium">{selectedCountry.name}</span>
-              <span className="text-muted-foreground text-sm ml-auto">Change</span>
+              <span className="text-gray-500 text-sm ml-auto">Change</span>
             </button>
           ) : (
             <input
@@ -935,24 +948,24 @@ const ContactStep = ({
               onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
               onFocus={() => setIsOpen(true)}
               placeholder="Search country… e.g. South Africa"
-              className="w-full px-5 py-4 bg-card border border-border rounded-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/50"
+              className="w-full px-5 py-4 bg-card border border-gray-100 rounded-xl text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
             />
           )}
           {isOpen && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
+            <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-card border border-gray-100 rounded-xl shadow-xl max-h-[240px] overflow-y-auto">
               {filtered.length === 0 && (
-                <div className="px-5 py-4 text-sm text-muted-foreground">No countries found</div>
+                <div className="px-5 py-4 text-sm text-gray-500">No countries found</div>
               )}
               {filtered.map((c) => (
                 <button
                   key={c.code}
                   type="button"
                   onClick={() => selectCountry(c)}
-                  className="w-full px-5 py-3 flex items-center gap-3 hover:bg-primary/5 transition-colors text-left"
+                  className="w-full px-5 py-3 flex items-center gap-3 hover:bg-green-800/5 transition-colors text-left"
                 >
                   <span className="text-xl">{c.flag}</span>
                   <span className="font-medium text-sm">{c.name}</span>
-                  <span className="text-xs text-muted-foreground ml-auto">{c.nationality}</span>
+                  <span className="text-xs text-gray-500 ml-auto">{c.nationality}</span>
                 </button>
               ))}
             </div>

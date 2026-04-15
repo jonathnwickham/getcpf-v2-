@@ -35,7 +35,7 @@ const Index = () => {
         {/* 1. Hero */}
         <Hero onOpenModal={handleOpenOnboarding} />
 
-        {/* 2. Dark section — No CPF? Good luck. */}
+        {/* 2. Dark section. No CPF? Good luck. */}
         <FadeIn>
           <section className="bg-[#0a0f0a] text-white py-24 sm:py-32 px-5 sm:px-8 rounded-2xl mx-3 sm:mx-6 mb-3">
             <div className="max-w-4xl mx-auto text-center">

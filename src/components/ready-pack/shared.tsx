@@ -208,7 +208,7 @@ export const OfficeCard = ({ office, isRecommended }: { office: any; isRecommend
       {isRecommended && (
         <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-primary-foreground"></span>
-          🟢 Recommended — walk-in, free, same-day
+          🟢 Recommended. walk-in, free, same-day
         </div>
       )}
       <div className="p-6">

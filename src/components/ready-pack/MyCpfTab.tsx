@@ -266,7 +266,7 @@ export const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLi
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
             { icon: "📱", title: "Get a SIM card", desc: "Walk into any Claro, Vivo, or TIM store with your CPF and passport. Takes 10 minutes." },
-            { icon: "🏦", title: "Open a bank account", desc: "Download Nubank, Inter, or C6 Bank. Sign up with your CPF — most approve within minutes." },
+            { icon: "🏦", title: "Open a bank account", desc: "Download Nubank, Inter, or C6 Bank. Sign up with your CPF. most approve within minutes." },
             { icon: "💳", title: "Activate Pix", desc: "Once your bank account is open, set up Pix for free instant transfers anywhere in Brazil." },
             { icon: "🛒", title: "Shop & subscribe", desc: "Use your CPF on Amazon.com.br, Mercado Livre, iFood, and any Brazilian service." },
           ].map((item) => (

@@ -87,7 +87,7 @@ const FoundingPartnerSection = () => (
         {[
           { label: "20% commission", desc: "You earn 20% of every sale, locked in permanently" },
           { label: "Named on the site", desc: "Your name, logo, and one-line bio featured on the partners page" },
-          { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide — you promote it first" },
+          { label: "First access", desc: "Digital nomad visa guide, CNH guide, RG guide. you promote it first" },
         ].map((item) => (
           <div key={item.label} className="bg-background border border-border rounded-xl p-4">
             <div className="text-sm font-bold mb-1">{item.label}</div>
@@ -142,7 +142,7 @@ const Partners = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Become a Partner — GET CPF" description="Join GET CPF's partner network. Earn 20% commission on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
+      <SEO title="Become a Partner. GET CPF" description="Join GET CPF's partner network. Earn 20% commission on every referral. Language schools, relocation agencies, and content creators welcome." path="/partners" />
       <Navbar />
 
       {/* Hero / Mission */}

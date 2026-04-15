@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import Logo from "@/components/Logo";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   fetchLatestApplication,
@@ -63,8 +64,8 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
 
   if (showInput || existingCpf) {
     return (
-      <div className="mt-6 bg-primary/5 border border-primary/15 rounded-xl p-4">
-        <div className="text-xs text-primary font-bold uppercase tracking-wider mb-2">🎉 Your CPF Number</div>
+      <div className="mt-6 bg-green-800/5 border border-primary/15 rounded-xl p-4">
+        <div className="text-xs text-green-800 font-bold uppercase tracking-wider mb-2">🎉 Your CPF Number</div>
         {existingCpf && !showInput ? (
           <div className="text-2xl font-extrabold font-mono tracking-wide">{existingCpf}</div>
         ) : (
@@ -74,12 +75,12 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
               placeholder="Enter your CPF number"
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
-              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-base font-mono tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex-1 rounded-lg border border-input bg-white px-3 py-2 text-base font-mono tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
             <button
               onClick={handleSave}
               disabled={saving || !cpf.trim()}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="bg-green-800 text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save"}
             </button>
@@ -125,18 +126,18 @@ const Dashboard = () => {
       setChecking(false);
 
       if (!app) {
-        // No application at all — send to onboarding
+        // No application at all. send to onboarding
         navigate("/get-started");
         return;
       }
 
-      // Stay on dashboard — show the user their data
+      // Stay on dashboard. show the user their data
     });
   }, [user, loading, navigate]);
 
   if (loading || checking) return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="animate-pulse text-muted-foreground">Getting your stuff ready...</div>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="animate-pulse text-gray-500">Getting your stuff ready...</div>
     </div>
   );
 
@@ -145,16 +146,18 @@ const Dashboard = () => {
   const firstName = profile?.full_name?.split(" ")[0] || user.email?.split("@")[0] || "there";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-primary text-primary-foreground">
-        <div className="max-w-[960px] mx-auto px-6 py-8 flex items-center justify-between">
-          <div>
-            <a href="/" className="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity">← GET CPF</a>
-            <h1 className="text-2xl font-extrabold mt-2">Hey {firstName} 👋</h1>
-            <p className="opacity-80 text-sm mt-1">Here's where you left off</p>
+      <div className="border-b border-gray-100 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
+        <div className="max-w-[960px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <a href="/"><Logo className="h-10" /></a>
+            <div>
+              <h1 className="text-sm font-extrabold tracking-tight">Hey {firstName} 👋</h1>
+              <p className="text-xs text-gray-400">Here's where you left off</p>
+            </div>
           </div>
-          <button onClick={signOut} className="bg-primary-foreground/15 hover:bg-primary-foreground/25 px-4 py-2 rounded-xl text-sm font-semibold transition-all">
+          <button onClick={signOut} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
             Sign out
           </button>
         </div>
@@ -162,13 +165,13 @@ const Dashboard = () => {
 
       <div className="max-w-[960px] mx-auto px-6 py-8 space-y-8">
         {/* Application summary */}
-        <section className="bg-card border border-border rounded-2xl p-6">
+        <section className="bg-white border border-gray-100 rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">📋</div>
+            <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">📋</div>
             <div>
               <h2 className="font-bold text-lg">Your CPF application</h2>
-              <p className="text-xs text-muted-foreground">
-                Status: <span className="text-primary font-semibold capitalize">{application.status}</span>
+              <p className="text-xs text-gray-500">
+                Status: <span className="text-green-800 font-semibold capitalize">{application.status}</span>
               </p>
             </div>
           </div>
@@ -184,7 +187,7 @@ const Dashboard = () => {
           <div className="mt-4">
             <button
               onClick={() => navigate("/ready-pack")}
-              className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+              className="bg-green-800 text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
             >
               Open my Ready Pack →
             </button>
@@ -195,7 +198,7 @@ const Dashboard = () => {
         <section>
           <div className="mb-6">
             <h2 className="text-xl font-extrabold">What to do next with your CPF</h2>
-            <p className="text-sm text-muted-foreground mt-1">The most useful things to set up right after getting your CPF, each one is tried and tested by people who've done exactly this.</p>
+            <p className="text-sm text-gray-500 mt-1">The most useful things to set up right after getting your CPF, each one is tried and tested by people who've done exactly this.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PARTNERS.map((p) => (
@@ -205,13 +208,13 @@ const Dashboard = () => {
         </section>
 
         {/* Share */}
-        <section className="bg-card border border-border rounded-2xl p-6 text-center">
+        <section className="bg-white border border-gray-100 rounded-2xl p-6 text-center">
           <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
-          <p className="text-sm text-muted-foreground mb-4">Send them this, they'll thank you later.</p>
+          <p className="text-sm text-gray-500 mb-4">Send them this, they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText("https://getcpf.com")}
-              className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+              className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
             >
               📋 Copy link
             </button>
@@ -258,18 +261,18 @@ const PartnerAccessSection = ({ applicationId, initialValue }: { applicationId: 
   };
 
   return (
-    <section className="bg-card border border-border rounded-2xl p-6">
+    <section className="bg-white border border-gray-100 rounded-2xl p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">🤝</div>
+        <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">🤝</div>
         <div>
           <h2 className="font-bold text-lg">Partner Access</h2>
-          <p className="text-xs text-muted-foreground">Control who can verify your CPF status</p>
+          <p className="text-xs text-gray-500">Control who can verify your CPF status</p>
         </div>
       </div>
-      <div className="flex items-center justify-between bg-secondary rounded-xl p-4">
+      <div className="flex items-center justify-between bg-gray-50 rounded-xl p-4">
         <div>
           <p className="text-sm font-semibold">Allow partners to verify your CPF</p>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-gray-500 mt-0.5">
             When enabled, partner services (banks, eSIM providers) can confirm you have a valid CPF without seeing the number itself.
           </p>
         </div>
@@ -277,7 +280,7 @@ const PartnerAccessSection = ({ applicationId, initialValue }: { applicationId: 
           onClick={toggle}
           disabled={saving}
           className={`relative w-12 h-7 rounded-full transition-colors duration-200 ${
-            enabled ? "bg-primary" : "bg-muted-foreground/30"
+            enabled ? "bg-green-800" : "bg-gray-100-foreground/30"
           } ${saving ? "opacity-50" : ""}`}
         >
           <span className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
@@ -431,31 +434,31 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
   ];
 
   return (
-    <section className="bg-card border border-border rounded-2xl p-6">
+    <section className="bg-white border border-gray-100 rounded-2xl p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">🔐</div>
+        <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">🔐</div>
         <div>
           <h2 className="font-bold text-lg">My Data</h2>
-          <p className="text-xs text-muted-foreground">Manage your personal data and account settings</p>
+          <p className="text-xs text-gray-500">Manage your personal data and account settings</p>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <button
           onClick={() => setShowPassword(true)}
-          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
         >
           🔑 Change password
         </button>
         <button
           onClick={handleDownload}
-          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
         >
           📥 Download my data
         </button>
         <button
           onClick={() => setShowEdit(true)}
-          className="bg-secondary text-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-secondary/80 transition-all"
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
         >
           ✏️ Update my details
         </button>
@@ -475,32 +478,32 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
           </DialogHeader>
           <div className="space-y-3 mt-2">
             <div>
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">New password</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">New password</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
                 minLength={6}
-                className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
               />
-              <p className="text-[10px] text-muted-foreground mt-1">At least 6 characters</p>
+              <p className="text-[10px] text-gray-500 mt-1">At least 6 characters</p>
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">Confirm new password</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">Confirm new password</label>
               <input
                 type="password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 placeholder="••••••••"
                 minLength={6}
-                className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
               />
             </div>
             <button
               onClick={handleChangePassword}
               disabled={changingPassword || !newPassword || !confirmNewPassword}
-              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="w-full bg-green-800 text-white py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {changingPassword ? "Updating..." : "Update password"}
             </button>
@@ -517,35 +520,35 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
           <div className="space-y-3 mt-2">
             {editableFields.map(({ key, label }) => (
               <div key={key}>
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
                   {label}
                 </label>
                 <input
                   type="text"
                   value={(editData as any)[key] || ""}
                   onChange={(e) => setEditData((prev) => ({ ...prev, [key]: e.target.value }))}
-                  className="w-full px-3 py-2 bg-secondary border border-border rounded-lg text-sm outline-none focus:border-primary"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
                 />
               </div>
             ))}
             {application?.passport_number && (
               <div>
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 block">
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
                   Passport number
                 </label>
                 <input
                   type="text"
                   value={maskPassport(application.passport_number)}
                   disabled
-                  className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm text-muted-foreground cursor-not-allowed"
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-100 rounded-lg text-sm text-gray-500 cursor-not-allowed"
                 />
-                <p className="text-[10px] text-muted-foreground mt-1">Passport number cannot be edited after submission. Contact support if you need to change it.</p>
+                <p className="text-[10px] text-gray-500 mt-1">Passport number cannot be edited after submission. Contact support if you need to change it.</p>
               </div>
             )}
             <button
               onClick={handleSaveEdit}
               disabled={saving}
-              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="w-full bg-green-800 text-white py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save changes"}
             </button>
@@ -559,13 +562,13 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
           <DialogHeader>
             <DialogTitle className="text-destructive">Delete my account</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+          <p className="text-sm text-gray-500 leading-relaxed mt-2">
             This will permanently delete your account and all personal data including your documents. This cannot be undone. Your access to the Ready Pack will end immediately.
           </p>
           <div className="flex gap-3 mt-4">
             <button
               onClick={() => setShowDelete(false)}
-              className="flex-1 bg-secondary text-foreground py-2.5 rounded-lg font-semibold text-sm hover:bg-secondary/80 transition-all"
+              className="flex-1 bg-gray-50 text-gray-900 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-50/80 transition-all"
             >
               Cancel
             </button>
@@ -585,8 +588,8 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
 
 const InfoField = ({ label, value }: { label: string; value: string }) => (
   <div>
-    <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">{label}</div>
-    <div className="font-semibold text-foreground">{value}</div>
+    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">{label}</div>
+    <div className="font-semibold text-gray-900">{value}</div>
   </div>
 );
 
@@ -651,32 +654,32 @@ const PartnerCard = ({ partner }: { partner: typeof PARTNERS[0] }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-card border border-border rounded-2xl overflow-hidden transition-all">
+    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden transition-all">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full text-left p-5 flex items-start gap-4 hover:bg-secondary/30 transition-colors"
+        className="w-full text-left p-5 flex items-start gap-4 hover:bg-gray-50/30 transition-colors"
       >
         <span className="text-3xl mt-0.5">{partner.icon}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-bold text-sm">{partner.name}</h3>
-            <span className="text-[9px] uppercase tracking-wider text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{partner.category}</span>
+            <span className="text-[9px] uppercase tracking-wider text-green-800 font-bold bg-green-800/10 px-2 py-0.5 rounded">{partner.category}</span>
           </div>
-          <p className="text-xs text-muted-foreground">{partner.summary}</p>
+          <p className="text-xs text-gray-500">{partner.summary}</p>
         </div>
-        <span className={`text-muted-foreground transition-transform shrink-0 mt-1 ${open ? "rotate-180" : ""}`}>▾</span>
+        <span className={`text-gray-500 transition-transform shrink-0 mt-1 ${open ? "rotate-180" : ""}`}>▾</span>
       </button>
       {open && (
-        <div className="px-5 pb-5 pt-0 border-t border-border">
-          <p className="text-sm text-foreground mt-4 leading-relaxed">{partner.detail}</p>
-          <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 mt-3">
-            <p className="text-xs text-primary font-medium">💡 {partner.tip}</p>
+        <div className="px-5 pb-5 pt-0 border-t border-gray-100">
+          <p className="text-sm text-gray-900 mt-4 leading-relaxed">{partner.detail}</p>
+          <div className="bg-green-800/5 border border-primary/10 rounded-lg p-3 mt-3">
+            <p className="text-xs text-green-800 font-medium">💡 {partner.tip}</p>
           </div>
             <a
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all group/ext"
+              className="mt-4 inline-flex items-center gap-2 bg-green-800 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all group/ext"
             >
               Visit {partner.name} <span className="text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">↗ opens in new tab</span>
             </a>

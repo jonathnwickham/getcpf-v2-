@@ -48,7 +48,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="text-gray-500 text-sm hover:text-gray-900 transition-colors">
+              <a key={link.href} href={link.href} className="text-gray-500 text-sm hover:text-gray-900 transition-colors link-underline">
                 {link.label}
               </a>
             ))}

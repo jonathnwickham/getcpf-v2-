@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 
 const TermsOfService = () => (
   <div className="min-h-screen bg-background">
-    <SEO title="Terms of Service — GET CPF" description="Terms and conditions for using GET CPF's Brazilian CPF preparation service." path="/terms" />
+    <SEO title="Terms of Service, GET CPF" description="Terms and conditions for using GET CPF's Brazilian CPF preparation service." path="/terms" />
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>
@@ -38,10 +38,10 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">What this service is</h2>
           <p className="leading-relaxed">
-            GET CPF is a <strong>document preparation service</strong>. We help foreigners prepare for the Brazilian CPF registration process. We do not guarantee CPF approval — we prepare your documents to maximise your chance of success.
+            GET CPF is a <strong>document preparation service</strong>. We help foreigners prepare for the Brazilian CPF registration process. We do not guarantee CPF approval, we prepare your documents to maximise your chance of success.
           </p>
           <p className="leading-relaxed mt-3 font-semibold">
-            We do not issue CPF numbers. Only the Brazilian Federal Revenue Service (Receita Federal) can do that. The CPF registration itself is free — our fee covers the preparation service.
+            We do not issue CPF numbers. Only the Brazilian Federal Revenue Service (Receita Federal) can do that. The CPF registration itself is free, our fee covers the preparation service.
           </p>
           <p className="leading-relaxed mt-3">
             GET CPF is not a law firm, accounting firm, or government agency. We do not provide legal, tax, or immigration advice. For specific legal questions, consult a qualified professional.
@@ -81,7 +81,7 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Payment and pricing</h2>
           <p className="leading-relaxed">
-            The service fee is displayed on the pricing page at the time of purchase. All prices are in USD. Your bank or card provider may apply currency conversion fees — these are outside our control.
+            The service fee is displayed on the pricing page at the time of purchase. All prices are in USD. Your bank or card provider may apply currency conversion fees, these are outside our control.
           </p>
           <p className="leading-relaxed mt-3">
             Payment is processed securely by Fanbasis. We never see or store your card details. Once payment is confirmed, you receive immediate access to your personalised Ready Pack.
@@ -188,7 +188,7 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Intellectual property</h2>
           <p className="leading-relaxed">
-            All content on GET CPF — including text, guides, templates, design, code, and branding — is owned by GET CPF and protected by copyright and intellectual property laws. Your purchase grants you a <strong>personal, non-transferable, non-exclusive licence</strong> to use the Ready Pack for your own CPF application. You may not resell, redistribute, or republish any part of the service.
+            All content on GET CPF, including text, guides, templates, design, code, and branding, is owned by GET CPF and protected by copyright and intellectual property laws. Your purchase grants you a <strong>personal, non-transferable, non-exclusive licence</strong> to use the Ready Pack for your own CPF application. You may not resell, redistribute, or republish any part of the service.
           </p>
         </section>
 

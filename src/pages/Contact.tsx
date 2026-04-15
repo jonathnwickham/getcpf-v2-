@@ -32,15 +32,15 @@ const Contact = () => {
 
   // Page meta
   useEffect(() => {
-    document.title = "Contact Us — GET CPF";
+    document.title = "Contact Us, GET CPF";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Have a question about getting your Brazilian CPF? Contact the GET CPF team — we respond within 24 hours.");
+    if (meta) meta.setAttribute("content", "Have a question about getting your Brazilian CPF? Contact the GET CPF team, we respond within 24 hours.");
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Honeypot check — bots fill hidden fields
+    // Honeypot check, bots fill hidden fields
     if (honeypot) return;
 
     if (isRateLimited()) {
@@ -70,7 +70,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="Contact Us — GET CPF" description="Have a question about getting your Brazilian CPF? Reach out and we'll respond within 24 hours." path="/contact" />
+      <SEO title="Contact Us, GET CPF" description="Have a question about getting your Brazilian CPF? Reach out and we'll respond within 24 hours." path="/contact" />
       <Navbar />
       <div className="pt-24 md:pt-32 pb-16 md:pb-24 px-6">
         <div className="max-w-[500px] mx-auto">
@@ -97,7 +97,7 @@ const Contact = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5 relative">
-              {/* Honeypot — hidden from humans, bots fill it */}
+              {/* Honeypot, hidden from humans, bots fill it */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input
                   type="text"

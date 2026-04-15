@@ -27,7 +27,7 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "nubank", title: "Nubank", difficulty: "Easy", time: "10 minutes",
-        summary: "Brazil's most popular digital bank — zero fees, instant Pix, and a debit/credit card.",
+        summary: "Brazil's most popular digital bank. zero fees, instant Pix, and a debit/credit card.",
         steps: [
           "Download the Nubank app (iOS or Android)",
           "Tap 'Abrir conta' (Open account)",
@@ -46,7 +46,7 @@ const CATEGORIES: Category[] = [
           "Download the Inter app",
           "Select 'Abrir conta' and enter your CPF",
           "Upload passport photo and take a selfie",
-          "Wait for approval — usually 1–3 business days",
+          "Wait for approval. usually 1–3 business days",
         ],
         tips: ["Inter has a good international transfer feature and multi-currency account."],
         link: { label: "Download Inter", url: "https://inter.co" },
@@ -60,7 +60,7 @@ const CATEGORIES: Category[] = [
           "Verify identity via selfie",
           "Account typically approved within 24 hours",
         ],
-        tips: ["C6 Global lets you hold USD and EUR — useful for receiving foreign income."],
+        tips: ["C6 Global lets you hold USD and EUR. useful for receiving foreign income."],
         link: { label: "Download C6", url: "https://www.c6bank.com.br" },
       },
       {
@@ -68,7 +68,7 @@ const CATEGORIES: Category[] = [
         summary: "Usually requires proof of Brazilian income or a guarantor.",
         steps: [
           "Visit a branch with CPF, passport, proof of address, and proof of income",
-          "Speak with a gerente (manager) — they handle account openings",
+          "Speak with a gerente (manager). they handle account openings",
           "Expect to provide additional documentation and possibly a guarantor",
           "Processing takes 1–2 weeks",
         ],
@@ -87,8 +87,8 @@ const CATEGORIES: Category[] = [
           "Go to any Vivo, Claro, TIM, or Oi store (found in any shopping mall)",
           "Bring your passport and CPF number",
           "Ask for a plano pós-pago (postpaid plan)",
-          "They'll run a quick credit check — having a Nubank card improves approval",
-          "SIM activates on the spot — you'll have a Brazilian number immediately",
+          "They'll run a quick credit check. having a Nubank card improves approval",
+          "SIM activates on the spot. you'll have a Brazilian number immediately",
         ],
         tips: [
           "Vivo has the best national coverage. Claro is strongest in São Paulo.",
@@ -103,14 +103,14 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "quintoandar", title: "QuintoAndar", difficulty: "Medium", time: "1–3 days",
-        summary: "The most foreigner-friendly rental platform — no guarantor needed.",
+        summary: "The most foreigner-friendly rental platform. no guarantor needed.",
         steps: [
           "Create an account at quintoandar.com.br with your CPF",
           "Filter listings by 'sem fiador' (no guarantor)",
-          "Apply — they check background and financials",
+          "Apply. they check background and financials",
           "Sign the contract digitally",
         ],
-        tips: ["Have your Nubank card active first — it strengthens your application."],
+        tips: ["Have your Nubank card active first. it strengthens your application."],
         link: { label: "Browse QuintoAndar", url: "https://www.quintoandar.com.br" },
       },
       {
@@ -147,9 +147,9 @@ const CATEGORIES: Category[] = [
         steps: [
           "Download Uber and 99 (both widely used in Brazil)",
           "Add your Nubank card as payment method",
-          "99 is often 20–30% cheaper than Uber — compare prices",
+          "99 is often 20–30% cheaper than Uber. compare prices",
         ],
-        tips: ["Download inDrive too — you negotiate the price with the driver. Good for airport rides."],
+        tips: ["Download inDrive too. you negotiate the price with the driver. Good for airport rides."],
         link: { label: "Download 99", url: "https://99app.com" },
       },
       {
@@ -160,18 +160,18 @@ const CATEGORIES: Category[] = [
           "Get an IDP before travelling if you don't have one",
           "After 180 days, you must convert to a Brazilian CNH",
         ],
-        tips: ["Keep your IDP and passport with you when driving — police may ask for both."],
+        tips: ["Keep your IDP and passport with you when driving. police may ask for both."],
       },
       {
         id: "cnh", title: "Converting to a Brazilian CNH", difficulty: "Hard", time: "2–4 months",
-        summary: "Start early — most people underestimate the timeline.",
+        summary: "Start early. most people underestimate the timeline.",
         steps: [
           "Get your licence translated by a sworn translator (tradutor juramentado)",
           "Take it to DETRAN in your state",
           "Pass a medical exam (exame médico)",
           "Pass a psychological exam (exame psicotécnico)",
-          "Pay state fees — roughly R$800–1,200 depending on state",
-          "Wait for processing — 2–4 months total",
+          "Pay state fees. roughly R$800–1,200 depending on state",
+          "Wait for processing. 2–4 months total",
         ],
         tips: ["Start this process as soon as you decide to stay long-term. DETRAN appointments can take weeks to schedule."],
       },
@@ -182,14 +182,14 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "ifood", title: "iFood", difficulty: "Easy", time: "5 minutes",
-        summary: "Brazil's biggest delivery app — like Uber Eats but better here.",
+        summary: "Brazil's biggest delivery app. like Uber Eats but better here.",
         steps: [
           "Download iFood (iOS or Android)",
           "Create account with your CPF and Brazilian phone number",
           "Add your Nubank card as payment",
           "Order from thousands of restaurants",
         ],
-        tips: ["iFood Club subscription gives free delivery — worth it if you order 4+ times a month. Check the coupons section before every order."],
+        tips: ["iFood Club subscription gives free delivery. worth it if you order 4+ times a month. Check the coupons section before every order."],
         link: { label: "Download iFood", url: "https://www.ifood.com.br" },
       },
       {
@@ -200,7 +200,7 @@ const CATEGORIES: Category[] = [
           "Add payment method",
           "Browse restaurants, groceries, and pharmacies",
         ],
-        tips: ["Rappi sometimes has different restaurant coverage than iFood — worth having both."],
+        tips: ["Rappi sometimes has different restaurant coverage than iFood. worth having both."],
         link: { label: "Download Rappi", url: "https://www.rappi.com.br" },
       },
     ],
@@ -210,12 +210,12 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "mercadolivre", title: "Mercado Livre", difficulty: "Easy", time: "10 minutes",
-        summary: "Brazil's biggest marketplace — like eBay + Amazon combined.",
+        summary: "Brazil's biggest marketplace. like eBay + Amazon combined.",
         steps: [
           "Create account at mercadolivre.com.br with your CPF",
           "Add payment method (Nubank card or Pix)",
           "Look for 'Full' listings for faster delivery",
-          "Learn parcelamento — split purchases into up to 12 interest-free monthly installments",
+          "Learn parcelamento. split purchases into up to 12 interest-free monthly installments",
         ],
         tips: ["Parcelamento is how most Brazilians buy everything. That R$1,200 item? Pay R$100/month for 12 months with zero interest. It's completely normal here."],
         link: { label: "Browse Mercado Livre", url: "https://www.mercadolivre.com.br" },
@@ -238,11 +238,11 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "health-insurance", title: "Private health insurance", difficulty: "Medium", time: "1–2 weeks",
-        summary: "Plano de saúde — covers private hospitals and clinics.",
+        summary: "Plano de saúde. covers private hospitals and clinics.",
         steps: [
           "Get quotes from at least 3 providers (Unimed, Bradesco Saúde, SulAmérica, Amil)",
           "Check their hospital network (rede credenciada) for your city",
-          "Sign up — requires CPF, passport, and Brazilian address",
+          "Sign up. requires CPF, passport, and Brazilian address",
           "Most plans activate within 24–48 hours for basic coverage",
         ],
         tips: [
@@ -259,11 +259,11 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "govbr", title: "Gov.br account", difficulty: "Medium", time: "20 minutes",
-        summary: "Your digital government ID — unlocks dozens of public services.",
+        summary: "Your digital government ID. unlocks dozens of public services.",
         steps: [
           "Go to gov.br or download the Gov.br app",
           "Click 'Crie sua conta' and enter your CPF",
-          "Verify identity via your bank app (Nubank and Inter both support this — easiest method)",
+          "Verify identity via your bank app (Nubank and Inter both support this. easiest method)",
           "Enable two-factor authentication",
         ],
         tips: ["Unlocks: digital signatures, tax returns, social security queries, driving licence services, voter registration."],
@@ -279,7 +279,7 @@ const CATEGORIES: Category[] = [
           "Declare all worldwide income",
           "Filing deadline is usually April 30th each year",
         ],
-        tips: ["Consult a Brazilian accountant (contador) — tax rules for foreigners are complex. Don't try to figure this out alone."],
+        tips: ["Consult a Brazilian accountant (contador). tax rules for foreigners are complex. Don't try to figure this out alone."],
         note: "Only applies if you stay more than 183 days in a 12-month period.",
       },
     ],
@@ -289,19 +289,19 @@ const CATEGORIES: Category[] = [
     items: [
       {
         id: "pix", title: "Set up Pix", difficulty: "Easy", time: "5 minutes",
-        summary: "Free instant payments — used absolutely everywhere in Brazil.",
+        summary: "Free instant payments. used absolutely everywhere in Brazil.",
         steps: [
           "Open your bank app (Nubank, Inter, etc.)",
           "Go to the Pix section and register a Pix key (chave Pix)",
-          "You can register your CPF, phone number, or email — CPF is most common",
+          "You can register your CPF, phone number, or email. CPF is most common",
           "To pay: scan a QR code or enter someone's Pix key",
           "To receive: share your QR code or Pix key",
         ],
-        tips: ["Pix has replaced cash in most of Brazil. Street vendors, restaurants, taxis — everyone uses it."],
+        tips: ["Pix has replaced cash in most of Brazil. Street vendors, restaurants, taxis. everyone uses it."],
       },
       {
         id: "wise", title: "Wise (international transfers)", difficulty: "Easy", time: "15 minutes",
-        summary: "Real exchange rate with minimal fees — essential for receiving income from abroad.",
+        summary: "Real exchange rate with minimal fees. essential for receiving income from abroad.",
         steps: [
           "Create or update your Wise account with your Brazilian CPF",
           "Add your Brazilian bank account as a withdrawal destination",
@@ -319,7 +319,7 @@ const CATEGORIES: Category[] = [
           "Start with Tesouro Direto (government bonds) or CDB (bank certificates)",
           "Both are very safe and pay well above most foreign savings accounts",
         ],
-        tips: ["Consult a Brazilian accountant before investing significant amounts — there are additional tax considerations for foreigners."],
+        tips: ["Consult a Brazilian accountant before investing significant amounts. there are additional tax considerations for foreigners."],
         note: "Recommended for long-term stays. Investment income in Brazil is taxed.",
       },
     ],
@@ -388,7 +388,7 @@ const UnlockGuide = () => {
         <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
           <div className="text-4xl mb-3">🎉🇧🇷</div>
           <h3 className="text-xl font-extrabold">That's everything. You're not a tourist anymore. 🇧🇷</h3>
-          <p className="text-sm text-muted-foreground mt-1">Every single item done. Welcome to Brazil — properly.</p>
+          <p className="text-sm text-muted-foreground mt-1">Every single item done. Welcome to Brazil. properly.</p>
         </section>
       )}
       {allEasyDone && !allDone && (
@@ -501,7 +501,7 @@ const UnlockGuide = () => {
               desc: "Send money to and from Brazil at the real exchange rate with tiny fees. Way cheaper than bank wires or Western Union.",
               price: "From $0.50 per transfer",
               url: "https://wise.com/invite/",
-              why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate — essential for receiving income from abroad.",
+              why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate. essential for receiving income from abroad.",
             },
             {
               icon: "🏥", name: "SafetyWing", category: "Travel & Health Insurance",
@@ -512,7 +512,7 @@ const UnlockGuide = () => {
             },
             {
               icon: "📱", name: "Airalo", category: "eSIM / Mobile Data",
-              desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land.",
+              desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone. works the moment you land.",
               price: "Data plans from $5",
               url: "https://www.airalo.com/?ref=getcpf",
               why: "You need a CPF to buy a physical SIM. Airalo lets you get data instantly while you sort everything else out.",
@@ -558,7 +558,7 @@ const UnlockGuide = () => {
       </section>
 
       <p className="text-[10px] text-muted-foreground text-center mt-2">
-        🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
+        🤝 These are affiliate links. we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
       </p>
     </div>
   );

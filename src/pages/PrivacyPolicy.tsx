@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 
 const PrivacyPolicy = () => (
   <div className="min-h-screen bg-background">
-    <SEO title="Privacy Policy — GET CPF" description="How GET CPF collects, uses, and protects your personal data during the CPF application process." path="/privacy" />
+    <SEO title="Privacy Policy. GET CPF" description="How GET CPF collects, uses, and protects your personal data during the CPF application process." path="/privacy" />
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>
@@ -43,10 +43,10 @@ const PrivacyPolicy = () => (
             This Privacy Policy applies to all personal data collected through <strong>getcpf.com</strong> and its subdomains. It applies regardless of your country of residence. We comply with the following data protection frameworks:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm mt-3">
-            <li><strong>LGPD</strong> — Lei Geral de Proteção de Dados (Brazil, Law No. 13,709/2018)</li>
-            <li><strong>GDPR</strong> — General Data Protection Regulation (EU/EEA, Regulation 2016/679)</li>
-            <li><strong>CCPA/CPRA</strong> — California Consumer Privacy Act and California Privacy Rights Act (United States)</li>
-            <li><strong>POPIA</strong> — Protection of Personal Information Act (South Africa, Act 4 of 2013)</li>
+            <li><strong>LGPD</strong>. Lei Geral de Proteção de Dados (Brazil, Law No. 13,709/2018)</li>
+            <li><strong>GDPR</strong>. General Data Protection Regulation (EU/EEA, Regulation 2016/679)</li>
+            <li><strong>CCPA/CPRA</strong>. California Consumer Privacy Act and California Privacy Rights Act (United States)</li>
+            <li><strong>POPIA</strong>. Protection of Personal Information Act (South Africa, Act 4 of 2013)</li>
           </ul>
         </section>
 
@@ -59,7 +59,7 @@ const PrivacyPolicy = () => (
             <li><strong>Location information:</strong> Brazilian state, city, street address, and host details if staying with someone</li>
             <li><strong>Contact information:</strong> Email address</li>
             <li><strong>Account information:</strong> Encrypted password (we never see or store your plain-text password)</li>
-            <li><strong>Payment information:</strong> Processed securely by Fanbasis — we never see or store your card details</li>
+            <li><strong>Payment information:</strong> Processed securely by Fanbasis. we never see or store your card details</li>
             <li><strong>Uploaded documents:</strong> Passport photo, selfie, and proof of address (if you choose to upload them)</li>
           </ul>
           <p className="leading-relaxed mt-3">Every data point we collect maps directly to a field required by the Receita Federal for CPF registration. We do not collect any data beyond what is necessary to deliver the service.</p>
@@ -93,7 +93,7 @@ const PrivacyPolicy = () => (
         {/* ── 4. PURPOSE ── */}
         <section>
           <h2 className="text-xl font-bold mb-3">Why we collect it</h2>
-          <p className="leading-relaxed">To generate personalised CPF application documents — specifically to pre-fill your official FCPF form, identify the correct Receita Federal office, personalise your document checklist and Portuguese phrases, and save your progress.</p>
+          <p className="leading-relaxed">To generate personalised CPF application documents. specifically to pre-fill your official FCPF form, identify the correct Receita Federal office, personalise your document checklist and Portuguese phrases, and save your progress.</p>
         </section>
 
         {/* ── 5. LEGAL BASIS ── */}
@@ -101,8 +101,8 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Legal basis for processing</h2>
           <p className="leading-relaxed mb-3">We process your data based on:</p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Contractual necessity</strong> (LGPD Article 7, V / GDPR Article 6(1)(b) / POPIA Section 11(1)(b)) — processing required to deliver the document preparation service you purchased</li>
-            <li><strong>Consent</strong> (LGPD Article 7, I / GDPR Article 6(1)(a) / POPIA Section 11(1)(a)) — which you provide explicitly when you begin the onboarding questionnaire</li>
+            <li><strong>Contractual necessity</strong> (LGPD Article 7, V / GDPR Article 6(1)(b) / POPIA Section 11(1)(b)). processing required to deliver the document preparation service you purchased</li>
+            <li><strong>Consent</strong> (LGPD Article 7, I / GDPR Article 6(1)(a) / POPIA Section 11(1)(a)). which you provide explicitly when you begin the onboarding questionnaire</li>
           </ul>
           <p className="leading-relaxed mt-3">You may withdraw consent at any time by emailing us. Withdrawal does not affect the lawfulness of processing carried out before withdrawal, and does not affect processing based on contractual necessity.</p>
         </section>
@@ -111,7 +111,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Data sharing with the Brazilian Receita Federal</h2>
           <p className="leading-relaxed">
-            The purpose of GET CPF is to prepare your CPF application documents. By using our service, you acknowledge and consent to the fact that your personal data (full name, passport number, nationality, date of birth, mother's name, and address in Brazil) will be included in documents designed for submission to the <strong>Receita Federal do Brasil</strong> (Brazilian Federal Revenue Service). You — not GET CPF — submit these documents to the Receita Federal. We do not transmit your data to the government directly.
+            The purpose of GET CPF is to prepare your CPF application documents. By using our service, you acknowledge and consent to the fact that your personal data (full name, passport number, nationality, date of birth, mother's name, and address in Brazil) will be included in documents designed for submission to the <strong>Receita Federal do Brasil</strong> (Brazilian Federal Revenue Service). You. not GET CPF. submit these documents to the Receita Federal. We do not transmit your data to the government directly.
           </p>
         </section>
 
@@ -122,8 +122,8 @@ const PrivacyPolicy = () => (
             GET CPF is the <strong>Data Controller</strong>. We use the following third-party <strong>Data Processors</strong> to deliver the service:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Supabase Inc.</strong> (United States) — database hosting, authentication, and file storage (SOC 2 Type II certified, data encrypted at rest and in transit)</li>
-            <li><strong>Fanbasis</strong> (United States) — payment processing (we never see or store your card details)</li>
+            <li><strong>Supabase Inc.</strong> (United States). database hosting, authentication, and file storage (SOC 2 Type II certified, data encrypted at rest and in transit)</li>
+            <li><strong>Fanbasis</strong> (United States). payment processing (we never see or store your card details)</li>
           </ul>
           <p className="leading-relaxed mt-3">We ensure that appropriate Data Processing Agreements (DPAs) are in place with each processor. We remain strictly liable for the security of your data regardless of which processor handles it. No personal data is shared with any other third party.</p>
         </section>
@@ -132,11 +132,11 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">How we store and protect it</h2>
           <p className="leading-relaxed mb-3">
-            Your data is encrypted and stored securely with row-level security — you can only access your own data. Specifically:
+            Your data is encrypted and stored securely with row-level security. you can only access your own data. Specifically:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>All data is transmitted over HTTPS (TLS 1.2+)</li>
-            <li>Database access is restricted by Row Level Security (RLS) — each user can only access their own records</li>
+            <li>Database access is restricted by Row Level Security (RLS). each user can only access their own records</li>
             <li>Passwords are hashed using bcrypt</li>
             <li>Payment details are handled entirely by Fanbasis and never touch our servers</li>
             <li>Uploaded documents are stored in private, authenticated storage buckets</li>
@@ -167,9 +167,9 @@ const PrivacyPolicy = () => (
             GET CPF uses <strong>essential cookies only</strong> for the following purposes:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Authentication session cookie</strong> — keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
-            <li><strong>Cookie consent preference</strong> — remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
-            <li><strong>Cloudflare Bot Management (<code>__cf_bm</code>)</strong> — set automatically by our CDN provider (Cloudflare) to distinguish legitimate users from bots. This is a strictly necessary cookie that expires after 1 hour. Cloudflare's privacy policy: <a href="https://www.cloudflare.com/privacypolicy/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">cloudflare.com/privacypolicy</a></li>
+            <li><strong>Authentication session cookie</strong>. keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
+            <li><strong>Cookie consent preference</strong>. remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
+            <li><strong>Cloudflare Bot Management (<code>__cf_bm</code>)</strong>. set automatically by our CDN provider (Cloudflare) to distinguish legitimate users from bots. This is a strictly necessary cookie that expires after 1 hour. Cloudflare's privacy policy: <a href="https://www.cloudflare.com/privacypolicy/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">cloudflare.com/privacypolicy</a></li>
           </ul>
           <p className="leading-relaxed mt-3">We do <strong>not</strong> use:</p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
@@ -192,11 +192,11 @@ const PrivacyPolicy = () => (
 
           <h3 className="text-base font-semibold mt-4 mb-2">All users</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Access</strong> — request a copy of all data we hold about you</li>
-            <li><strong>Correction</strong> — ask us to fix any inaccurate information</li>
-            <li><strong>Deletion</strong> — ask us to delete your account and all associated data</li>
-            <li><strong>Portability</strong> — receive your data in a portable format (JSON export available in your dashboard)</li>
-            <li><strong>Withdraw consent</strong> — at any time, for any reason</li>
+            <li><strong>Access</strong>. request a copy of all data we hold about you</li>
+            <li><strong>Correction</strong>. ask us to fix any inaccurate information</li>
+            <li><strong>Deletion</strong>. ask us to delete your account and all associated data</li>
+            <li><strong>Portability</strong>. receive your data in a portable format (JSON export available in your dashboard)</li>
+            <li><strong>Withdraw consent</strong>. at any time, for any reason</li>
           </ul>
 
           <h3 className="text-base font-semibold mt-4 mb-2">Brazil (LGPD)</h3>
@@ -205,23 +205,23 @@ const PrivacyPolicy = () => (
             <li>Right to anonymisation, blocking, or deletion of unnecessary data (Article 18, IV)</li>
             <li>Right to information about public and private entities with which data has been shared (Article 18, VII)</li>
             <li>Right to revoke consent (Article 18, IX)</li>
-            <li>Right to petition the <strong>ANPD</strong> (Autoridade Nacional de Proteção de Dados) — <a href="https://www.gov.br/anpd" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">gov.br/anpd</a></li>
+            <li>Right to petition the <strong>ANPD</strong> (Autoridade Nacional de Proteção de Dados). <a href="https://www.gov.br/anpd" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">gov.br/anpd</a></li>
           </ul>
 
           <h3 className="text-base font-semibold mt-4 mb-2">EU/EEA (GDPR)</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>Right to restriction of processing (Article 18)</li>
             <li>Right to object to processing (Article 21)</li>
-            <li>Right not to be subject to automated decision-making (Article 22) — GET CPF does not make automated decisions that produce legal effects concerning you</li>
-            <li>Right to lodge a complaint with your national <strong>supervisory authority</strong> — see the <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">EDPB member list</a></li>
+            <li>Right not to be subject to automated decision-making (Article 22). GET CPF does not make automated decisions that produce legal effects concerning you</li>
+            <li>Right to lodge a complaint with your national <strong>supervisory authority</strong>. see the <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">EDPB member list</a></li>
           </ul>
 
           <h3 className="text-base font-semibold mt-4 mb-2">California (CCPA/CPRA)</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>Right to know what personal information is collected, used, and disclosed</li>
             <li>Right to delete personal information</li>
-            <li>Right to opt out of the sale or sharing of personal information — we do not sell or share your data</li>
-            <li>Right to limit the use of sensitive personal information — we use passport numbers solely to prepare your CPF application</li>
+            <li>Right to opt out of the sale or sharing of personal information. we do not sell or share your data</li>
+            <li>Right to limit the use of sensitive personal information. we use passport numbers solely to prepare your CPF application</li>
             <li>Right to non-discrimination for exercising your rights</li>
           </ul>
 
@@ -230,7 +230,7 @@ const PrivacyPolicy = () => (
             <li>Right to be notified of data collection (Section 18)</li>
             <li>Right to request correction or deletion (Section 24)</li>
             <li>Right to object to processing (Section 11(3))</li>
-            <li>Right to lodge a complaint with the <strong>Information Regulator</strong> — <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a></li>
+            <li>Right to lodge a complaint with the <strong>Information Regulator</strong>. <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a></li>
           </ul>
 
           <p className="leading-relaxed mt-4">
@@ -244,7 +244,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Do Not Sell or Share My Personal Information</h2>
           <p className="leading-relaxed">
-            GET CPF does <strong>not sell or share</strong> your personal information with third parties for advertising, marketing, or any other commercial purpose. This applies to all users, including California residents under the CCPA/CPRA. Because we do not sell data, there is no need to submit a "Do Not Sell" request — but you may contact us at any time at{" "}
+            GET CPF does <strong>not sell or share</strong> your personal information with third parties for advertising, marketing, or any other commercial purpose. This applies to all users, including California residents under the CCPA/CPRA. Because we do not sell data, there is no need to submit a "Do Not Sell" request. but you may contact us at any time at{" "}
             <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a> to confirm this.
           </p>
         </section>
@@ -297,7 +297,7 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Data protection contact</h2>
           <p className="leading-relaxed">
-            For any questions, requests, or complaints related to your personal data — including LGPD, GDPR, CCPA, or POPIA enquiries — contact us at:{" "}
+            For any questions, requests, or complaints related to your personal data. including LGPD, GDPR, CCPA, or POPIA enquiries. contact us at:{" "}
             <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
           </p>
           <p className="leading-relaxed mt-3">

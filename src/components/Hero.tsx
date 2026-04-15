@@ -34,7 +34,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
 
   return (
     <>
-      {/* Hero — clean, one message */}
+      {/* Hero. clean, one message */}
       <section className="pt-32 sm:pt-40 pb-20 sm:pb-24 px-5 sm:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <motion.div
@@ -82,7 +82,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <p className="text-sm text-gray-400 mt-3">No Portuguese required. Money-back guarantee.</p>
           </motion.div>
 
-          {/* Brand logos — indirect credibility */}
+          {/* Brand logos. indirect credibility */}
           <div className="mt-12">
             <p className="text-xs text-gray-400 uppercase tracking-widest mb-5">Your CPF unlocks</p>
             <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 opacity-60 hover:opacity-100 transition-opacity duration-500">
@@ -94,7 +94,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
         </div>
       </section>
 
-      {/* Stats + Product mockup — below the fold */}
+      {/* Stats + Product mockup. below the fold */}
       <section className="py-16 px-5 sm:px-8 text-center">
         <div className="max-w-4xl mx-auto">
           {/* Stats */}

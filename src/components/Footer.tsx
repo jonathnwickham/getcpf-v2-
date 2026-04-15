@@ -24,26 +24,26 @@ const Footer = () => (
         <div>
           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Product</h4>
           <ul className="space-y-2.5 text-sm text-gray-500">
-            <li><a href="/#how" className="hover:text-white transition-colors">How it works</a></li>
-            <li><a href="/#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-white transition-colors">FAQ</a></li>
-            <li><Link to="/guides" className="hover:text-white transition-colors">Guides</Link></li>
+            <li><a href="/#how" className="hover:text-white transition-colors link-underline link-underline-light">How it works</a></li>
+            <li><a href="/#pricing" className="hover:text-white transition-colors link-underline link-underline-light">Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-white transition-colors link-underline link-underline-light">FAQ</a></li>
+            <li><Link to="/guides" className="hover:text-white transition-colors link-underline link-underline-light">Guides</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Company</h4>
           <ul className="space-y-2.5 text-sm text-gray-500">
-            <li><Link to="/contact" className="hover:text-white transition-colors">Contact us</Link></li>
-            <li><Link to="/partners" className="hover:text-white transition-colors">Become a partner</Link></li>
-            <li><Link to="/affiliates/apply" className="hover:text-white transition-colors">Affiliate programme</Link></li>
+            <li><Link to="/contact" className="hover:text-white transition-colors link-underline link-underline-light">Contact us</Link></li>
+            <li><Link to="/partners" className="hover:text-white transition-colors link-underline link-underline-light">Become a partner</Link></li>
+            <li><Link to="/affiliates/apply" className="hover:text-white transition-colors link-underline link-underline-light">Affiliate programme</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Legal</h4>
           <ul className="space-y-2.5 text-sm text-gray-500">
-            <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-            <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="hover:text-white transition-colors">Affiliate Disclosure</Link></li>
+            <li><Link to="/privacy" className="hover:text-white transition-colors link-underline link-underline-light">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-white transition-colors link-underline link-underline-light">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="hover:text-white transition-colors link-underline link-underline-light">Affiliate Disclosure</Link></li>
             <li><button onClick={openCookiePreferences} className="hover:text-white transition-colors text-left">Cookie preferences</button></li>
           </ul>
         </div>

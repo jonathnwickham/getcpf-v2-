@@ -5,7 +5,7 @@ export const PhrasesTab = ({ data }: { data: OnboardingData }) => (
   <div className="space-y-6 animate-slide-in">
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
       <h2 className="text-xl font-bold">🇧🇷 Portuguese phrases for the office</h2>
-      <p className="text-sm text-muted-foreground mt-2">You probably won't need all of these, but they're here just in case. Tap any phrase to copy it — you can show it on your phone screen.</p>
+      <p className="text-sm text-muted-foreground mt-2">You probably won't need all of these, but they're here just in case. Tap any phrase to copy it. you can show it on your phone screen.</p>
     </section>
 
     <section className="bg-card border border-border rounded-2xl p-6">
@@ -94,7 +94,7 @@ export const PhrasesTab = ({ data }: { data: OnboardingData }) => (
             </div>
           </a>
         ))}
-        <p className="text-xs text-muted-foreground text-center pt-2">🤝 These are affiliate links — we may earn a small commission at no extra cost to you.</p>
+        <p className="text-xs text-muted-foreground text-center pt-2">🤝 These are affiliate links. we may earn a small commission at no extra cost to you.</p>
       </div>
     </section>
   </div>

@@ -70,7 +70,7 @@ const GuideDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title={`${guide.title} — GET CPF`} description={guide.metaDescription} path={`/guides/${guide.slug}`} />
+      <SEO title={`${guide.title}. GET CPF`} description={guide.metaDescription} path={`/guides/${guide.slug}`} />
       <Navbar />
       <article className="pt-32 pb-24 px-6">
         <div className="max-w-[700px] mx-auto">
@@ -185,7 +185,7 @@ const GuideDetail = () => {
               to="/pricing"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get My CPF Pack — <span className="line-through opacity-60">$49</span> $29 →
+              Get My CPF Pack. <span className="line-through opacity-60">$49</span> $29 →
             </Link>
           </div>
 
@@ -193,13 +193,13 @@ const GuideDetail = () => {
           <div className="mt-16 bg-primary/5 border border-primary/20 rounded-2xl p-8 text-center">
             <h3 className="text-xl font-extrabold tracking-tight mb-2">Ready to get your CPF?</h3>
             <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
-              We prepare everything for your specific situation — documents, office, phrases — so you walk in and walk out with your CPF.
+              We prepare everything for your specific situation. documents, office, phrases. so you walk in and walk out with your CPF.
             </p>
             <Link
               to="/pricing"
               className="inline-block bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
             >
-              Get started — <span className="line-through opacity-60">$49</span> $29 →
+              Get started. <span className="line-through opacity-60">$49</span> $29 →
             </Link>
             <p className="text-xs text-muted-foreground mt-3">100% acceptance guarantee or your money back</p>
           </div>

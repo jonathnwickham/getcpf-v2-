@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 
 const Affiliates = () => (
   <div className="overflow-x-hidden">
-    <SEO title="Affiliate Disclosure — GET CPF" description="GET CPF affiliate disclosure and partnership transparency information." path="/affiliates" />
+    <SEO title="Affiliate Disclosure. GET CPF" description="GET CPF affiliate disclosure and partnership transparency information." path="/affiliates" />
     <Navbar />
     <div className="min-h-screen bg-background pt-28 pb-16 px-6">
       <div className="max-w-[700px] mx-auto">
@@ -20,8 +20,8 @@ const Affiliates = () => (
 
           <h2 className="text-foreground text-lg font-bold mt-8">What this means</h2>
           <p>
-            Some links on this website — particularly in the <strong>Life in Brazil</strong> and{" "}
-            <strong>Partners</strong> sections of your Ready Pack — are affiliate links. If you
+            Some links on this website. particularly in the <strong>Life in Brazil</strong> and{" "}
+            <strong>Partners</strong> sections of your Ready Pack. are affiliate links. If you
             click on one and sign up for the recommended service, we may receive a small commission
             at no extra cost to you.
           </p>
@@ -29,7 +29,7 @@ const Affiliates = () => (
           <h2 className="text-foreground text-lg font-bold mt-8">Our commitment</h2>
           <ul className="list-disc pl-5 space-y-2">
             <li>We only recommend services we have personally used or thoroughly vetted.</li>
-            <li>Affiliate partnerships never influence our recommendations. If a service isn't good, we don't list it — regardless of commission.</li>
+            <li>Affiliate partnerships never influence our recommendations. If a service isn't good, we don't list it. regardless of commission.</li>
             <li>The price you pay is always the same whether you use our link or go directly.</li>
           </ul>
 

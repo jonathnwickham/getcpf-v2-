@@ -28,7 +28,7 @@ const ResetPassword = () => {
     if (error) {
       toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "All set — your password is updated" });
+      toast({ title: "All set. your password is updated" });
       navigate("/login");
     }
     setLoading(false);
@@ -36,16 +36,16 @@ const ResetPassword = () => {
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="text-center">
           <a href="/" className="inline-block mb-6"><Logo className="h-10" /></a>
           <h1 className="text-xl font-bold">This link isn't working</h1>
-          <p className="text-muted-foreground mt-2 text-sm">It may have expired — request a new one and you'll be sorted in a minute.</p>
+          <p className="text-gray-500 mt-2 text-sm">It may have expired. request a new one and you'll be sorted in a minute.</p>
           <div className="mt-6 flex flex-col gap-3">
-            <a href="/forgot-password" className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all inline-block">
+            <a href="/forgot-password" className="bg-green-800 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all inline-block">
               Request a new link →
             </a>
-            <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
               Back to homepage
             </a>
           </div>
@@ -55,31 +55,31 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-6">
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/" className="inline-block mb-6"><Logo className="h-10" /></a>
           <h1 className="text-2xl font-extrabold">Pick a new password</h1>
-          <p className="text-muted-foreground mt-2 text-sm">Choose something you'll remember — then you're back in</p>
+          <p className="text-gray-500 mt-2 text-sm">Choose something you'll remember. then you're back in</p>
         </div>
 
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
-            <label className="text-sm font-semibold text-foreground block mb-1.5">New password</label>
+            <label className="text-sm font-semibold text-gray-900 block mb-1.5">New password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="••••••••"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+            className="w-full bg-green-800 text-white py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
           >
             {loading ? "Updating..." : "Save new password"}
           </button>

@@ -44,7 +44,7 @@ const getNationalityPt = (nationality: string): string => {
   return NATIONALITY_PT[nationality] || nationality.toLowerCase();
 };
 
-// External link component — uses <a> tags which work inside iframes (window.open gets blocked)
+// External link component. uses <a> tags which work inside iframes (window.open gets blocked)
 const ExternalLink = ({ href, className, children, showHint = true }: { href: string; className?: string; children: React.ReactNode; showHint?: boolean }) => (
   <a href={href} target="_blank" rel="noopener noreferrer" className={`${className || ""} group/ext`}>
     {children}
@@ -352,7 +352,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
   const firstName = data.fullName.split(" ")[0];
   const hasCpf = cpfNumber.replace(/\D/g, "").length >= 11 && animateCard;
 
-  // No CPF yet — encouraging waiting state
+  // No CPF yet. encouraging waiting state
   if (!hasCpf) {
     return (
       <div className="space-y-8 animate-slide-in">
@@ -428,7 +428,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
     );
   }
 
-  // CPF saved — celebration + animated card
+  // CPF saved. celebration + animated card
   const slides = [
     {
       id: "card",
@@ -640,16 +640,16 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
         </div>
       </section>
 
-      {/* What to do next — quick links to Life in Brazil */}
+      {/* What to do next. quick links to Life in Brazil */}
       <section className="bg-card border border-border rounded-2xl p-6">
         <h3 className="font-bold text-lg mb-1">🚀 What to do next with your CPF</h3>
         <p className="text-sm text-muted-foreground mb-4">You've unlocked a whole new life in Brazil. Here are the first things to set up.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[
-            { icon: "🏦", title: "Open a bank", desc: "Nubank — fully digital, zero fees", difficulty: "Easy" },
+            { icon: "🏦", title: "Open a bank", desc: "Nubank. fully digital, zero fees", difficulty: "Easy" },
             { icon: "📱", title: "Get a SIM card", desc: "Vivo, Claro, TIM, or eSIM", difficulty: "Easy" },
             { icon: "⚡", title: "Set up Pix", desc: "Free instant payments", difficulty: "Easy" },
-            { icon: "🍔", title: "Food delivery", desc: "iFood, Rappi — order anything", difficulty: "Easy" },
+            { icon: "🍔", title: "Food delivery", desc: "iFood, Rappi. order anything", difficulty: "Easy" },
             { icon: "🛍️", title: "Shop online", desc: "Mercado Livre, Amazon BR", difficulty: "Easy" },
             { icon: "🏠", title: "Rent a place", desc: "QuintoAndar, long-stay Airbnb", difficulty: "Medium" },
           ].map((item) => (
@@ -668,7 +668,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
           onClick={() => onOpenLifeGuide()}
           className="mt-4 w-full bg-primary text-primary-foreground px-4 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
         >
-          🔓 See full guide — Life in Brazil →
+          🔓 See full guide. Life in Brazil →
         </button>
       </section>
 
@@ -685,7 +685,7 @@ const MyCpfTab = ({ data, stateName, motherDisplay, onOpenGuide, onOpenLifeGuide
             label="Share on WhatsApp"
             emoji="💬"
             onClick={() => {
-              const text = encodeURIComponent("I just got my Brazilian CPF sorted with GET CPF. If you need one, check it out — saved me so much time: https://getcpf.com");
+              const text = encodeURIComponent("I just got my Brazilian CPF sorted with GET CPF. If you need one, check it out. saved me so much time: https://getcpf.com");
               window.open(`https://wa.me/?text=${text}`, "_blank");
             }}
           />
@@ -721,7 +721,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
     {/* Visual process timeline */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Your CPF journey — three steps and you're done</h2>
+        <h2 className="font-bold">Your CPF journey. three steps and you're done</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:divide-x divide-border">
         <ProcessStep
@@ -761,7 +761,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
           {data.fatherName && <InfoField label="Father's Name" value={data.fatherName} />}
           <InfoField label="Passport" value={data.passportNumber} />
           <InfoField label="Nationality" value={data.nationality} />
-          <InfoField label="State" value={`${data.state} — ${stateName}`} />
+          <InfoField label="State" value={`${data.state}. ${stateName}`} />
           <InfoField label="Address" value={data.streetAddress} />
           <InfoField label="City" value={data.city} />
           <InfoField label="Email" value={data.email} />
@@ -796,7 +796,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
 
 // === OFFICE TAB ===
 const CITY_TIPS: Record<string, string> = {
-  SP: "Go to CAC Bela Vista (Rua Avanhandava, 55). Multiple foreigners confirm fast processing (10-15 min). Avoid the Praça Ramos location — foreigners report being turned away.",
+  SP: "Go to CAC Bela Vista (Rua Avanhandava, 55). Multiple foreigners confirm fast processing (10-15 min). Avoid the Praça Ramos location. foreigners report being turned away.",
   SC: "Centro office confirmed foreigner-friendly.",
   RJ: "Main offices handle foreigners regularly.",
 };
@@ -852,8 +852,8 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
       <h3 className="font-bold text-lg flex items-center gap-2">🚶 Most offices accept walk-ins</h3>
       <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-        <li>• Most Receita Federal offices process CPF for foreigners <strong>without an appointment</strong> — check your specific office below</li>
-        <li>• The online booking system requires a CPF to use (which you don't have yet) — so walk-in is the only option</li>
+        <li>• Most Receita Federal offices process CPF for foreigners <strong>without an appointment</strong>. check your specific office below</li>
+        <li>• The online booking system requires a CPF to use (which you don't have yet). so walk-in is the only option</li>
         <li>• Just go in, take a queue number at reception, and wait</li>
       </ul>
       <div className="mt-4 bg-card border border-border rounded-xl p-4">
@@ -867,7 +867,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
       </div>
       <div className="mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-3">
         <p className="text-xs text-amber-800 dark:text-amber-200">
-          <strong>The appointment catch-22:</strong> You may see an option to book online, but it requires a CPF — which you don't have yet. Don't worry about this. Walk-in works for CPF registration.
+          <strong>The appointment catch-22:</strong> You may see an option to book online, but it requires a CPF. which you don't have yet. Don't worry about this. Walk-in works for CPF registration.
         </p>
       </div>
     </section>
@@ -927,7 +927,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
           </ul>
         </section>
 
-        {/* Getting There — Transportation */}
+        {/* Getting There. Transportation */}
         <TransportSection office={recommendedOffice} data={data} />
       </>
     )}
@@ -946,7 +946,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
     {/* Correios backup */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-3 border-b border-border bg-amber-50 dark:bg-amber-950/20 flex items-center gap-2">
-        <span className="inline-flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">🟡 Alternative — R$7 fee</span>
+        <span className="inline-flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">🟡 Alternative. R$7 fee</span>
         <h3 className="font-bold text-sm">Correios (Post Office)</h3>
       </div>
       <div className="p-6">
@@ -995,9 +995,9 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
       <div className="p-4 space-y-1">
         {[
           { q: "They said they can't do CPF here", a: "This sometimes happens at smaller branches. Go to a larger Receita Federal office, or try the nearest Correios (post office) instead." },
-          { q: "They asked for an appointment", a: "CPF registration for foreigners is usually handled as a walk-in. Ask: 'Posso fazer a inscrição no CPF sem agendamento?' (Can I do CPF registration without an appointment?) If they insist, use the email method — your pre-written email is in the dashboard." },
-          { q: "They asked for a document I don't have", a: "The only required documents are your passport and the signed FCPF form. Show them these. If they ask for a birth certificate, it's optional — explain that you have your mother's name on the form already." },
-          { q: "They refused because I'm a foreigner", a: "Any foreigner can register for CPF — this is your legal right under IN RFB 2.172/2024. Try another Receita Federal office or the nearest Correios." },
+          { q: "They asked for an appointment", a: "CPF registration for foreigners is usually handled as a walk-in. Ask: 'Posso fazer a inscrição no CPF sem agendamento?' (Can I do CPF registration without an appointment?) If they insist, use the email method. your pre-written email is in the dashboard." },
+          { q: "They asked for a document I don't have", a: "The only required documents are your passport and the signed FCPF form. Show them these. If they ask for a birth certificate, it's optional. explain that you have your mother's name on the form already." },
+          { q: "They refused because I'm a foreigner", a: "Any foreigner can register for CPF. this is your legal right under IN RFB 2.172/2024. Try another Receita Federal office or the nearest Correios." },
           { q: "The system was offline", a: "This happens occasionally. Come back the next day, or use the email method. Your pre-written email is ready to send from your dashboard." },
           { q: "I sent the email but got no response", a: "Wait 7 business days. If no response, resend to the same address. If still nothing, try a different regional office email or go in person." },
         ].map(({ q, a }) => (
@@ -1045,7 +1045,7 @@ const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
           <div className="text-3xl">🗺️</div>
           <h4 className="font-bold">See what real visitors say</h4>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Read verified reviews from people who visited this office on Google Maps — including wait times, staff helpfulness, and tips.
+            Read verified reviews from people who visited this office on Google Maps. including wait times, staff helpfulness, and tips.
           </p>
           <ExternalLink
             href={googleReviewsUrl}
@@ -1068,56 +1068,56 @@ const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
 // === TRANSPORT SECTION ===
 const METRO_INFO: Record<string, { lines: string[]; fare: string; cardRequired: boolean; cardName?: string; tip: string }> = {
   SP: {
-    lines: ["Line 1 (Blue) — Sé station", "Line 3 (Red) — República station", "Line 4 (Yellow) — Luz station"],
+    lines: ["Line 1 (Blue). Sé station", "Line 3 (Red). República station", "Line 4 (Yellow). Luz station"],
     fare: "R$5.00 per trip",
     cardRequired: true,
     cardName: "Bilhete Único",
     tip: "Buy a Bilhete Único card at any station (R$4.40 for the card). You can also tap a contactless credit/debit card at the turnstile.",
   },
   RJ: {
-    lines: ["Line 1 — Carioca station", "Line 2 — Central station", "Line 4 — General Osório station"],
+    lines: ["Line 1. Carioca station", "Line 2. Central station", "Line 4. General Osório station"],
     fare: "R$6.90 per trip",
     cardRequired: true,
     cardName: "Giro card",
     tip: "Buy a Giro card at any station. Contactless bank cards also work at turnstiles.",
   },
   DF: {
-    lines: ["Green Line — Central station", "Orange Line — Águas Claras station"],
+    lines: ["Green Line. Central station", "Orange Line. Águas Claras station"],
     fare: "R$5.50 per trip",
     cardRequired: true,
     cardName: "cartão de passagem",
     tip: "Buy a card at metro stations. Cash is not accepted on the metro.",
   },
   MG: {
-    lines: ["Line 1 — Estação Central to Vilarinho", "Line 2 (expansion) — Calafate"],
+    lines: ["Line 1. Estação Central to Vilarinho", "Line 2 (expansion). Calafate"],
     fare: "R$4.25 per trip",
     cardRequired: true,
     cardName: "BHBUS card",
-    tip: "Buy a BHBUS card at stations. Limited coverage — check if the office is near a station.",
+    tip: "Buy a BHBUS card at stations. Limited coverage. check if the office is near a station.",
   },
   RS: {
-    lines: ["Trensurb — Mercado to Novo Hamburgo (via Sapucaia/São Leopoldo)"],
+    lines: ["Trensurb. Mercado to Novo Hamburgo (via Sapucaia/São Leopoldo)"],
     fare: "R$4.50 per trip",
     cardRequired: true,
     cardName: "TRI card",
     tip: "The Trensurb train connects Porto Alegre to the metropolitan area. Buy a TRI card at any station.",
   },
   PE: {
-    lines: ["South Line — Recife to Cajueiro Seco", "Center Line — Recife to Camaragibe"],
+    lines: ["South Line. Recife to Cajueiro Seco", "Center Line. Recife to Camaragibe"],
     fare: "R$3.70 per trip",
     cardRequired: true,
     cardName: "VEM card",
     tip: "Buy a VEM card at stations. The metro connects the city center to surrounding areas.",
   },
   CE: {
-    lines: ["South Line — José de Alencar to Messejana", "West Line — Vila das Flores"],
+    lines: ["South Line. José de Alencar to Messejana", "West Line. Vila das Flores"],
     fare: "R$3.50 per trip",
     cardRequired: true,
     cardName: "Bilhete Único Fortaleza",
-    tip: "Buy a Bilhete Único at stations. Coverage is limited — check proximity to the office.",
+    tip: "Buy a Bilhete Único at stations. Coverage is limited. check proximity to the office.",
   },
   BA: {
-    lines: ["Line 1 — Lapa to Aeroporto", "Line 2 — Acesso Norte to Pituaçu"],
+    lines: ["Line 1. Lapa to Aeroporto", "Line 2. Acesso Norte to Pituaçu"],
     fare: "R$4.00 per trip",
     cardRequired: true,
     cardName: "Salvador Card",
@@ -1126,19 +1126,19 @@ const METRO_INFO: Record<string, { lines: string[]; fare: string; cardRequired: 
 };
 
 const BUS_INFO: Record<string, { fare: string; cashAccepted: boolean; tip: string }> = {
-  SP: { fare: "R$4.40", cashAccepted: true, tip: "Cash is accepted on buses — bring exact change. A Bilhete Único card or contactless bank card also works." },
-  RJ: { fare: "R$4.30", cashAccepted: true, tip: "Cash is accepted — bring exact change. A Giro card or contactless card also works." },
-  DF: { fare: "R$5.50", cashAccepted: true, tip: "Cash is accepted on most buses — bring exact change. Transit cards also work." },
-  MG: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted — bring exact change. BHBUS card also works." },
-  BA: { fare: "R$4.40", cashAccepted: true, tip: "Cash accepted — bring exact change. Salvador Card also works." },
-  PR: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted — bring exact change. Cartão Transporte also works." },
-  CE: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted — bring exact change. Bilhete Único Fortaleza also works." },
-  PE: { fare: "R$3.85", cashAccepted: true, tip: "Cash accepted — bring exact change. VEM card also works." },
-  RS: { fare: "R$4.80", cashAccepted: true, tip: "Cash accepted — bring exact change. TRI card also works." },
-  SC: { fare: "R$4.75", cashAccepted: true, tip: "Cash accepted — bring exact change. Local transit cards also work." },
-  GO: { fare: "R$4.30", cashAccepted: true, tip: "Cash accepted — bring exact change. Sit Pass card also works." },
-  PA: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted — bring exact change." },
-  ES: { fare: "R$3.90", cashAccepted: true, tip: "Cash accepted — bring exact change. GV Bus card also works." },
+  SP: { fare: "R$4.40", cashAccepted: true, tip: "Cash is accepted on buses. bring exact change. A Bilhete Único card or contactless bank card also works." },
+  RJ: { fare: "R$4.30", cashAccepted: true, tip: "Cash is accepted. bring exact change. A Giro card or contactless card also works." },
+  DF: { fare: "R$5.50", cashAccepted: true, tip: "Cash is accepted on most buses. bring exact change. Transit cards also work." },
+  MG: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted. bring exact change. BHBUS card also works." },
+  BA: { fare: "R$4.40", cashAccepted: true, tip: "Cash accepted. bring exact change. Salvador Card also works." },
+  PR: { fare: "R$4.50", cashAccepted: true, tip: "Cash is accepted. bring exact change. Cartão Transporte also works." },
+  CE: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted. bring exact change. Bilhete Único Fortaleza also works." },
+  PE: { fare: "R$3.85", cashAccepted: true, tip: "Cash accepted. bring exact change. VEM card also works." },
+  RS: { fare: "R$4.80", cashAccepted: true, tip: "Cash accepted. bring exact change. TRI card also works." },
+  SC: { fare: "R$4.75", cashAccepted: true, tip: "Cash accepted. bring exact change. Local transit cards also work." },
+  GO: { fare: "R$4.30", cashAccepted: true, tip: "Cash accepted. bring exact change. Sit Pass card also works." },
+  PA: { fare: "R$3.60", cashAccepted: true, tip: "Cash accepted. bring exact change." },
+  ES: { fare: "R$3.90", cashAccepted: true, tip: "Cash accepted. bring exact change. GV Bus card also works." },
 };
 
 const TransportSection = ({ office, data }: { office: OfficeInfo; data: OnboardingData }) => {
@@ -1146,13 +1146,13 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
   const destination = encodeURIComponent(office.address);
   const uberLink = `https://m.uber.com/ul/?action=setPickup&dropoff[formatted_address]=${destination}&dropoff[nickname]=${encodeURIComponent(office.name)}`;
   const metro = METRO_INFO[data.state];
-  const bus = BUS_INFO[data.state] || { fare: "R$4–6", cashAccepted: false, tip: "Check locally. Most cities require a transit card — cash is rarely accepted on public transport." };
+  const bus = BUS_INFO[data.state] || { fare: "R$4–6", cashAccepted: false, tip: "Check locally. Most cities require a transit card. cash is rarely accepted on public transport." };
 
   const moovitLink = `https://moovitapp.com/index/en/public_transit-${encodeURIComponent(office.name)}-Brazil`;
   const bikeApps = [
     { name: "Itaú Bikes", icon: "🚲", desc: "Bike-sharing (orange bikes), available in major cities", link: "https://www.bikeitau.com.br/" },
-    { name: "WHOOSH", icon: "🛴", desc: "Electric scooters — great for short distances (5–10 min)", link: "https://whoosh.bike/" },
-    { name: "JET", icon: "🛴", desc: "Electric scooters — another option in many cities", link: "https://www.jetscooters.com.br/" },
+    { name: "WHOOSH", icon: "🛴", desc: "Electric scooters. great for short distances (5–10 min)", link: "https://whoosh.bike/" },
+    { name: "JET", icon: "🛴", desc: "Electric scooters. another option in many cities", link: "https://www.jetscooters.com.br/" },
   ];
 
   const transportOptions = [
@@ -1203,7 +1203,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
 
             <div className="bg-card border border-border rounded-xl p-4">
               <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">📍 Destination pre-filled</p>
-              <p className="text-sm text-muted-foreground mb-3">{office.name} — {office.address}</p>
+              <p className="text-sm text-muted-foreground mb-3">{office.name}. {office.address}</p>
               <ExternalLink
                 href={uberLink}
                 className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
@@ -1226,7 +1226,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
         {activeTransport === "ninetynine" && (
           <div className="bg-secondary rounded-xl p-5 space-y-4 animate-fade-up">
             <div>
-              <h4 className="font-bold text-sm mb-2">🚕 99 — Brazil's local ride app</h4>
+              <h4 className="font-bold text-sm mb-2">🚕 99. Brazil's local ride app</h4>
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>• <strong>Estimated cost:</strong> R$10–35, often 20–30% cheaper than Uber</p>
                 <p>• <strong>Payment:</strong> Credit/debit card or Pix in the app</p>
@@ -1237,7 +1237,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
 
             <div className="bg-card border border-border rounded-xl p-4">
               <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">📍 Destination pre-filled</p>
-              <p className="text-sm text-muted-foreground mb-3">{office.name} — {office.address}</p>
+              <p className="text-sm text-muted-foreground mb-3">{office.name}. {office.address}</p>
               <ExternalLink
                 href={`https://99app.com`}
                 className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-all"
@@ -1265,8 +1265,8 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
               <>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <p>• <strong>Fare:</strong> {metro.fare}</p>
-                  <p>• <strong>Payment:</strong> {metro.cardRequired ? `Requires a ${metro.cardName} — buy at any station` : "Cash or card at station"}</p>
-                  <p>• <strong>Cash accepted?</strong> {metro.cardRequired ? "❌ No — card only at turnstiles" : "✅ Yes, at ticket counters"}</p>
+                  <p>• <strong>Payment:</strong> {metro.cardRequired ? `Requires a ${metro.cardName}. buy at any station` : "Cash or card at station"}</p>
+                  <p>• <strong>Cash accepted?</strong> {metro.cardRequired ? "❌ No. card only at turnstiles" : "✅ Yes, at ticket counters"}</p>
                 </div>
                 <div className="bg-card border border-border rounded-xl p-4">
                   <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">🗺️ Nearest lines</p>
@@ -1298,7 +1298,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
             <h4 className="font-bold text-sm mb-2">🚌 City Bus</h4>
             <div className="space-y-2 text-sm text-muted-foreground">
               <p>• <strong>Fare:</strong> {bus.fare} per trip</p>
-              <p>• <strong>Cash accepted?</strong> {bus.cashAccepted ? "✅ Yes — exact change only" : "❌ No — transit card or contactless card only"}</p>
+              <p>• <strong>Cash accepted?</strong> {bus.cashAccepted ? "✅ Yes. exact change only" : "❌ No. transit card or contactless card only"}</p>
               <p>• <strong>Tip:</strong> {bus.tip}</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-4">
@@ -1354,13 +1354,13 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
           </div>
         )}
 
-        {/* Moovit — transit planning app */}
+        {/* Moovit. transit planning app */}
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="text-2xl">📱</span>
               <div>
-                <p className="font-semibold text-sm">Moovit — must-have transit app</p>
+                <p className="font-semibold text-sm">Moovit. must-have transit app</p>
                 <p className="text-xs text-muted-foreground">Real-time bus/metro arrivals, walking directions, best routes. Very popular in Brazil.</p>
               </div>
             </div>
@@ -1380,7 +1380,7 @@ const TransportSection = ({ office, data }: { office: OfficeInfo; data: Onboardi
         {/* General transport tip */}
         <div className="bg-primary/5 border border-primary/10 rounded-xl p-4">
           <p className="text-xs text-muted-foreground">
-            <strong>🇧🇷 General tip:</strong> On buses, <strong>cash is the standard</strong> — bring exact change (coins and small bills). Most cities also accept transit cards. Uber/99 is the easiest option for visitors — just make sure to set up the app with a credit card before your trip.
+            <strong>🇧🇷 General tip:</strong> On buses, <strong>cash is the standard</strong>. bring exact change (coins and small bills). Most cities also accept transit cards. Uber/99 is the easiest option for visitors. just make sure to set up the app with a credit card before your trip.
           </p>
         </div>
       </div>
@@ -1409,18 +1409,18 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
         <h2 className="font-bold">This is what you walk in with</h2>
-        <p className="text-xs text-muted-foreground mt-1">Your completed form generates a protocol number — your proof that everything was submitted correctly.</p>
+        <p className="text-xs text-muted-foreground mt-1">Your completed form generates a protocol number. your proof that everything was submitted correctly.</p>
       </div>
       <div className="p-6">
         {/* Step 1 + Step 2 side by side, compact */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-          {/* Step 1 — Embedded form, compact */}
+          {/* Step 1. Embedded form, compact */}
           <div>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Step 1 — Fill in the form</p>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Step 1. Fill in the form</p>
             <div className="rounded-lg overflow-hidden border border-border shadow-md bg-white" style={{ maxWidth: 300 }}>
               <iframe
                 src="https://servicos.receita.fazenda.gov.br/Servicos/CPF/InscricaoCpfEstrangeiro/default.asp"
-                title="Receita Federal — Inscrição CPF Estrangeiro"
+                title="Receita Federal. Inscrição CPF Estrangeiro"
                 className="w-full border-0"
                 style={{ height: '280px', transform: 'scale(0.55)', transformOrigin: 'top left', width: '182%' }}
                 loading="lazy"
@@ -1436,9 +1436,9 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             </ExternalLink>
           </div>
 
-          {/* Step 2 — Protocol result */}
+          {/* Step 2. Protocol result */}
           <div>
-            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Step 2 — Your protocol is generated</p>
+            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Step 2. Your protocol is generated</p>
             <div className="rounded-lg overflow-hidden shadow-md border-2 border-primary/30 bg-white" style={{ maxWidth: 300 }}>
               <img
                 src={protocolResultImg}
@@ -1453,15 +1453,15 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="flex items-start gap-2.5">
             <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
-            <p className="text-xs text-muted-foreground">Your reference number — proof your application was submitted correctly</p>
+            <p className="text-xs text-muted-foreground">Your reference number. proof your application was submitted correctly</p>
           </div>
           <div className="flex items-start gap-2.5">
             <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
-            <p className="text-xs text-muted-foreground">Valid for 90 days — plenty of time to visit the office</p>
+            <p className="text-xs text-muted-foreground">Valid for 90 days. plenty of time to visit the office</p>
           </div>
           <div className="flex items-start gap-2.5">
             <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
-            <p className="text-xs text-muted-foreground">In Portuguese — we translate everything so you know exactly what to bring</p>
+            <p className="text-xs text-muted-foreground">In Portuguese. we translate everything so you know exactly what to bring</p>
           </div>
         </div>
       </div>
@@ -1470,13 +1470,13 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
     {/* Visual checklist */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">Document checklist — bring all of these</h2>
+        <h2 className="font-bold">Document checklist. bring all of these</h2>
         <p className="text-xs text-muted-foreground mt-1">Check each item off as you prepare. Missing one could mean a wasted trip.</p>
       </div>
       <div className="p-6 space-y-3">
-        <DocCheck title="Original passport" desc="Not a copy — they need to see the original document. Bring the passport you used to enter Brazil." critical />
-        <DocCheck title="Passport copy — photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical />
-        <DocCheck title="Passport copy — visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical />
+        <DocCheck title="Original passport" desc="Not a copy. they need to see the original document. Bring the passport you used to enter Brazil." critical />
+        <DocCheck title="Passport copy. photo page" desc="A clear colour photocopy of the page with your photo, name, and passport number. Colour preferred, must show all details clearly." critical />
+        <DocCheck title="Passport copy. visa/entry stamp page" desc="Copy of the page showing your Brazilian entry stamp or visa. This proves your legal entry." critical />
         
         <div className="border-t border-border pt-3 mt-3">
           <button
@@ -1486,7 +1486,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 text-xs font-bold border-2 border-primary text-primary">!</div>
               <div>
-                <h4 className="font-semibold text-sm">Proof of address — bring ONE</h4>
+                <h4 className="font-semibold text-sm">Proof of address. bring ONE</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">Tap to see which options apply to you</p>
               </div>
             </div>
@@ -1496,12 +1496,12 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             <div className="mt-3 space-y-2 pl-8 animate-slide-in">
               {data.stayingWithFriend && (
                 <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-2">
-                  <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone — recommended for you</h5>
-                  <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature — plus a copy of their ID (RG or CNH) <strong>or</strong> a copy of their CPF card.</p>
+                  <h5 className="font-semibold text-sm text-primary">🏠 Staying with someone. recommended for you</h5>
+                  <p className="text-xs text-muted-foreground mt-1">You'll need a signed invitation letter from your host with their name, CPF, address, and signature. plus a copy of their ID (RG or CNH) <strong>or</strong> a copy of their CPF card.</p>
                   <div className="mt-2 bg-card border border-border rounded-lg p-2.5 space-y-1.5">
                     <p className="text-[11px] font-bold text-foreground">Your host must provide:</p>
                     <p className="text-[11px] text-muted-foreground">✓ Signed declaration letter (generated below)</p>
-                    <p className="text-[11px] text-muted-foreground">✓ Copy of their ID — <strong>one</strong> of: RG, CNH, <strong>or</strong> CPF card</p>
+                    <p className="text-[11px] text-muted-foreground">✓ Copy of their ID. <strong>one</strong> of: RG, CNH, <strong>or</strong> CPF card</p>
                   </div>
                 </div>
               )}
@@ -1540,13 +1540,13 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
     </section>
 
-    {/* Upload & compile — right after checklist */}
+    {/* Upload & compile. right after checklist */}
     <DocumentCompiler data={data} motherDisplay={motherDisplay} hasDeclaration={!!(hasHost && declaration)} declaration={declaration || ""} />
 
     {/* Photo tips */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">📸 Passport copy tips — avoid rejection</h2>
+        <h2 className="font-bold">📸 Passport copy tips. avoid rejection</h2>
       </div>
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1556,7 +1556,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
               <li>• Clear, sharp, all text readable</li>
               <li>• Full page visible, no edges cut off</li>
               <li>• Color photocopy (preferred)</li>
-              <li>• Flat — no creases or shadows</li>
+              <li>• Flat. no creases or shadows</li>
             </ul>
           </div>
           <div className="bg-destructive/5 border border-destructive/15 rounded-xl p-4">
@@ -1585,7 +1585,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
         >
           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl shrink-0">📄</div>
           <div className="flex-1">
-            <h3 className="font-bold text-sm group-hover:text-primary transition-colors">Receita Federal — CPF Online Registration</h3>
+            <h3 className="font-bold text-sm group-hover:text-primary transition-colors">Receita Federal. CPF Online Registration</h3>
             <p className="text-xs text-muted-foreground mt-0.5">servicos.receita.fazenda.gov.br</p>
           </div>
           <span className="text-primary font-semibold text-sm shrink-0">Open →</span>
@@ -1617,7 +1617,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
             After submitting the form, you'll see a message in Portuguese saying you need to go to a Receita Federal office. This appears for everyone. You have <strong>two options</strong>:
           </p>
           <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-            <li><strong>Go in person</strong> (recommended — faster, usually same-day)</li>
+            <li><strong>Go in person</strong> (recommended. faster, usually same-day)</li>
             <li><strong>Send everything by email</strong> (the email template is ready for you below)</li>
           </ol>
           <p className="text-xs text-muted-foreground mt-2">Both options work. In-person is faster. Email takes 3-7 business days.</p>
@@ -1625,7 +1625,7 @@ const DocumentsTab = ({ data, motherDisplay }: { data: OnboardingData; motherDis
       </div>
     </section>
 
-    {/* Protocol Preview — shows after submission */}
+    {/* Protocol Preview. shows after submission */}
     <ProtocolPreviewSection data={data} />
 
     {/* Host declaration letter */}
@@ -1653,14 +1653,14 @@ const FIELD_TRANSLATIONS = [
   { pt: "Sexo", en: "Gender", tip: "M = Masculino (Male), F = Feminino (Female)" },
   { pt: "Nome da Mãe", en: "Mother's full name", tip: "As it appears on your birth certificate" },
   { pt: "País de Residência", en: "Country of residence", tip: "Select 'Brasil' if you're living here" },
-  { pt: "CEP", en: "Postal code (ZIP)", tip: "The CEP of your Brazilian address — auto-fills city and state" },
+  { pt: "CEP", en: "Postal code (ZIP)", tip: "The CEP of your Brazilian address. auto-fills city and state" },
   { pt: "Município", en: "City / Municipality", tip: "The city you're staying in" },
   { pt: "UF", en: "State code", tip: "Two-letter state abbreviation (e.g. SP, RJ, SC)" },
-  { pt: "Logradouro", en: "Street type + name", tip: "e.g. Rua, Avenida — select the type, then enter the street name" },
+  { pt: "Logradouro", en: "Street type + name", tip: "e.g. Rua, Avenida. select the type, then enter the street name" },
   { pt: "Número", en: "House/building number", tip: "Your street number" },
   { pt: "Complemento", en: "Apartment / suite", tip: "Apt number, block, or leave blank" },
   { pt: "Bairro", en: "Neighbourhood", tip: "The neighbourhood or district" },
-  { pt: "E-mail", en: "Email address", tip: "Your email — they may send confirmation here" },
+  { pt: "E-mail", en: "Email address", tip: "Your email. they may send confirmation here" },
   { pt: "DDI", en: "Country calling code", tip: "e.g. +1 for US, +44 for UK, +61 for Australia" },
   { pt: "DDD", en: "Area code", tip: "Brazilian area code if you have a local number, otherwise your home area code" },
   { pt: "Telefone / Celular", en: "Phone / Mobile number", tip: "Your phone number without the country or area code" },
@@ -1706,7 +1706,7 @@ const ProtocolPreviewSection = ({ data }: { data: OnboardingData }) => {
           </div>
         )}
 
-        {/* Document preview — what the final protocol looks like */}
+        {/* Document preview. what the final protocol looks like */}
         <div className="mt-4">
           <p className="text-sm font-semibold text-muted-foreground mb-3">This is what your final protocol will look like once it's generated:</p>
           <div className="bg-secondary rounded-xl p-5 border border-border">
@@ -1776,18 +1776,18 @@ const DeclarationSection = ({ declaration, declarationCopied, setDeclarationCopi
           href={`https://wa.me/?text=${encodeURIComponent(whatsappMsg)}`}
           className="w-full block text-center bg-[#25D366] text-white px-4 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
         >
-          💬 Send to your host via WhatsApp — get them to sign it
+          💬 Send to your host via WhatsApp. get them to sign it
         </ExternalLink>
 
         {/* Detailed steps */}
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-5 space-y-3">
           <h4 className="font-bold text-sm text-amber-900 dark:text-amber-100">📋 What your host needs to do</h4>
           <ol className="text-sm text-amber-800 dark:text-amber-200 space-y-2.5 list-decimal list-inside">
-            <li><strong>Check the details</strong> — make sure their name, CPF number, and address are correct</li>
-            <li><strong>Print the letter</strong> — it needs to be on paper</li>
-            <li><strong>Sign it</strong> — handwritten signature at the bottom, above their printed name</li>
-            <li><strong>Make a copy of their ID</strong> — a photocopy of their RG, CNH, <strong>or CPF card</strong> (any one of these is enough)</li>
-            <li><strong>Give you both</strong> — the signed letter + their ID copy. These together = your proof of address</li>
+            <li><strong>Check the details</strong>. make sure their name, CPF number, and address are correct</li>
+            <li><strong>Print the letter</strong>. it needs to be on paper</li>
+            <li><strong>Sign it</strong>. handwritten signature at the bottom, above their printed name</li>
+            <li><strong>Make a copy of their ID</strong>. a photocopy of their RG, CNH, <strong>or CPF card</strong> (any one of these is enough)</li>
+            <li><strong>Give you both</strong>. the signed letter + their ID copy. These together = your proof of address</li>
           </ol>
         </div>
 
@@ -1806,8 +1806,8 @@ const DeclarationSection = ({ declaration, declarationCopied, setDeclarationCopi
 type UploadedDoc = { name: string; label: string; file: File; preview?: string };
 
 const DOCUMENT_SLOTS = [
-  { id: "passport_photo", label: "Passport — photo page", required: true },
-  { id: "passport_stamp", label: "Passport — visa/entry stamp", required: true },
+  { id: "passport_photo", label: "Passport. photo page", required: true },
+  { id: "passport_stamp", label: "Passport. visa/entry stamp", required: true },
   { id: "proof_address", label: "Proof of address", required: true },
   { id: "declaration", label: "Signed host declaration", required: false },
   { id: "host_id", label: "Host ID copy (RG, CNH, or CPF card)", required: false },
@@ -2057,7 +2057,7 @@ const DocumentCompiler = ({ data, motherDisplay, hasDeclaration, declaration }: 
             {compiled ? "✓ Document pack downloaded!" : compiling ? "⏳ Compiling your pack..." : `📦 Compile ${uploadCount} document${uploadCount !== 1 ? "s" : ""} into one pack`}
           </button>
           <p className="text-xs text-muted-foreground mt-2 text-center">
-            Creates a single organised file with all your documents and details — everything for the office visit.
+            Creates a single organised file with all your documents and details. everything for the office visit.
           </p>
         </div>
       </div>
@@ -2090,7 +2090,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
           "Print passport copies (photo page + visa/entry stamp page)",
           "Print proof of address (hotel booking, rental contract, etc.)",
           "Put everything in a clear folder or envelope",
-          "Charge your phone — you might need Google Translate",
+          "Charge your phone. you might need Google Translate",
           "Set an alarm to arrive early",
         ]}
       />
@@ -2099,7 +2099,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
         title={`Arrive at ${recommendedOffice?.name || "the office"}`}
         items={[
           `Address: ${recommendedOffice?.address || "Check the Office tab"}`,
-          `Be there by ${recommendedOffice?.hours.split(",")[1]?.trim().split("–")[0] || "7:00"} — before the doors open`,
+          `Be there by ${recommendedOffice?.hours.split(",")[1]?.trim().split("–")[0] || "7:00"}. before the doors open`,
           "Look for the entrance and security guard",
           "Ask: 'Ficha para CPF, por favor' (ticket for CPF please)",
           "Take a number and sit in the waiting area",
@@ -2114,18 +2114,18 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
           "Hand over your passport copies",
           "Hand over your proof of address",
           `Say: 'Bom dia, gostaria de fazer a inscrição no CPF. Meu nome é ${data.fullName}.'`,
-          "They may ask questions — use the Portuguese phrases from the Phrases tab",
+          "They may ask questions. use the Portuguese phrases from the Phrases tab",
         ]}
       />
       <TimelineStep
         time="After"
         title="Receive your CPF number"
         items={[
-          "You'll receive a printout with your CPF number — THIS IS IMPORTANT",
+          "You'll receive a printout with your CPF number. THIS IS IMPORTANT",
           "Take a photo of it immediately as backup",
           "Save the number in your phone's notes app",
           "You can now buy a SIM card, open a bank account, use Pix",
-          "Your CPF is active immediately — no waiting period for in-person registration",
+          "Your CPF is active immediately. no waiting period for in-person registration",
         ]}
       />
     </div>
@@ -2134,7 +2134,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
     <section className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/15 rounded-2xl p-6 text-center">
       <div className="text-4xl mb-3">🎉</div>
       <h3 className="text-xl font-bold">Got your CPF?</h3>
-      <p className="text-sm text-muted-foreground mt-1 mb-4">Save it in your personal CPF section — it's your safe space.</p>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">Save it in your personal CPF section. it's your safe space.</p>
       <button
         onClick={() => setActiveTab("mycpf")}
         className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
@@ -2147,7 +2147,7 @@ const GuideTab = ({ data, motherDisplay, recommendedOffice, setActiveTab }: {
     <section className="bg-card border border-destructive/20 rounded-2xl p-6 text-center">
       <div className="text-3xl mb-3">😟</div>
       <h3 className="text-lg font-bold">Got rejected?</h3>
-      <p className="text-sm text-muted-foreground mt-1 mb-4">It happens — and it's usually one small thing. We'll tell you exactly what to fix.</p>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">It happens. and it's usually one small thing. We'll tell you exactly what to fix.</p>
       <button
         onClick={() => setActiveTab("rejected")}
         className="bg-secondary text-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
@@ -2163,7 +2163,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
   <div className="space-y-6 animate-slide-in">
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6">
       <h2 className="text-xl font-bold">🇧🇷 Portuguese phrases for the office</h2>
-      <p className="text-sm text-muted-foreground mt-2">You probably won't need all of these, but they're here just in case. Tap any phrase to copy it — you can show it on your phone screen.</p>
+      <p className="text-sm text-muted-foreground mt-2">You probably won't need all of these, but they're here just in case. Tap any phrase to copy it. you can show it on your phone screen.</p>
     </section>
 
     {/* Arrival */}
@@ -2232,7 +2232,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
       </div>
     </section>
 
-    {/* Learn Portuguese — Affiliate Recommendations */}
+    {/* Learn Portuguese. Affiliate Recommendations */}
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
         <h2 className="font-bold">📚 Want to actually learn Portuguese?</h2>
@@ -2250,7 +2250,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
           },
           {
             name: "Babbel",
-            desc: "Structured app-based courses with speech recognition. Great for learning on the go — covers grammar, vocab, and pronunciation in bite-sized lessons.",
+            desc: "Structured app-based courses with speech recognition. Great for learning on the go. covers grammar, vocab, and pronunciation in bite-sized lessons.",
             price: "From ~$7/month",
             why: "Best for: Self-paced daily practice on your phone",
             url: "https://try.babbel.com/affiliate-evergreen-prices/?bsc=engmag&btp=default&utm_medium=affiliate",
@@ -2286,7 +2286,7 @@ const PhrasesTab = ({ data }: { data: OnboardingData }) => (
           </a>
         ))}
         <p className="text-xs text-muted-foreground text-center pt-2">
-          🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend platforms we'd actually use.
+          🤝 These are affiliate links. we may earn a small commission at no extra cost to you. We only recommend platforms we'd actually use.
         </p>
       </div>
     </section>
@@ -2405,7 +2405,7 @@ const CpfStorageSection = ({ onCpfSaved, data }: { onCpfSaved: () => void; data:
             <label className="flex flex-col items-center justify-center gap-2 bg-card border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-all">
               <span className="text-2xl">📷</span>
               <span className="text-sm font-semibold">Upload a photo of your CPF printout</span>
-              <span className="text-xs text-muted-foreground">Keep it stored here safely — you'll always have a backup</span>
+              <span className="text-xs text-muted-foreground">Keep it stored here safely. you'll always have a backup</span>
               <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
             </label>
           )}
@@ -2485,7 +2485,7 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
       {isRecommended && (
         <div className="bg-primary text-primary-foreground px-6 py-2 text-xs font-bold flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-primary-foreground"></span>
-          🟢 Recommended — walk-in, free, same-day
+          🟢 Recommended. walk-in, free, same-day
         </div>
       )}
       <div className="p-6">
@@ -2637,7 +2637,7 @@ const PARTNERS = [
     name: "Wise",
     category: "Send & Receive Money",
     desc: "Send money to and from Brazil at the real exchange rate with tiny fees. Way cheaper than bank wires or Western Union. Works with Brazilian bank accounts and Pix.",
-    why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate — essential if you earn abroad or need to move money in/out.",
+    why: "Brazilian banks charge 3-5% spreads on currency. Wise gives the mid-market rate. essential if you earn abroad or need to move money in/out.",
     price: "From $0.50 per transfer",
     commission: "£10-50 per referral",
     cta: "Try Wise →",
@@ -2647,7 +2647,7 @@ const PARTNERS = [
     icon: "🏥",
     name: "SafetyWing",
     category: "Travel & Health Insurance",
-    desc: "The insurance nomads swear by. Covers hospitals, clinics, and emergencies across Brazil and Latin America. Month-to-month — cancel anytime, no lock-in.",
+    desc: "The insurance nomads swear by. Covers hospitals, clinics, and emergencies across Brazil and Latin America. Month-to-month. cancel anytime, no lock-in.",
     why: "Brazil's public healthcare (SUS) is free but overcrowded. A private hospital visit can cost thousands. SafetyWing covers you from $45/month.",
     price: "From $45/month",
     commission: "10% lifetime recurring",
@@ -2658,7 +2658,7 @@ const PARTNERS = [
     icon: "📱",
     name: "Airalo",
     category: "eSIM / Mobile Data",
-    desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone — works the moment you land. No CPF needed, no Portuguese needed.",
+    desc: "Skip the carrier store. Get a Brazil eSIM in 2 minutes from your phone. works the moment you land. No CPF needed, no Portuguese needed.",
     why: "You need a CPF to buy a physical SIM from Claro, Vivo, or TIM. Airalo lets you get data instantly while you sort everything else out.",
     price: "Data plans from $5",
     commission: "15-20% per sale",
@@ -2692,7 +2692,7 @@ const PARTNERS = [
 const PartnersTab = () => (
   <div className="space-y-6 animate-slide-in">
     <section className="bg-primary/5 border border-primary/15 rounded-2xl p-6 text-center">
-      <h2 className="text-2xl font-bold">🎉 Your CPF is ready — here's what it unlocks</h2>
+      <h2 className="text-2xl font-bold">🎉 Your CPF is ready. here's what it unlocks</h2>
       <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">Now that you have your CPF, these are the first things you can actually do with it in Brazil.</p>
     </section>
 
@@ -2717,7 +2717,7 @@ const PartnersTab = () => (
         <div className="bg-secondary rounded-xl p-4">
           <div className="text-2xl mb-2">2️⃣</div>
           <h4 className="font-semibold text-sm mb-1">Open a bank account</h4>
-          <p className="text-xs text-muted-foreground">Nubank or Inter — unlock Pix, local payments, and make life in Brazil much easier.</p>
+          <p className="text-xs text-muted-foreground">Nubank or Inter. unlock Pix, local payments, and make life in Brazil much easier.</p>
         </div>
         <div className="bg-secondary rounded-xl p-4">
           <div className="text-2xl mb-2">3️⃣</div>
@@ -2761,7 +2761,7 @@ const PartnersTab = () => (
     </section>
 
     <p className="text-[10px] text-muted-foreground text-center mt-2">
-      🤝 These are affiliate links — we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
+      🤝 These are affiliate links. we may earn a small commission at no extra cost to you. We only recommend services we genuinely believe help foreigners in Brazil.
     </p>
   </div>
 );
@@ -2808,13 +2808,13 @@ Agradeço a atenção e fico no aguardo do retorno.
 Atenciosamente,
 ${data.fullName}`;
 
-  const subject = `Solicitação de Inscrição no CPF — ${data.fullName}`;
+  const subject = `Solicitação de Inscrição no CPF. ${data.fullName}`;
   const mailtoUrl = `mailto:${rfEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
 
   return (
     <section className="bg-card border border-border rounded-2xl overflow-hidden">
       <div className="px-6 py-4 border-b border-border bg-secondary">
-        <h2 className="font-bold">📧 Email template — backup method</h2>
+        <h2 className="font-bold">📧 Email template. backup method</h2>
         <p className="text-xs text-muted-foreground mt-1">If you can't go in person, send this email to Receita Federal. Takes 3–7 business days.</p>
       </div>
       <div className="p-6 space-y-4">
