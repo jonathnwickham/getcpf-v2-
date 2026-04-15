@@ -8,11 +8,6 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
-  AreaChart, Area,
-} from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
 
 type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "partners" | "waitlist" | "settings";
@@ -48,17 +43,6 @@ interface Application {
   mother_name: string | null;
   father_name: string | null;
 }
-
-const CHART_COLORS = [
-  "#166534",
-  "#3b82f6",
-  "#3b7dd8",
-  "#22c55e",
-  "#ec4899",
-  "#f59e0b",
-  "#a855f7",
-  "#06b6d4",
-];
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -104,26 +88,28 @@ const Admin = () => {
 
   if (!isAdmin) return null;
 
-  const tabs: { key: AdminTab; label: string; icon: string }[] = [
-    { key: "users", label: "Users", icon: "👥" },
-    { key: "applications", label: "Applications", icon: "📋" },
-    { key: "revenue", label: "Revenue", icon: "💰" },
-    { key: "promos", label: "Promo Codes", icon: "🏷️" },
-    { key: "affiliates", label: "Affiliates", icon: "🤝" },
-    { key: "partners", label: "Partners", icon: "🌐" },
-    { key: "waitlist", label: "Waitlist", icon: "📧" },
-    { key: "settings", label: "Settings", icon: "⚙️" },
+  const navItems: { key: AdminTab; label: string; symbol: string }[] = [
+    { key: "users", label: "Users", symbol: "—" },
+    { key: "applications", label: "Applications", symbol: "—" },
+    { key: "revenue", label: "Revenue", symbol: "—" },
+    { key: "promos", label: "Promo Codes", symbol: "—" },
+    { key: "affiliates", label: "Affiliates", symbol: "—" },
+    { key: "partners", label: "Partners", symbol: "—" },
+    { key: "waitlist", label: "Waitlist", symbol: "—" },
+    { key: "settings", label: "Settings", symbol: "—" },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="border-b border-gray-100 bg-white/90 backdrop-blur-lg sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Top header */}
+      <div className="border-b border-gray-100 bg-white sticky top-0 z-50">
+        <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">← GET CPF</a>
+            <a href="/" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">
+              &larr; GET CPF
+            </a>
             <span className="text-gray-200">|</span>
-            <h1 className="text-sm font-extrabold tracking-tight">Admin</h1>
+            <h1 className="text-sm font-semibold text-gray-900">Admin</h1>
           </div>
           <button onClick={signOut} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
             Sign out
@@ -131,30 +117,58 @@ const Admin = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 py-6">
-        {/* Tabs */}
-        <div className="flex gap-1 bg-gray-50 rounded-xl p-1 mb-6 overflow-x-auto">
-          {tabs.map(t => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-2 ${
-                tab === t.key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <span>{t.icon}</span> {t.label}
-            </button>
-          ))}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left sidebar — desktop */}
+        <aside className="hidden md:flex flex-col w-60 shrink-0 bg-white border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
+          <nav className="p-3 space-y-0.5">
+            {navItems.map(item => (
+              <button
+                key={item.key}
+                onClick={() => setTab(item.key)}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                  tab === item.key
+                    ? "bg-gray-100 text-gray-900 font-medium"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        {/* Mobile nav — horizontal scroll */}
+        <div className="md:hidden w-full border-b border-gray-100 bg-white overflow-x-auto">
+          <div className="flex gap-0.5 p-2 whitespace-nowrap">
+            {navItems.map(item => (
+              <button
+                key={item.key}
+                onClick={() => setTab(item.key)}
+                className={`px-3 py-2 rounded-lg text-sm transition-colors shrink-0 ${
+                  tab === item.key
+                    ? "bg-gray-100 text-gray-900 font-medium"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
-        {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
-        {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
-        {tab === "promos" && <PromosTab />}
-        {tab === "affiliates" && <AffiliatesTab />}
-        {tab === "partners" && <PartnersTab userId={user?.id || ""} />}
-        {tab === "waitlist" && <WaitlistTab />}
-        {tab === "settings" && <SettingsTab userId={user?.id || ""} />}
+        {/* Main content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-[1200px] mx-auto px-6 py-6">
+            {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
+            {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
+            {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
+            {tab === "promos" && <PromosTab />}
+            {tab === "affiliates" && <AffiliatesTab />}
+            {tab === "partners" && <PartnersTab userId={user?.id || ""} />}
+            {tab === "waitlist" && <WaitlistTab />}
+            {tab === "settings" && <SettingsTab userId={user?.id || ""} />}
+          </div>
+        </main>
       </div>
     </div>
   );
@@ -174,12 +188,6 @@ const getDataStatus = (profile: Profile, applications: Application[] = []): "Act
   return "Active";
 };
 
-const DATA_STATUS_COLORS: Record<string, string> = {
-  "Active": "bg-green-800/10 text-green-800",
-  "Due for deletion": "bg-red-500/10 text-red-500",
-  "Retained": "bg-gray-50 text-gray-500",
-};
-
 const anonymizeUser = async (userId: string, onRefresh: () => void) => {
   await supabase.from("applications").delete().eq("user_id", userId);
   await supabase.from("profiles").update({
@@ -191,7 +199,7 @@ const anonymizeUser = async (userId: string, onRefresh: () => void) => {
   onRefresh();
 };
 
-/* ── Users Tab with search and funnel ── */
+/* ── Users Tab ── */
 const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   profiles: Profile[];
   applications: Application[];
@@ -201,6 +209,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 }) => {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [selectedForBulk, setSelectedForBulk] = useState<Set<string>>(new Set());
+  const [statusFilter, setStatusFilter] = useState<"all" | "paid" | "free">("all");
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
@@ -209,46 +218,26 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 50;
 
-  const filtered = profiles.filter(p =>
-    !search || 
-    (p.full_name || "").toLowerCase().includes(search.toLowerCase()) ||
-    p.email.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = profiles.filter(p => {
+    const matchesSearch = !search ||
+      (p.full_name || "").toLowerCase().includes(search.toLowerCase()) ||
+      p.email.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "paid" && p.plan && p.plan !== "free") ||
+      (statusFilter === "free" && (!p.plan || p.plan === "free"));
+    return matchesSearch && matchesStatus;
+  });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginatedUsers = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-  // Reset page when search changes
-  useEffect(() => { setCurrentPage(1); }, [search]);
+  // Reset page when search/filter changes
+  useEffect(() => { setCurrentPage(1); }, [search, statusFilter]);
 
-  // Funnel data
-  const funnelData = [
-    { stage: "Signed Up", count: totalUsers, fill: CHART_COLORS[0] },
-    { stage: "Started App", count: usersWithApps, fill: CHART_COLORS[2] },
-    { stage: "Paid", count: paidUsers, fill: CHART_COLORS[3] },
-  ];
-
-  // Signups over time (grouped by day)
-  const signupsByDay = useMemo(() => {
-    const map = new Map<string, number>();
-    profiles.forEach(p => {
-      if (p.created_at) {
-        const day = new Date(p.created_at).toISOString().slice(0, 10);
-        map.set(day, (map.get(day) || 0) + 1);
-      }
-    });
-    return Array.from(map.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([date, count]) => ({
-        date: new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-        signups: count,
-      }));
-  }, [profiles]);
-
-  // Nationality breakdown
+  // Nationality breakdown (data only, no charts)
   const nationalityData = useMemo(() => {
     const map = new Map<string, number>();
-    // Use nationality from applications where available, fall back to profile country_code
     profiles.forEach(p => {
       const app = applications.find(a => a.user_id === p.id);
       const nat = app?.nationality || p.country_code || "Not onboarded";
@@ -264,115 +253,79 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total users" value={totalUsers.toString()} icon="👥" />
-        <StatCard label="Paid users" value={paidUsers.toString()} icon="✅" />
-        <StatCard label="Conversion" value={`${conversionRate}%`} icon="📈" />
-        <StatCard label="Est. revenue" value={`$${paidUsers * 49}`} icon="💵" />
+        <StatCard label="Total users" value={totalUsers.toString()} />
+        <StatCard label="Paid users" value={paidUsers.toString()} />
+        <StatCard label="Conversion" value={`${conversionRate}%`} trend={parseFloat(conversionRate) > 0 ? "up" : undefined} />
+        <StatCard label="Started app" value={usersWithApps.toString()} />
       </div>
 
-      {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* User funnel */}
-        <ChartCard title="User Funnel" subtitle="Signup → Application → Paid">
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={funnelData} layout="vertical" margin={{ left: 10, right: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis type="number" tick={{ fontSize: 12, fill: "#6b7280" }} />
-              <YAxis dataKey="stage" type="category" width={90} tick={{ fontSize: 12, fill: "#6b7280" }} />
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-              <Bar dataKey="count" radius={[0, 8, 8, 0]}>
-                {funnelData.map((entry, i) => (
-                  <Cell key={i} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Signups over time */}
-        <ChartCard title="Signups Over Time" subtitle="Daily new users">
-          <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={signupsByDay} margin={{ left: 0, right: 10, top: 5 }}>
-              <defs>
-                <linearGradient id="signupGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#166534" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#166534" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
-              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} allowDecimals={false} />
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-              <Area type="monotone" dataKey="signups" stroke="#166534" fill="url(#signupGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Nationality breakdown */}
-        <ChartCard title="By Nationality" subtitle="Top 8 countries">
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={nationalityData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} innerRadius={40} paddingAngle={2}>
-                {nationalityData.map((_, i) => (
-                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-              <Legend wrapperStyle={{ fontSize: "11px" }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-      </div>
-
-      {/* Search + Table */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex flex-wrap gap-3 items-center">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name or email..."
-            className="w-full md:w-80 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
-          />
-          {(() => {
-            const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
-            if (dueForDeletion.length === 0) return null;
-            return (
-              <div className="flex gap-2 items-center">
-                <button
-                  onClick={() => setSelectedForBulk(new Set(dueForDeletion.map(p => p.id)))}
-                  className="text-xs font-semibold text-red-500 bg-red-500/10 px-3 py-2 rounded-lg hover:bg-red-500/20 transition-colors"
-                >
-                  Select all due for deletion ({dueForDeletion.length})
-                </button>
-                {selectedForBulk.size > 0 && (
+      {/* Search + filters + Table */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-gray-100 space-y-3">
+          <div className="flex flex-wrap gap-3 items-center">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or email..."
+              className="w-full md:w-80 px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-gray-300 focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-400"
+            />
+            {(() => {
+              const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
+              if (dueForDeletion.length === 0) return null;
+              return (
+                <div className="flex gap-2 items-center">
                   <button
-                    onClick={async () => {
-                      if (!confirm(`Anonymize ${selectedForBulk.size} user(s)? This cannot be undone.`)) return;
-                      for (const uid of selectedForBulk) {
-                        await anonymizeUser(uid, () => {});
-                      }
-                      setSelectedForBulk(new Set());
-                      onRefresh();
-                    }}
-                    className="text-xs font-semibold text-white bg-red-500 px-3 py-2 rounded-lg hover:opacity-90 transition-all"
+                    onClick={() => setSelectedForBulk(new Set(dueForDeletion.map(p => p.id)))}
+                    className="text-xs font-medium text-red-600 bg-red-50 px-3 py-2 rounded-lg hover:bg-red-100 transition-colors"
                   >
-                    Delete selected ({selectedForBulk.size})
+                    Select all due for deletion ({dueForDeletion.length})
                   </button>
-                )}
-              </div>
-            );
-          })()}
+                  {selectedForBulk.size > 0 && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm(`Anonymize ${selectedForBulk.size} user(s)? This cannot be undone.`)) return;
+                        for (const uid of selectedForBulk) {
+                          await anonymizeUser(uid, () => {});
+                        }
+                        setSelectedForBulk(new Set());
+                        onRefresh();
+                      }}
+                      className="text-xs font-medium text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-600 transition-all"
+                    >
+                      Delete selected ({selectedForBulk.size})
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+          {/* Filter pills */}
+          <div className="flex gap-2">
+            {(["all", "paid", "free"] as const).map(f => (
+              <button
+                key={f}
+                onClick={() => setStatusFilter(f)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  statusFilter === f
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                {f === "all" ? "All" : f === "paid" ? "Paid" : "Free"}
+              </button>
+            ))}
+          </div>
         </div>
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Nationality</TableHead>
-              <TableHead>Plan</TableHead>
-              <TableHead>Data status</TableHead>
-              <TableHead>Signed up</TableHead>
+            <TableRow className="border-b border-gray-200">
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Name</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Nationality</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Plan</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Data status</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Signed up</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -381,43 +334,45 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               const userApp = applications.find(a => a.user_id === p.id);
               const nat = userApp?.nationality || p.country_code || "—";
               const displayName = p.full_name || userApp?.full_name || "—";
+              const dataStatus = getDataStatus(p, applications);
               return (
-                <TableRow key={p.id} className="cursor-pointer hover:bg-gray-50/50" onClick={() => setSelectedUser(p.id)}>
-                  <TableCell className="font-medium">{displayName}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{p.email}</TableCell>
-                  <TableCell className="text-sm">{nat}</TableCell>
-                  <TableCell>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
-                      p.plan && p.plan !== "free"
-                        ? "bg-green-800/10 text-green-800"
-                        : "bg-gray-50 text-gray-500"
-                    }`}>
-                      {(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
-                    </span>
+                <TableRow
+                  key={p.id}
+                  className="cursor-pointer hover:bg-gray-50 border-b border-gray-100"
+                  onClick={() => setSelectedUser(p.id)}
+                >
+                  <TableCell className="font-medium py-3.5">{displayName}</TableCell>
+                  <TableCell className="text-sm text-gray-500 py-3.5">{p.email}</TableCell>
+                  <TableCell className="text-sm py-3.5">{nat}</TableCell>
+                  <TableCell className="py-3.5">
+                    <StatusBadge
+                      label={(p.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+                      variant={p.plan && p.plan !== "free" ? "green" : "gray"}
+                    />
                   </TableCell>
-                  <TableCell>
-                    {(() => {
-                      const status = getDataStatus(p, applications);
-                      return (
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded ${DATA_STATUS_COLORS[status]}`}>
-                          {status}
-                        </span>
-                      );
-                    })()}
+                  <TableCell className="py-3.5">
+                    <StatusBadge
+                      label={dataStatus}
+                      variant={
+                        dataStatus === "Active" ? "green" :
+                        dataStatus === "Due for deletion" ? "red" :
+                        "gray"
+                      }
+                    />
                   </TableCell>
-                  <TableCell className="text-xs text-gray-500">
+                  <TableCell className="text-xs text-gray-500 py-3.5">
                     {p.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="py-3.5">
                     <button
                       onClick={async (e) => {
                         e.stopPropagation();
                         if (!confirm(`Delete user data for ${p.email}? This anonymizes their profile and removes application data. Consent log is retained.`)) return;
                         await anonymizeUser(p.id, onRefresh);
                       }}
-                      className="text-xs text-red-500 hover:text-red-500/80 font-medium px-2 py-1 rounded hover:bg-red-500/10 transition-colors whitespace-nowrap"
+                      className="text-xs text-gray-400 hover:text-red-600 font-medium px-2 py-1 rounded transition-colors whitespace-nowrap"
                     >
-                      Delete user data
+                      Delete data
                     </button>
                   </TableCell>
                 </TableRow>
@@ -446,23 +401,29 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
           <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open) setSelectedUser(null); }}>
             <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-xl">{userProfile.full_name || userProfile.email}</DialogTitle>
+                <DialogTitle className="text-xl font-semibold">{userProfile.full_name || userProfile.email}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 mt-2">
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div><div>{userProfile.email}</div></div>
-                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
-                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
-                  <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
+                  <div><div className="text-xs text-gray-500 font-medium mb-0.5">Email</div><div>{userProfile.email}</div></div>
+                  <div><div className="text-xs text-gray-500 font-medium mb-0.5">Plan</div><div className="capitalize">{(userProfile.plan || "free").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</div></div>
+                  <div><div className="text-xs text-gray-500 font-medium mb-0.5">Signed up</div><div>{userProfile.created_at ? new Date(userProfile.created_at).toLocaleDateString() : "—"}</div></div>
+                  <div><div className="text-xs text-gray-500 font-medium mb-0.5">Country</div><div>{userProfile.country_code || "—"}</div></div>
                 </div>
 
                 {userApps.length > 0 ? userApps.map(app => (
                   <div key={app.id} className="bg-gray-50 rounded-xl p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-bold text-sm">Application</h4>
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded capitalize ${
-                        app.status === "prepared" ? "bg-green-800/10 text-green-800" : "bg-gray-50 text-gray-500 border border-gray-100"
-                      }`}>{app.status || "draft"}</span>
+                      <h4 className="font-semibold text-sm">Application</h4>
+                      <StatusBadge
+                        label={app.status || "draft"}
+                        variant={
+                          app.status === "prepared" || app.status === "cpf_issued" ? "green" :
+                          app.status === "paid" ? "blue" :
+                          app.status === "rejected" ? "red" :
+                          "gray"
+                        }
+                      />
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div><span className="text-xs text-gray-500">Name:</span> {app.full_name || "—"}</div>
@@ -494,8 +455,8 @@ const APP_STATUSES = ["draft", "paid", "prepared", "office_visited", "cpf_issued
 const STATUS_COLORS: Record<string, string> = {
   draft: "bg-gray-50 text-gray-500",
   paid: "bg-blue-100 text-blue-700",
-  prepared: "bg-green-800/10 text-green-800",
-  office_visited: "bg-amber-100 text-amber-700",
+  prepared: "bg-green-100 text-green-700",
+  office_visited: "bg-yellow-100 text-yellow-700",
   cpf_issued: "bg-green-100 text-green-700",
   rejected: "bg-red-100 text-red-700",
 };
@@ -506,10 +467,9 @@ const STATUS_LABELS: Record<string, string> = {
 
 const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
   const [appPage, setAppPage] = useState(1);
+  const [appSearch, setAppSearch] = useState("");
+  const [appStatusFilter, setAppStatusFilter] = useState<string>("all");
   const APP_PAGE_SIZE = 50;
-
-  const totalAppPages = Math.max(1, Math.ceil(applications.length / APP_PAGE_SIZE));
-  const paginatedApps = applications.slice((appPage - 1) * APP_PAGE_SIZE, appPage * APP_PAGE_SIZE);
 
   const profileMap = new Map(profiles.map(p => [p.id, p]));
   const [updatingId, setUpdatingId] = useState<string | null>(null);
@@ -547,7 +507,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
     onRefresh();
   };
 
-  // State breakdown
+  // State breakdown data (kept for potential future use)
   const stateData = useMemo(() => {
     const map = new Map<string, number>();
     applications.forEach(a => {
@@ -560,66 +520,95 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       .map(([name, value]) => ({ name, value }));
   }, [applications]);
 
+  const filteredApps = applications.filter(a => {
+    const profile = profileMap.get(a.user_id);
+    const matchesSearch = !appSearch ||
+      (a.full_name || "").toLowerCase().includes(appSearch.toLowerCase()) ||
+      (a.email || "").toLowerCase().includes(appSearch.toLowerCase()) ||
+      (profile?.email || "").toLowerCase().includes(appSearch.toLowerCase());
+    const matchesStatus = appStatusFilter === "all" || a.status === appStatusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const totalAppPages = Math.max(1, Math.ceil(filteredApps.length / APP_PAGE_SIZE));
+  const paginatedApps = filteredApps.slice((appPage - 1) * APP_PAGE_SIZE, appPage * APP_PAGE_SIZE);
+
+  useEffect(() => { setAppPage(1); }, [appSearch, appStatusFilter]);
+
   return (
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total apps" value={applications.length.toString()} icon="📋" />
-        <StatCard label="Paid (onboarded)" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} icon="💳" sub={(() => { const paidTotal = profiles.filter(p => p.plan && p.plan !== "free").length; const onboarded = applications.filter(a => a.status && a.status !== "draft").length; const diff = paidTotal - onboarded; return diff > 0 ? `${diff} paid, not yet onboarded` : undefined; })()} />
-        <StatCard label="CPF Issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} icon="✅" />
-        <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} icon="🗺️" />
+        <StatCard label="Total apps" value={applications.length.toString()} />
+        <StatCard label="Paid / onboarded" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} sub={(() => { const paidTotal = profiles.filter(p => p.plan && p.plan !== "free").length; const onboarded = applications.filter(a => a.status && a.status !== "draft").length; const diff = paidTotal - onboarded; return diff > 0 ? `${diff} paid, not yet onboarded` : undefined; })()} />
+        <StatCard label="CPF issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} />
+        <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} />
       </div>
 
-      {/* State breakdown chart */}
-      <ChartCard title="Applications by State" subtitle="Top 10 Brazilian states selected">
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={stateData} margin={{ left: 10, right: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-            <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#6b7280" }} angle={-30} textAnchor="end" height={60} />
-            <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} allowDecimals={false} />
-            <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-            <Bar dataKey="value" fill="#166534" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartCard>
-
       {/* Table */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-gray-100 space-y-3">
+          <input
+            type="text"
+            value={appSearch}
+            onChange={(e) => setAppSearch(e.target.value)}
+            placeholder="Search by name or email..."
+            className="w-full md:w-80 px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-gray-300 focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-400"
+          />
+          {/* Status filter pills */}
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={() => setAppStatusFilter("all")}
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === "all" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            >
+              All
+            </button>
+            {APP_STATUSES.map(s => (
+              <button
+                key={s}
+                onClick={() => setAppStatusFilter(s)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === s ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              >
+                {STATUS_LABELS[s]}
+              </button>
+            ))}
+          </div>
+        </div>
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Nationality</TableHead>
-              <TableHead>State</TableHead>
-              <TableHead>City</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
+            <TableRow className="border-b border-gray-200">
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Name</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Nationality</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">State</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">City</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Status</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Created</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedApps.map(a => {
               const profile = profileMap.get(a.user_id);
               return (
-                <TableRow key={a.id}>
-                  <TableCell className="font-medium">{a.full_name || profile?.full_name || "—"}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{a.email || profile?.email || "—"}</TableCell>
-                  <TableCell className="text-sm">{a.nationality || "—"}</TableCell>
-                  <TableCell className="text-sm">{a.state_name || "—"}</TableCell>
-                  <TableCell className="text-sm">{a.city || "—"}</TableCell>
-                  <TableCell>
+                <TableRow key={a.id} className="hover:bg-gray-50 border-b border-gray-100">
+                  <TableCell className="font-medium py-3.5">{a.full_name || profile?.full_name || "—"}</TableCell>
+                  <TableCell className="text-sm text-gray-500 py-3.5">{a.email || profile?.email || "—"}</TableCell>
+                  <TableCell className="text-sm py-3.5">{a.nationality || "—"}</TableCell>
+                  <TableCell className="text-sm py-3.5">{a.state_name || "—"}</TableCell>
+                  <TableCell className="text-sm py-3.5">{a.city || "—"}</TableCell>
+                  <TableCell className="py-3.5">
                     <select
                       value={a.status || "draft"}
                       onChange={(e) => updateStatus(a.id, e.target.value)}
                       disabled={updatingId === a.id}
-                      className={`text-xs font-semibold px-2 py-1 rounded cursor-pointer border-0 outline-none ${STATUS_COLORS[a.status || "draft"] || STATUS_COLORS.draft}`}
+                      className={`text-xs font-medium px-2.5 py-0.5 rounded-full cursor-pointer border-0 outline-none ${STATUS_COLORS[a.status || "draft"] || STATUS_COLORS.draft}`}
                     >
                       {APP_STATUSES.map(s => (
                         <option key={s} value={s}>{STATUS_LABELS[s]}</option>
                       ))}
                     </select>
                   </TableCell>
-                  <TableCell className="text-xs text-gray-500">
+                  <TableCell className="text-xs text-gray-500 py-3.5">
                     {a.created_at ? new Date(a.created_at).toLocaleDateString() : "—"}
                   </TableCell>
                 </TableRow>
@@ -628,14 +617,14 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
           </TableBody>
         </Table>
         {totalAppPages > 1 && (
-          <TablePagination currentPage={appPage} totalPages={totalAppPages} totalItems={applications.length} pageSize={APP_PAGE_SIZE} onPageChange={setAppPage} />
+          <TablePagination currentPage={appPage} totalPages={totalAppPages} totalItems={filteredApps.length} pageSize={APP_PAGE_SIZE} onPageChange={setAppPage} />
         )}
       </div>
     </div>
   );
 };
 
-/* ── Revenue Tab with manual entry ── */
+/* ── Revenue Tab ── */
 const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; applications: Application[]; userId: string }) => {
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const [manualEntries, setManualEntries] = useState<any[]>([]);
@@ -688,7 +677,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
   const estimatedRevenue = paidUsers * 49;
   const totalRevenue = estimatedRevenue + manualRevenue - totalRefunds;
 
-  // Revenue over time (based on paid user signup dates + manual entries)
+  // Revenue over time (kept as data, no charts)
   const revenueByDay = useMemo(() => {
     const paidProfiles = profiles.filter(p => p.plan && p.plan !== "free" && p.created_at);
     const map = new Map<string, { revenue: number; refunds: number }>();
@@ -719,15 +708,6 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
       });
   }, [profiles, manualEntries]);
 
-  const planData = useMemo(() => {
-    const map = new Map<string, number>();
-    profiles.forEach(p => {
-      const plan = p.plan || "free";
-      map.set(plan, (map.get(plan) || 0) + 1);
-    });
-    return Array.from(map.entries()).map(([name, value]) => ({ name, value }));
-  }, [profiles]);
-
   const recentActivity = useMemo(() => {
     const events: { time: string; type: string; detail: string }[] = [];
     profiles.forEach(p => {
@@ -743,88 +723,84 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <StatCard label="Total revenue" value={`$${totalRevenue.toFixed(0)}`} icon="💰" trend={totalRevenue > 0 ? "up" : undefined} />
-        <StatCard label="Estimated (auto)" value={`$${estimatedRevenue}`} icon="📊" />
-        <StatCard label="Manual revenue" value={`$${manualRevenue.toFixed(0)}`} icon="✅" />
-        <StatCard label="Refunds" value={`-$${totalRefunds.toFixed(0)}`} icon="↩️" />
-        <StatCard label="Paid users" value={paidUsers.toString()} icon="👥" />
+        <StatCard label="Total revenue" value={`$${totalRevenue.toFixed(0)}`} trend={totalRevenue > 0 ? "up" : undefined} />
+        <StatCard label="Estimated (auto)" value={`$${estimatedRevenue}`} />
+        <StatCard label="Manual revenue" value={`$${manualRevenue.toFixed(0)}`} />
+        <StatCard label="Refunds" value={`-$${totalRefunds.toFixed(0)}`} />
+        <StatCard label="Paid users" value={paidUsers.toString()} />
       </div>
 
-      {/* Revenue charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ChartCard title="Daily Revenue" subtitle="Revenue per day (auto + manual)">
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={revenueByDay} margin={{ left: 0, right: 10, top: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
-              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-              <Bar dataKey="revenue" fill="#166534" radius={[8, 8, 0, 0]} name="Revenue" />
-              <Bar dataKey="refunds" fill="#ef4444" radius={[8, 8, 0, 0]} name="Refunds" />
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        <ChartCard title="Cumulative Revenue" subtitle="Net revenue growth over time">
-          <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={revenueByDay} margin={{ left: 0, right: 10, top: 5 }}>
-              <defs>
-                <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(150, 60%, 45%)" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(150, 60%, 45%)" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
-              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} formatter={(v: number) => [`$${v}`, "Cumulative"]} />
-              <Area type="monotone" dataKey="cumulative" stroke="#22c55e" fill="url(#revenueGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
+      {/* Recent Activity */}
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3 className="font-semibold text-sm mb-1 text-gray-900">Recent activity</h3>
+        <p className="text-xs text-gray-500 mb-4">Latest signups and applications</p>
+        <div className="space-y-3 max-h-[280px] overflow-y-auto pr-2">
+          {recentActivity.length === 0 ? (
+            <p className="text-sm text-gray-500 text-center py-8">No activity yet</p>
+          ) : (
+            recentActivity.map((event, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-500" : "bg-blue-400"}`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm truncate text-gray-700">{event.detail}</p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(event.time).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                  </p>
+                </div>
+                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}`}>
+                  {event.type}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {/* Manual entry section */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
+      <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="font-bold text-lg">Manual entries</h2>
-            <p className="text-xs text-gray-500">Add revenue or refund records manually</p>
+            <h2 className="font-semibold text-base text-gray-900">Manual entries</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Add revenue or refund records manually</p>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-green-800 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Revenue</button>
-            <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Refund</button>
+            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-all">
+              + Revenue
+            </button>
+            <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all">
+              + Refund
+            </button>
           </div>
         </div>
 
         {showForm && (
           <div className="bg-gray-50 rounded-xl p-4 mb-4 space-y-3">
-            <h3 className="font-semibold text-sm capitalize">{formType} entry</h3>
+            <h3 className="font-medium text-sm capitalize text-gray-900">{formType} entry</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <div>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">Amount ($) *</label>
-                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+                <label className="text-xs font-medium text-gray-500 block mb-1">Amount ($) *</label>
+                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">Date</label>
-                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+                <label className="text-xs font-medium text-gray-500 block mb-1">Date</label>
+                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">User email</label>
-                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+                <label className="text-xs font-medium text-gray-500 block mb-1">User email</label>
+                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">Transaction ID</label>
-                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+                <label className="text-xs font-medium text-gray-500 block mb-1">Transaction ID</label>
+                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">Notes</label>
-                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+                <label className="text-xs font-medium text-gray-500 block mb-1">Notes</label>
+                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-green-800 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:opacity-90 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
-              <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-xl text-sm font-semibold border border-gray-100 text-gray-500 hover:text-gray-900">Cancel</button>
+              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-gray-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
+              <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-lg text-sm font-medium border border-gray-200 text-gray-500 hover:text-gray-900">Cancel</button>
             </div>
           </div>
         )}
@@ -837,33 +813,34 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Transaction</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Type</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Date</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Amount</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Transaction</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Notes</TableHead>
+                  <TableHead className="text-right uppercase text-[11px] tracking-wider text-gray-400 font-medium">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {manualEntries.map((e: any) => (
-                  <TableRow key={e.id}>
-                    <TableCell>
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-green-800/10 text-green-800" : "bg-red-500/10 text-red-500"}`}>
-                        {e.entry_type}
-                      </span>
+                  <TableRow key={e.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="py-3.5">
+                      <StatusBadge
+                        label={e.entry_type}
+                        variant={e.entry_type === "revenue" ? "green" : "red"}
+                      />
                     </TableCell>
-                    <TableCell className="text-sm">{new Date(e.entry_date).toLocaleDateString()}</TableCell>
-                    <TableCell className={`font-semibold ${e.entry_type === "refund" ? "text-red-500" : ""}`}>
+                    <TableCell className="text-sm py-3.5">{new Date(e.entry_date).toLocaleDateString()}</TableCell>
+                    <TableCell className={`font-medium py-3.5 ${e.entry_type === "refund" ? "text-red-600" : ""}`}>
                       {e.entry_type === "refund" ? "-" : ""}${Number(e.amount).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-sm text-gray-500">{e.user_email || "—"}</TableCell>
-                    <TableCell className="text-xs font-mono text-gray-500">{e.transaction_id || "—"}</TableCell>
-                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate">{e.notes || "—"}</TableCell>
-                    <TableCell className="text-right">
-                      <button onClick={() => deleteEntry(e.id)} className="text-xs text-red-500 hover:text-red-500/80 font-medium">Delete</button>
+                    <TableCell className="text-sm text-gray-500 py-3.5">{e.user_email || "—"}</TableCell>
+                    <TableCell className="text-xs font-mono text-gray-500 py-3.5">{e.transaction_id || "—"}</TableCell>
+                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate py-3.5">{e.notes || "—"}</TableCell>
+                    <TableCell className="text-right py-3.5">
+                      <button onClick={() => deleteEntry(e.id)} className="text-xs text-gray-400 hover:text-red-600 font-medium transition-colors">Delete</button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -871,48 +848,6 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
             </Table>
           </div>
         )}
-      </div>
-
-      {/* Plan breakdown + Activity timeline */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ChartCard title="Users by Plan" subtitle="Distribution across tiers">
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie data={planData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} innerRadius={50} paddingAngle={3}>
-                {planData.map((_, i) => (
-                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
-              <Legend wrapperStyle={{ fontSize: "12px" }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        <div className="bg-white border border-gray-100 rounded-2xl p-5">
-          <h3 className="font-bold text-sm mb-1">Recent Activity</h3>
-          <p className="text-xs text-gray-500 mb-4">Latest signups and applications</p>
-          <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2">
-            {recentActivity.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-8">No activity yet</p>
-            ) : (
-              recentActivity.map((event, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-800" : "bg-blue-500"}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm truncate">{event.detail}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(event.time).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                    </p>
-                  </div>
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-green-800/10 text-green-800" : "bg-blue-500/10 text-blue-600"}`}>
-                    {event.type}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -1099,70 +1034,70 @@ const PromosTab = () => {
   return (
     <div className="space-y-6">
       {/* Add new promo */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-4">Create promo code</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="font-semibold text-base text-gray-900 mb-4">Create promo code</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Code</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Code</label>
             <input
               value={newCode}
               onChange={(e) => setNewCode(e.target.value.toUpperCase())}
               placeholder="BRAZILIANGRINGO"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Discount %</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Discount %</label>
             <input
               value={newDiscount}
               onChange={(e) => setNewDiscount(e.target.value)}
               placeholder="10"
               type="number"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Affiliate name</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Affiliate name</label>
             <input
               value={newAffiliate}
               onChange={(e) => setNewAffiliate(e.target.value)}
               placeholder="Brazilian Gringo"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Affiliate email</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Affiliate email</label>
             <input
               value={newAffiliateEmail}
               onChange={(e) => setNewAffiliateEmail(e.target.value)}
               placeholder="gringo@email.com"
               type="email"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Commission %</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Commission %</label>
             <input
               value={newCommission}
               onChange={(e) => setNewCommission(e.target.value)}
               placeholder="20"
               type="number"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
             />
           </div>
         </div>
         <button
           onClick={addPromo}
           disabled={adding || !newCode.trim()}
-          className="mt-4 bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+          className="mt-4 bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50"
         >
           {adding ? "Adding..." : "Add promo code"}
         </button>
       </div>
 
       {/* Existing promos */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-4">All promo codes</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="font-semibold text-base text-gray-900 mb-4">All promo codes</h2>
         {loading ? (
           <p className="text-sm text-gray-500 animate-pulse">Loading...</p>
         ) : promos.length === 0 ? (
@@ -1171,61 +1106,45 @@ const PromosTab = () => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Code</TableHead>
-                  <TableHead>Discount</TableHead>
-                  <TableHead>Affiliate</TableHead>
-                  <TableHead>Commission</TableHead>
-                  <TableHead>Uses</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Code</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Discount</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Affiliate</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Commission</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Uses</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Status</TableHead>
+                  <TableHead className="text-right uppercase text-[11px] tracking-wider text-gray-400 font-medium">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {promos.map((p) => (
-                  <TableRow key={p.id}>
-                    <TableCell className="font-mono font-bold text-green-800">{p.code}</TableCell>
-                    <TableCell>{p.discount_percent}% off</TableCell>
-                    <TableCell>{p.affiliate_name || "None"}</TableCell>
-                    <TableCell>{p.affiliate_commission_percent}%</TableCell>
-                    <TableCell>{p.times_used}{p.max_uses ? ` / ${p.max_uses}` : ""}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        p.is_active ? "bg-green-800/10 text-green-800" : "bg-gray-100 text-gray-500"
-                      }`}>
-                        {p.is_active ? "Active" : "Disabled"}
-                      </span>
+                  <TableRow key={p.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="font-mono font-medium text-gray-900 py-3.5">{p.code}</TableCell>
+                    <TableCell className="py-3.5">{p.discount_percent}% off</TableCell>
+                    <TableCell className="py-3.5">{p.affiliate_name || <span className="text-gray-400">None</span>}</TableCell>
+                    <TableCell className="py-3.5">{p.affiliate_commission_percent}%</TableCell>
+                    <TableCell className="py-3.5">{p.times_used}{p.max_uses ? ` / ${p.max_uses}` : ""}</TableCell>
+                    <TableCell className="py-3.5">
+                      <StatusBadge
+                        label={p.is_active ? "Active" : "Disabled"}
+                        variant={p.is_active ? "green" : "gray"}
+                      />
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
+                    <TableCell className="text-right py-3.5">
+                      <div className="flex items-center justify-end gap-3">
                         <button
                           onClick={() => toggleActive(p.id, p.is_active)}
-                          className="text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+                          className="text-xs text-gray-400 hover:text-gray-900 transition-colors"
                         >
                           {p.is_active ? "Disable" : "Enable"}
                         </button>
                         {confirmDelete === p.id ? (
                           <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => deletePromo(p.id)}
-                              className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors"
-                            >
-                              Confirm
-                            </button>
-                            <button
-                              onClick={() => setConfirmDelete(null)}
-                              className="text-xs text-gray-500 hover:text-gray-900 transition-colors"
-                            >
-                              Cancel
-                            </button>
+                            <button onClick={() => deletePromo(p.id)} className="text-xs text-red-600 hover:text-red-700 transition-colors">Confirm</button>
+                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-gray-400 hover:text-gray-900 transition-colors">Cancel</button>
                           </div>
                         ) : (
-                          <button
-                            onClick={() => setConfirmDelete(p.id)}
-                            className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors"
-                          >
-                            Delete
-                          </button>
+                          <button onClick={() => setConfirmDelete(p.id)} className="text-xs text-gray-400 hover:text-red-600 transition-colors">Delete</button>
                         )}
                       </div>
                     </TableCell>
@@ -1238,8 +1157,8 @@ const PromosTab = () => {
       </div>
 
       {/* Affiliate performance */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-1">Affiliate performance</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="font-semibold text-base text-gray-900 mb-1">Affiliate performance</h2>
         <p className="text-xs text-gray-500 mb-4">Revenue and commission based on actual paid applications</p>
         {affiliateData.length === 0 ? (
           <p className="text-sm text-gray-500">No affiliates yet. Add an affiliate name when creating a promo code.</p>
@@ -1247,17 +1166,17 @@ const PromosTab = () => {
           <div className="space-y-4">
             {/* Summary cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-xs text-gray-500 font-semibold mb-1">Total affiliates</div>
-                <div className="text-2xl font-extrabold">{affiliateData.length}</div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="text-xs text-gray-500 font-medium mb-1">Total affiliates</div>
+                <div className="text-2xl font-medium">{affiliateData.length}</div>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-xs text-gray-500 font-semibold mb-1">Total affiliate revenue</div>
-                <div className="text-2xl font-extrabold">${affiliateData.reduce((s, a) => s + a.totalRevenue, 0).toFixed(2)}</div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="text-xs text-gray-500 font-medium mb-1">Total affiliate revenue</div>
+                <div className="text-2xl font-medium">${affiliateData.reduce((s, a) => s + a.totalRevenue, 0).toFixed(2)}</div>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-xs text-gray-500 font-semibold mb-1">Total commission owed</div>
-                <div className="text-2xl font-extrabold text-green-800">${affiliateData.reduce((s, a) => s + a.commissionOwed, 0).toFixed(2)}</div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="text-xs text-gray-500 font-medium mb-1">Total commission owed</div>
+                <div className="text-2xl font-medium text-green-700">${affiliateData.reduce((s, a) => s + a.commissionOwed, 0).toFixed(2)}</div>
               </div>
             </div>
 
@@ -1265,98 +1184,98 @@ const PromosTab = () => {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Affiliate</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Commission</TableHead>
-                    <TableHead>Conversions</TableHead>
-                    <TableHead>Revenue</TableHead>
-                    <TableHead>Owed</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                  <TableRow className="border-b border-gray-200">
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Affiliate</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Code</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Commission</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Conversions</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Revenue</TableHead>
+                    <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Owed</TableHead>
+                    <TableHead className="text-right uppercase text-[11px] tracking-wider text-gray-400 font-medium">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {affiliateData.map((a) => (
                     <>
-                      <TableRow key={a.name}>
+                      <TableRow key={a.name} className="hover:bg-gray-50 border-b border-gray-100">
                         {editingAffiliate === a.promoId ? (
                           <>
-                            <TableCell>
+                            <TableCell className="py-3.5">
                               <input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
                                 placeholder="Name"
-                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-green-800"
+                                className="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-1 focus:ring-gray-300"
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="py-3.5">
                               <input
                                 value={editEmail}
                                 onChange={(e) => setEditEmail(e.target.value)}
                                 placeholder="email@example.com"
                                 type="email"
-                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-green-800"
+                                className="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-1 focus:ring-gray-300"
                               />
                             </TableCell>
-                            <TableCell className="font-mono text-green-800">{a.code}</TableCell>
-                            <TableCell>
+                            <TableCell className="font-mono text-gray-700 py-3.5">{a.code}</TableCell>
+                            <TableCell className="py-3.5">
                               <div className="flex items-center gap-1">
                                 <input
                                   value={editCommission}
                                   onChange={(e) => setEditCommission(e.target.value)}
                                   type="number"
-                                  className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-green-800"
+                                  className="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-1 focus:ring-gray-300"
                                 />
                                 <span className="text-sm text-gray-500">%</span>
                               </div>
                             </TableCell>
-                            <TableCell>{a.uses}</TableCell>
-                            <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                            <TableCell className="font-bold text-green-800">${a.commissionOwed.toFixed(2)}</TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="py-3.5">{a.uses}</TableCell>
+                            <TableCell className="py-3.5">${a.totalRevenue.toFixed(2)}</TableCell>
+                            <TableCell className="font-medium text-green-700 py-3.5">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="text-right py-3.5">
                               <div className="flex items-center justify-end gap-2">
-                                <button onClick={() => updateAffiliate(a.promoId)} className="text-xs font-bold text-green-800 hover:opacity-80">Save</button>
-                                <button onClick={() => setEditingAffiliate(null)} className="text-xs text-gray-500 hover:text-gray-900">Cancel</button>
+                                <button onClick={() => updateAffiliate(a.promoId)} className="text-xs text-gray-900 hover:text-gray-700 font-medium">Save</button>
+                                <button onClick={() => setEditingAffiliate(null)} className="text-xs text-gray-400 hover:text-gray-900">Cancel</button>
                               </div>
                             </TableCell>
                           </>
                         ) : (
                           <>
-                            <TableCell>
-                              <button onClick={() => openProfile(a)} className="font-semibold text-green-800 hover:underline cursor-pointer text-left">
+                            <TableCell className="py-3.5">
+                              <button onClick={() => openProfile(a)} className="font-medium text-gray-900 hover:underline cursor-pointer text-left">
                                 {a.name}
                               </button>
                             </TableCell>
-                            <TableCell className="text-sm text-gray-500">{a.email || "No email"}</TableCell>
-                            <TableCell className="font-mono text-green-800">{a.code}</TableCell>
-                            <TableCell>{a.commission}%</TableCell>
-                            <TableCell>{a.uses}</TableCell>
-                            <TableCell>${a.totalRevenue.toFixed(2)}</TableCell>
-                            <TableCell className="font-bold text-green-800">${a.commissionOwed.toFixed(2)}</TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-sm text-gray-500 py-3.5">{a.email || <span className="text-gray-400">No email</span>}</TableCell>
+                            <TableCell className="font-mono text-gray-700 py-3.5">{a.code}</TableCell>
+                            <TableCell className="py-3.5">{a.commission}%</TableCell>
+                            <TableCell className="py-3.5">{a.uses}</TableCell>
+                            <TableCell className="py-3.5">${a.totalRevenue.toFixed(2)}</TableCell>
+                            <TableCell className="font-medium text-green-700 py-3.5">${a.commissionOwed.toFixed(2)}</TableCell>
+                            <TableCell className="text-right py-3.5">
                               <div className="flex items-center justify-end gap-3">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); setExpandedAffiliate(expandedAffiliate === a.name ? null : a.name); }}
-                                  className="text-xs text-gray-500 hover:text-gray-900"
+                                  className="text-xs text-gray-400 hover:text-gray-900"
                                 >
-                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide ▲" : `${a.conversions.length} sales ▼`) : "No sales yet"}
+                                  {a.conversions.length > 0 ? (expandedAffiliate === a.name ? "Hide" : `${a.conversions.length} sales`) : "No sales"}
                                 </button>
                                 <button
                                   onClick={() => { setEditingAffiliate(a.promoId); setEditName(a.name); setEditEmail(a.email || ""); setEditCommission(String(a.commission)); }}
-                                  className="text-xs font-semibold text-gray-500 hover:text-gray-900"
+                                  className="text-xs text-gray-400 hover:text-gray-900"
                                 >
                                   Edit
                                 </button>
                                 {confirmDeleteAffiliate === a.promoId ? (
                                   <div className="flex items-center gap-1">
-                                    <button onClick={() => removeAffiliate(a.promoId)} className="text-xs font-bold text-red-600 hover:text-red-700">Remove</button>
-                                    <button onClick={() => setConfirmDeleteAffiliate(null)} className="text-xs text-gray-500">Cancel</button>
+                                    <button onClick={() => removeAffiliate(a.promoId)} className="text-xs text-red-600 hover:text-red-700">Remove</button>
+                                    <button onClick={() => setConfirmDeleteAffiliate(null)} className="text-xs text-gray-400">Cancel</button>
                                   </div>
                                 ) : (
                                   <button
                                     onClick={() => setConfirmDeleteAffiliate(a.promoId)}
-                                    className="text-xs font-semibold text-red-500 hover:text-red-600"
+                                    className="text-xs text-gray-400 hover:text-red-600 transition-colors"
                                   >
                                     Delete
                                   </button>
@@ -1368,19 +1287,20 @@ const PromosTab = () => {
                       </TableRow>
                       {expandedAffiliate === a.name && a.conversions.length > 0 && (
                         <TableRow key={`${a.name}-detail`}>
-                          <TableCell colSpan={9} className="bg-gray-50/30 p-0">
+                          <TableCell colSpan={9} className="bg-gray-50/50 p-0">
                             <div className="p-5">
-                              <p className="text-xs font-bold text-gray-500 mb-3">Conversions for {a.name}</p>
+                              <p className="text-xs font-medium text-gray-500 mb-3">Conversions for {a.name}</p>
                               <div className="space-y-2">
                                 {a.conversions.map((c: any, i: number) => (
                                   <div key={i} className="flex flex-wrap items-center gap-4 text-xs bg-white rounded-lg px-4 py-3 border border-gray-100">
-                                    <span className="font-semibold min-w-[120px]">{c.full_name || c.email || "Unknown"}</span>
+                                    <span className="font-medium min-w-[120px]">{c.full_name || c.email || "Unknown"}</span>
                                     <span className="text-gray-500">{c.email}</span>
-                                    <span className="text-green-800 font-bold">${Number(c.final_price || 0).toFixed(2)}</span>
+                                    <span className="text-green-700 font-medium">${Number(c.final_price || 0).toFixed(2)}</span>
                                     <span className="text-gray-500">saved ${Number(c.discount_amount || 0).toFixed(2)}</span>
-                                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                      c.status === "paid" || c.status === "completed" ? "bg-green-800/10 text-green-800" : "bg-gray-100 text-gray-500"
-                                    }`}>{c.status}</span>
+                                    <StatusBadge
+                                      label={c.status}
+                                      variant={c.status === "paid" || c.status === "completed" ? "green" : "gray"}
+                                    />
                                     <span className="text-gray-500 ml-auto">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ""}</span>
                                   </div>
                                 ))}
@@ -1405,45 +1325,45 @@ const PromosTab = () => {
           <Dialog open={!!profileOpen} onOpenChange={(open) => { if (!open) setProfileOpen(null); }}>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle className="text-xl">{activeAffiliate.name}</DialogTitle>
+                <DialogTitle className="text-xl font-semibold">{activeAffiliate.name}</DialogTitle>
               </DialogHeader>
               <div className="space-y-5 mt-2">
                 {/* Quick stats */}
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-gray-50 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 font-semibold">Conversions</div>
-                    <div className="text-xl font-extrabold">{activeAffiliate.uses}</div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xs text-gray-500 font-medium">Conversions</div>
+                    <div className="text-xl font-medium">{activeAffiliate.uses}</div>
                   </div>
-                  <div className="bg-gray-50 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 font-semibold">Revenue</div>
-                    <div className="text-xl font-extrabold">${activeAffiliate.totalRevenue.toFixed(2)}</div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xs text-gray-500 font-medium">Revenue</div>
+                    <div className="text-xl font-medium">${activeAffiliate.totalRevenue.toFixed(2)}</div>
                   </div>
-                  <div className="bg-gray-50 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 font-semibold">Owed</div>
-                    <div className="text-xl font-extrabold text-green-800">${activeAffiliate.commissionOwed.toFixed(2)}</div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xs text-gray-500 font-medium">Owed</div>
+                    <div className="text-xl font-medium text-green-700">${activeAffiliate.commissionOwed.toFixed(2)}</div>
                   </div>
                 </div>
 
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div>
+                    <div className="text-xs text-gray-500 font-medium mb-0.5">Email</div>
                     <div className="font-medium">{activeAffiliate.email || "Not set"}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Code</div>
-                    <div className="font-mono font-bold text-green-800">{activeAffiliate.code}</div>
+                    <div className="text-xs text-gray-500 font-medium mb-0.5">Code</div>
+                    <div className="font-mono text-gray-900">{activeAffiliate.code}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Discount</div>
+                    <div className="text-xs text-gray-500 font-medium mb-0.5">Discount</div>
                     <div>{activeAffiliate.discount}% off</div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Commission</div>
+                    <div className="text-xs text-gray-500 font-medium mb-0.5">Commission</div>
                     <div>{activeAffiliate.commission}%</div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 font-semibold mb-0.5">Added</div>
+                    <div className="text-xs text-gray-500 font-medium mb-0.5">Added</div>
                     <div>{new Date(activeAffiliate.createdAt).toLocaleDateString()}</div>
                   </div>
                 </div>
@@ -1451,31 +1371,31 @@ const PromosTab = () => {
                 {/* Editable fields */}
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 block mb-1">Where did you find them?</label>
+                    <label className="text-xs font-medium text-gray-500 block mb-1">Where did you find them?</label>
                     <input
                       value={profileSource}
                       onChange={(e) => setProfileSource(e.target.value)}
                       placeholder="YouTube, Instagram, referral, event..."
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 block mb-1">Location</label>
+                    <label className="text-xs font-medium text-gray-500 block mb-1">Location</label>
                     <input
                       value={profileLocation}
                       onChange={(e) => setProfileLocation(e.target.value)}
-                      placeholder="São Paulo, Brazil / London, UK..."
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
+                      placeholder="Sao Paulo, Brazil / London, UK..."
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-500 block mb-1">Notes</label>
+                    <label className="text-xs font-medium text-gray-500 block mb-1">Notes</label>
                     <textarea
                       value={profileNotes}
                       onChange={(e) => setProfileNotes(e.target.value)}
                       placeholder="Any notes about this affiliate... deal terms, contact preferences, follow-up dates..."
                       rows={4}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none"
                     />
                   </div>
                 </div>
@@ -1483,7 +1403,7 @@ const PromosTab = () => {
                 <button
                   onClick={() => saveProfile(activeAffiliate.promoId)}
                   disabled={profileSaving}
-                  className="w-full bg-green-800 text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                  className="w-full bg-gray-900 text-white py-3 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50"
                 >
                   {profileSaving ? "Saving..." : "Save profile"}
                 </button>
@@ -1601,92 +1521,92 @@ const AffiliatesTab = () => {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total affiliates" value={affiliates.length.toString()} icon="🤝" />
-        <StatCard label="Approved" value={approved.toString()} icon="✅" />
-        <StatCard label="Pending" value={pending.toString()} icon="⏳" />
-        <StatCard label="With promo code" value={affiliates.filter(a => a.promo_code).length.toString()} icon="🏷️" />
+        <StatCard label="Total affiliates" value={affiliates.length.toString()} />
+        <StatCard label="Approved" value={approved.toString()} />
+        <StatCard label="Pending" value={pending.toString()} />
+        <StatCard label="With promo code" value={affiliates.filter(a => a.promo_code).length.toString()} />
       </div>
 
       {/* Add / Edit form */}
       {showAdd ? (
-        <div className="bg-white border border-gray-100 rounded-2xl p-6">
-          <h2 className="font-bold text-lg mb-4">{editId ? "Edit affiliate" : "Add new affiliate"}</h2>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="font-semibold text-base text-gray-900 mb-4">{editId ? "Edit affiliate" : "Add new affiliate"}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Name *</label>
-              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Name *</label>
+              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Email *</label>
-              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Email *</label>
+              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Platform</label>
-              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Platform</label>
+              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Location</label>
-              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Location</label>
+              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="Sao Paulo, Brazil" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Promo code</label>
-              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Promo code</label>
+              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Commission %</label>
-              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Commission %</label>
+              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Source</label>
-              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Source</label>
+              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Status</label>
-              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800">
+              <label className="text-xs font-medium text-gray-500 block mb-1">Status</label>
+              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300">
                 {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
               </select>
             </div>
           </div>
           {/* Posting frequency */}
           <div className="mt-4">
-            <label className="text-xs font-semibold text-gray-500 block mb-1.5">Posting frequency</label>
+            <label className="text-xs font-medium text-gray-500 block mb-1.5">Posting frequency</label>
             <div className="flex flex-wrap gap-2">
               {frequencyOptions.map(opt => (
                 <button key={opt} type="button" onClick={() => update("posting_frequency", form.posting_frequency === opt ? "" : opt)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-green-800 bg-green-800/10 text-green-800" : "border-gray-100 bg-gray-50 text-gray-500 hover:border-green-800/40"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-gray-900 bg-gray-900 text-white" : "border-gray-200 bg-white text-gray-600 hover:border-gray-400"}`}
                 >{opt}</button>
               ))}
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Why they want to be an affiliate</label>
-              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Why they want to be an affiliate</label>
+              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Their situation</label>
-              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
+              <label className="text-xs font-medium text-gray-500 block mb-1">Their situation</label>
+              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none" />
             </div>
           </div>
           <div className="mt-4">
-            <label className="text-xs font-semibold text-gray-500 block mb-1">Internal notes</label>
-            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
+            <label className="text-xs font-medium text-gray-500 block mb-1">Internal notes</label>
+            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none" />
           </div>
           <div className="flex gap-3 mt-5">
-            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50">
+            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50">
               {saving ? "Saving..." : editId ? "Update affiliate" : "Add affiliate"}
             </button>
-            <button onClick={resetForm} className="px-6 py-2.5 rounded-xl font-semibold text-sm border border-gray-100 text-gray-500 hover:text-gray-900 transition-all">Cancel</button>
+            <button onClick={resetForm} className="px-6 py-2.5 rounded-lg font-medium text-sm border border-gray-200 text-gray-500 hover:text-gray-900 transition-all">Cancel</button>
           </div>
         </div>
       ) : (
-        <button onClick={() => setShowAdd(true)} className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all">
+        <button onClick={() => setShowAdd(true)} className="bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all">
           + Add affiliate
         </button>
       )}
 
       {/* Affiliates table */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-sm text-gray-500 animate-pulse">Loading...</div>
         ) : affiliates.length === 0 ? (
@@ -1695,43 +1615,46 @@ const AffiliatesTab = () => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Platform</TableHead>
-                  <TableHead>Code</TableHead>
-                  <TableHead>Commission</TableHead>
-                  <TableHead>Frequency</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Name</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Platform</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Code</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Commission</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Frequency</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Status</TableHead>
+                  <TableHead className="text-right uppercase text-[11px] tracking-wider text-gray-400 font-medium">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {affiliates.map(a => (
-                  <TableRow key={a.id}>
-                    <TableCell className="font-semibold">{a.name}</TableCell>
-                    <TableCell className="text-sm text-gray-500">{a.email}</TableCell>
-                    <TableCell className="text-sm text-gray-500">{a.platform || "-"}</TableCell>
-                    <TableCell className="font-mono text-green-800 font-bold">{a.promo_code || "-"}</TableCell>
-                    <TableCell>{a.commission_percent}%</TableCell>
-                    <TableCell className="text-sm text-gray-500">{a.posting_frequency || "-"}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        a.status === "approved" ? "bg-green-800/10 text-green-800" :
-                        a.status === "rejected" ? "bg-red-500/10 text-red-500" :
-                        "bg-gray-100 text-gray-500"
-                      }`}>{a.status}</span>
+                  <TableRow key={a.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="font-medium py-3.5">{a.name}</TableCell>
+                    <TableCell className="text-sm text-gray-500 py-3.5">{a.email}</TableCell>
+                    <TableCell className="text-sm text-gray-500 py-3.5">{a.platform || "—"}</TableCell>
+                    <TableCell className="font-mono text-gray-700 py-3.5">{a.promo_code || "—"}</TableCell>
+                    <TableCell className="py-3.5">{a.commission_percent}%</TableCell>
+                    <TableCell className="text-sm text-gray-500 py-3.5">{a.posting_frequency || "—"}</TableCell>
+                    <TableCell className="py-3.5">
+                      <StatusBadge
+                        label={a.status}
+                        variant={
+                          a.status === "approved" ? "green" :
+                          a.status === "rejected" ? "red" :
+                          "yellow"
+                        }
+                      />
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => startEdit(a)} className="text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">Edit</button>
+                    <TableCell className="text-right py-3.5">
+                      <div className="flex items-center justify-end gap-3">
+                        <button onClick={() => startEdit(a)} className="text-xs text-gray-400 hover:text-gray-900 transition-colors">Edit</button>
                         {confirmDelete === a.id ? (
                           <div className="flex items-center gap-1">
-                            <button onClick={() => deleteAffiliate(a.id)} className="text-xs font-bold text-red-600 hover:text-red-700">Confirm</button>
-                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-gray-500">Cancel</button>
+                            <button onClick={() => deleteAffiliate(a.id)} className="text-xs text-red-600 hover:text-red-700">Confirm</button>
+                            <button onClick={() => setConfirmDelete(null)} className="text-xs text-gray-400">Cancel</button>
                           </div>
                         ) : (
-                          <button onClick={() => setConfirmDelete(a.id)} className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors">Delete</button>
+                          <button onClick={() => setConfirmDelete(a.id)} className="text-xs text-gray-400 hover:text-red-600 transition-colors">Delete</button>
                         )}
                       </div>
                     </TableCell>
@@ -1746,7 +1669,7 @@ const AffiliatesTab = () => {
   );
 };
 
-/* ── Partners Tab (affiliate_applications) ── */
+/* ── Partners Tab ── */
 const PartnersTab = ({ userId }: { userId: string }) => {
   const [apps, setApps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1768,10 +1691,10 @@ const PartnersTab = ({ userId }: { userId: string }) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <StatCard label="Total applications" value={totalApps.toString()} icon="🌐" />
+        <StatCard label="Total applications" value={totalApps.toString()} />
       </div>
 
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-sm text-gray-500 animate-pulse">Loading...</div>
         ) : apps.length === 0 ? (
@@ -1780,25 +1703,25 @@ const PartnersTab = ({ userId }: { userId: string }) => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Platform</TableHead>
-                  <TableHead>Situation</TableHead>
-                  <TableHead>Applied</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Name</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Email</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Platform</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Situation</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Applied</TableHead>
+                  <TableHead className="text-right uppercase text-[11px] tracking-wider text-gray-400 font-medium">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {apps.map((a: any) => (
-                  <TableRow key={a.id}>
-                    <TableCell className="font-semibold">{a.name}</TableCell>
-                    <TableCell className="text-sm text-gray-500">{a.email}</TableCell>
-                    <TableCell className="text-sm">{a.platform || "—"}</TableCell>
-                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate">{a.situation || "—"}</TableCell>
-                    <TableCell className="text-xs text-gray-500">{new Date(a.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <button onClick={() => setSelectedApp(a)} className="text-xs font-semibold text-green-800 hover:text-green-800/80 transition-colors">View</button>
+                  <TableRow key={a.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="font-medium py-3.5">{a.name}</TableCell>
+                    <TableCell className="text-sm text-gray-500 py-3.5">{a.email}</TableCell>
+                    <TableCell className="text-sm py-3.5">{a.platform || "—"}</TableCell>
+                    <TableCell className="text-sm text-gray-500 max-w-[200px] truncate py-3.5">{a.situation || "—"}</TableCell>
+                    <TableCell className="text-xs text-gray-500 py-3.5">{new Date(a.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-right py-3.5">
+                      <button onClick={() => setSelectedApp(a)} className="text-xs text-gray-400 hover:text-gray-900 transition-colors">View</button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1812,23 +1735,23 @@ const PartnersTab = ({ userId }: { userId: string }) => {
         <Dialog open={!!selectedApp} onOpenChange={(open) => { if (!open) setSelectedApp(null); }}>
           <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-xl">{selectedApp.name}</DialogTitle>
+              <DialogTitle className="text-xl font-semibold">{selectedApp.name}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 mt-2 text-sm">
               <div className="grid grid-cols-2 gap-3">
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Email</div><div>{selectedApp.email}</div></div>
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Email</div><div>{selectedApp.email}</div></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Platform</div><div>{selectedApp.platform || "—"}</div></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Frequency</div><div>{selectedApp.posting_frequency || "—"}</div></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Applied</div><div>{new Date(selectedApp.created_at).toLocaleDateString()}</div></div>
               </div>
               {selectedApp.situation && (
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Situation</div><p className="text-sm">{selectedApp.situation}</p></div>
               )}
               {selectedApp.why && (
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Why</div><p className="text-sm">{selectedApp.why}</p></div>
               )}
               {selectedApp.motivation && (
-                <div><div className="text-xs text-gray-500 font-semibold mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
+                <div><div className="text-xs text-gray-500 font-medium mb-0.5">Motivation</div><p className="text-sm">{selectedApp.motivation}</p></div>
               )}
             </div>
           </DialogContent>
@@ -1890,28 +1813,28 @@ const SettingsTab = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white border border-gray-100 rounded-2xl p-6 space-y-6">
-        <h2 className="font-bold text-lg">Data export</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+        <h2 className="font-semibold text-base text-gray-900">Data export</h2>
         <p className="text-sm text-gray-500">Export all user data as CSV for LGPD compliance requests.</p>
         <button
           onClick={exportCSV}
           disabled={exporting}
-          className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+          className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-all disabled:opacity-50"
         >
-          {exporting ? "Exporting..." : "📥 Export users CSV"}
+          {exporting ? "Exporting..." : "Export users CSV"}
         </button>
       </div>
 
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-2">Payment integration</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="font-semibold text-base text-gray-900 mb-2">Payment integration</h2>
         <p className="text-sm text-gray-500">
           Payment integration settings will appear here once connected. Price changes and webhook configuration will be manageable from this panel.
         </p>
       </div>
 
       {/* Audit Log */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-6">
-        <h2 className="font-bold text-lg mb-1">Audit log</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="font-semibold text-base text-gray-900 mb-1">Audit log</h2>
         <p className="text-xs text-gray-500 mb-4">Recent admin actions (last 50)</p>
         {loadingLogs ? (
           <p className="text-sm text-gray-500 animate-pulse">Loading...</p>
@@ -1921,18 +1844,18 @@ const SettingsTab = ({ userId }: { userId: string }) => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Details</TableHead>
-                  <TableHead>When</TableHead>
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Action</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Details</TableHead>
+                  <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">When</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {auditLogs.map((log: any) => (
-                  <TableRow key={log.id}>
-                    <TableCell className="font-semibold text-sm">{log.action}</TableCell>
-                    <TableCell className="text-sm text-gray-500 max-w-[300px] truncate">{log.details || "—"}</TableCell>
-                    <TableCell className="text-xs text-gray-500 whitespace-nowrap">
+                  <TableRow key={log.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="font-medium text-sm py-3.5">{log.action}</TableCell>
+                    <TableCell className="text-sm text-gray-500 max-w-[300px] truncate py-3.5">{log.details || "—"}</TableCell>
+                    <TableCell className="text-xs text-gray-500 whitespace-nowrap py-3.5">
                       {new Date(log.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </TableCell>
                   </TableRow>
@@ -1964,18 +1887,18 @@ const WaitlistTab = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total signups" value={entries.length.toString()} icon="📧" />
+        <StatCard label="Total signups" value={entries.length.toString()} />
         {Object.entries(byPlan).map(([plan, count]) => (
-          <StatCard key={plan} label={plan} value={count.toString()} icon="📋" />
+          <StatCard key={plan} label={plan} value={count.toString()} />
         ))}
       </div>
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Plan interest</TableHead>
-              <TableHead>Signed up</TableHead>
+            <TableRow className="border-b border-gray-200">
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Email</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Plan interest</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Signed up</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -1984,12 +1907,12 @@ const WaitlistTab = () => {
             ) : entries.length === 0 ? (
               <TableRow><TableCell colSpan={3} className="text-center text-sm text-gray-500 py-8">No waitlist signups yet</TableCell></TableRow>
             ) : entries.map(e => (
-              <TableRow key={e.id}>
-                <TableCell className="font-medium">{e.email}</TableCell>
-                <TableCell>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-green-800/10 text-green-800">{e.plan}</span>
+              <TableRow key={e.id} className="hover:bg-gray-50 border-b border-gray-100">
+                <TableCell className="font-medium py-3.5">{e.email}</TableCell>
+                <TableCell className="py-3.5">
+                  <StatusBadge label={e.plan} variant="green" />
                 </TableCell>
-                <TableCell className="text-xs text-gray-500">
+                <TableCell className="text-xs text-gray-500 py-3.5">
                   {new Date(e.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                 </TableCell>
               </TableRow>
@@ -2002,25 +1925,29 @@ const WaitlistTab = () => {
 };
 
 /* ── Shared components ── */
-const StatCard = ({ label, value, icon, trend, sub }: { label: string; value: string; icon?: string; trend?: "up" | "down"; sub?: string }) => (
-  <div className="bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md transition-shadow">
-    <div className="flex items-center justify-between">
-      <div className="text-xs text-gray-500 font-medium">{label}</div>
-      {icon && <span className="text-lg">{icon}</span>}
-    </div>
-    <div className="text-2xl font-extrabold mt-1 flex items-center gap-2">
-      {value}
-      {trend === "up" && <span className="text-xs text-green-500 font-semibold">↑</span>}
-    </div>
-    {sub && <div className="text-[10px] text-gray-500 mt-1">{sub}</div>}
-  </div>
-);
+const StatusBadge = ({ label, variant }: { label: string; variant: "green" | "yellow" | "red" | "blue" | "gray" }) => {
+  const styles = {
+    green: "bg-green-100 text-green-700",
+    yellow: "bg-yellow-100 text-yellow-700",
+    red: "bg-red-100 text-red-700",
+    blue: "bg-blue-100 text-blue-700",
+    gray: "bg-gray-100 text-gray-500",
+  };
+  return (
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${styles[variant]}`}>
+      {label}
+    </span>
+  );
+};
 
-const ChartCard = ({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) => (
-  <div className="bg-white border border-gray-100 rounded-2xl p-5">
-    <h3 className="font-bold text-sm mb-0.5">{title}</h3>
-    <p className="text-xs text-gray-500 mb-4">{subtitle}</p>
-    {children}
+const StatCard = ({ label, value, trend, sub }: { label: string; value: string; trend?: "up" | "down"; sub?: string }) => (
+  <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="text-sm text-gray-500 font-medium">{label}</div>
+    <div className="text-2xl font-medium text-gray-900 mt-1 flex items-center gap-2">
+      {value}
+      {trend === "up" && <span className="text-xs text-green-600 font-medium">+</span>}
+    </div>
+    {sub && <div className="text-[10px] text-gray-400 mt-1">{sub}</div>}
   </div>
 );
 
@@ -2031,11 +1958,11 @@ const TablePagination = ({ currentPage, totalPages, totalItems, pageSize, onPage
   const end = Math.min(currentPage * pageSize, totalItems);
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 text-sm">
-      <span className="text-gray-500 text-xs">{start}–{end} of {totalItems}</span>
+      <span className="text-gray-400 text-xs">{start}&ndash;{end} of {totalItems}</span>
       <div className="flex gap-1">
-        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-semibold bg-gray-50 hover:bg-gray-50/80 disabled:opacity-40 transition-all">← Prev</button>
-        <span className="px-2 py-1 text-xs text-gray-500">Page {currentPage} of {totalPages}</span>
-        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-semibold bg-gray-50 hover:bg-gray-50/80 disabled:opacity-40 transition-all">Next →</button>
+        <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 rounded-lg text-xs font-medium bg-gray-50 hover:bg-gray-100 disabled:opacity-40 transition-all">&larr; Prev</button>
+        <span className="px-2 py-1 text-xs text-gray-400">Page {currentPage} of {totalPages}</span>
+        <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 rounded-lg text-xs font-medium bg-gray-50 hover:bg-gray-100 disabled:opacity-40 transition-all">Next &rarr;</button>
       </div>
     </div>
   );
