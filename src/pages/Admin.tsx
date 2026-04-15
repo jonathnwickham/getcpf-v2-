@@ -50,14 +50,14 @@ interface Application {
 }
 
 const CHART_COLORS = [
-  "hsl(var(--primary))",
-  "hsl(var(--accent))",
-  "hsl(210, 70%, 55%)",
-  "hsl(150, 60%, 45%)",
-  "hsl(340, 65%, 55%)",
-  "hsl(40, 80%, 55%)",
-  "hsl(270, 55%, 55%)",
-  "hsl(190, 65%, 45%)",
+  "#166534",
+  "#3b82f6",
+  "#3b7dd8",
+  "#22c55e",
+  "#ec4899",
+  "#f59e0b",
+  "#a855f7",
+  "#06b6d4",
 ];
 
 const Admin = () => {
@@ -176,7 +176,7 @@ const getDataStatus = (profile: Profile, applications: Application[] = []): "Act
 
 const DATA_STATUS_COLORS: Record<string, string> = {
   "Active": "bg-green-800/10 text-green-800",
-  "Due for deletion": "bg-destructive/10 text-destructive",
+  "Due for deletion": "bg-red-500/10 text-red-500",
   "Retained": "bg-gray-50 text-gray-500",
 };
 
@@ -276,10 +276,10 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
         <ChartCard title="User Funnel" subtitle="Signup → Application → Paid">
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={funnelData} layout="vertical" margin={{ left: 10, right: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis type="number" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-              <YAxis dataKey="stage" type="category" width={90} tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis type="number" tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <YAxis dataKey="stage" type="category" width={90} tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
               <Bar dataKey="count" radius={[0, 8, 8, 0]}>
                 {funnelData.map((entry, i) => (
                   <Cell key={i} fill={entry.fill} />
@@ -295,15 +295,15 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             <AreaChart data={signupsByDay} margin={{ left: 0, right: 10, top: 5 }}>
               <defs>
                 <linearGradient id="signupGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#166534" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#166534" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-              <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} allowDecimals={false} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
-              <Area type="monotone" dataKey="signups" stroke="hsl(var(--primary))" fill="url(#signupGrad)" strokeWidth={2} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
+              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} allowDecimals={false} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+              <Area type="monotone" dataKey="signups" stroke="#166534" fill="url(#signupGrad)" strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -317,7 +317,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                   <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
               <Legend wrapperStyle={{ fontSize: "11px" }} />
             </PieChart>
           </ResponsiveContainer>
@@ -332,7 +332,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="w-full md:w-80 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-500/50"
+            className="w-full md:w-80 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all placeholder:text-gray-500/50"
           />
           {(() => {
             const dueForDeletion = filtered.filter(p => getDataStatus(p, applications) === "Due for deletion");
@@ -341,7 +341,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
               <div className="flex gap-2 items-center">
                 <button
                   onClick={() => setSelectedForBulk(new Set(dueForDeletion.map(p => p.id)))}
-                  className="text-xs font-semibold text-destructive bg-destructive/10 px-3 py-2 rounded-lg hover:bg-destructive/20 transition-colors"
+                  className="text-xs font-semibold text-red-500 bg-red-500/10 px-3 py-2 rounded-lg hover:bg-red-500/20 transition-colors"
                 >
                   Select all due for deletion ({dueForDeletion.length})
                 </button>
@@ -355,7 +355,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                       setSelectedForBulk(new Set());
                       onRefresh();
                     }}
-                    className="text-xs font-semibold text-destructive-foreground bg-destructive px-3 py-2 rounded-lg hover:opacity-90 transition-all"
+                    className="text-xs font-semibold text-white bg-red-500 px-3 py-2 rounded-lg hover:opacity-90 transition-all"
                   >
                     Delete selected ({selectedForBulk.size})
                   </button>
@@ -415,7 +415,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                         if (!confirm(`Delete user data for ${p.email}? This anonymizes their profile and removes application data. Consent log is retained.`)) return;
                         await anonymizeUser(p.id, onRefresh);
                       }}
-                      className="text-xs text-destructive hover:text-destructive/80 font-medium px-2 py-1 rounded hover:bg-destructive/10 transition-colors whitespace-nowrap"
+                      className="text-xs text-red-500 hover:text-red-500/80 font-medium px-2 py-1 rounded hover:bg-red-500/10 transition-colors whitespace-nowrap"
                     >
                       Delete user data
                     </button>
@@ -493,11 +493,11 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 const APP_STATUSES = ["draft", "paid", "prepared", "office_visited", "cpf_issued", "rejected"] as const;
 const STATUS_COLORS: Record<string, string> = {
   draft: "bg-gray-50 text-gray-500",
-  paid: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  paid: "bg-blue-100 text-blue-700",
   prepared: "bg-green-800/10 text-green-800",
-  office_visited: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
-  cpf_issued: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-  rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+  office_visited: "bg-amber-100 text-amber-700",
+  cpf_issued: "bg-green-100 text-green-700",
+  rejected: "bg-red-100 text-red-700",
 };
 const STATUS_LABELS: Record<string, string> = {
   draft: "Draft", paid: "Paid", prepared: "Prepared",
@@ -574,11 +574,11 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
       <ChartCard title="Applications by State" subtitle="Top 10 Brazilian states selected">
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={stateData} margin={{ left: 10, right: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis dataKey="name" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} angle={-30} textAnchor="end" height={60} />
-            <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} allowDecimals={false} />
-            <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
-            <Bar dataKey="value" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+            <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#6b7280" }} angle={-30} textAnchor="end" height={60} />
+            <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} allowDecimals={false} />
+            <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+            <Bar dataKey="value" fill="#166534" radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -755,12 +755,12 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
         <ChartCard title="Daily Revenue" subtitle="Revenue per day (auto + manual)">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={revenueByDay} margin={{ left: 0, right: 10, top: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-              <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
-              <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} name="Revenue" />
-              <Bar dataKey="refunds" fill="hsl(var(--destructive))" radius={[8, 8, 0, 0]} name="Refunds" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
+              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} tickFormatter={(v) => `$${v}`} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+              <Bar dataKey="revenue" fill="#166534" radius={[8, 8, 0, 0]} name="Revenue" />
+              <Bar dataKey="refunds" fill="#ef4444" radius={[8, 8, 0, 0]} name="Refunds" />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -774,11 +774,11 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
                   <stop offset="95%" stopColor="hsl(150, 60%, 45%)" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-              <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} formatter={(v: number) => [`$${v}`, "Cumulative"]} />
-              <Area type="monotone" dataKey="cumulative" stroke="hsl(150, 60%, 45%)" fill="url(#revenueGrad)" strokeWidth={2} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
+              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} tickFormatter={(v) => `$${v}`} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} formatter={(v: number) => [`$${v}`, "Cumulative"]} />
+              <Area type="monotone" dataKey="cumulative" stroke="#22c55e" fill="url(#revenueGrad)" strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -793,7 +793,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
           </div>
           <div className="flex gap-2">
             <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-green-800 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Revenue</button>
-            <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="bg-destructive text-destructive-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Refund</button>
+            <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-all">+ Refund</button>
           </div>
         </div>
 
@@ -803,23 +803,23 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <div>
                 <label className="text-xs font-semibold text-gray-500 block mb-1">Amount ($) *</label>
-                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input type="number" value={entryForm.amount} onChange={e => setEntryForm(f => ({ ...f, amount: e.target.value }))} placeholder="49.00" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
               </div>
               <div>
                 <label className="text-xs font-semibold text-gray-500 block mb-1">Date</label>
-                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input type="date" value={entryForm.entry_date} onChange={e => setEntryForm(f => ({ ...f, entry_date: e.target.value }))} className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
               </div>
               <div>
                 <label className="text-xs font-semibold text-gray-500 block mb-1">User email</label>
-                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input value={entryForm.user_email} onChange={e => setEntryForm(f => ({ ...f, user_email: e.target.value }))} placeholder="user@email.com" className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
               </div>
               <div>
                 <label className="text-xs font-semibold text-gray-500 block mb-1">Transaction ID</label>
-                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input value={entryForm.transaction_id} onChange={e => setEntryForm(f => ({ ...f, transaction_id: e.target.value }))} placeholder="txn_..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
               </div>
               <div>
                 <label className="text-xs font-semibold text-gray-500 block mb-1">Notes</label>
-                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                <input value={entryForm.notes} onChange={e => setEntryForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional note..." className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
               </div>
             </div>
             <div className="flex gap-2">
@@ -851,19 +851,19 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
                 {manualEntries.map((e: any) => (
                   <TableRow key={e.id}>
                     <TableCell>
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-green-800/10 text-green-800" : "bg-destructive/10 text-destructive"}`}>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${e.entry_type === "revenue" ? "bg-green-800/10 text-green-800" : "bg-red-500/10 text-red-500"}`}>
                         {e.entry_type}
                       </span>
                     </TableCell>
                     <TableCell className="text-sm">{new Date(e.entry_date).toLocaleDateString()}</TableCell>
-                    <TableCell className={`font-semibold ${e.entry_type === "refund" ? "text-destructive" : ""}`}>
+                    <TableCell className={`font-semibold ${e.entry_type === "refund" ? "text-red-500" : ""}`}>
                       {e.entry_type === "refund" ? "-" : ""}${Number(e.amount).toFixed(2)}
                     </TableCell>
                     <TableCell className="text-sm text-gray-500">{e.user_email || "—"}</TableCell>
                     <TableCell className="text-xs font-mono text-gray-500">{e.transaction_id || "—"}</TableCell>
                     <TableCell className="text-sm text-gray-500 max-w-[200px] truncate">{e.notes || "—"}</TableCell>
                     <TableCell className="text-right">
-                      <button onClick={() => deleteEntry(e.id)} className="text-xs text-destructive hover:text-destructive/80 font-medium">Delete</button>
+                      <button onClick={() => deleteEntry(e.id)} className="text-xs text-red-500 hover:text-red-500/80 font-medium">Delete</button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -883,7 +883,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
                   <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", fontSize: "12px" }} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
               <Legend wrapperStyle={{ fontSize: "12px" }} />
             </PieChart>
           </ResponsiveContainer>
@@ -898,14 +898,14 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
             ) : (
               recentActivity.map((event, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-800" : "bg-accent"}`} />
+                  <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${event.type === "signup" ? "bg-green-800" : "bg-blue-500"}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate">{event.detail}</p>
                     <p className="text-xs text-gray-500">
                       {new Date(event.time).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </p>
                   </div>
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-green-800/10 text-green-800" : "bg-accent/10 text-accent-foreground"}`}>
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 ${event.type === "signup" ? "bg-green-800/10 text-green-800" : "bg-blue-500/10 text-blue-600"}`}>
                     {event.type}
                   </span>
                 </div>
@@ -1108,7 +1108,7 @@ const PromosTab = () => {
               value={newCode}
               onChange={(e) => setNewCode(e.target.value.toUpperCase())}
               placeholder="BRAZILIANGRINGO"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
             />
           </div>
           <div>
@@ -1118,7 +1118,7 @@ const PromosTab = () => {
               onChange={(e) => setNewDiscount(e.target.value)}
               placeholder="10"
               type="number"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
             />
           </div>
           <div>
@@ -1127,7 +1127,7 @@ const PromosTab = () => {
               value={newAffiliate}
               onChange={(e) => setNewAffiliate(e.target.value)}
               placeholder="Brazilian Gringo"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
             />
           </div>
           <div>
@@ -1137,7 +1137,7 @@ const PromosTab = () => {
               onChange={(e) => setNewAffiliateEmail(e.target.value)}
               placeholder="gringo@email.com"
               type="email"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
             />
           </div>
           <div>
@@ -1147,7 +1147,7 @@ const PromosTab = () => {
               onChange={(e) => setNewCommission(e.target.value)}
               placeholder="20"
               type="number"
-              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
             />
           </div>
         </div>
@@ -1287,7 +1287,7 @@ const PromosTab = () => {
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
                                 placeholder="Name"
-                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[120px] focus:outline-none focus:ring-2 focus:ring-green-800"
                               />
                             </TableCell>
                             <TableCell>
@@ -1296,7 +1296,7 @@ const PromosTab = () => {
                                 onChange={(e) => setEditEmail(e.target.value)}
                                 placeholder="email@example.com"
                                 type="email"
-                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-full min-w-[160px] focus:outline-none focus:ring-2 focus:ring-green-800"
                               />
                             </TableCell>
                             <TableCell className="font-mono text-green-800">{a.code}</TableCell>
@@ -1306,7 +1306,7 @@ const PromosTab = () => {
                                   value={editCommission}
                                   onChange={(e) => setEditCommission(e.target.value)}
                                   type="number"
-                                  className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-primary"
+                                  className="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-sm w-16 focus:outline-none focus:ring-2 focus:ring-green-800"
                                 />
                                 <span className="text-sm text-gray-500">%</span>
                               </div>
@@ -1456,7 +1456,7 @@ const PromosTab = () => {
                       value={profileSource}
                       onChange={(e) => setProfileSource(e.target.value)}
                       placeholder="YouTube, Instagram, referral, event..."
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
                     />
                   </div>
                   <div>
@@ -1465,7 +1465,7 @@ const PromosTab = () => {
                       value={profileLocation}
                       onChange={(e) => setProfileLocation(e.target.value)}
                       placeholder="São Paulo, Brazil / London, UK..."
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800"
                     />
                   </div>
                   <div>
@@ -1475,7 +1475,7 @@ const PromosTab = () => {
                       onChange={(e) => setProfileNotes(e.target.value)}
                       placeholder="Any notes about this affiliate... deal terms, contact preferences, follow-up dates..."
                       rows={4}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none"
                     />
                   </div>
                 </div>
@@ -1614,35 +1614,35 @@ const AffiliatesTab = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Name *</label>
-              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Doe" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Email *</label>
-              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.email} onChange={e => update("email", e.target.value)} type="email" placeholder="affiliate@email.com" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Platform</label>
-              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.platform} onChange={e => update("platform", e.target.value)} placeholder="YouTube, Instagram, blog..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Location</label>
-              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.location} onChange={e => update("location", e.target.value)} placeholder="São Paulo, Brazil" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Promo code</label>
-              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.promo_code} onChange={e => update("promo_code", e.target.value.toUpperCase())} placeholder="BRAZILIANGRINGO" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Commission %</label>
-              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.commission_percent} onChange={e => update("commission_percent", e.target.value)} type="number" placeholder="20" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Source</label>
-              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <input value={form.source} onChange={e => update("source", e.target.value)} placeholder="Referral, event, outreach..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Status</label>
-              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+              <select value={form.status} onChange={e => update("status", e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800">
                 {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
               </select>
             </div>
@@ -1653,7 +1653,7 @@ const AffiliatesTab = () => {
             <div className="flex flex-wrap gap-2">
               {frequencyOptions.map(opt => (
                 <button key={opt} type="button" onClick={() => update("posting_frequency", form.posting_frequency === opt ? "" : opt)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-primary bg-green-800/10 text-green-800" : "border-gray-100 bg-gray-50 text-gray-500 hover:border-primary/40"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-green-800 bg-green-800/10 text-green-800" : "border-gray-100 bg-gray-50 text-gray-500 hover:border-green-800/40"}`}
                 >{opt}</button>
               ))}
             </div>
@@ -1661,16 +1661,16 @@ const AffiliatesTab = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Why they want to be an affiliate</label>
-              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+              <textarea value={form.why} onChange={e => update("why", e.target.value)} rows={2} placeholder="Their motivation..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
             </div>
             <div>
               <label className="text-xs font-semibold text-gray-500 block mb-1">Their situation</label>
-              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+              <textarea value={form.situation} onChange={e => update("situation", e.target.value)} rows={2} placeholder="Based in Brazil? Digital nomad?..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
             </div>
           </div>
           <div className="mt-4">
             <label className="text-xs font-semibold text-gray-500 block mb-1">Internal notes</label>
-            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+            <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-800 resize-none" />
           </div>
           <div className="flex gap-3 mt-5">
             <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-green-800 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50">
@@ -1718,7 +1718,7 @@ const AffiliatesTab = () => {
                     <TableCell>
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                         a.status === "approved" ? "bg-green-800/10 text-green-800" :
-                        a.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                        a.status === "rejected" ? "bg-red-500/10 text-red-500" :
                         "bg-gray-100 text-gray-500"
                       }`}>{a.status}</span>
                     </TableCell>
