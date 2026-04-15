@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 
 const PrivacyPolicy = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-white">
     <SEO title="Privacy Policy. GET CPF" description="How GET CPF collects, uses, and protects your personal data during the CPF application process." path="/privacy" />
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>
-        <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
           ← Back to home
         </Link>
       </div>
@@ -17,9 +17,9 @@ const PrivacyPolicy = () => (
 
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-extrabold tracking-tight mb-2">Privacy Policy</h1>
-      <p className="text-sm text-muted-foreground mb-12">Last updated: 1 April 2026</p>
+      <p className="text-sm text-gray-500 mb-12">Last updated: 1 April 2026</p>
 
-      <div className="prose prose-sm max-w-none space-y-8 text-foreground/90">
+      <div className="prose prose-sm max-w-none space-y-8 text-gray-900/90">
 
         {/* ── 1. CONTROLLER IDENTITY ── */}
         <section>
@@ -30,9 +30,9 @@ const PrivacyPolicy = () => (
           <p className="leading-relaxed mt-3">
             <strong>Data Controller:</strong> GET CPF, operated by Jonathan, based in São Paulo, SP, Brazil.<br />
             <strong>Contact email:</strong>{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a><br />
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a><br />
             <strong>Website:</strong>{" "}
-            <a href="https://getcpf.com" className="text-primary hover:underline">getcpf.com</a>
+            <a href="https://getcpf.com" className="text-green-800 hover:underline">getcpf.com</a>
           </p>
         </section>
 
@@ -70,20 +70,20 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Categories of personal information (CCPA)</h2>
           <p className="leading-relaxed mb-3">In the preceding 12 months, we have collected the following categories of personal information as defined by the CCPA:</p>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm border border-border rounded">
+            <table className="w-full text-sm border border-gray-100 rounded">
               <thead>
                 <tr className="bg-muted/50">
-                  <th className="text-left p-2 border-b border-border font-semibold">Category</th>
-                  <th className="text-left p-2 border-b border-border font-semibold">Collected</th>
-                  <th className="text-left p-2 border-b border-border font-semibold">Sold/Shared</th>
+                  <th className="text-left p-2 border-b border-gray-100 font-semibold">Category</th>
+                  <th className="text-left p-2 border-b border-gray-100 font-semibold">Collected</th>
+                  <th className="text-left p-2 border-b border-gray-100 font-semibold">Sold/Shared</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td className="p-2 border-b border-border">A. Identifiers (name, email, passport number)</td><td className="p-2 border-b border-border">Yes</td><td className="p-2 border-b border-border">No</td></tr>
-                <tr><td className="p-2 border-b border-border">B. Personal information (Cal. Civ. Code §1798.80)</td><td className="p-2 border-b border-border">Yes</td><td className="p-2 border-b border-border">No</td></tr>
-                <tr><td className="p-2 border-b border-border">D. Commercial information (purchase history)</td><td className="p-2 border-b border-border">Yes</td><td className="p-2 border-b border-border">No</td></tr>
-                <tr><td className="p-2 border-b border-border">F. Internet/network activity</td><td className="p-2 border-b border-border">No</td><td className="p-2 border-b border-border">No</td></tr>
-                <tr><td className="p-2 border-b border-border">I. Sensitive personal information (passport number)</td><td className="p-2 border-b border-border">Yes</td><td className="p-2 border-b border-border">No</td></tr>
+                <tr><td className="p-2 border-b border-gray-100">A. Identifiers (name, email, passport number)</td><td className="p-2 border-b border-gray-100">Yes</td><td className="p-2 border-b border-gray-100">No</td></tr>
+                <tr><td className="p-2 border-b border-gray-100">B. Personal information (Cal. Civ. Code §1798.80)</td><td className="p-2 border-b border-gray-100">Yes</td><td className="p-2 border-b border-gray-100">No</td></tr>
+                <tr><td className="p-2 border-b border-gray-100">D. Commercial information (purchase history)</td><td className="p-2 border-b border-gray-100">Yes</td><td className="p-2 border-b border-gray-100">No</td></tr>
+                <tr><td className="p-2 border-b border-gray-100">F. Internet/network activity</td><td className="p-2 border-b border-gray-100">No</td><td className="p-2 border-b border-gray-100">No</td></tr>
+                <tr><td className="p-2 border-b border-gray-100">I. Sensitive personal information (passport number)</td><td className="p-2 border-b border-gray-100">Yes</td><td className="p-2 border-b border-gray-100">No</td></tr>
               </tbody>
             </table>
           </div>
@@ -164,22 +164,38 @@ const PrivacyPolicy = () => (
         <section id="cookies">
           <h2 className="text-xl font-bold mb-3">Cookies and cookie policy</h2>
           <p className="leading-relaxed mb-3">
-            GET CPF uses <strong>essential cookies only</strong> for the following purposes:
+            GET CPF uses <strong>essential cookies only</strong>. We do not use tracking, advertising, or analytics cookies of any kind.
           </p>
+
+          <h3 className="text-base font-semibold mt-4 mb-2">Cookies we set</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Authentication session cookie</strong>. keeps you logged in while using the service. This is a first-party cookie set by GET CPF. It expires when you log out or close your browser session.</li>
-            <li><strong>Cookie consent preference</strong>. remembers whether you accepted or rejected cookies. Expires after 1 year.</li>
-            <li><strong>Cloudflare Bot Management (<code>__cf_bm</code>)</strong>. set automatically by our CDN provider (Cloudflare) to distinguish legitimate users from bots. This is a strictly necessary cookie that expires after 1 hour. Cloudflare's privacy policy: <a href="https://www.cloudflare.com/privacypolicy/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">cloudflare.com/privacypolicy</a></li>
+            <li>
+              <strong>Authentication token (Supabase)</strong>. a first-party cookie that keeps you signed in. Set by our authentication provider, Supabase. This is the only persistent cookie we use — it expires after <strong>7 days</strong>, or immediately when you log out.
+            </li>
+            <li>
+              <strong>Session cookies</strong>. short-lived cookies used during your active session to maintain application state. These expire automatically when you close your browser.
+            </li>
+            <li>
+              <strong>Cookie consent preference</strong>. remembers whether you accepted or declined cookies so we don't show the banner on every visit. Expires after 1 year.
+            </li>
           </ul>
-          <p className="leading-relaxed mt-3">We do <strong>not</strong> use:</p>
+
+          <h3 className="text-base font-semibold mt-4 mb-2">What we do not use</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li>Advertising or marketing cookies</li>
-            <li>Third-party tracking cookies</li>
-            <li>Analytics cookies (Google Analytics, Meta Pixel, etc.)</li>
-            <li>Social media cookies</li>
+            <li>No advertising or marketing cookies</li>
+            <li>No third-party tracking cookies</li>
+            <li>No analytics cookies (Google Analytics, Meta Pixel, or similar)</li>
+            <li>No social media cookies</li>
           </ul>
+
+          <h3 className="text-base font-semibold mt-4 mb-2">How to disable cookies</h3>
+          <p className="leading-relaxed text-sm">
+            You can disable or delete cookies in your browser settings at any time. Note that disabling the authentication cookie will prevent you from staying logged in. Instructions for common browsers: <a href="https://support.google.com/chrome/answer/95647" className="text-green-800 hover:underline" target="_blank" rel="noopener noreferrer">Chrome</a>, <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" className="text-green-800 hover:underline" target="_blank" rel="noopener noreferrer">Firefox</a>, <a href="https://support.apple.com/en-us/105082" className="text-green-800 hover:underline" target="_blank" rel="noopener noreferrer">Safari</a>.
+          </p>
+
           <p className="leading-relaxed mt-3">
-            You can reject non-essential cookies using the banner at the bottom of the page, or change your preference at any time via the "Cookie preferences" link in our footer.
+            Questions about our use of cookies? Email us at{" "}
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>.
           </p>
         </section>
 
@@ -205,7 +221,7 @@ const PrivacyPolicy = () => (
             <li>Right to anonymisation, blocking, or deletion of unnecessary data (Article 18, IV)</li>
             <li>Right to information about public and private entities with which data has been shared (Article 18, VII)</li>
             <li>Right to revoke consent (Article 18, IX)</li>
-            <li>Right to petition the <strong>ANPD</strong> (Autoridade Nacional de Proteção de Dados). <a href="https://www.gov.br/anpd" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">gov.br/anpd</a></li>
+            <li>Right to petition the <strong>ANPD</strong> (Autoridade Nacional de Proteção de Dados). <a href="https://www.gov.br/anpd" className="text-green-800 hover:underline" target="_blank" rel="noopener noreferrer">gov.br/anpd</a></li>
           </ul>
 
           <h3 className="text-base font-semibold mt-4 mb-2">EU/EEA (GDPR)</h3>
@@ -213,7 +229,7 @@ const PrivacyPolicy = () => (
             <li>Right to restriction of processing (Article 18)</li>
             <li>Right to object to processing (Article 21)</li>
             <li>Right not to be subject to automated decision-making (Article 22). GET CPF does not make automated decisions that produce legal effects concerning you</li>
-            <li>Right to lodge a complaint with your national <strong>supervisory authority</strong>. see the <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">EDPB member list</a></li>
+            <li>Right to lodge a complaint with your national <strong>supervisory authority</strong>. see the <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" className="text-green-800 hover:underline" target="_blank" rel="noopener noreferrer">EDPB member list</a></li>
           </ul>
 
           <h3 className="text-base font-semibold mt-4 mb-2">California (CCPA/CPRA)</h3>
@@ -230,12 +246,12 @@ const PrivacyPolicy = () => (
             <li>Right to be notified of data collection (Section 18)</li>
             <li>Right to request correction or deletion (Section 24)</li>
             <li>Right to object to processing (Section 11(3))</li>
-            <li>Right to lodge a complaint with the <strong>Information Regulator</strong>. <a href="mailto:enquiries@inforegulator.org.za" className="text-primary hover:underline">enquiries@inforegulator.org.za</a></li>
+            <li>Right to lodge a complaint with the <strong>Information Regulator</strong>. <a href="mailto:enquiries@inforegulator.org.za" className="text-green-800 hover:underline">enquiries@inforegulator.org.za</a></li>
           </ul>
 
           <p className="leading-relaxed mt-4">
             To exercise any of these rights, email us at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>.
             We will respond within <strong>15 business days</strong> (or sooner where required by law).
           </p>
         </section>
@@ -245,7 +261,7 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Do Not Sell or Share My Personal Information</h2>
           <p className="leading-relaxed">
             GET CPF does <strong>not sell or share</strong> your personal information with third parties for advertising, marketing, or any other commercial purpose. This applies to all users, including California residents under the CCPA/CPRA. Because we do not sell data, there is no need to submit a "Do Not Sell" request. but you may contact us at any time at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a> to confirm this.
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a> to confirm this.
           </p>
         </section>
 
@@ -298,7 +314,7 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Data protection contact</h2>
           <p className="leading-relaxed">
             For any questions, requests, or complaints related to your personal data. including LGPD, GDPR, CCPA, or POPIA enquiries. contact us at:{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>
           </p>
           <p className="leading-relaxed mt-3">
             If you are not satisfied with our response, you have the right to lodge a complaint with your local data protection authority (see "Your rights" above for links).
@@ -317,8 +333,8 @@ const PrivacyPolicy = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Related documents</h2>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><Link to="/terms" className="text-primary hover:underline font-semibold">Terms of Service</Link></li>
-            <li><Link to="/affiliates" className="text-primary hover:underline font-semibold">Affiliate Disclosure</Link></li>
+            <li><Link to="/terms" className="text-green-800 hover:underline font-semibold">Terms of Service</Link></li>
+            <li><Link to="/affiliates" className="text-green-800 hover:underline font-semibold">Affiliate Disclosure</Link></li>
           </ul>
         </section>
 
