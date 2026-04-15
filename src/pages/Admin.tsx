@@ -8,7 +8,14 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  AreaChart, Area,
+} from "recharts";
 import { maskPassport } from "@/lib/mask-passport";
+
+const CHART_COLORS = ["#166534", "#3b82f6", "#3b7dd8", "#22c55e", "#ec4899", "#f59e0b", "#a855f7", "#06b6d4"];
 
 type AdminTab = "users" | "applications" | "revenue" | "promos" | "affiliates" | "partners" | "waitlist" | "settings";
 
@@ -47,27 +54,16 @@ interface Application {
 const Admin = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checking, setChecking] = useState(true);
   const [tab, setTab] = useState<AdminTab>("users");
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [search, setSearch] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!user) { navigate("/login"); return; }
-    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" })
-      .then(({ data }) => {
-    if (data) {
-          setIsAdmin(true);
-          loadData();
-        } else {
-          navigate("/");
-        }
-        setChecking(false);
-      });
-  }, [user, authLoading, navigate]);
+    if (authLoading || !user) return;
+    loadData();
+  }, [user, authLoading]);
 
   const loadData = async () => {
     const [profilesRes, appsRes] = await Promise.all([
@@ -76,27 +72,26 @@ const Admin = () => {
     ]);
     if (profilesRes.data) setProfiles(profilesRes.data);
     if (appsRes.data) setApplications(appsRes.data);
+    setDataLoaded(true);
   };
 
-  if (authLoading || checking) {
+  if (authLoading || !dataLoaded) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Checking access...</div>
+        <div className="animate-pulse text-gray-500">Loading admin...</div>
       </div>
     );
   }
 
-  if (!isAdmin) return null;
-
-  const navItems: { key: AdminTab; label: string; symbol: string }[] = [
-    { key: "users", label: "Users", symbol: "—" },
-    { key: "applications", label: "Applications", symbol: "—" },
-    { key: "revenue", label: "Revenue", symbol: "—" },
-    { key: "promos", label: "Promo Codes", symbol: "—" },
-    { key: "affiliates", label: "Affiliates", symbol: "—" },
-    { key: "partners", label: "Partners", symbol: "—" },
-    { key: "waitlist", label: "Waitlist", symbol: "—" },
-    { key: "settings", label: "Settings", symbol: "—" },
+  const navItems: { key: AdminTab; label: string; desc: string }[] = [
+    { key: "users", label: "Users", desc: "Accounts, signups, data retention" },
+    { key: "applications", label: "Applications", desc: "CPF applications and status" },
+    { key: "revenue", label: "Revenue", desc: "Payments, refunds, transactions" },
+    { key: "promos", label: "Promo Codes", desc: "Discounts and redemptions" },
+    { key: "affiliates", label: "Affiliates", desc: "Partner commissions and tracking" },
+    { key: "partners", label: "Partners", desc: "Affiliate applications to review" },
+    { key: "waitlist", label: "Waitlist", desc: "Concierge and Full Assist signups" },
+    { key: "settings", label: "Settings", desc: "Audit log and data exports" },
   ];
 
   return (
@@ -125,13 +120,14 @@ const Admin = () => {
               <button
                 key={item.key}
                 onClick={() => setTab(item.key)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                className={`w-full text-left px-3 py-2.5 rounded-lg transition-colors ${
                   tab === item.key
-                    ? "bg-gray-100 text-gray-900 font-medium"
+                    ? "bg-gray-100 text-gray-900"
                     : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
-                {item.label}
+                <div className="text-sm font-medium">{item.label}</div>
+                <div className={`text-[11px] mt-0.5 ${tab === item.key ? "text-gray-500" : "text-gray-400"}`}>{item.desc}</div>
               </button>
             ))}
           </nav>
@@ -160,7 +156,7 @@ const Admin = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-[1200px] mx-auto px-6 py-6">
             {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
-            {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} />}
+            {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} adminUserId={user?.id || ""} />}
             {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
             {tab === "promos" && <PromosTab />}
             {tab === "affiliates" && <AffiliatesTab />}
@@ -210,6 +206,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [selectedForBulk, setSelectedForBulk] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<"all" | "paid" | "free">("all");
+  const [revealedPassports, setRevealedPassports] = useState<Set<string>>(new Set());
   const totalUsers = profiles.length;
   const paidUsers = profiles.filter(p => p.plan && p.plan !== "free").length;
   const conversionRate = totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : "0";
@@ -235,7 +232,31 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
   // Reset page when search/filter changes
   useEffect(() => { setCurrentPage(1); }, [search, statusFilter]);
 
-  // Nationality breakdown (data only, no charts)
+  // Funnel data
+  const funnelData = [
+    { stage: "Signed Up", count: totalUsers, fill: CHART_COLORS[0] },
+    { stage: "Started App", count: usersWithApps, fill: CHART_COLORS[2] },
+    { stage: "Paid", count: paidUsers, fill: CHART_COLORS[3] },
+  ];
+
+  // Signups over time (grouped by day)
+  const signupsByDay = useMemo(() => {
+    const map = new Map<string, number>();
+    profiles.forEach(p => {
+      if (p.created_at) {
+        const day = new Date(p.created_at).toISOString().slice(0, 10);
+        map.set(day, (map.get(day) || 0) + 1);
+      }
+    });
+    return Array.from(map.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, count]) => ({
+        date: new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        signups: count,
+      }));
+  }, [profiles]);
+
+  // Nationality breakdown
   const nationalityData = useMemo(() => {
     const map = new Map<string, number>();
     profiles.forEach(p => {
@@ -251,12 +272,67 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Users</h2>
+        <p className="text-sm text-gray-500 mt-1">Everyone who signed up. View profiles, check payment status, and manage data retention.</p>
+      </div>
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total users" value={totalUsers.toString()} />
         <StatCard label="Paid users" value={paidUsers.toString()} />
         <StatCard label="Conversion" value={`${conversionRate}%`} trend={parseFloat(conversionRate) > 0 ? "up" : undefined} />
         <StatCard label="Started app" value={usersWithApps.toString()} />
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <ChartCard title="User Funnel" subtitle="Signup → Application → Paid">
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={funnelData} layout="vertical" margin={{ left: 10, right: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis type="number" tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <YAxis dataKey="stage" type="category" width={90} tick={{ fontSize: 12, fill: "#6b7280" }} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+              <Bar dataKey="count" radius={[0, 8, 8, 0]}>
+                {funnelData.map((entry, i) => (
+                  <Cell key={i} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="Signups Over Time" subtitle="Daily new users">
+          <ResponsiveContainer width="100%" height={220}>
+            <AreaChart data={signupsByDay} margin={{ left: 0, right: 10, top: 5 }}>
+              <defs>
+                <linearGradient id="signupGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#166534" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#166534" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b7280" }} />
+              <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} allowDecimals={false} />
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+              <Area type="monotone" dataKey="signups" stroke="#166534" fill="url(#signupGrad)" strokeWidth={2} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="By Nationality" subtitle="Top 8 countries">
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie data={nationalityData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} innerRadius={40} paddingAngle={2}>
+                {nationalityData.map((_, i) => (
+                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #f3f4f6", borderRadius: "12px", fontSize: "12px" }} />
+              <Legend wrapperStyle={{ fontSize: "11px" }} />
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartCard>
       </div>
 
       {/* Search + filters + Table */}
@@ -308,7 +384,7 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                 onClick={() => setStatusFilter(f)}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                   statusFilter === f
-                    ? "bg-gray-900 text-white"
+                    ? "bg-green-800 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
@@ -427,7 +503,24 @@ const UsersTab = ({ profiles, applications, search, setSearch, onRefresh }: {
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div><span className="text-xs text-gray-500">Name:</span> {app.full_name || "—"}</div>
-                      <div><span className="text-xs text-gray-500">Passport:</span> {maskPassport(app.passport_number)}</div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-500">Passport:</span>
+                        <span>{revealedPassports.has(app.id) ? (app.passport_number || "—") : maskPassport(app.passport_number)}</span>
+                        {app.passport_number && (
+                          <button
+                            onClick={() => setRevealedPassports(prev => {
+                              const next = new Set(prev);
+                              if (next.has(app.id)) next.delete(app.id);
+                              else next.add(app.id);
+                              return next;
+                            })}
+                            className="text-gray-400 hover:text-gray-900 text-xs ml-0.5"
+                            title={revealedPassports.has(app.id) ? "Hide" : "Reveal"}
+                          >
+                            {revealedPassports.has(app.id) ? "hide" : "show"}
+                          </button>
+                        )}
+                      </div>
                       <div><span className="text-xs text-gray-500">Nationality:</span> {app.nationality || "—"}</div>
                       <div><span className="text-xs text-gray-500">State:</span> {app.state_name || "—"}</div>
                       <div><span className="text-xs text-gray-500">City:</span> {app.city || "—"}</div>
@@ -465,7 +558,7 @@ const STATUS_LABELS: Record<string, string> = {
   office_visited: "Office Visited", cpf_issued: "CPF Issued", rejected: "Rejected",
 };
 
-const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void }) => {
+const ApplicationsTab = ({ applications, profiles, onRefresh, adminUserId }: { applications: Application[]; profiles: Profile[]; onRefresh: () => void; adminUserId: string }) => {
   const [appPage, setAppPage] = useState(1);
   const [appSearch, setAppSearch] = useState("");
   const [appStatusFilter, setAppStatusFilter] = useState<string>("all");
@@ -482,10 +575,15 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
     });
     if (error) {
       console.error("Status update failed:", error);
+      setUpdatingId(null);
+      return;
     }
+    // Log the status change
+    const app = applications.find(a => a.id === appId);
+    await logAuditAction(adminUserId, "application_status_changed", `Application ${appId} (${app?.full_name || app?.email || "unknown"}) → ${newStatus}`);
+
     // If marking as cpf_issued, send notification email to user
-    if (newStatus === "cpf_issued" && !error) {
-      const app = applications.find(a => a.id === appId);
+    if (newStatus === "cpf_issued") {
       const profile = profileMap.get(app?.user_id || "");
       const recipientEmail = app?.email || profile?.email;
       if (recipientEmail) {
@@ -535,13 +633,23 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
 
   useEffect(() => { setAppPage(1); }, [appSearch, appStatusFilter]);
 
+  const paidApps = applications.filter(a => a.status && a.status !== "draft").length;
+  const cpfIssuedCount = applications.filter(a => a.status === "cpf_issued").length;
+  const draftCount = applications.filter(a => !a.status || a.status === "draft").length;
+
   return (
     <div className="space-y-6">
+      {/* Section header */}
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Applications</h2>
+        <p className="text-sm text-gray-500 mt-1">Track every CPF application from draft to issued. Change statuses, filter by stage, and monitor progress.</p>
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Total apps" value={applications.length.toString()} />
-        <StatCard label="Paid / onboarded" value={applications.filter(a => a.status && a.status !== "draft").length.toString()} sub={(() => { const paidTotal = profiles.filter(p => p.plan && p.plan !== "free").length; const onboarded = applications.filter(a => a.status && a.status !== "draft").length; const diff = paidTotal - onboarded; return diff > 0 ? `${diff} paid, not yet onboarded` : undefined; })()} />
-        <StatCard label="CPF issued" value={applications.filter(a => a.status === "cpf_issued").length.toString()} />
+        <StatCard label="Total apps" value={applications.length.toString()} sub={draftCount > 0 ? `${draftCount} still in draft` : undefined} />
+        <StatCard label="Paid / active" value={paidApps.toString()} />
+        <StatCard label="CPF issued" value={cpfIssuedCount.toString()} />
         <StatCard label="Unique states" value={new Set(applications.map(a => a.state_name).filter(Boolean)).size.toString()} />
       </div>
 
@@ -559,7 +667,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setAppStatusFilter("all")}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === "all" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === "all" ? "bg-green-800 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
             >
               All
             </button>
@@ -567,7 +675,7 @@ const ApplicationsTab = ({ applications, profiles, onRefresh }: { applications: 
               <button
                 key={s}
                 onClick={() => setAppStatusFilter(s)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === s ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${appStatusFilter === s ? "bg-green-800 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
               >
                 {STATUS_LABELS[s]}
               </button>
@@ -721,6 +829,10 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Revenue</h2>
+        <p className="text-sm text-gray-500 mt-1">Track payments, log manual transactions, and manage refunds.</p>
+      </div>
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <StatCard label="Total revenue" value={`$${totalRevenue.toFixed(0)}`} trend={totalRevenue > 0 ? "up" : undefined} />
@@ -764,7 +876,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
             <p className="text-xs text-gray-500 mt-0.5">Add revenue or refund records manually</p>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-all">
+            <button onClick={() => { setFormType("revenue"); setShowForm(true); }} className="bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-900 transition-all">
               + Revenue
             </button>
             <button onClick={() => { setFormType("refund"); setShowForm(true); }} className="border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all">
@@ -799,7 +911,7 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-gray-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
+              <button onClick={saveEntry} disabled={saving || !entryForm.amount} className="bg-green-800 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-green-900 disabled:opacity-50">{saving ? "Saving..." : `Add ${formType}`}</button>
               <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-lg text-sm font-medium border border-gray-200 text-gray-500 hover:text-gray-900">Cancel</button>
             </div>
           </div>
@@ -1033,6 +1145,10 @@ const PromosTab = () => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Promo Codes</h2>
+        <p className="text-sm text-gray-500 mt-1">Create discount codes, track redemptions, and see which promos drive conversions.</p>
+      </div>
       {/* Add new promo */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="font-semibold text-base text-gray-900 mb-4">Create promo code</h2>
@@ -1089,7 +1205,7 @@ const PromosTab = () => {
         <button
           onClick={addPromo}
           disabled={adding || !newCode.trim()}
-          className="mt-4 bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50"
+          className="mt-4 bg-green-800 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-green-900 transition-all disabled:opacity-50"
         >
           {adding ? "Adding..." : "Add promo code"}
         </button>
@@ -1403,7 +1519,7 @@ const PromosTab = () => {
                 <button
                   onClick={() => saveProfile(activeAffiliate.promoId)}
                   disabled={profileSaving}
-                  className="w-full bg-gray-900 text-white py-3 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50"
+                  className="w-full bg-green-800 text-white py-3 rounded-lg font-medium text-sm hover:bg-green-900 transition-all disabled:opacity-50"
                 >
                   {profileSaving ? "Saving..." : "Save profile"}
                 </button>
@@ -1519,6 +1635,10 @@ const AffiliatesTab = () => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Affiliates</h2>
+        <p className="text-sm text-gray-500 mt-1">Manage affiliate partners, set commission rates, and track referrals.</p>
+      </div>
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total affiliates" value={affiliates.length.toString()} />
@@ -1573,7 +1693,7 @@ const AffiliatesTab = () => {
             <div className="flex flex-wrap gap-2">
               {frequencyOptions.map(opt => (
                 <button key={opt} type="button" onClick={() => update("posting_frequency", form.posting_frequency === opt ? "" : opt)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-gray-900 bg-gray-900 text-white" : "border-gray-200 bg-white text-gray-600 hover:border-gray-400"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${form.posting_frequency === opt ? "border-gray-900 bg-green-800 text-white" : "border-gray-200 bg-white text-gray-600 hover:border-gray-400"}`}
                 >{opt}</button>
               ))}
             </div>
@@ -1593,14 +1713,14 @@ const AffiliatesTab = () => {
             <textarea value={form.notes} onChange={e => update("notes", e.target.value)} rows={2} placeholder="Any private notes about this affiliate..." className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none" />
           </div>
           <div className="flex gap-3 mt-5">
-            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all disabled:opacity-50">
+            <button onClick={saveAffiliate} disabled={saving || !form.name.trim() || !form.email.trim()} className="bg-green-800 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-green-900 transition-all disabled:opacity-50">
               {saving ? "Saving..." : editId ? "Update affiliate" : "Add affiliate"}
             </button>
             <button onClick={resetForm} className="px-6 py-2.5 rounded-lg font-medium text-sm border border-gray-200 text-gray-500 hover:text-gray-900 transition-all">Cancel</button>
           </div>
         </div>
       ) : (
-        <button onClick={() => setShowAdd(true)} className="bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-gray-800 transition-all">
+        <button onClick={() => setShowAdd(true)} className="bg-green-800 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-green-900 transition-all">
           + Add affiliate
         </button>
       )}
@@ -1690,6 +1810,10 @@ const PartnersTab = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Partner Applications</h2>
+        <p className="text-sm text-gray-500 mt-1">Review and approve businesses applying to become GET CPF partners.</p>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <StatCard label="Total applications" value={totalApps.toString()} />
       </div>
@@ -1813,13 +1937,17 @@ const SettingsTab = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
+        <p className="text-sm text-gray-500 mt-1">Export data for compliance, view the audit trail, and manage system configuration.</p>
+      </div>
       <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
         <h2 className="font-semibold text-base text-gray-900">Data export</h2>
         <p className="text-sm text-gray-500">Export all user data as CSV for LGPD compliance requests.</p>
         <button
           onClick={exportCSV}
           disabled={exporting}
-          className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-all disabled:opacity-50"
+          className="bg-green-800 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-green-900 transition-all disabled:opacity-50"
         >
           {exporting ? "Exporting..." : "Export users CSV"}
         </button>
@@ -1886,6 +2014,10 @@ const WaitlistTab = () => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900">Waitlist</h2>
+        <p className="text-sm text-gray-500 mt-1">People who signed up for Concierge and Full Assist tiers. Reach out when those plans launch.</p>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="Total signups" value={entries.length.toString()} />
         {Object.entries(byPlan).map(([plan, count]) => (
@@ -1948,6 +2080,14 @@ const StatCard = ({ label, value, trend, sub }: { label: string; value: string; 
       {trend === "up" && <span className="text-xs text-green-600 font-medium">+</span>}
     </div>
     {sub && <div className="text-[10px] text-gray-400 mt-1">{sub}</div>}
+  </div>
+);
+
+const ChartCard = ({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) => (
+  <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="text-sm font-medium text-gray-900">{title}</div>
+    {subtitle && <div className="text-[11px] text-gray-400 mb-3">{subtitle}</div>}
+    {children}
   </div>
 );
 
