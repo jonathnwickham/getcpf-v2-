@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Menu, X, LogOut } from "lucide-react";
 import Logo from "@/components/Logo";
 
@@ -12,9 +13,20 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" })
+      .then(({ data }) => setIsAdmin(data === true));
+  }, [user]);
 
   const handlePrimaryAction = () => {
     setMobileOpen(false);
+    if (user && isAdmin) {
+      navigate("/admin");
+      return;
+    }
     if (user) {
       navigate("/ready-pack");
       return;
@@ -36,7 +48,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
 
   return (
     <>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:bg-green-800 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
         Skip to content
       </a>
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-white/90 border-b border-gray-100">
@@ -69,7 +81,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
               onClick={handlePrimaryAction}
               className="bg-green-800 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-900 transition-colors btn-press"
             >
-              {user ? "My CPF pack" : "Get started"}
+              {user ? (isAdmin ? "Admin" : "My CPF pack") : "Get started"}
             </button>
           </div>
 
@@ -114,7 +126,7 @@ const Navbar = ({ onOpenModal }: NavbarProps) => {
               onClick={handlePrimaryAction}
               className="bg-green-800 text-white px-5 py-3 rounded-lg text-sm font-semibold w-full"
             >
-              {user ? "My CPF pack" : "Get started"}
+              {user ? (isAdmin ? "Admin" : "My CPF pack") : "Get started"}
             </button>
           </div>
         )}

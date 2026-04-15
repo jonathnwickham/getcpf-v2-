@@ -8,22 +8,22 @@ const steps = [
 const HowItWorks = () => {
   return (
     <section id="how" className="py-14 md:py-24 px-6 md:px-8 max-w-[900px] mx-auto">
-      <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Four steps</div>
+      <div className="text-xs uppercase tracking-[3px] text-green-800 font-bold mb-4">Four steps</div>
       <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">From zero to CPF in one visit</h2>
-      <p className="text-sm text-muted-foreground mt-3 italic">
+      <p className="text-sm text-gray-500 mt-3 italic">
         This is preparation, not automation. You still go to the office. We make sure it works when you do.
       </p>
       <div className="mt-12 relative">
-        <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/40 to-border" />
+        <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-800 via-green-800/40 to-gray-100" />
         {steps.map((step) => (
           <div key={step.num} className="flex gap-6 mb-10 relative">
-            <div className="w-[50px] h-[50px] min-w-[50px] bg-card border-2 border-primary rounded-full flex items-center justify-center font-bold text-lg text-primary relative z-10 shadow-sm">
+            <div className="w-[50px] h-[50px] min-w-[50px] bg-white border-2 border-green-800 rounded-full flex items-center justify-center font-bold text-lg text-green-800 relative z-10 shadow-sm">
               {step.num}
             </div>
             <div>
               <h3 className="font-semibold text-lg mb-1">{step.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-              <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-semibold mt-2">
+              <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
+              <span className="inline-block bg-green-800/10 text-green-800 px-3 py-1 rounded-md text-xs font-semibold mt-2">
                 {step.time}
               </span>
             </div>

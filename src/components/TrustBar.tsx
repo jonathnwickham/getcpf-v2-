@@ -6,10 +6,10 @@ const items = [
 ];
 
 const TrustBar = () => (
-  <section className="py-16 px-8 text-center border-y border-border">
+  <section className="py-16 px-8 text-center border-y border-gray-100">
     <div className="flex justify-center gap-8 md:gap-12 flex-wrap">
       {items.map((item) => (
-        <div key={item.text} className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+        <div key={item.text} className="flex items-center gap-2 text-sm text-gray-500 font-medium">
           <span className="text-lg">{item.icon}</span> {item.text}
         </div>
       ))}

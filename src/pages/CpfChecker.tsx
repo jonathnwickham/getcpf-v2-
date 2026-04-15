@@ -51,7 +51,7 @@ const CpfChecker = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <SEO title="Free CPF Number Checker. GET CPF" description="Check if a Brazilian CPF number is valid with our free tool. Instant Mod-11 checksum validation." path="/cpf-checker" />
       <Navbar />
       <div className="pt-32 pb-24 px-6">
@@ -61,28 +61,28 @@ const CpfChecker = () => {
             <h1 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold tracking-tight leading-tight">
               Free CPF Number Checker
             </h1>
-            <p className="text-muted-foreground text-sm mt-3 leading-relaxed max-w-md mx-auto">
+            <p className="text-gray-500 text-sm mt-3 leading-relaxed max-w-md mx-auto">
               Enter a CPF number to verify if it's mathematically valid. This checks the Mod-11 checksum. the same algorithm Brazil's Receita Federal uses.
             </p>
           </div>
 
-          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 space-y-4">
             <div>
-              <label className="text-sm font-semibold text-foreground block mb-1.5">CPF Number</label>
+              <label className="text-sm font-semibold text-gray-900 block mb-1.5">CPF Number</label>
               <input
                 type="text"
                 value={input}
                 onChange={handleChange}
                 placeholder="000.000.000-00"
                 maxLength={14}
-                className="w-full bg-secondary border border-border rounded-xl px-4 py-3.5 text-lg font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-primary text-center"
+                className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3.5 text-lg font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-green-800 text-center"
                 onKeyDown={(e) => e.key === "Enter" && handleCheck()}
               />
             </div>
             <button
               onClick={handleCheck}
               disabled={input.replace(/\D/g, "").length === 0}
-              className="w-full bg-primary text-primary-foreground py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="w-full bg-green-800 text-white py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               Check CPF →
             </button>
@@ -90,38 +90,38 @@ const CpfChecker = () => {
             {result === "valid" && (
               <div className="bg-[hsl(142,70%,49%)]/10 border border-[hsl(142,70%,49%)]/20 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-1">✅</div>
-                <p className="text-sm font-bold text-foreground">Valid CPF format</p>
-                <p className="text-xs text-muted-foreground mt-1">This CPF number passes the Mod-11 checksum validation.</p>
+                <p className="text-sm font-bold text-gray-900">Valid CPF format</p>
+                <p className="text-xs text-gray-500 mt-1">This CPF number passes the Mod-11 checksum validation.</p>
               </div>
             )}
             {result === "invalid" && (
               <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-1">❌</div>
-                <p className="text-sm font-bold text-foreground">Invalid CPF number</p>
-                <p className="text-xs text-muted-foreground mt-1">This number doesn't pass the checksum validation. Double-check the digits.</p>
+                <p className="text-sm font-bold text-gray-900">Invalid CPF number</p>
+                <p className="text-xs text-gray-500 mt-1">This number doesn't pass the checksum validation. Double-check the digits.</p>
               </div>
             )}
             {result === "too-short" && (
               <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
                 <div className="text-2xl mb-1">⚠️</div>
-                <p className="text-sm font-bold text-foreground">Incomplete number</p>
-                <p className="text-xs text-muted-foreground mt-1">A CPF number has exactly 11 digits. Please enter the full number.</p>
+                <p className="text-sm font-bold text-gray-900">Incomplete number</p>
+                <p className="text-xs text-gray-500 mt-1">A CPF number has exactly 11 digits. Please enter the full number.</p>
               </div>
             )}
           </div>
 
-          <div className="mt-6 bg-secondary/50 border border-border rounded-xl p-4 text-xs text-muted-foreground leading-relaxed">
-            <p className="font-semibold text-foreground mb-1">ℹ️ What this tool does</p>
-            <p>This checker validates the mathematical format of a CPF number using the official Mod-11 algorithm. It does <strong className="text-foreground">not</strong> check registration status with the Receita Federal or verify the identity of the holder. No data is stored or transmitted.</p>
+          <div className="mt-6 bg-gray-50/50 border border-gray-100 rounded-xl p-4 text-xs text-gray-500 leading-relaxed">
+            <p className="font-semibold text-gray-900 mb-1">ℹ️ What this tool does</p>
+            <p>This checker validates the mathematical format of a CPF number using the official Mod-11 algorithm. It does <strong className="text-gray-900">not</strong> check registration status with the Receita Federal or verify the identity of the holder. No data is stored or transmitted.</p>
           </div>
 
           {/* CTA */}
-          <div className="mt-10 text-center bg-card border border-border rounded-2xl p-8">
+          <div className="mt-10 text-center bg-white border border-gray-100 rounded-2xl p-8">
             <h2 className="text-lg font-extrabold mb-2">Don't have a CPF yet?</h2>
-            <p className="text-sm text-muted-foreground mb-4">We prepare everything you need to get your CPF on the first visit. AI-powered, <span className="line-through opacity-60">$49</span> $29 one-time payment.</p>
+            <p className="text-sm text-gray-500 mb-4">We prepare everything you need to get your CPF on the first visit. AI-powered, <span className="line-through opacity-60">$49</span> $29 one-time payment.</p>
             <Link
               to="/pricing"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+              className="inline-flex items-center gap-2 bg-green-800 text-white px-8 py-3.5 rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-green-800/20"
             >
               Get My CPF Pack. <span className="line-through opacity-60">$49</span> $29 →
             </Link>

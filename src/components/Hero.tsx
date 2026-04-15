@@ -85,9 +85,9 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           {/* Brand logos. indirect credibility */}
           <div className="mt-12">
             <p className="text-xs text-gray-400 uppercase tracking-widest mb-5">Your CPF unlocks</p>
-            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 opacity-60 hover:opacity-100 transition-opacity duration-500">
+            <div className="grid grid-cols-4 sm:flex sm:flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-[220px] sm:max-w-none mx-auto opacity-60 hover:opacity-100 transition-opacity duration-500">
               {logos.map((logo) => (
-                <img key={logo.alt} src={logo.src} alt={logo.alt} className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover" />
+                <img key={logo.alt} src={logo.src} alt={logo.alt} className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto" />
               ))}
             </div>
           </div>
@@ -98,7 +98,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       <section className="py-16 px-5 sm:px-8 text-center">
         <div className="max-w-4xl mx-auto">
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-12 sm:gap-20 mb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-12 mb-16 max-w-md sm:max-w-2xl mx-auto">
             <div className="text-center">
               <div className="text-2xl font-extrabold tracking-tight">5 min</div>
               <div className="text-xs text-gray-400 mt-1">Setup time</div>

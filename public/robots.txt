@@ -12,5 +12,10 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /get-started
+Disallow: /ready-pack
+Disallow: /reset-password
 
 Sitemap: https://getcpf.com/sitemap.xml

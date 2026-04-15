@@ -16,9 +16,14 @@ type ApplicationSnapshot = {
   passport_number: string | null;
   state_code: string | null;
   state_name: string | null;
+  cep: string | null;
   street_address: string | null;
+  address_number: string | null;
+  complement: string | null;
+  neighbourhood: string | null;
   city: string | null;
   nationality: string | null;
+  gender: string | null;
   email: string | null;
   staying_with_friend: boolean | null;
   host_name: string | null;
@@ -58,9 +63,14 @@ export const mapApplicationToOnboardingData = (application: Partial<ApplicationS
   fatherName: application?.father_name ?? "",
   passportNumber: application?.passport_number ?? "",
   state: application?.state_code ?? application?.state_name ?? "",
+  cep: application?.cep ?? "",
   streetAddress: application?.street_address ?? "",
+  addressNumber: application?.address_number ?? "",
+  complement: application?.complement ?? "",
+  neighbourhood: application?.neighbourhood ?? "",
   city: application?.city ?? "",
   nationality: application?.nationality ?? "",
+  gender: application?.gender ?? "",
   email: application?.email ?? "",
   stayingWithFriend: Boolean(application?.staying_with_friend),
   hostName: application?.host_name ?? "",
@@ -96,21 +106,53 @@ export const applicationHasReadyPack = (application: ApplicationSnapshot | null)
 };
 
 export const fetchLatestApplication = async (userId: string) => {
-  const { data, error } = await supabase
-    .from("applications")
-    .select(
-      "id, status, cpf_number, full_name, mother_name, no_mother, mother_alternative, father_name, passport_number, state_code, state_name, street_address, city, nationality, email, staying_with_friend, host_name, host_cpf, host_address, host_city"
-    )
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(1);
+  const allFields = "id, status, cpf_number, full_name, mother_name, no_mother, mother_alternative, father_name, passport_number, state_code, state_name, cep, street_address, address_number, complement, neighbourhood, city, nationality, gender, email, staying_with_friend, host_name, host_cpf, host_address, host_city";
+  const baseFields = "id, status, cpf_number, full_name, mother_name, no_mother, mother_alternative, father_name, passport_number, state_code, state_name, street_address, city, nationality, email, staying_with_friend, host_name, host_cpf, host_address, host_city";
 
-  if (error) throw error;
-  return (data?.[0] as ApplicationSnapshot | null) ?? null;
+  const fetchWithFields = async (fields: string) => {
+    // First try non-draft
+    const { data: active, error: activeErr } = await supabase
+      .from("applications")
+      .select(fields)
+      .eq("user_id", userId)
+      .neq("status", "draft")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (activeErr) throw activeErr;
+    if (active && active.length > 0) return active[0] as ApplicationSnapshot;
+
+    // Fallback to latest draft
+    const { data, error } = await supabase
+      .from("applications")
+      .select(fields)
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (error) throw error;
+    return (data?.[0] as ApplicationSnapshot | null) ?? null;
+  };
+
+  try {
+    return await fetchWithFields(allFields);
+  } catch {
+    // New columns may not exist yet — fall back to base fields
+    return await fetchWithFields(baseFields);
+  }
 };
 
 export const saveLatestApplication = async (userId: string, data: OnboardingData, status = "prepared") => {
-  const payload = {
+  // New columns that may not exist yet in Supabase — added via Claude Code, DB migration pending
+  const newFields = {
+    cep: optionalText(data.cep),
+    address_number: optionalText(data.addressNumber),
+    complement: optionalText(data.complement),
+    neighbourhood: optionalText(data.neighbourhood),
+    gender: optionalText(data.gender),
+  };
+
+  const basePayload = {
     user_id: userId,
     full_name: optionalText(data.fullName),
     mother_name: optionalText(data.motherName),
@@ -132,6 +174,9 @@ export const saveLatestApplication = async (userId: string, data: OnboardingData
     updated_at: new Date().toISOString(),
   };
 
+  // Try with all fields first; fall back to base fields if new columns don't exist yet
+  const payload = { ...basePayload, ...newFields };
+
   const existing = await fetchLatestApplication(userId);
 
   // Sync nationality to profile for admin visibility
@@ -140,22 +185,36 @@ export const saveLatestApplication = async (userId: string, data: OnboardingData
   }
 
   if (existing?.id) {
-    const { error } = await supabase.from("applications").update(payload).eq("id", existing.id);
+    let { error } = await supabase.from("applications").update(payload).eq("id", existing.id);
+    // Fallback: if new columns don't exist yet, retry with base fields only
+    if (error && error.message?.includes("column")) {
+      ({ error } = await supabase.from("applications").update(basePayload).eq("id", existing.id));
+    }
     if (error) throw error;
-    // Transition status via secure RPC
+    // `as any` required: Supabase codegen doesn't include custom RPC names in its type map.
     await supabase.rpc("transition_application_status" as any, { _application_id: existing.id, _new_status: status });
     return existing.id;
   }
 
-  const { data: inserted, error } = await supabase
+  let { data: inserted, error } = await supabase
     .from("applications")
     .insert({ ...payload, status })
     .select("id")
     .limit(1);
 
+  // Fallback: if new columns don't exist yet, retry with base fields only
+  if (error && error.message?.includes("column")) {
+    ({ data: inserted, error } = await supabase
+      .from("applications")
+      .insert({ ...basePayload, status })
+      .select("id")
+      .limit(1));
+  }
+
   if (error) throw error;
   const newId = inserted?.[0]?.id ?? null;
   if (newId && status !== "draft") {
+    // `as any` required: Supabase codegen doesn't include custom RPC names in its type map.
     await supabase.rpc("transition_application_status" as any, { _application_id: newId, _new_status: status });
   }
   return newId;

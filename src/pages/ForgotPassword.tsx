@@ -74,7 +74,12 @@ const ForgotPassword = () => {
               disabled={loading}
               className="w-full bg-green-800 text-white py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
-              {loading ? "Sending..." : "Send me a reset link"}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Sending...
+                </span>
+              ) : "Send me a reset link"}
             </button>
           </form>
 

@@ -36,9 +36,14 @@ export interface OnboardingData {
   fatherName: string;
   passportNumber: string;
   state: string;
+  cep: string;
   streetAddress: string;
+  addressNumber: string;
+  complement: string;
+  neighbourhood: string;
   city: string;
   nationality: string;
+  gender: "" | "m" | "f" | "unspecified";
   email: string;
   stayingWithFriend: boolean;
   hostName: string;
@@ -55,9 +60,14 @@ export const INITIAL_DATA: OnboardingData = {
   fatherName: "",
   passportNumber: "",
   state: "",
+  cep: "",
   streetAddress: "",
+  addressNumber: "",
+  complement: "",
+  neighbourhood: "",
   city: "",
   nationality: "",
+  gender: "",
   email: "",
   stayingWithFriend: false,
   hostName: "",

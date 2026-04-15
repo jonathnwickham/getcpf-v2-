@@ -109,7 +109,12 @@ const Signup = () => {
 
             <button type="submit" disabled={loading || !agreed}
               className="w-full bg-green-800 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-900 transition-all btn-press disabled:opacity-50">
-              {loading ? "Setting things up..." : "Create my account"}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Setting things up...
+                </span>
+              ) : "Create my account"}
             </button>
           </form>
         </div>

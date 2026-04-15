@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import SEO from "@/components/SEO";
 import { BRAZILIAN_STATES, INITIAL_DATA, type OnboardingData } from "@/lib/onboarding-data";
 import { COUNTRIES } from "@/lib/countries-data";
 import { getCitiesForState } from "@/lib/brazilian-cities";
@@ -242,7 +243,7 @@ const GetStarted = () => {
     if (user) {
       try {
         await saveLatestApplication(user.id, data, "prepared");
-        // Send "Ready Pack is ready" email
+        // Send "Ready Pack is ready" email (fails silently if template doesn't exist yet)
         supabase.functions.invoke("send-transactional-email", {
           body: {
             templateName: "ready-pack-complete",
@@ -292,6 +293,12 @@ const GetStarted = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col" onKeyDown={handleKeyDown}>
+      <SEO
+        title="Get Your CPF. GET CPF"
+        description="Answer a few quick questions and we'll prepare everything you need to get your Brazilian CPF on the first visit."
+        path="/get-started"
+        noIndex={true}
+      />
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100">
         <div className="flex items-center justify-between px-5 sm:px-8 h-16">

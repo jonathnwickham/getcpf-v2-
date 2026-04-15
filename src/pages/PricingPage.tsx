@@ -448,7 +448,7 @@ const PricingPage = () => {
             ) : (
               <div className="space-y-2">
                 <div className="overflow-hidden rounded-xl border border-gray-100">
-                  <iframe src={EMBEDDED_URL} className="w-full border-0" style={{ minHeight: "900px", height: "1200px", maxHeight: "2000px" }} allow="payment" title="Fanbasis Checkout" />
+                  <iframe src={EMBEDDED_URL} className="w-full border-0" style={{ minHeight: "900px", height: "1200px", maxHeight: "2000px" }} allow="payment" title="Fanbasis Checkout" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" />
                 </div>
                 <div className="flex flex-col items-center gap-2 py-1">
                   {!paymentVerified && pollCount < MAX_POLLS ? (

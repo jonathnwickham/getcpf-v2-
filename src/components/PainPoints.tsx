@@ -27,17 +27,17 @@ const painPoints = [
 
 const PainPoints = () => {
   return (
-    <section className="py-12 px-8 relative bg-secondary">
+    <section className="py-12 px-8 relative bg-gray-50">
       <div className="max-w-[900px] mx-auto">
-        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">The problem</div>
+        <div className="text-xs uppercase tracking-[3px] text-green-800 font-bold mb-4">The problem</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight max-w-[700px]">
           Brazil is incredible. But without a CPF, everyday things get a lot more complicated.
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           {painPoints.map((point) => (
-            <div key={point.title} className="bg-card border border-border rounded-xl p-6">
+            <div key={point.title} className="bg-white border border-gray-100 rounded-xl p-6">
               <h3 className="font-semibold text-base mb-2">{point.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{point.text}</p>
+              <p className="text-sm text-gray-500 leading-relaxed">{point.text}</p>
             </div>
           ))}
         </div>

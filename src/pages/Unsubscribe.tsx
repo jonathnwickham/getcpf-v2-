@@ -55,7 +55,7 @@ const Unsubscribe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
       <a href="/" className="mb-8">
         <Logo className="h-10" />
       </a>
@@ -63,15 +63,15 @@ const Unsubscribe = () => {
       <div className="w-full max-w-md text-center">
         {status === "loading" && (
           <div className="flex flex-col items-center gap-3">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-muted-foreground">Validating...</p>
+            <div className="w-6 h-6 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm text-gray-500">Validating...</p>
           </div>
         )}
 
         {status === "valid" && (
           <div className="space-y-4">
             <h1 className="text-2xl font-bold">Unsubscribe</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               Are you sure you want to unsubscribe from GetCPF emails?
             </p>
             <button
@@ -86,7 +86,7 @@ const Unsubscribe = () => {
         {status === "success" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Unsubscribed</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               You've been unsubscribed. You won't receive any more emails from us.
             </p>
           </div>
@@ -95,7 +95,7 @@ const Unsubscribe = () => {
         {status === "already" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Already Unsubscribed</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               You've already unsubscribed from our emails.
             </p>
           </div>
@@ -104,13 +104,13 @@ const Unsubscribe = () => {
         {status === "no_token" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Unsubscribe</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               To unsubscribe, use the personal link included at the bottom of any email from us.
             </p>
-            <p className="text-muted-foreground text-sm">
-              Need help? Contact <a href="mailto:support@getcpf.com" className="text-primary font-semibold hover:underline">support@getcpf.com</a>
+            <p className="text-gray-500 text-sm">
+              Need help? Contact <a href="mailto:support@getcpf.com" className="text-green-800 font-semibold hover:underline">support@getcpf.com</a>
             </p>
-            <a href="/" className="text-sm text-primary font-semibold hover:underline inline-block mt-2">
+            <a href="/" className="text-sm text-green-800 font-semibold hover:underline inline-block mt-2">
               Back to homepage →
             </a>
           </div>
@@ -119,10 +119,10 @@ const Unsubscribe = () => {
         {status === "invalid" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Invalid Link</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               This unsubscribe link is invalid or has expired. Please use the latest link from your most recent email.
             </p>
-            <a href="/" className="text-sm text-primary font-semibold hover:underline inline-block mt-2">
+            <a href="/" className="text-sm text-green-800 font-semibold hover:underline inline-block mt-2">
               Back to homepage →
             </a>
           </div>
@@ -131,7 +131,7 @@ const Unsubscribe = () => {
         {status === "error" && (
           <div className="space-y-3">
             <h1 className="text-2xl font-bold">Something went wrong</h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-gray-500 text-sm">
               We couldn't process your request. Please try again or contact support@getcpf.com.
             </p>
           </div>

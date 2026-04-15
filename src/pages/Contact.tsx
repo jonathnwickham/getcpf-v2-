@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import SEO from "@/components/SEO";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FadeIn from "@/components/FadeIn";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,7 @@ const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Rate limiting: max 3 submissions per 10 minutes
   const RATE_LIMIT_MAX = 3;
@@ -69,29 +71,30 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <SEO title="Contact Us, GET CPF" description="Have a question about getting your Brazilian CPF? Reach out and we'll respond within 24 hours." path="/contact" />
-      <Navbar />
+      <Navbar onOpenModal={() => navigate("/pricing")} />
       <div className="pt-24 md:pt-32 pb-16 md:pb-24 px-6">
+        <FadeIn>
         <div className="max-w-[500px] mx-auto">
-          <h1 className="text-3xl font-extrabold tracking-tight mb-2">Contact us</h1>
-          <p className="text-sm text-muted-foreground mb-6">
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2">Contact us</h1>
+          <p className="text-sm text-gray-500 font-normal mb-6">
             Have a question about getting your CPF? We respond within 24 hours.
           </p>
-          <div className="bg-card border border-border rounded-xl p-4 mb-8 text-sm">
-            <p className="text-muted-foreground">Prefer email? Reach us directly at{" "}
-              <a href="mailto:support@getcpf.com" className="text-primary font-semibold hover:underline">support@getcpf.com</a>
+          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 mb-8 text-sm">
+            <p className="text-gray-500 font-normal">Prefer email? Reach us directly at{" "}
+              <a href="mailto:support@getcpf.com" className="text-green-800 font-semibold hover:underline">support@getcpf.com</a>
             </p>
           </div>
 
           {submitted ? (
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+            <div className="bg-white border border-gray-100 rounded-2xl p-8 text-center">
               <div className="text-4xl mb-4">✉️</div>
-              <h2 className="text-lg font-bold mb-2">Thanks for reaching out</h2>
-              <p className="text-sm text-muted-foreground mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">Thanks for reaching out</h2>
+              <p className="text-sm text-gray-500 font-normal mb-6">
                 We've sent a confirmation to your email. We respond within 24 hours.
               </p>
-              <Link to="/" className="text-sm text-primary font-semibold hover:underline">
+              <Link to="/" className="text-sm text-green-800 font-semibold hover:underline">
                 Back to homepage
               </Link>
             </div>
@@ -109,51 +112,57 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold mb-1.5 block">Name</label>
+                <label className="text-sm font-medium text-gray-900 mb-1.5 block">Name</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   maxLength={100}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-100 rounded-xl text-sm text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all"
                   placeholder="Your name"
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold mb-1.5 block">Email</label>
+                <label className="text-sm font-medium text-gray-900 mb-1.5 block">Email</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   maxLength={255}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-100 rounded-xl text-sm text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all"
                   placeholder="you@example.com"
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold mb-1.5 block">Message</label>
+                <label className="text-sm font-medium text-gray-900 mb-1.5 block">Message</label>
                 <textarea
                   required
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={5}
                   maxLength={2000}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-xl text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-100 rounded-xl text-sm text-gray-900 outline-none focus:border-green-800 focus:ring-2 focus:ring-green-800/10 transition-all resize-none"
                   placeholder="How can we help?"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                className="w-full bg-green-800 text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
               >
-                {loading ? "Sending..." : "Send message"}
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Sending...
+                  </span>
+                ) : "Send message"}
               </button>
             </form>
           )}
         </div>
+        </FadeIn>
       </div>
       <Footer />
     </div>

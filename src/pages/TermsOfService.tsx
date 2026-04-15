@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 
 const TermsOfService = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-white">
     <SEO title="Terms of Service, GET CPF" description="Terms and conditions for using GET CPF's Brazilian CPF preparation service." path="/terms" />
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-6 py-4">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
         <Link to="/"><Logo className="h-10" /></Link>
-        <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
           ← Back to home
         </Link>
       </div>
@@ -17,16 +17,16 @@ const TermsOfService = () => (
 
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-extrabold tracking-tight mb-2">Terms of Service</h1>
-      <p className="text-sm text-muted-foreground mb-12">Last updated: 1 April 2026</p>
+      <p className="text-sm text-gray-500 mb-12">Last updated: 1 April 2026</p>
 
-      <div className="prose prose-sm max-w-none space-y-8 text-foreground/90">
+      <div className="prose prose-sm max-w-none space-y-8 text-gray-900/90">
 
         {/* ── ACCEPTANCE ── */}
         <section>
           <h2 className="text-xl font-bold mb-3">Acceptance of terms</h2>
           <p className="leading-relaxed">
             By accessing or using GET CPF ("we", "us", "our"), you agree to be bound by these Terms of Service and our{" "}
-            <Link to="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</Link>.
+            <Link to="/privacy" className="text-green-800 hover:underline font-semibold">Privacy Policy</Link>.
             If you do not agree, do not use the service. These terms constitute a legally binding agreement between you and GET CPF.
           </p>
           <p className="leading-relaxed mt-3">
@@ -73,7 +73,7 @@ const TermsOfService = () => (
           </ul>
           <p className="leading-relaxed mt-3">
             After 30 days, your dashboard access expires and all personal data and generated documents are permanently deleted in accordance with our{" "}
-            <Link to="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</Link>.
+            <Link to="/privacy" className="text-green-800 hover:underline font-semibold">Privacy Policy</Link>.
           </p>
         </section>
 
@@ -99,7 +99,7 @@ const TermsOfService = () => (
           </p>
           <p className="leading-relaxed mt-3">
             To request a refund, email{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>{" "}
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>{" "}
             with:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm mt-2">
@@ -125,7 +125,7 @@ const TermsOfService = () => (
           </p>
           <p className="leading-relaxed mt-3">
             To exercise your right of withdrawal (before accessing the Ready Pack), email{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>.
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>.
           </p>
         </section>
 
@@ -150,7 +150,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Your account</h2>
           <p className="leading-relaxed">
             You are responsible for maintaining the security of your account credentials and for all activity under your account. Notify us immediately at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>{" "}
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>{" "}
             if you suspect unauthorised access.
           </p>
           <p className="leading-relaxed mt-3">
@@ -197,7 +197,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Data protection</h2>
           <p className="leading-relaxed">
             We process your personal information in accordance with South Africa's Protection of Personal Information Act (POPIA), Brazil's Lei Geral de Proteção de Dados (LGPD), the EU General Data Protection Regulation (GDPR), and other applicable data protection laws. For full details on how we collect, store, and protect your data, see our{" "}
-            <Link to="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</Link>.
+            <Link to="/privacy" className="text-green-800 hover:underline font-semibold">Privacy Policy</Link>.
           </p>
         </section>
 
@@ -231,7 +231,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Affiliate links</h2>
           <p className="leading-relaxed">
             Our partner recommendations include affiliate links. We may earn a small commission at no extra cost to you. See our{" "}
-            <Link to="/affiliates" className="text-primary hover:underline font-semibold">Affiliate Disclosure</Link> for details.
+            <Link to="/affiliates" className="text-green-800 hover:underline font-semibold">Affiliate Disclosure</Link> for details.
           </p>
         </section>
 
@@ -240,7 +240,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Dispute resolution</h2>
           <p className="leading-relaxed">
             We encourage you to contact us first at{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>{" "}
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>{" "}
             to resolve any dispute informally. Most issues can be resolved within a few business days.
           </p>
           <p className="leading-relaxed mt-3">
@@ -288,7 +288,7 @@ const TermsOfService = () => (
           <h2 className="text-xl font-bold mb-3">Contact</h2>
           <p className="leading-relaxed">
             Questions about these terms? Email{" "}
-            <a href="mailto:support@getcpf.com" className="text-primary hover:underline font-semibold">support@getcpf.com</a>
+            <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a>
           </p>
         </section>
 
@@ -296,8 +296,8 @@ const TermsOfService = () => (
         <section>
           <h2 className="text-xl font-bold mb-3">Related documents</h2>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><Link to="/privacy" className="text-primary hover:underline font-semibold">Privacy Policy</Link></li>
-            <li><Link to="/affiliates" className="text-primary hover:underline font-semibold">Affiliate Disclosure</Link></li>
+            <li><Link to="/privacy" className="text-green-800 hover:underline font-semibold">Privacy Policy</Link></li>
+            <li><Link to="/affiliates" className="text-green-800 hover:underline font-semibold">Affiliate Disclosure</Link></li>
           </ul>
         </section>
 

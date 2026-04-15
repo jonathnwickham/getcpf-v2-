@@ -64,10 +64,10 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
 
   if (showInput || existingCpf) {
     return (
-      <div className="mt-6 bg-green-800/5 border border-primary/15 rounded-xl p-4">
-        <div className="text-xs text-green-800 font-bold uppercase tracking-wider mb-2">🎉 Your CPF Number</div>
+      <div className="mt-6 bg-green-50 border border-green-100 rounded-xl p-4">
+        <div className="text-xs text-green-800 font-medium uppercase tracking-wider mb-2">Your CPF Number</div>
         {existingCpf && !showInput ? (
-          <div className="text-2xl font-extrabold font-mono tracking-wide">{existingCpf}</div>
+          <div className="text-2xl font-medium font-mono tracking-wide text-gray-900">{existingCpf}</div>
         ) : (
           <div className="flex gap-2">
             <input
@@ -75,12 +75,12 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
               placeholder="Enter your CPF number"
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
-              className="flex-1 rounded-lg border border-input bg-white px-3 py-2 text-base font-mono tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex-1 rounded-xl border border-gray-100 bg-white px-3 py-2 text-base font-mono tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-800"
             />
             <button
               onClick={handleSave}
               disabled={saving || !cpf.trim()}
-              className="bg-green-800 text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="bg-green-800 text-white px-4 py-2 rounded-xl font-medium text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save"}
             </button>
@@ -94,9 +94,9 @@ const CpfConfirmation = ({ applicationId, existingCpf }: { applicationId: string
     <div className="mt-6">
       <button
         onClick={() => setShowInput(true)}
-        className="bg-[hsl(142,70%,49%)] text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+        className="bg-green-800 text-white px-6 py-3 rounded-xl font-medium text-sm hover:opacity-90 transition-all"
       >
-        🎉 It worked! Save my CPF number
+        It worked — save my CPF number
       </button>
     </div>
   );
@@ -153,8 +153,8 @@ const Dashboard = () => {
           <div className="flex items-center gap-4">
             <a href="/"><Logo className="h-10" /></a>
             <div>
-              <h1 className="text-sm font-extrabold tracking-tight">Hey {firstName} 👋</h1>
-              <p className="text-xs text-gray-400">Here's where you left off</p>
+              <h1 className="text-sm font-semibold tracking-tight text-gray-900">Hey {firstName}</h1>
+              <p className="text-xs text-gray-500">Here's where you left off</p>
             </div>
           </div>
           <button onClick={signOut} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
@@ -165,13 +165,15 @@ const Dashboard = () => {
 
       <div className="max-w-[960px] mx-auto px-6 py-8 space-y-8">
         {/* Application summary */}
-        <section className="bg-white border border-gray-100 rounded-2xl p-6">
+        <section className="bg-white border border-gray-100 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">📋</div>
+            <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            </div>
             <div>
-              <h2 className="font-bold text-lg">Your CPF application</h2>
+              <h2 className="font-semibold text-gray-900 text-lg">Your CPF application</h2>
               <p className="text-xs text-gray-500">
-                Status: <span className="text-green-800 font-semibold capitalize">{application.status}</span>
+                Status: <StatusBadge status={application.status} />
               </p>
             </div>
           </div>
@@ -187,9 +189,9 @@ const Dashboard = () => {
           <div className="mt-4">
             <button
               onClick={() => navigate("/ready-pack")}
-              className="bg-green-800 text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all"
+              className="bg-green-800 text-white px-6 py-3 rounded-xl font-medium text-sm hover:opacity-90 transition-all"
             >
-              Open my Ready Pack →
+              Open my Ready Pack
             </button>
           </div>
         </section>
@@ -197,7 +199,7 @@ const Dashboard = () => {
         {/* Partners */}
         <section>
           <div className="mb-6">
-            <h2 className="text-xl font-extrabold">What to do next with your CPF</h2>
+            <h2 className="text-xl font-semibold text-gray-900">What to do next with your CPF</h2>
             <p className="text-sm text-gray-500 mt-1">The most useful things to set up right after getting your CPF, each one is tried and tested by people who've done exactly this.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -208,23 +210,23 @@ const Dashboard = () => {
         </section>
 
         {/* Share */}
-        <section className="bg-white border border-gray-100 rounded-2xl p-6 text-center">
-          <h2 className="font-bold text-lg mb-2">Know someone heading to Brazil?</h2>
+        <section className="bg-white border border-gray-100 rounded-xl p-6 text-center">
+          <h2 className="font-semibold text-gray-900 text-lg mb-2">Know someone heading to Brazil?</h2>
           <p className="text-sm text-gray-500 mb-4">Send them this, they'll thank you later.</p>
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText("https://getcpf.com")}
-              className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
+              className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-100 transition-all border border-gray-100"
             >
-              📋 Copy link
+              Copy link
             </button>
             <a
               href={`https://wa.me/?text=${encodeURIComponent("If you're going to Brazil and need a CPF, this tool prepares everything for you: https://getcpf.com")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[hsl(142,70%,49%)] text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+              className="bg-green-800 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-all"
             >
-              💬 WhatsApp
+              Share on WhatsApp
             </a>
           </div>
         </section>
@@ -236,6 +238,23 @@ const Dashboard = () => {
         <PartnerAccessSection applicationId={application.id} initialValue={application.partner_access_granted ?? false} />
       </div>
     </div>
+  );
+};
+
+/* ── Status Badge ── */
+const StatusBadge = ({ status }: { status: string }) => {
+  const styles: Record<string, string> = {
+    active: "bg-green-100 text-green-700",
+    completed: "bg-green-100 text-green-700",
+    pending: "bg-yellow-100 text-yellow-700",
+    inactive: "bg-gray-100 text-gray-500",
+  };
+  const normalized = status?.toLowerCase();
+  const cls = styles[normalized] || "bg-gray-100 text-gray-500";
+  return (
+    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium capitalize ml-1 ${cls}`}>
+      {status}
+    </span>
   );
 };
 
@@ -261,17 +280,19 @@ const PartnerAccessSection = ({ applicationId, initialValue }: { applicationId: 
   };
 
   return (
-    <section className="bg-white border border-gray-100 rounded-2xl p-6">
+    <section className="bg-white border border-gray-100 rounded-xl p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">🤝</div>
+        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+          <svg className="w-5 h-5 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        </div>
         <div>
-          <h2 className="font-bold text-lg">Partner Access</h2>
+          <h2 className="font-semibold text-gray-900 text-lg">Partner Access</h2>
           <p className="text-xs text-gray-500">Control who can verify your CPF status</p>
         </div>
       </div>
-      <div className="flex items-center justify-between bg-gray-50 rounded-xl p-4">
+      <div className="flex items-center justify-between bg-gray-50 rounded-xl p-4 border border-gray-100">
         <div>
-          <p className="text-sm font-semibold">Allow partners to verify your CPF</p>
+          <p className="text-sm font-medium text-gray-900">Allow partners to verify your CPF</p>
           <p className="text-xs text-gray-500 mt-0.5">
             When enabled, partner services (banks, eSIM providers) can confirm you have a valid CPF without seeing the number itself.
           </p>
@@ -279,8 +300,8 @@ const PartnerAccessSection = ({ applicationId, initialValue }: { applicationId: 
         <button
           onClick={toggle}
           disabled={saving}
-          className={`relative w-12 h-7 rounded-full transition-colors duration-200 ${
-            enabled ? "bg-green-800" : "bg-gray-100-foreground/30"
+          className={`relative w-12 h-7 rounded-full transition-colors duration-200 shrink-0 ml-4 ${
+            enabled ? "bg-green-800" : "bg-gray-200"
           } ${saving ? "opacity-50" : ""}`}
         >
           <span className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
@@ -342,36 +363,76 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (format: "json" | "csv" = "json") => {
     const { data: consentData } = await supabase
       .from("consent_log")
       .select("*")
       .eq("user_id", user.id);
 
     const exportData = {
-      name: application?.full_name || null,
-      email: application?.email || user.email,
-      nationality: application?.nationality || null,
-      passport_number: application?.passport_number
-        ? "*".repeat(Math.max(0, application.passport_number.length - 4)) + application.passport_number.slice(-4)
-        : null,
-      mother_name: application?.mother_name || null,
-      father_name: application?.father_name || null,
-      address: application?.street_address || null,
-      city: application?.city || null,
-      state: application?.state_name || null,
-      application_status: application?.status || null,
-      document_generated_at: application?.submitted_at || null,
+      account: {
+        email: user.email,
+        created_at: user.created_at,
+      },
+      personal: {
+        full_name: application?.full_name || null,
+        nationality: application?.nationality || null,
+        passport_number: application?.passport_number
+          ? "*".repeat(Math.max(0, application.passport_number.length - 4)) + application.passport_number.slice(-4)
+          : null,
+        mother_name: application?.mother_name || null,
+        father_name: application?.father_name || null,
+      },
+      address: {
+        street: application?.street_address || null,
+        city: application?.city || null,
+        state: application?.state_name || null,
+      },
+      application: {
+        status: application?.status || null,
+        cpf_number: application?.cpf_number || null,
+        created_at: application?.created_at || null,
+        submitted_at: application?.submitted_at || null,
+      },
       consent_log: consentData || [],
+      exported_at: new Date().toISOString(),
+      data_controller: "GET CPF (getcpf.com)",
+      legal_basis: "LGPD Lei 13.709/2018, Article 18",
     };
 
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "getcpf-my-data.json";
-    a.click();
-    URL.revokeObjectURL(url);
+    if (format === "csv") {
+      const rows = [
+        ["Field", "Value"],
+        ["Email", user.email || ""],
+        ["Full Name", application?.full_name || ""],
+        ["Nationality", application?.nationality || ""],
+        ["Mother Name", application?.mother_name || ""],
+        ["Father Name", application?.father_name || ""],
+        ["Street", application?.street_address || ""],
+        ["City", application?.city || ""],
+        ["State", application?.state_name || ""],
+        ["Status", application?.status || ""],
+        ["CPF Number", application?.cpf_number || ""],
+        ["Created", application?.created_at || ""],
+        ["Exported At", new Date().toISOString()],
+      ];
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "getcpf-my-data.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "getcpf-my-data.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
     toast.success("Your data has been downloaded.");
   };
 
@@ -434,11 +495,13 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
   ];
 
   return (
-    <section className="bg-white border border-gray-100 rounded-2xl p-6">
+    <section className="bg-white border border-gray-100 rounded-xl p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-green-800/10 rounded-xl flex items-center justify-center text-lg">🔐</div>
+        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+          <svg className="w-5 h-5 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+        </div>
         <div>
-          <h2 className="font-bold text-lg">My Data</h2>
+          <h2 className="font-semibold text-gray-900 text-lg">My Data</h2>
           <p className="text-xs text-gray-500">Manage your personal data and account settings</p>
         </div>
       </div>
@@ -446,27 +509,33 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
       <div className="flex flex-wrap gap-3">
         <button
           onClick={() => setShowPassword(true)}
-          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-100 transition-all border border-gray-100"
         >
-          🔑 Change password
+          Change password
         </button>
         <button
-          onClick={handleDownload}
-          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
+          onClick={() => handleDownload("json")}
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-100 transition-all border border-gray-100"
         >
-          📥 Download my data
+          Download JSON
+        </button>
+        <button
+          onClick={() => handleDownload("csv")}
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-100 transition-all border border-gray-100"
+        >
+          Download CSV
         </button>
         <button
           onClick={() => setShowEdit(true)}
-          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50/80 transition-all"
+          className="bg-gray-50 text-gray-900 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-100 transition-all border border-gray-100"
         >
-          ✏️ Update my details
+          Update my details
         </button>
         <button
           onClick={() => setShowDelete(true)}
-          className="bg-destructive/10 text-destructive px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-destructive/20 transition-all"
+          className="bg-red-50 text-red-600 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-red-100 transition-all border border-red-100"
         >
-          🗑️ Delete my account
+          Delete my account
         </button>
       </div>
 
@@ -474,36 +543,36 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
       <Dialog open={showPassword} onOpenChange={setShowPassword}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Change password</DialogTitle>
+            <DialogTitle className="font-semibold text-gray-900">Change password</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 mt-2">
             <div>
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">New password</label>
+              <label className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 block">New password</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
                 minLength={6}
-                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-green-800 text-gray-900"
               />
               <p className="text-[10px] text-gray-500 mt-1">At least 6 characters</p>
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">Confirm new password</label>
+              <label className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 block">Confirm new password</label>
               <input
                 type="password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 placeholder="••••••••"
                 minLength={6}
-                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-green-800 text-gray-900"
               />
             </div>
             <button
               onClick={handleChangePassword}
               disabled={changingPassword || !newPassword || !confirmNewPassword}
-              className="w-full bg-green-800 text-white py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="w-full bg-green-800 text-white py-2.5 rounded-xl font-medium text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {changingPassword ? "Updating..." : "Update password"}
             </button>
@@ -515,32 +584,32 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
         <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Update my details</DialogTitle>
+            <DialogTitle className="font-semibold text-gray-900">Update my details</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 mt-2">
             {editableFields.map(({ key, label }) => (
               <div key={key}>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 block">
                   {label}
                 </label>
                 <input
                   type="text"
                   value={(editData as any)[key] || ""}
                   onChange={(e) => setEditData((prev) => ({ ...prev, [key]: e.target.value }))}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-sm outline-none focus:border-primary"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm outline-none focus:border-green-800 text-gray-900"
                 />
               </div>
             ))}
             {application?.passport_number && (
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1 block">
                   Passport number
                 </label>
                 <input
                   type="text"
                   value={maskPassport(application.passport_number)}
                   disabled
-                  className="w-full px-3 py-2 bg-gray-100 border border-gray-100 rounded-lg text-sm text-gray-500 cursor-not-allowed"
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-100 rounded-xl text-sm text-gray-500 cursor-not-allowed"
                 />
                 <p className="text-[10px] text-gray-500 mt-1">Passport number cannot be edited after submission. Contact support if you need to change it.</p>
               </div>
@@ -548,7 +617,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
             <button
               onClick={handleSaveEdit}
               disabled={saving}
-              className="w-full bg-green-800 text-white py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="w-full bg-green-800 text-white py-2.5 rounded-xl font-medium text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save changes"}
             </button>
@@ -560,7 +629,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
       <Dialog open={showDelete} onOpenChange={setShowDelete}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-destructive">Delete my account</DialogTitle>
+            <DialogTitle className="font-semibold text-red-600">Delete my account</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-gray-500 leading-relaxed mt-2">
             This will permanently delete your account and all personal data including your documents. This cannot be undone. Your access to the Ready Pack will end immediately.
@@ -568,14 +637,14 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
           <div className="flex gap-3 mt-4">
             <button
               onClick={() => setShowDelete(false)}
-              className="flex-1 bg-gray-50 text-gray-900 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-50/80 transition-all"
+              className="flex-1 bg-gray-50 text-gray-900 py-2.5 rounded-xl font-medium text-sm hover:bg-gray-100 transition-all border border-gray-100"
             >
               Cancel
             </button>
             <button
               onClick={handleDeleteAccount}
               disabled={deleting}
-              className="flex-1 bg-destructive text-destructive-foreground py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+              className="flex-1 bg-red-600 text-white py-2.5 rounded-xl font-medium text-sm hover:opacity-90 transition-all disabled:opacity-50"
             >
               {deleting ? "Deleting..." : "Confirm deletion"}
             </button>
@@ -588,14 +657,13 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
 
 const InfoField = ({ label, value }: { label: string; value: string }) => (
   <div>
-    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">{label}</div>
-    <div className="font-semibold text-gray-900">{value}</div>
+    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-medium mb-0.5">{label}</div>
+    <div className="font-medium text-gray-900">{value}</div>
   </div>
 );
 
 const PARTNERS = [
   {
-    icon: "📱",
     name: "Airalo",
     category: "eSIM / Data",
     summary: "Get a Brazil eSIM in 2 minutes, works the moment you land.",
@@ -604,7 +672,6 @@ const PARTNERS = [
     url: "https://www.airalo.com",
   },
   {
-    icon: "🏦",
     name: "Nubank",
     category: "Bank Account",
     summary: "Brazil's #1 digital bank. Zero fees, instant Pix, debit & credit card.",
@@ -613,7 +680,6 @@ const PARTNERS = [
     url: "https://nubank.com.br",
   },
   {
-    icon: "💸",
     name: "Wise",
     category: "International Transfers",
     summary: "Send money to/from Brazil at the real exchange rate. Way cheaper than banks.",
@@ -622,7 +688,6 @@ const PARTNERS = [
     url: "https://wise.com",
   },
   {
-    icon: "🏥",
     name: "SafetyWing",
     category: "Health & Travel Insurance",
     summary: "Month-to-month health coverage for nomads in Brazil. From $45/month.",
@@ -631,7 +696,6 @@ const PARTNERS = [
     url: "https://safetywing.com",
   },
   {
-    icon: "🗣️",
     name: "iTalki",
     category: "Learn Portuguese",
     summary: "1-on-1 video lessons with native Brazilian Portuguese speakers.",
@@ -640,7 +704,6 @@ const PARTNERS = [
     url: "https://www.italki.com",
   },
   {
-    icon: "🏛️",
     name: "Gov.br",
     category: "Digital Government ID",
     summary: "Brazil's digital ID portal, needed for official services.",
@@ -654,34 +717,33 @@ const PartnerCard = ({ partner }: { partner: typeof PARTNERS[0] }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden transition-all">
+    <div className="bg-white border border-gray-100 rounded-xl overflow-hidden transition-all">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full text-left p-5 flex items-start gap-4 hover:bg-gray-50/30 transition-colors"
+        className="w-full text-left p-5 flex items-start gap-4 hover:bg-gray-50 transition-colors"
       >
-        <span className="text-3xl mt-0.5">{partner.icon}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-bold text-sm">{partner.name}</h3>
-            <span className="text-[9px] uppercase tracking-wider text-green-800 font-bold bg-green-800/10 px-2 py-0.5 rounded">{partner.category}</span>
+            <h3 className="font-semibold text-sm text-gray-900">{partner.name}</h3>
+            <span className="text-[9px] uppercase tracking-wider text-green-800 font-medium bg-green-50 px-2 py-0.5 rounded-full border border-green-100">{partner.category}</span>
           </div>
           <p className="text-xs text-gray-500">{partner.summary}</p>
         </div>
-        <span className={`text-gray-500 transition-transform shrink-0 mt-1 ${open ? "rotate-180" : ""}`}>▾</span>
+        <span className={`text-gray-400 transition-transform shrink-0 mt-1 text-xs ${open ? "rotate-180" : ""}`}>▾</span>
       </button>
       {open && (
         <div className="px-5 pb-5 pt-0 border-t border-gray-100">
           <p className="text-sm text-gray-900 mt-4 leading-relaxed">{partner.detail}</p>
-          <div className="bg-green-800/5 border border-primary/10 rounded-lg p-3 mt-3">
-            <p className="text-xs text-green-800 font-medium">💡 {partner.tip}</p>
+          <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 mt-3">
+            <p className="text-xs text-gray-600 font-normal">{partner.tip}</p>
           </div>
             <a
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 bg-green-800 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all group/ext"
+              className="mt-4 inline-flex items-center gap-2 bg-green-800 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-all group/ext"
             >
-              Visit {partner.name} <span className="text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">↗ opens in new tab</span>
+              Visit {partner.name} <span className="text-[10px] opacity-60 group-hover/ext:opacity-100 transition-opacity">opens in new tab</span>
             </a>
         </div>
       )}

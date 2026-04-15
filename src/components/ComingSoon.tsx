@@ -31,13 +31,13 @@ const ComingSoon = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 px-8 bg-card border-t border-border">
+    <section ref={sectionRef} className="py-24 px-8 bg-white border-t border-gray-100">
       <div className="max-w-[700px] mx-auto">
-        <div className="text-xs uppercase tracking-[3px] text-primary font-bold mb-4">Coming soon</div>
+        <div className="text-xs uppercase tracking-[3px] text-green-800 font-bold mb-4">Coming soon</div>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight">
           CPF is just the beginning
         </h2>
-        <p className="text-muted-foreground mt-4 max-w-[560px] text-sm leading-relaxed">
+        <p className="text-gray-500 mt-4 max-w-[560px] text-sm leading-relaxed">
           We're building the one place anyone in Brazil goes to sort out documents, visas, and bureaucracy. Here's what's next.
         </p>
 
@@ -76,7 +76,7 @@ const ComingSoon = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span className="text-sm font-semibold text-foreground">{item}</span>
+              <span className="text-sm font-semibold text-gray-900">{item}</span>
             </div>
           ))}
         </div>

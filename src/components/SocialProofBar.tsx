@@ -24,10 +24,10 @@ const SocialProofBar = () => {
   const displayCount = cpfCount !== null ? cpfCount : 200;
 
   return (
-    <section className="py-6 px-6 bg-background border-y border-border/50">
+    <section className="py-6 px-6 bg-white border-y border-gray-100/50">
       <div className="max-w-[900px] mx-auto text-center">
         
-        <p className="text-xs text-muted-foreground font-medium mb-5">
+        <p className="text-xs text-gray-500 font-medium mb-5">
           Your CPF unlocks everyday services like these.
         </p>
         <div className="grid grid-cols-4 gap-1.5 justify-items-center items-center max-w-[340px] md:max-w-none mx-auto md:flex md:flex-wrap md:gap-5 md:justify-center">
