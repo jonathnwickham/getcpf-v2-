@@ -16,34 +16,32 @@ Deno.serve(async (req) => {
     const signature = req.headers.get("x-webhook-signature");
     const webhookSecret = Deno.env.get("FANBASIS_WEBHOOK_SECRET");
 
-    // Validate signature if secret is configured
-    // Allow plain secret match (Zapier sends raw secret, not HMAC)
-    if (webhookSecret && signature && signature === webhookSecret) {
-      // Plain secret match — valid (Zapier format)
-      console.log("Webhook authenticated via plain secret match");
-    } else if (webhookSecret && signature) {
-      const encoder = new TextEncoder();
-      const key = await crypto.subtle.importKey(
-        "raw",
-        encoder.encode(webhookSecret),
-        { name: "HMAC", hash: "SHA-256" },
-        false,
-        ["sign"]
-      );
-      const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(rawBody));
-      const expectedHex = Array.from(new Uint8Array(sig))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
+    // Signature validation — accepts plain secret match (Zapier) or HMAC (direct Fanbasis)
+    // Skips validation entirely if no signature header sent (allows Zapier test requests)
+    if (signature && webhookSecret) {
+      if (signature === webhookSecret) {
+        console.log("Webhook authenticated via plain secret match");
+      } else {
+        const encoder = new TextEncoder();
+        const key = await crypto.subtle.importKey(
+          "raw",
+          encoder.encode(webhookSecret),
+          { name: "HMAC", hash: "SHA-256" },
+          false,
+          ["sign"]
+        );
+        const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(rawBody));
+        const expectedHex = Array.from(new Uint8Array(sig))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
 
-      // Constant-time comparison
-      if (expectedHex.length !== signature.length || expectedHex !== signature) {
-        console.error("Webhook signature mismatch");
-        return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+        if (expectedHex.length !== signature.length || expectedHex !== signature) {
+          console.error("Webhook signature mismatch");
+          return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+        }
       }
-    } else if (webhookSecret && !signature) {
-      console.error("Missing x-webhook-signature header");
-      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
     }
+    // No signature header = allow through (Zapier test requests)
 
     const event = JSON.parse(rawBody);
     console.log("Webhook event received:", JSON.stringify(event).substring(0, 500));

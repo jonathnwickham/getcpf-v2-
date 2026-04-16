@@ -131,10 +131,10 @@ const Admin = () => {
                 key={item.key}
                 onClick={() => setTab(item.key)}
                 aria-current={tab === item.key ? "page" : undefined}
-                className={`w-full text-left px-3 py-2.5 rounded-lg transition-colors ${
+                className={`w-full text-left px-3 py-2.5 rounded-lg transition-colors outline-none ${
                   tab === item.key
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-gray-100 text-gray-900 border-l-2 border-green-800"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900 border-l-2 border-transparent"
                 }`}
               >
                 <div className="text-sm font-medium">{item.label}</div>
