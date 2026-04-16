@@ -1,20 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 
 const StickyMobileCTA = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const [visible, setVisible] = useState(false);
 
+  // Hide on pricing/payment pages — user is already buying
+  const hiddenPaths = ["/pricing", "/verify", "/login", "/get-started", "/ready-pack", "/admin", "/dashboard"];
+  const isHiddenPage = hiddenPaths.some(p => location.pathname.startsWith(p));
+
   useEffect(() => {
+    if (isHiddenPage) { setVisible(false); return; }
     const onScroll = () => {
       setVisible(window.scrollY > 600);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHiddenPage]);
 
   const handleClick = () => {
     if (user) {

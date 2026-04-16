@@ -87,10 +87,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             className="mt-10"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.6 }}
+            viewport={{ once: false, amount: 0.4 }}
             variants={{
-              hidden: { transition: { staggerChildren: 0.04 } },
-              visible: { transition: { staggerChildren: 0.06 } },
+              hidden: { transition: { staggerChildren: 0.08, staggerDirection: -1 } },
+              visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
             <p className="text-xs text-gray-400 uppercase tracking-widest mb-4">Your CPF unlocks</p>
@@ -102,10 +102,10 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                   alt={logo.alt}
                   className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto"
                   variants={{
-                    hidden: { opacity: 0.25, scale: 0.9, filter: "grayscale(100%)" },
+                    hidden: { opacity: 0.2, scale: 0.85, filter: "grayscale(100%)" },
                     visible: { opacity: 1, scale: 1, filter: "grayscale(0%)" },
                   }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
                 />
               ))}
             </div>
