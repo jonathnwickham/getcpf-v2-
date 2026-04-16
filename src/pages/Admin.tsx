@@ -107,7 +107,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Top header */}
-      <div className="border-b border-gray-100 bg-white sticky top-0 z-50">
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="/">
@@ -121,11 +121,10 @@ const Admin = () => {
           </button>
         </div>
       </div>
-
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar — desktop */}
         <aside className="hidden md:flex flex-col w-60 shrink-0 bg-white border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <nav role="navigation" aria-label="Admin sections" className="px-3 pt-5 pb-3 space-y-0.5">
+          <nav role="navigation" aria-label="Admin sections" className="px-3 pt-3 pb-3 space-y-0.5">
             {navItems.map(item => (
               <button
                 key={item.key}
