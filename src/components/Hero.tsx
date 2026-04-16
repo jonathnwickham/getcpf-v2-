@@ -35,7 +35,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
   return (
     <>
       {/* Hero. clean, one message */}
-      <section className="pt-32 sm:pt-40 pb-20 sm:pb-24 px-5 sm:px-8 text-center">
+      <section className="pt-32 sm:pt-40 pb-10 sm:pb-14 px-5 sm:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -83,14 +83,30 @@ const Hero = ({ onOpenModal }: HeroProps) => {
           </motion.div>
 
           {/* Brand logos. indirect credibility */}
-          <div className="mt-12">
+          <motion.div
+            className="mt-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          >
             <p className="text-xs text-gray-400 uppercase tracking-widest mb-5">Your CPF unlocks</p>
-            <div className="grid grid-cols-4 sm:flex sm:flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-[220px] sm:max-w-none mx-auto opacity-60 hover:opacity-100 transition-opacity duration-500">
+            <div className="grid grid-cols-4 sm:flex sm:flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-[220px] sm:max-w-none mx-auto">
               {logos.map((logo) => (
-                <img key={logo.alt} src={logo.src} alt={logo.alt} className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto" />
+                <motion.img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.7 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                />
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
