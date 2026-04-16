@@ -39,7 +39,6 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          product_id: "0LD5G",
           metadata: {
             user_email: normalizedEmail,
             source: "cpf-app",
