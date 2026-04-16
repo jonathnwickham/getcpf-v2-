@@ -124,13 +124,13 @@ const Admin = () => {
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar — desktop */}
         <aside className="hidden md:flex flex-col w-60 shrink-0 bg-white border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <nav role="navigation" aria-label="Admin sections" className="px-3 pt-3 pb-3 space-y-0.5">
+          <nav role="navigation" aria-label="Admin sections" className="pl-0 pr-3 pt-3 pb-3 space-y-0.5">
             {navItems.map(item => (
               <button
                 key={item.key}
                 onClick={() => setTab(item.key)}
                 aria-current={tab === item.key ? "page" : undefined}
-                className={`w-full text-left px-3 py-2.5 rounded-r-lg transition-colors outline-none ${
+                className={`w-full text-left pl-4 pr-3 py-2.5 rounded-r-lg transition-colors outline-none ${
                   tab === item.key
                     ? "bg-gray-50 text-gray-900 border-l-[3px] border-green-800"
                     : "text-gray-500 hover:bg-gray-50/50 hover:text-gray-900 border-l-[3px] border-transparent"
