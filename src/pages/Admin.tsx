@@ -981,6 +981,83 @@ const RevenueTab = ({ profiles, applications, userId }: { profiles: Profile[]; a
           </div>
         )}
       </div>
+
+      {/* Fanbasis Payments */}
+      <FanbasisPayments />
+    </div>
+  );
+};
+
+/* ── Fanbasis Payments Section ── */
+const FanbasisPayments = () => {
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.from("checkout_sessions").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+      if (data) setSessions(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const paidSessions = sessions.filter(s => s.paid);
+  const pendingSessions = sessions.filter(s => !s.paid);
+  const totalFromFanbasis = paidSessions.reduce((sum, s) => sum + (s.amount_cents ? s.amount_cents / 100 : 0), 0);
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-base text-gray-900">Fanbasis Payments</h3>
+          <p className="text-xs text-gray-500 mt-0.5">Live payment data from checkout sessions</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-medium text-gray-500">{paidSessions.length} paid</span>
+          {pendingSessions.length > 0 && <span className="text-xs font-medium text-yellow-600">{pendingSessions.length} pending</span>}
+          {totalFromFanbasis > 0 && <span className="text-sm font-semibold text-green-800">${totalFromFanbasis.toFixed(2)}</span>}
+        </div>
+      </div>
+      {loading ? (
+        <div className="p-6 text-sm text-gray-500 animate-pulse">Loading payment data...</div>
+      ) : sessions.length === 0 ? (
+        <div className="p-8 text-center">
+          <p className="text-sm text-gray-500">No checkout sessions yet</p>
+          <p className="text-xs text-gray-400 mt-1">Payments will appear here when customers go through checkout</p>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow className="border-b border-gray-200">
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium py-3">Email</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Status</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Amount</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Payment ID</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Paid at</TableHead>
+              <TableHead className="uppercase text-[11px] tracking-wider text-gray-400 font-medium">Created</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sessions.map((s: any) => (
+              <TableRow key={s.id} className="hover:bg-gray-50 border-b border-gray-100">
+                <TableCell className="text-sm py-3.5 font-medium">{s.email}</TableCell>
+                <TableCell className="py-3.5">
+                  <StatusBadge label={s.paid ? "Paid" : "Pending"} variant={s.paid ? "green" : "yellow"} />
+                </TableCell>
+                <TableCell className="text-sm py-3.5 font-medium">
+                  {s.amount_cents ? `$${(s.amount_cents / 100).toFixed(2)}` : "—"} {s.currency || ""}
+                </TableCell>
+                <TableCell className="text-xs font-mono text-gray-500 py-3.5">{s.payment_id || "—"}</TableCell>
+                <TableCell className="text-sm text-gray-500 py-3.5">
+                  {s.paid_at ? new Date(s.paid_at).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"}
+                </TableCell>
+                <TableCell className="text-sm text-gray-500 py-3.5">
+                  {new Date(s.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 };
