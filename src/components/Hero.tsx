@@ -82,15 +82,18 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             <p className="text-sm text-gray-400 mt-3">No Portuguese required. Money-back guarantee.</p>
           </motion.div>
 
-          {/* Brand logos. indirect credibility */}
+          {/* Brand logos. indirect credibility — greyed out, light up on scroll, grey out when past */}
           <motion.div
-            className="mt-12"
+            className="mt-10"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+            viewport={{ once: false, amount: 0.6 }}
+            variants={{
+              hidden: { transition: { staggerChildren: 0.04 } },
+              visible: { transition: { staggerChildren: 0.06 } },
+            }}
           >
-            <p className="text-xs text-gray-400 uppercase tracking-widest mb-5">Your CPF unlocks</p>
+            <p className="text-xs text-gray-400 uppercase tracking-widest mb-4">Your CPF unlocks</p>
             <div className="grid grid-cols-4 sm:flex sm:flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-[220px] sm:max-w-none mx-auto">
               {logos.map((logo) => (
                 <motion.img
@@ -99,8 +102,8 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                   alt={logo.alt}
                   className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto"
                   variants={{
-                    hidden: { opacity: 0, scale: 0.7 },
-                    visible: { opacity: 1, scale: 1 },
+                    hidden: { opacity: 0.25, scale: 0.9, filter: "grayscale(100%)" },
+                    visible: { opacity: 1, scale: 1, filter: "grayscale(0%)" },
                   }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 />
@@ -111,7 +114,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
       </section>
 
       {/* Stats + Product mockup. below the fold */}
-      <section className="py-16 px-5 sm:px-8 text-center">
+      <section className="pt-8 pb-16 px-5 sm:px-8 text-center">
         <div className="max-w-4xl mx-auto">
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-12 mb-16 max-w-md sm:max-w-2xl mx-auto">
