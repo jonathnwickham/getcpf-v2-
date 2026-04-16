@@ -125,7 +125,7 @@ const Admin = () => {
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar — desktop */}
         <aside className="hidden md:flex flex-col w-60 shrink-0 bg-white border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <nav role="navigation" aria-label="Admin sections" className="p-3 space-y-0.5">
+          <nav role="navigation" aria-label="Admin sections" className="px-3 pt-5 pb-3 space-y-0.5">
             {navItems.map(item => (
               <button
                 key={item.key}
@@ -164,8 +164,8 @@ const Admin = () => {
         </div>
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-[1200px] mx-auto px-6 py-6">
+        <main className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="max-w-[1200px] mx-auto px-6 py-8">
             {tab === "users" && <UsersTab profiles={profiles} applications={applications} search={search} setSearch={setSearch} onRefresh={loadData} />}
             {tab === "applications" && <ApplicationsTab applications={applications} profiles={profiles} onRefresh={loadData} adminUserId={user?.id || ""} />}
             {tab === "revenue" && <RevenueTab profiles={profiles} applications={applications} userId={user?.id || ""} />}
