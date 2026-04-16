@@ -100,7 +100,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
                   key={logo.alt}
                   src={logo.src}
                   alt={logo.alt}
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover mx-auto"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg object-cover mx-auto"
                   variants={{
                     hidden: { opacity: 0.15, scale: 0.9, filter: "grayscale(100%)" },
                     visible: { opacity: 1, scale: 1, filter: "grayscale(0%)" },
