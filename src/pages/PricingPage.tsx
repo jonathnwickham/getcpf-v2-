@@ -176,13 +176,16 @@ const PricingPage = () => {
     setLoadingCheckout(true);
     setCheckoutError(false);
     try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", { body: { email } });
-      if (error || !data?.checkout_session_secret) {
-        setCheckoutError(true);
+      const res = await supabase.functions.invoke("create-checkout", { body: { email } });
+      const secret = res.data?.checkout_session_secret;
+      if (secret) {
+        setCheckoutSecret(secret);
       } else {
-        setCheckoutSecret(data.checkout_session_secret);
+        console.error("create-checkout response:", JSON.stringify(res));
+        setCheckoutError(true);
       }
-    } catch {
+    } catch (err) {
+      console.error("create-checkout failed:", err);
       setCheckoutError(true);
     }
     setLoadingCheckout(false);
