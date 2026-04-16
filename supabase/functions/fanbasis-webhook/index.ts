@@ -111,6 +111,31 @@ Deno.serve(async (req) => {
         .update({ plan: "self_service" })
         .eq("id", profile.id);
       console.log(`Updated profile plan for ${buyerEmail}`);
+
+      // Create or update application with "paid" status so ProtectedRoute finds it
+      const { data: existingApp } = await supabase
+        .from("applications")
+        .select("id, status")
+        .eq("user_id", profile.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existingApp) {
+        // Update existing application to paid
+        if (existingApp.status === "draft" || !existingApp.status) {
+          await supabase.from("applications").update({ status: "paid" }).eq("id", existingApp.id);
+          console.log(`Updated application ${existingApp.id} to paid`);
+        }
+      } else {
+        // Create new paid application
+        await supabase.from("applications").insert({
+          user_id: profile.id,
+          email: buyerEmail.toLowerCase(),
+          status: "paid",
+        });
+        console.log(`Created paid application for ${buyerEmail}`);
+      }
     }
 
     // Send post-purchase confirmation email

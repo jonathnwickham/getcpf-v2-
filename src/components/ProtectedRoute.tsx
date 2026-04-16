@@ -11,17 +11,14 @@ interface ProtectedRouteProps {
   requireAdmin?: boolean;
 }
 
-// DEMO MODE: skip payment checks — set to false when Fanbasis payments are live
-const DEMO_MODE = true;
-
 const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   const [checking, setChecking] = useState(true);
-  const [isPaid, setIsPaid] = useState(DEMO_MODE);
+  const [isPaid, setIsPaid] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const needsPaymentCheck = !DEMO_MODE && (requirePayment || ["/ready-pack", "/dashboard"].some(p => location.pathname.startsWith(p)));
+  const needsPaymentCheck = requirePayment || ["/ready-pack", "/dashboard"].some(p => location.pathname.startsWith(p));
   const needsAdminCheck = requireAdmin || location.pathname.startsWith("/admin");
 
   useEffect(() => {
@@ -32,13 +29,12 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
 
     const check = async () => {
       try {
-        // Check admin first. admins bypass payment check
+        // Check admin first — admins bypass everything
         if (needsAdminCheck || needsPaymentCheck) {
           const adminRes = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" as const });
           const userIsAdmin = adminRes.data === true;
           setIsAdmin(userIsAdmin);
 
-          // Admins bypass payment requirement
           if (userIsAdmin) {
             setIsPaid(true);
             setChecking(false);
@@ -48,33 +44,48 @@ const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRou
           setIsAdmin(true);
         }
 
-        // Check payment status via applications table first
+        // Payment check — three layers of verification
         if (needsPaymentCheck) {
-          const payRes = await supabase
+          let paid = false;
+
+          // Layer 1: Check applications table
+          const { data: apps } = await supabase
               .from("applications")
               .select("status")
               .eq("user_id", user.id)
               .in("status", ["paid", "prepared", "office_visited", "cpf_issued"])
               .limit(1);
-          
-          if (payRes.data && payRes.data.length > 0) {
-            setIsPaid(true);
-          } else {
-            // Fallback: check checkout_sessions via verify-payment
-            try {
-              const { data: vpData } = await supabase.functions.invoke("verify-payment", {
-                body: { email: user.email },
-              });
-              setIsPaid(vpData?.paid === true);
-            } catch {
-              setIsPaid(false);
-            }
+
+          if (apps && apps.length > 0) paid = true;
+
+          // Layer 2: Check checkout_sessions table directly
+          if (!paid) {
+            const { data: sessions } = await supabase
+              .from("checkout_sessions")
+              .select("paid")
+              .eq("email", user.email!.toLowerCase())
+              .eq("paid", true)
+              .limit(1);
+
+            if (sessions && sessions.length > 0) paid = true;
           }
+
+          // Layer 3: Check profile plan
+          if (!paid) {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("plan")
+              .eq("id", user.id)
+              .maybeSingle();
+
+            if (profile?.plan && profile.plan !== "free") paid = true;
+          }
+
+          setIsPaid(paid);
         } else {
           setIsPaid(true);
         }
 
-        // Admin was already checked above (line 34), no need to re-check
         if (!needsAdminCheck) {
           setIsAdmin(true);
         }
