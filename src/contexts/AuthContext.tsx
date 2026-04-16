@@ -69,14 +69,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [user]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    // Clear all persisted local data
-    localStorage.removeItem("cpf-onboarding-persisted");
-    sessionStorage.removeItem("cpf-onboarding");
-    localStorage.removeItem("cpf-saved-number");
-    localStorage.removeItem("cpf-saved-photo");
-    localStorage.removeItem("cpf-host-declaration");
-    window.location.href = "/";
+    try { await supabase.auth.signOut(); } catch {}
+    // Nuclear clear — remove everything
+    localStorage.clear();
+    sessionStorage.clear();
+    // Force full page reload to clear React state
+    window.location.replace("/");
   };
 
   return (
