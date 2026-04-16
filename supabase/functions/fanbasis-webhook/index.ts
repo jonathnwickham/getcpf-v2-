@@ -17,7 +17,11 @@ Deno.serve(async (req) => {
     const webhookSecret = Deno.env.get("FANBASIS_WEBHOOK_SECRET");
 
     // Validate signature if secret is configured
-    if (webhookSecret && signature) {
+    // Allow plain secret match (Zapier sends raw secret, not HMAC)
+    if (webhookSecret && signature && signature === webhookSecret) {
+      // Plain secret match — valid (Zapier format)
+      console.log("Webhook authenticated via plain secret match");
+    } else if (webhookSecret && signature) {
       const encoder = new TextEncoder();
       const key = await crypto.subtle.importKey(
         "raw",
@@ -56,11 +60,12 @@ Deno.serve(async (req) => {
     }
 
     // Extract buyer email and payment details
-    const buyerEmail = event.buyer?.email || event.api_metadata?.user_email;
-    const paymentId = event.payment_id;
+    // Supports both direct Fanbasis webhook format and Zapier forwarded format
+    const buyerEmail = event.buyer?.email || event.buyer_email || event.api_metadata?.user_email || event.email;
+    const paymentId = event.payment_id || event.sale_id || event.id;
     const customerId = event.customer_id;
-    const amount = event.amount;
-    const currency = event.currency;
+    const amount = event.amount || event.payment_amount;
+    const currency = event.currency || "USD";
     const checkoutSessionId = event.checkout_session_id;
 
     if (!buyerEmail) {
