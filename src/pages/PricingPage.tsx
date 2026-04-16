@@ -272,9 +272,17 @@ const PricingPage = () => {
       if (signUpData?.session) {
         toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started"); return;
       }
+      // Auto-confirm the user (skip email verification — they already proved ownership by paying)
+      if (signUpData?.user?.id) {
+        await supabase.functions.invoke("confirm-user", { body: { user_id: signUpData.user.id } });
+      }
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) { setFlowStep("done"); setLoading(false); }
-      else {
+      if (signInError) {
+        console.error("Sign-in after confirm failed:", signInError);
+        toast({ title: "Something went wrong", description: "Please try signing in.", variant: "destructive" });
+        setLoading(false);
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
         toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started");
       }
     }
