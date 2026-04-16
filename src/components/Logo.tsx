@@ -1,4 +1,4 @@
-import logoImg from "@/assets/logo.svg";
+import logoImg from "@/assets/logo.png";
 
 const Logo = ({ className = "h-8" }: { className?: string }) => (
   <img

@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { openCookiePreferences } from "@/components/CookieBanner";
 
 const Footer = () => (
-  <footer className="bg-[#0a0f0a] text-white py-20 px-5 sm:px-8 rounded-t-2xl mt-3">
+  <footer className="bg-[#0a0f0a] text-white py-20 pb-32 md:pb-20 px-5 sm:px-8 rounded-t-2xl mt-3">
     <div className="max-w-5xl mx-auto">
       {/* Footer CTA */}
       <div className="text-center mb-16 pb-16 border-b border-white/10">

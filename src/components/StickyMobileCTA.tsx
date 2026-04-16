@@ -31,7 +31,7 @@ const StickyMobileCTA = () => {
       }`}
     >
       <div
-        className="bg-white/95 backdrop-blur-lg border-t border-gray-100 px-4 pt-3"
+        className="bg-white border-t border-gray-100 px-4 pt-3"
         style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
       >
         <button
