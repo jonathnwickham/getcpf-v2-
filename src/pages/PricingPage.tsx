@@ -482,7 +482,16 @@ const PricingPage = () => {
                         <div className="w-4 h-4 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
                         <span>{pollCount <= 2 ? "Complete your payment above..." : pollCount <= 6 ? "Waiting for payment confirmation..." : "Still checking, this can take a moment..."}</span>
                       </div>
-                      {pollCount > 4 && <p className="text-xs text-gray-400">Payments typically confirm within 30 seconds</p>}
+                      {pollCount > 4 && pollCount <= 10 && <p className="text-xs text-gray-400">Payments typically confirm within 30 seconds</p>}
+                      {pollCount > 10 && (
+                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center mt-2 w-full">
+                          <p className="text-xs text-gray-500 mb-2">Having trouble with the form?</p>
+                          <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-green-800 font-semibold hover:underline">
+                            Pay directly on Fanbasis instead ↗
+                          </a>
+                          <p className="text-[10px] text-gray-400 mt-1">After paying, you'll be redirected back to verify automatically</p>
+                        </div>
+                      )}
                     </>
                   ) : !paymentVerified ? (
                     <div className="text-center space-y-2">

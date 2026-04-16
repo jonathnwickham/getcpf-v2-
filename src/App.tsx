@@ -22,6 +22,7 @@ const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const PricingPage = lazy(() => import("./pages/PricingPage.tsx"));
+const VerifyPayment = lazy(() => import("./pages/VerifyPayment.tsx"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.tsx"));
 const Affiliates = lazy(() => import("./pages/Affiliates.tsx"));
@@ -66,6 +67,7 @@ const App = () => (
               <Route path="/get-started" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
               <Route path="/ready-pack" element={<ProtectedRoute><ReadyPack /></ProtectedRoute>} />
               <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/verify" element={<VerifyPayment />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signin" element={<Navigate to="/login" replace />} />
               <Route path="/sign-in" element={<Navigate to="/login" replace />} />
