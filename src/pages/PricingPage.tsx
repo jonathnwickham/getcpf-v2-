@@ -442,14 +442,33 @@ const PricingPage = () => {
               </div>
             ) : checkoutError || !EMBEDDED_URL ? (
               <div className="space-y-4">
-                <div className="bg-red-50 border border-red-100 rounded-xl p-5 text-center">
-                  <p className="text-sm font-semibold mb-1">Checkout unavailable</p>
-                  <p className="text-xs text-gray-500">Please use the external payment link instead.</p>
+                <div className="bg-white border border-gray-100 rounded-xl p-6 text-center space-y-4">
+                  <p className="text-sm font-semibold">Complete your payment on Fanbasis</p>
+                  <p className="text-xs text-gray-500">Click below to pay securely. Once done, come back here and click "I've paid".</p>
+                  <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer"
+                    className="w-full bg-green-800 text-white py-4 rounded-xl font-bold text-sm hover:bg-green-900 transition-all flex items-center justify-center gap-3">
+                    Pay ${finalPrice} securely ↗
+                  </a>
+                  <button
+                    onClick={async () => {
+                      setLoadingCheckout(true);
+                      try {
+                        const { data } = await supabase.functions.invoke("verify-payment", { body: { email } });
+                        if (data?.paid) {
+                          handlePaymentComplete();
+                        } else {
+                          toast({ title: "Payment not found yet", description: "It can take a minute to process. Try again shortly.", variant: "destructive" });
+                        }
+                      } catch {
+                        toast({ title: "Could not verify", description: "Please try again in a moment.", variant: "destructive" });
+                      }
+                      setLoadingCheckout(false);
+                    }}
+                    className="w-full bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-all border border-gray-100"
+                  >
+                    I've paid — verify my payment
+                  </button>
                 </div>
-                <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer"
-                  className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-3">
-                  Pay ${finalPrice} securely ↗
-                </a>
               </div>
             ) : (
               <div className="space-y-2">
@@ -466,10 +485,13 @@ const PricingPage = () => {
                       {pollCount > 4 && <p className="text-xs text-gray-400">Payments typically confirm within 30 seconds</p>}
                     </>
                   ) : !paymentVerified ? (
-                    <div className="text-center">
-                      <p className="text-sm text-gray-500 mb-2">Payment not detected yet.</p>
+                    <div className="text-center space-y-2">
+                      <p className="text-sm text-gray-500">Payment not detected yet.</p>
                       <button onClick={() => setPollCount(0)} className="text-sm text-green-800 font-semibold hover:underline">Check again</button>
-                      <p className="text-xs text-gray-400 mt-1">Already paid? <a href="/contact" className="text-green-800 hover:underline">Contact support</a></p>
+                      <p className="text-xs text-gray-400">Having trouble with the form above?</p>
+                      <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-green-800 font-semibold hover:underline">
+                        Pay on Fanbasis website instead ↗
+                      </a>
                     </div>
                   ) : null}
                 </div>
