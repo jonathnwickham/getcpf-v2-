@@ -259,26 +259,26 @@ const PricingPage = () => {
     if (password.length < 6) { toast({ title: "Password too short", description: "Make it at least 6 characters.", variant: "destructive" }); return; }
     if (password !== confirmPassword) { toast({ title: "Those don't match", description: "Check your passwords and try again.", variant: "destructive" }); return; }
     setLoading(true);
-    const { data: signUpData, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/get-started`, data: { plan: "self-service" } } });
-    if (error) {
-      if (error.message?.toLowerCase().includes("already registered") || error.message?.toLowerCase().includes("already been registered")) {
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-        if (signInError) { toast({ title: "Account already exists", description: "An account with this email already exists. Please sign in instead.", variant: "destructive" }); setLoading(false); setTimeout(() => navigate("/login"), 2000); }
-        else {
-          toast({ title: "Welcome back!", description: "Signed in to your existing account." }); setLoading(false); navigate("/get-started");
-        }
-      } else { toast({ title: "Something went wrong", description: error.message, variant: "destructive" }); setLoading(false); }
-    } else {
-      if (signUpData?.session) {
-        toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started"); return;
-      }
-      // Auto-confirm the user (skip email verification — they already proved ownership by paying)
-      if (signUpData?.user?.id) {
-        await supabase.functions.invoke("confirm-user", { body: { user_id: signUpData.user.id } });
-      }
+    // Create user via admin API — no confirmation email, no rate limits
+    const { data: createData } = await supabase.functions.invoke("confirm-user", {
+      body: { email, password, plan: "self-service" },
+    });
+    if (createData?.error === "already_registered") {
+      // User exists — try signing in
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) {
-        console.error("Sign-in after confirm failed:", signInError);
+        toast({ title: "Account already exists", description: "An account with this email already exists. Please sign in instead.", variant: "destructive" });
+        setLoading(false);
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        toast({ title: "Welcome back!", description: "Signed in to your existing account." }); setLoading(false); navigate("/get-started");
+      }
+    } else if (createData?.error) {
+      toast({ title: "Something went wrong", description: createData.error, variant: "destructive" }); setLoading(false);
+    } else {
+      // User created and confirmed — sign in
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
         toast({ title: "Something went wrong", description: "Please try signing in.", variant: "destructive" });
         setLoading(false);
         setTimeout(() => navigate("/login"), 2000);
