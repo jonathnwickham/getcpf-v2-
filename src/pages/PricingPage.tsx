@@ -124,6 +124,7 @@ const PricingPage = () => {
   const [agreementError, setAgreementError] = useState(false);
 
   const [checkoutSecret, setCheckoutSecret] = useState<string | null>(null);
+  const [embedUrl, setEmbedUrl] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState(false);
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
@@ -176,10 +177,15 @@ const PricingPage = () => {
     setLoadingCheckout(true);
     setCheckoutError(false);
     try {
-      const res = await supabase.functions.invoke("create-checkout", { body: { email } });
+      const res = await supabase.functions.invoke("create-checkout", { body: { email, metadata: { user_email: email, source: "cpf-app" } } });
       const secret = res.data?.checkout_session_secret;
-      if (secret) {
+      const embedUrl = res.data?.embed_url;
+      if (embedUrl) {
         setCheckoutSecret(secret);
+        setEmbedUrl(embedUrl);
+      } else if (secret) {
+        setCheckoutSecret(secret);
+        setEmbedUrl(`https://embedded.fanbasis.io/session/telosmedia/0LD5G/${secret}`);
       } else {
         console.error("create-checkout response:", JSON.stringify(res));
         setCheckoutError(true);
@@ -194,7 +200,7 @@ const PricingPage = () => {
   const [paymentVerified, setPaymentVerified] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [pollCount, setPollCount] = useState(0);
-  const EMBEDDED_URL = checkoutSecret ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}` : null;
+  const EMBEDDED_URL = embedUrl || (checkoutSecret ? `https://embedded.fanbasis.io/session/telosmedia/0LD5G/${checkoutSecret}` : null);
   const MAX_POLLS = 90;
 
   const handlePaymentComplete = () => {
