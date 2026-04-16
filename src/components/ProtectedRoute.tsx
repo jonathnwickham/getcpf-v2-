@@ -11,14 +11,17 @@ interface ProtectedRouteProps {
   requireAdmin?: boolean;
 }
 
+// DEMO MODE: skip payment checks — set to false when Fanbasis payments are live
+const DEMO_MODE = true;
+
 const ProtectedRoute = ({ children, requirePayment, requireAdmin }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   const [checking, setChecking] = useState(true);
-  const [isPaid, setIsPaid] = useState(false);
+  const [isPaid, setIsPaid] = useState(DEMO_MODE);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const needsPaymentCheck = requirePayment || ["/ready-pack", "/dashboard"].some(p => location.pathname.startsWith(p));
+  const needsPaymentCheck = !DEMO_MODE && (requirePayment || ["/ready-pack", "/dashboard"].some(p => location.pathname.startsWith(p)));
   const needsAdminCheck = requireAdmin || location.pathname.startsWith("/admin");
 
   useEffect(() => {

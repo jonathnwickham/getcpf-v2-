@@ -169,8 +169,18 @@ const PricingPage = () => {
     setFlowStep("plan");
   };
 
+  // DEMO MODE: skip payment, go straight to account creation
+  const DEMO_MODE = true;
+
   const handleSelectPlan = async (tierName: string) => {
     setSelectedPlan(tierName);
+
+    if (DEMO_MODE) {
+      window.history.pushState(null, "", "/pricing?step=3");
+      setFlowStep("password");
+      return;
+    }
+
     window.history.pushState(null, "", "/pricing?step=3");
     setFlowStep("payment");
     setLoadingCheckout(true);
@@ -236,6 +246,16 @@ const PricingPage = () => {
     } catch {}
   };
 
+  // In demo mode, create a "paid" application so ProtectedRoute allows access
+  const markAsPaidDemo = async (userId: string) => {
+    if (!DEMO_MODE) return;
+    await supabase.from("applications").insert({
+      user_id: userId,
+      email,
+      status: "paid",
+    } as any);
+  };
+
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreed) { setAgreementError(true); toast({ title: "Please accept the terms", description: "Tick the box above to create your account.", variant: "destructive" }); return; }
@@ -247,13 +267,24 @@ const PricingPage = () => {
       if (error.message?.toLowerCase().includes("already registered") || error.message?.toLowerCase().includes("already been registered")) {
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
         if (signInError) { toast({ title: "Account already exists", description: "An account with this email already exists. Please sign in instead.", variant: "destructive" }); setLoading(false); setTimeout(() => navigate("/login"), 2000); }
-        else { toast({ title: "Welcome back!", description: "Signed in to your existing account." }); setLoading(false); navigate("/get-started"); }
+        else {
+          const { data: { user: signedInUser } } = await supabase.auth.getUser();
+          if (signedInUser) await markAsPaidDemo(signedInUser.id);
+          toast({ title: "Welcome back!", description: "Signed in to your existing account." }); setLoading(false); navigate("/get-started");
+        }
       } else { toast({ title: "Something went wrong", description: error.message, variant: "destructive" }); setLoading(false); }
     } else {
-      if (signUpData?.session) { toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started"); return; }
+      if (signUpData?.session) {
+        if (signUpData.user) await markAsPaidDemo(signUpData.user.id);
+        toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started"); return;
+      }
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) { setFlowStep("done"); setLoading(false); }
-      else { toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started"); }
+      else {
+        const { data: { user: signedInUser } } = await supabase.auth.getUser();
+        if (signedInUser) await markAsPaidDemo(signedInUser.id);
+        toast({ title: "Account created!", description: "Let's get your CPF sorted." }); setLoading(false); navigate("/get-started");
+      }
     }
   };
 
