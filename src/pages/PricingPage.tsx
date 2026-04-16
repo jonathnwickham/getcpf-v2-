@@ -133,7 +133,7 @@ const PricingPage = () => {
   const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount_percent: number } | null>(null);
   const [promoError, setPromoError] = useState("");
 
-  const BASE_PRICE = 49;
+  const BASE_PRICE = 29;
   const finalPrice = appliedPromo
     ? (BASE_PRICE * (1 - appliedPromo.discount_percent / 100)).toFixed(2)
     : BASE_PRICE.toFixed(2);
@@ -210,17 +210,25 @@ const PricingPage = () => {
 
   useEffect(() => {
     if (flowStep !== "payment" || !email || paymentVerified) return;
+    let count = 0;
     const poll = async () => {
-      setPollCount(c => c >= MAX_POLLS ? c : c + 1);
+      count++;
+      setPollCount(count);
+      if (count > MAX_POLLS) return;
       try {
-        const { data } = await supabase.functions.invoke("verify-payment", { body: { email } });
+        const { data } = await supabase.functions.invoke("verify-payment", {
+          body: { email, checkout_session_secret: checkoutSecret },
+        });
+        console.log(`[verify-payment] poll #${count}:`, data?.paid ? "PAID" : "not yet");
         if (data?.paid) { setPaymentVerified(true); handlePaymentComplete(); }
-      } catch {}
+      } catch (err) {
+        console.error("[verify-payment] poll error:", err);
+      }
     };
-    const interval = setInterval(() => { if (pollCount < MAX_POLLS) poll(); }, 2000);
     poll();
+    const interval = setInterval(poll, 2000);
     return () => clearInterval(interval);
-  }, [flowStep, email, paymentVerified]);
+  }, [flowStep, email, paymentVerified, checkoutSecret]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {

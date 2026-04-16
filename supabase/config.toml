@@ -1,7 +1,13 @@
-project_id = "hcewyrhlcpfozhnishlj"
+project_id = "qmvsjqqgegeotdhudpwa"
 
 [functions]
   [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.create-checkout]
+    verify_jwt = false
+  [functions.verify-payment]
+    verify_jwt = false
+  [functions.fanbasis-webhook]
     verify_jwt = false
   [functions.handle-email-suppression]
     verify_jwt = false

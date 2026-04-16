@@ -47,7 +47,9 @@ Deno.serve(async (req) => {
     console.log("Webhook event received:", JSON.stringify(event).substring(0, 500));
 
     // We only care about payment.succeeded
-    const eventType = event.type || (event.status === "succeeded" || event.status === "paid" ? "payment.succeeded" : null);
+    // Real events may nest status under event.data
+    const eventStatus = event.status || event.data?.status;
+    const eventType = event.type || (eventStatus === "succeeded" || eventStatus === "paid" ? "payment.succeeded" : null);
 
     if (eventType !== "payment.succeeded") {
       console.log("Ignoring event type:", eventType);
@@ -58,13 +60,14 @@ Deno.serve(async (req) => {
     }
 
     // Extract buyer email and payment details
-    // Supports both direct Fanbasis webhook format and Zapier forwarded format
-    const buyerEmail = event.buyer?.email || event.buyer_email || event.api_metadata?.user_email || event.email;
-    const paymentId = event.payment_id || event.sale_id || event.id;
-    const customerId = event.customer_id;
-    const amount = event.amount || event.payment_amount;
-    const currency = event.currency || "USD";
-    const checkoutSessionId = event.checkout_session_id;
+    // Real Fanbasis events nest under event.data; test events are flat
+    const d = event.data || event;
+    const buyerEmail = d.buyer?.email || event.buyer?.email || event.buyer_email || d.api_metadata?.user_email || event.api_metadata?.user_email || event.email;
+    const paymentId = d.payment_id || event.payment_id || event.sale_id || event.id;
+    const customerId = d.customer_id || event.customer_id;
+    const amount = d.amount || event.amount || event.payment_amount;
+    const currency = d.currency || event.currency || "USD";
+    const checkoutSessionId = d.checkout_session_id || event.checkout_session_id;
 
     if (!buyerEmail) {
       console.error("No buyer email in webhook payload:", JSON.stringify(event));

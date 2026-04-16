@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.100.1");
       const supabase = createClient(supabaseUrl, supabaseKey);
       await supabase.from("checkout_sessions").insert({
-        email: body.email || null,
+        email: body.email ? body.email.toLowerCase().trim() : null,
         checkout_session_secret: secret,
         product_id: productId,
       });

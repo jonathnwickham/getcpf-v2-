@@ -11,7 +11,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email } = await req.json();
+    const { email, checkout_session_secret } = await req.json();
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
       return new Response(
@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // 1. Fast path: check DB first
+    // 1. Fast path: check DB by email
     const { data: dbSession } = await supabase
       .from("checkout_sessions")
       .select("id, paid, paid_at, payment_id")
@@ -33,6 +33,24 @@ Deno.serve(async (req) => {
       .eq("paid", true)
       .limit(1)
       .maybeSingle();
+
+    // 1b. Also check by checkout_session_secret if provided (more reliable match)
+    if (!dbSession && checkout_session_secret) {
+      const { data: secretSession } = await supabase
+        .from("checkout_sessions")
+        .select("id, paid, paid_at, payment_id")
+        .eq("checkout_session_secret", checkout_session_secret)
+        .eq("paid", true)
+        .limit(1)
+        .maybeSingle();
+      if (secretSession) {
+        console.log(`Payment found by checkout_session_secret for ${normalizedEmail}`);
+        return new Response(
+          JSON.stringify({ paid: true, paid_at: secretSession.paid_at, payment_id: secretSession.payment_id }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
 
     if (dbSession) {
       return new Response(
@@ -69,17 +87,25 @@ Deno.serve(async (req) => {
             const paidAt = match.transaction_date || new Date().toISOString();
             console.log(`Fanbasis API confirmed payment for ${normalizedEmail}, tx: ${txId}`);
 
-            // Update DB so future checks are instant
-            await supabase
+            // Update DB so future checks are instant — try by email first, then by secret
+            const updatePayload = {
+              paid: true,
+              paid_at: paidAt,
+              payment_id: txId,
+              amount_cents: match.amount ? Math.round(match.amount * 100) : null,
+            };
+            const { count: emailUpdated } = await supabase
               .from("checkout_sessions")
-              .update({
-                paid: true,
-                paid_at: paidAt,
-                payment_id: txId,
-                amount_cents: match.amount ? Math.round(match.amount * 100) : null,
-              })
+              .update(updatePayload, { count: "exact" })
               .eq("email", normalizedEmail)
               .eq("paid", false);
+            if (!emailUpdated && checkout_session_secret) {
+              await supabase
+                .from("checkout_sessions")
+                .update({ ...updatePayload, email: normalizedEmail })
+                .eq("checkout_session_secret", checkout_session_secret)
+                .eq("paid", false);
+            }
 
             // Also update profile plan
             const { data: profile } = await supabase
