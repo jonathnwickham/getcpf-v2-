@@ -624,6 +624,12 @@ const PricingPage = () => {
           </div>
         )}
       </div>
+
+      {/* Capybara mascot */}
+      <div className="flex flex-col items-center pb-12 pt-4">
+        <img src="/capybara.png" alt="Capybara mascot" className="w-28 sm:w-36 opacity-80" />
+        <p className="text-xs text-gray-400 mt-2">Your CPF is closer than you think.</p>
+      </div>
     </div>
   );
 };
