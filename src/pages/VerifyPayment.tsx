@@ -24,7 +24,7 @@ const VerifyPayment = () => {
       if (data?.paid) {
         setResult("found");
         // Redirect to signup/login after 2 seconds
-        setTimeout(() => navigate(`/pricing?step=4&email=${encodeURIComponent(email.trim().toLowerCase())}`), 2000);
+        setTimeout(() => navigate(`/welcome?email=${encodeURIComponent(email.trim().toLowerCase())}`), 2000);
       } else {
         setResult("not_found");
       }

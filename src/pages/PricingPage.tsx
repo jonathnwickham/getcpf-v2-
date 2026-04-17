@@ -209,7 +209,7 @@ const PricingPage = () => {
 
   const handlePaymentComplete = () => {
     setShowPaymentSuccess(true);
-    setTimeout(() => { setShowPaymentSuccess(false); setFlowStep("password"); }, 2500);
+    setTimeout(() => { setShowPaymentSuccess(false); navigate(`/welcome?email=${encodeURIComponent(email)}`); }, 2500);
   };
 
   useEffect(() => {
