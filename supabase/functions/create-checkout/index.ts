@@ -1,4 +1,4 @@
-const ALLOWED_ORIGINS = ["https://getcpf.netlify.app", "http://localhost:5177", "http://localhost:8080", "http://localhost:5176"];
+const ALLOWED_ORIGINS = ["https://getcpf.com", "https://www.getcpf.com", "https://getcpf.netlify.app", "http://localhost:5177", "http://localhost:8080", "http://localhost:5176"];
 
 const corsHeaders = (origin: string) => ({
   "Access-Control-Allow-Origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
