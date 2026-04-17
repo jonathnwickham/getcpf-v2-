@@ -85,6 +85,7 @@ export interface OfficeInfo {
   recommended: boolean;
   tip: string;
   waitTime: string;
+  googleMapsUrl?: string;
 }
 
 // Verified offices from official Receita Federal SAGA system (scraped 17 Apr 2026)
@@ -148,10 +149,10 @@ export const STATE_OFFICES: Record<string, OfficeInfo[]> = {
     { name: "CAC Teresina", address: "Praça Marechal Deodoro, s/n, Centro, Teresina, PI, 64000-160", phone: "", email: "atendimentorfb.03@rfb.gov.br", hours: "Das 08:00 às 12:00", recommended: true, tip: "", waitTime: "" },
   ],
   PR: [
-    { name: "CAC Curitiba - Centro", address: "Rua Marechal Deodoro, nº 555, Térreo, Centro, Curitiba, PR, 80020-911", phone: "(41) 99197-8359", email: "atendimentorfb.09@rfb.gov.br", hours: "Das 08:00 às 12:00 e das 12:00 às 16:00", recommended: true, tip: "", waitTime: "" },
+    { name: "CAC Curitiba - Centro", address: "Rua Marechal Deodoro, nº 555, Térreo, Centro, Curitiba, PR, 80020-911", phone: "(41) 99197-8359", email: "atendimentorfb.09@rfb.gov.br", hours: "Das 08:00 às 12:00 e das 12:00 às 16:00", recommended: true, tip: "", waitTime: "", googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Receita+Federal&query_place_id=ChIJTVzqImvk3JQRE1wo3Qz4GOg" },
   ],
   RJ: [
-    { name: "CAC RJO I - Centro Cidadão", address: "Avenida Presidente Antônio Carlos, nº 375, Centro, Rio de Janeiro, RJ, 20020-001", phone: "", email: "atendimentorfb.07@rfb.gov.br", hours: "Das 09:00 às 13:00", recommended: true, tip: "", waitTime: "" },
+    { name: "CAC RJO I - Centro Cidadão", address: "Avenida Presidente Antônio Carlos, nº 375, Centro, Rio de Janeiro, RJ, 20020-001", phone: "", email: "atendimentorfb.07@rfb.gov.br", hours: "Das 09:00 às 13:00", recommended: true, tip: "", waitTime: "", googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Receita+Federal+CAC+Centro&query_place_id=ChIJu-M-1t-BmQAREN-PlV3228E" },
     { name: "CAC RJO I - Ipanema", address: "Rua Barão da Torre, nº 296, Ipanema, Rio de Janeiro, RJ, 22411-000", phone: "(21) 97487-8702", email: "atendimentorfb.07@rfb.gov.br", hours: "Das 09:00 às 13:00", recommended: false, tip: "", waitTime: "" },
   ],
   RN: [
@@ -174,7 +175,7 @@ export const STATE_OFFICES: Record<string, OfficeInfo[]> = {
     { name: "CAC Aracaju", address: "Av. Mário Jorge Menezes Vieira, 3028, Nexus Empresarial, Coroa do Meio, Aracaju, SE, 49035-100", phone: "(79) 2105-3100", email: "atendimentorfb.05@rfb.gov.br", hours: "Das 08:00 às 12:00", recommended: true, tip: "", waitTime: "" },
   ],
   SP: [
-    { name: "CAC São Paulo - Bela Vista", address: "Rua Avanhandava, nº 55, 1° Andar, Bela Vista, São Paulo, SP, 01306-001", phone: "", email: "atendimentorfb.08@rfb.gov.br", hours: "Das 08:00 às 13:00 e das 13:01 às 16:00", recommended: true, tip: "", waitTime: "" },
+    { name: "CAC São Paulo - Bela Vista", address: "Rua Avanhandava, nº 55, 1° Andar, Bela Vista, São Paulo, SP, 01306-001", phone: "", email: "atendimentorfb.08@rfb.gov.br", hours: "Das 08:00 às 13:00 e das 13:01 às 16:00", recommended: true, tip: "", waitTime: "", googleMapsUrl: "https://www.google.com/maps/place/Receita+Federal+-+CAC+Bela+Vista/@-23.550051,-46.6448043,17z/data=!3m1!5s0x94ce584cede6ae27:0xb918cc51e10c2599!4m6!3m5!1s0x94ce59d12daf284b:0x9e63a4cb96e94836!8m2!3d-23.550051!4d-46.6448043!16s%2Fg%2F11pyl5dbv3" },
     { name: "CAC São Paulo - Itaquera", address: "Avenida Celso Garcia, nº 3580, Térreo, Tatuapé, São Paulo, SP, 03064-000", phone: "", email: "atendimentorfb.01@rfb.gov.br", hours: "Das 08:00 às 16:00", recommended: false, tip: "", waitTime: "" },
   ],
   TO: [

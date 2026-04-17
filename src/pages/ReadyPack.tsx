@@ -942,8 +942,9 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
 );
 
 // === OFFICE HELPERS ===
-// Build a Google Maps URL using the exact verified address
+// Use direct Google Maps listing URL if available, otherwise fall back to address search
 const getGoogleMapsUrl = (office: OfficeInfo) => {
+  if (office.googleMapsUrl) return office.googleMapsUrl;
   return `https://www.google.com/maps/search/${encodeURIComponent(office.address)}`;
 };
 
