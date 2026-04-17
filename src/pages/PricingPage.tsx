@@ -496,39 +496,40 @@ const PricingPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="space-y-2">
-                <div className="overflow-hidden rounded-xl border border-gray-100">
-                  <iframe src={EMBEDDED_URL} className="w-full border-0" style={{ minHeight: "900px", height: "1200px", maxHeight: "2000px" }} allow="payment" title="Fanbasis Checkout" />
+              <div className="space-y-4">
+                <div className="bg-white border border-gray-100 rounded-xl p-6 text-center space-y-4">
+                  <p className="text-sm font-semibold">Complete your payment securely</p>
+                  <p className="text-xs text-gray-500">Click below to pay on Fanbasis. Once done, come back here and click "I've paid".</p>
+                  <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer"
+                    className="w-full bg-green-800 text-white py-4 rounded-xl font-bold text-sm hover:bg-green-900 transition-all flex items-center justify-center gap-3">
+                    Pay ${finalPrice} securely ↗
+                  </a>
+                  <button
+                    onClick={async () => {
+                      setLoadingCheckout(true);
+                      try {
+                        const { data } = await supabase.functions.invoke("verify-payment", { body: { email, checkout_session_secret: checkoutSecret } });
+                        if (data?.paid) {
+                          handlePaymentComplete();
+                        } else {
+                          toast({ title: "Payment not found yet", description: "It can take a minute to process. Try again shortly.", variant: "destructive" });
+                        }
+                      } catch {
+                        toast({ title: "Could not verify", description: "Please try again in a moment.", variant: "destructive" });
+                      }
+                      setLoadingCheckout(false);
+                    }}
+                    className="w-full bg-gray-50 text-gray-900 py-3 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-all border border-gray-100"
+                  >
+                    I've paid — verify my payment
+                  </button>
                 </div>
-                <div className="flex flex-col items-center gap-2 py-1">
-                  {!paymentVerified && pollCount < MAX_POLLS ? (
-                    <>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <div className="w-4 h-4 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
-                        <span>{pollCount <= 2 ? "Complete your payment above..." : pollCount <= 6 ? "Waiting for payment confirmation..." : "Still checking, this can take a moment..."}</span>
-                      </div>
-                      {pollCount > 4 && pollCount <= 10 && <p className="text-xs text-gray-400">Payments typically confirm within 30 seconds</p>}
-                      {pollCount > 10 && (
-                        <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center mt-2 w-full">
-                          <p className="text-xs text-gray-500 mb-2">Having trouble with the form?</p>
-                          <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-green-800 font-semibold hover:underline">
-                            Pay directly on Fanbasis instead ↗
-                          </a>
-                          <p className="text-[10px] text-gray-400 mt-1">After paying, you'll be redirected back to verify automatically</p>
-                        </div>
-                      )}
-                    </>
-                  ) : !paymentVerified ? (
-                    <div className="text-center space-y-2">
-                      <p className="text-sm text-gray-500">Payment not detected yet.</p>
-                      <button onClick={() => setPollCount(0)} className="text-sm text-green-800 font-semibold hover:underline">Check again</button>
-                      <p className="text-xs text-gray-400">Having trouble with the form above?</p>
-                      <a href={FALLBACK_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-green-800 font-semibold hover:underline">
-                        Pay on Fanbasis website instead ↗
-                      </a>
-                    </div>
-                  ) : null}
-                </div>
+                {!paymentVerified && pollCount > 0 && pollCount < MAX_POLLS && (
+                  <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
+                    <div className="w-3 h-3 border-2 border-green-800 border-t-transparent rounded-full animate-spin" />
+                    <span>Checking for payment...</span>
+                  </div>
+                )}
               </div>
             )}
 
