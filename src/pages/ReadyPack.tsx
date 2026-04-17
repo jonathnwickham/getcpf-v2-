@@ -943,9 +943,9 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
 
 // === OFFICE TAB ===
 const CITY_TIPS: Record<string, string> = {
-  SP: "Go to CAC Bela Vista (Rua Avanhandava, 55). Multiple foreigners confirm fast processing (10-15 min). Avoid the Praça Ramos location. foreigners report being turned away.",
-  SC: "Centro office confirmed foreigner-friendly.",
-  RJ: "Main offices handle foreigners regularly.",
+  SP: "CAC Bela Vista (Rua Avanhandava, 55) is the most well-known office for foreigners in São Paulo.",
+  SC: "CAC Florianópolis in Centro handles CPF for foreigners.",
+  RJ: "CAC Centro Cidadão (Av. Presidente Antônio Carlos, 375) is the main office. Ipanema is a less busy alternative.",
 };
 
 const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onChangeState }: {
@@ -1052,19 +1052,24 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
         {/* What to expect */}
         <section className="bg-white border border-gray-100 rounded-2xl p-6">
           <h3 className="font-bold mb-4">What to expect at this office</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <ExpectCard icon="⏱️" title="Wait time" value={recommendedOffice.waitTime} />
-            <ExpectCard icon="⭐" title="Rating" value={`${recommendedOffice.rating}/5 (${recommendedOffice.reviewCount} reviews)`} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <ExpectCard icon="🕐" title="Hours" value={recommendedOffice.hours} />
-          </div>
-          <div className="mt-4 bg-green-800/5 border border-green-800/10 rounded-xl p-4">
-            <p className="text-sm font-semibold text-green-800 mb-1">💡 Pro tip from visitors</p>
-            <p className="text-sm text-gray-500">{recommendedOffice.tip}</p>
+            <ExpectCard icon="📋" title="Service" value="CPF registration for foreigners (free)" />
           </div>
         </section>
 
-        {/* Reviews section */}
-        <ReviewsSection office={recommendedOffice} />
+        {/* Google Maps link */}
+        <section className="bg-white border border-gray-100 rounded-2xl p-6">
+          <h3 className="font-bold mb-2">Reviews from other visitors</h3>
+          <p className="text-sm text-gray-500 mb-4">Search for "CPF" or "estrangeiro" in the reviews to find experiences from other foreigners at this office.</p>
+          <ExternalLink
+            href={`https://www.google.com/maps/search/${encodeURIComponent(recommendedOffice.name + " " + recommendedOffice.address)}`}
+            className="inline-flex items-center gap-2 bg-green-800 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
+          >
+            📍 View reviews on Google Maps
+          </ExternalLink>
+          <p className="text-xs text-gray-400 mt-3">Reviews and ratings are hosted on Google Maps. We only verify location and service data from official Receita Federal records.</p>
+        </section>
 
         {/* How to prepare */}
         <section className="bg-white border border-gray-100 rounded-2xl p-6">
@@ -1189,87 +1194,8 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
   );
 };
 
-// === REVIEWS SECTION ===
-// Curated 5-star reviews from foreigners who got their CPF at each office
-const CPF_REVIEWS: Record<string, { text: string; author: string; flag: string }[]> = {
-  SP: [
-    { text: "Got my CPF as a foreigner in about 20 minutes. Staff were helpful and patient with my broken Portuguese. Arrived at 7:30 AM and was out before 8.", author: "Maria K.", flag: "🇩🇪" },
-    { text: "Very organised. Took a number, waited 15 minutes, showed my passport and proof of address, and walked out with my CPF. Surprisingly painless.", author: "James T.", flag: "🇬🇧" },
-    { text: "Third time lucky at this office. First two times I had the wrong documents. Bring EVERYTHING. Passport, copies, proof of address. They were strict but fair.", author: "Ana L.", flag: "🇦🇷" },
-  ],
-  RJ: [
-    { text: "As a foreigner, I was nervous but the staff guided me through the whole CPF process. Arrived early, done in 30 minutes. Bring copies of everything.", author: "Sophie M.", flag: "🇫🇷" },
-    { text: "Got my CPF here. The queue was long but moved fast. Staff spoke some English which helped. Make sure you have a valid proof of address.", author: "David R.", flag: "🇺🇸" },
-  ],
-  SC: [
-    { text: "Small office, very friendly staff. Got my CPF as a digital nomad in under 20 minutes. They even helped me fill out the form correctly.", author: "Lucas V.", flag: "🇳🇱" },
-  ],
-  PR: [
-    { text: "One of the most efficient government offices I have visited anywhere. CPF for foreigners took about 15 minutes total. Staff spoke basic English.", author: "Michael B.", flag: "🇦🇺" },
-  ],
-  MG: [
-    { text: "Got my CPF registration done smoothly. The staff were patient with my Portuguese and double-checked everything before submitting.", author: "Carlos P.", flag: "🇨🇴" },
-  ],
-  DF: [
-    { text: "The main Receita Federal building in Brasilia is very well organised. CPF for foreigners is clearly signed. Done in 25 minutes.", author: "Emma W.", flag: "🇮🇪" },
-  ],
-};
-
-const ReviewsSection = ({ office }: { office: OfficeInfo }) => {
-  const googleReviewsUrl = `https://www.google.com/maps/search/${encodeURIComponent(office.name + " " + office.address)}`;
-  // Find reviews for this state by matching the office address
-  const stateCode = Object.entries(STATE_OFFICES).find(([, offices]) =>
-    offices.some(o => o.name === office.name)
-  )?.[0] || "";
-  const cpfReviews = CPF_REVIEWS[stateCode] || CPF_REVIEWS.SP;
-
-  return (
-    <section className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
-        <div>
-          <h3 className="font-bold">⭐ Reviews from foreigners</h3>
-          <p className="text-xs text-gray-500 mt-0.5">{office.reviewCount} reviews · {office.rating}/5 average on Google</p>
-        </div>
-        <div className="flex items-center gap-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span key={star} className={`text-lg ${star <= Math.round(office.rating) ? "text-amber-400" : "text-gray-200"}`}>★</span>
-          ))}
-        </div>
-      </div>
-      <div className="p-6 space-y-4">
-        {/* Curated CPF reviews */}
-        <div className="space-y-3">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">What foreigners said about getting their CPF here</p>
-          {cpfReviews.map((review, i) => (
-            <div key={i} className="bg-gray-50 rounded-xl p-4">
-              <div className="flex items-center gap-1 mb-2">
-                {[1, 2, 3, 4, 5].map((s) => <span key={s} className="text-amber-400 text-xs">★</span>)}
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed italic">"{review.text}"</p>
-              <p className="text-xs text-gray-500 mt-2 font-medium">{review.flag} {review.author}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Link to all reviews */}
-        <div className="text-center pt-2">
-          <ExternalLink
-            href={googleReviewsUrl}
-            className="inline-flex items-center gap-2 bg-green-800 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
-          >
-            Read all {office.reviewCount} reviews on Google Maps →
-          </ExternalLink>
-        </div>
-
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
-          <p className="text-xs text-amber-800">
-            <strong>💡 Pro tip:</strong> Search for "CPF" or "estrangeiro" in the reviews to find more experiences from foreigners at this office.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
+// === REVIEWS REMOVED ===
+// Old fake reviews deleted. Real reviews live on Google Maps — we link out instead.
 
 // === TRANSPORT SECTION ===
 const METRO_INFO: Record<string, { lines: string[]; fare: string; cardRequired: boolean; cardName?: string; tip: string }> = {
@@ -2708,10 +2634,6 @@ const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommend
           <ContactDetail icon="📧" label="Email" value={office.email} isEmail />
           <ContactDetail icon="🕐" label="Hours" value={office.hours} />
           <ContactDetail icon="⏱️" label="Wait time" value={office.waitTime} />
-        </div>
-        <div className="flex items-center gap-2 mt-4 text-sm">
-          <span className="text-green-800 font-bold">⭐ {office.rating}</span>
-          <span className="text-gray-500">({office.reviewCount} reviews)</span>
         </div>
         <div className="flex gap-3 mt-4">
           <ExternalLink
