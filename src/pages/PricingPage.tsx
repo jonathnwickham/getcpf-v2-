@@ -66,7 +66,7 @@ const tiers = [
 
 type FlowStep = "email" | "plan" | "payment" | "password" | "done";
 
-const PRODUCT_ID = "0LD5G";
+const PRODUCT_ID = "QOnvl";
 const CREATOR_HANDLE = "telosmedia";
 const FALLBACK_URL = `https://www.fanbasis.com/agency-checkout/${CREATOR_HANDLE}/${PRODUCT_ID}`;
 
