@@ -32,6 +32,7 @@ Deno.serve(async (req) => {
         headers: {
           "x-api-key": apiKey,
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify({
           product_id: productId,
