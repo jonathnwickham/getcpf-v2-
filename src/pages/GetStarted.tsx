@@ -161,7 +161,8 @@ const GetStarted = () => {
     fetchLatestApplication(user.id)
       .then((application) => {
         if (application) {
-          if (applicationHasReadyPack(application)) {
+          const isEditMode = new URLSearchParams(window.location.search).get("edit") === "true";
+          if (applicationHasReadyPack(application) && !isEditMode) {
             navigate("/ready-pack", { replace: true });
             return;
           }

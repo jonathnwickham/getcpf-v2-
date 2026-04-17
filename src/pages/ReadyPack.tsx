@@ -892,7 +892,7 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
         <h2 className="font-bold">Your application details</h2>
         <div className="flex items-center gap-2">
           <span className="text-xs bg-green-800/10 text-green-800 px-2 py-1 rounded-md font-semibold">Verified ✓</span>
-          <a href="/get-started" className="text-xs text-gray-500 hover:text-green-800 font-semibold transition-colors">Edit ✎</a>
+          <a href="/get-started?edit=true" className="text-xs text-gray-500 hover:text-green-800 font-semibold transition-colors">Edit ✎</a>
         </div>
       </div>
       <div className="p-6">
