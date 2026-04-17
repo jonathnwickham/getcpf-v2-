@@ -941,6 +941,17 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
   </div>
 );
 
+// === OFFICE HELPERS ===
+// Build a Google Maps search URL that lands on the business listing (not just the address pin)
+const getGoogleMapsUrl = (office: OfficeInfo) => {
+  // Address format: "street, details, neighborhood, city, state, CEP"
+  // City is 3rd from end, state is 2nd from end
+  const parts = office.address.split(",").map(p => p.trim());
+  const city = parts.length >= 3 ? parts[parts.length - 3] : "";
+  const query = `Receita Federal ${office.name.replace(/^CAC\s+/, "")} ${city}`.trim();
+  return `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+};
+
 // === OFFICE TAB ===
 const CITY_TIPS: Record<string, string> = {
   SP: "CAC Bela Vista (Rua Avanhandava, 55) is the most well-known office for foreigners in São Paulo.",
@@ -1063,7 +1074,7 @@ const OfficeTab = ({ recommendedOffice, alternativeOffices, stateName, data, onC
           <h3 className="font-bold mb-2">Reviews from other visitors</h3>
           <p className="text-sm text-gray-500 mb-4">Search for "CPF" or "estrangeiro" in the reviews to find experiences from other foreigners at this office.</p>
           <ExternalLink
-            href={`https://www.google.com/maps/search/${encodeURIComponent(recommendedOffice.name + " " + recommendedOffice.address)}`}
+            href={getGoogleMapsUrl(recommendedOffice)}
             className="inline-flex items-center gap-2 bg-green-800 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-all"
           >
             📍 View reviews on Google Maps
@@ -2616,7 +2627,7 @@ const AfterCard = ({ icon, title, desc }: { icon: string; title: string; desc: s
 );
 
 const OfficeCard = ({ office, isRecommended }: { office: OfficeInfo; isRecommended?: boolean }) => {
-  const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(office.address)}`;
+  const mapsUrl = getGoogleMapsUrl(office);
 
   return (
     <div className={`bg-white border rounded-2xl overflow-hidden ${isRecommended ? "border-green-800 shadow-lg shadow-primary/5" : "border-gray-100"}`}>
