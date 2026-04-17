@@ -75,7 +75,12 @@ const PricingPage = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const [flowStep, setFlowStep] = useState<FlowStep>("email");
+  // Read step and email from URL on initial load (e.g., redirect from /verify)
+  const initialParams = new URLSearchParams(window.location.search);
+  const initialStep = parseInt(initialParams.get("step") || "1");
+  const initialEmail = initialParams.get("email") || "";
+  const steps: FlowStep[] = ["email", "plan", "payment", "password", "done"];
+  const [flowStep, setFlowStep] = useState<FlowStep>(steps[initialStep - 1] || "email");
 
   useEffect(() => {
     const stepNum = { email: 1, plan: 2, payment: 3, password: 4, done: 5 }[flowStep] || 1;
@@ -87,7 +92,6 @@ const PricingPage = () => {
     const handlePop = () => {
       const params = new URLSearchParams(window.location.search);
       const step = parseInt(params.get("step") || "1");
-      const steps: FlowStep[] = ["email", "plan", "payment", "password", "done"];
       setFlowStep(steps[step - 1] || "email");
     };
     window.addEventListener("popstate", handlePop);
@@ -113,7 +117,7 @@ const PricingPage = () => {
     checkPaid();
   }, [user, navigate]);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(initialEmail);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
