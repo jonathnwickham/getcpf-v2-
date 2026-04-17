@@ -31,6 +31,16 @@ const Footer = () => (
           </ul>
         </div>
         <div>
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">CPF Guides</h4>
+          <ul className="space-y-2.5 text-sm text-gray-500">
+            <li><a href="/what-is-cpf/" className="hover:text-white transition-colors link-underline link-underline-light">What is a CPF?</a></li>
+            <li><a href="/cpf-documents-needed/" className="hover:text-white transition-colors link-underline link-underline-light">Documents needed</a></li>
+            <li><a href="/cpf-for-americans/" className="hover:text-white transition-colors link-underline link-underline-light">CPF for Americans</a></li>
+            <li><a href="/cpf-without-portuguese/" className="hover:text-white transition-colors link-underline link-underline-light">Without Portuguese</a></li>
+            <li><a href="/guides/" className="hover:text-white transition-colors link-underline link-underline-light">All guides</a></li>
+          </ul>
+        </div>
+        <div>
           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Company</h4>
           <ul className="space-y-2.5 text-sm text-gray-500">
             <li><Link to="/contact" className="hover:text-white transition-colors link-underline link-underline-light">Contact us</Link></li>

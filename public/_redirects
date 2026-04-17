@@ -1,1 +1,14 @@
+# SEO pages — redirect to trailing slash for consistency
+/what-is-cpf /what-is-cpf/ 301
+/cpf-for-americans /cpf-for-americans/ 301
+/cpf-for-digital-nomads /cpf-for-digital-nomads/ 301
+/cpf-sao-paulo /cpf-sao-paulo/ 301
+/cpf-documents-needed /cpf-documents-needed/ 301
+/things-you-need-cpf-for-brazil /things-you-need-cpf-for-brazil/ 301
+/cpf-without-portuguese /cpf-without-portuguese/ 301
+/cpf-for-europeans /cpf-for-europeans/ 301
+/cpf-for-tourists /cpf-for-tourists/ 301
+/cpf-rio-de-janeiro /cpf-rio-de-janeiro/ 301
+
+# SPA fallback — must be last
 /* /index.html 200
