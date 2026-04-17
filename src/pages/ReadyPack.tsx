@@ -942,14 +942,9 @@ const OverviewTab = ({ data, motherDisplay, stateName, recommendedOffice, setAct
 );
 
 // === OFFICE HELPERS ===
-// Build a Google Maps search URL that lands on the business listing (not just the address pin)
+// Build a Google Maps URL using the exact verified address
 const getGoogleMapsUrl = (office: OfficeInfo) => {
-  // Address format: "street, details, neighborhood, city, state, CEP"
-  // City is 3rd from end, state is 2nd from end
-  const parts = office.address.split(",").map(p => p.trim());
-  const city = parts.length >= 3 ? parts[parts.length - 3] : "";
-  const query = `Receita Federal ${office.name.replace(/^CAC\s+/, "")} ${city}`.trim();
-  return `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+  return `https://www.google.com/maps/search/${encodeURIComponent(office.address)}`;
 };
 
 // === OFFICE TAB ===
