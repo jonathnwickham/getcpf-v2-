@@ -625,11 +625,21 @@ const PricingPage = () => {
         )}
       </div>
 
-      {/* Capybara mascot */}
-      <div className="flex flex-col items-center pb-12 pt-4">
-        <img src="/capybara.png" alt="Capybara mascot" className="w-28 sm:w-36 opacity-80" />
-        <p className="text-xs text-gray-400 mt-2">Your CPF is closer than you think.</p>
+      {/* Typewriter message */}
+      <div className="flex items-center justify-center pb-16 pt-8">
+        <p className="text-lg sm:text-xl font-semibold text-gray-300 typewriter-text">Your CPF is closer than you think.</p>
       </div>
+      <style>{`
+        .typewriter-text {
+          overflow: hidden;
+          white-space: nowrap;
+          border-right: 2px solid #d1d5db;
+          width: 0;
+          animation: typing 2.5s steps(35, end) 0.5s forwards, blink-caret 0.6s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100%; max-width: 22em } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #d1d5db } }
+      `}</style>
     </div>
   );
 };
