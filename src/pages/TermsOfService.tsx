@@ -17,7 +17,10 @@ const TermsOfService = () => (
 
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-extrabold tracking-tight mb-2">Terms of Service</h1>
-      <p className="text-sm text-gray-500 mb-12">Last updated: 1 April 2026</p>
+      <p className="text-sm text-gray-500 mb-4">Last updated: 1 April 2026</p>
+      <div className="mb-12">
+        <a href="https://www.iubenda.com/terms-and-conditions/60979908" className="iubenda-white iubenda-noiframe iubenda-embed" title="Terms and Conditions">View full Terms and Conditions</a>
+      </div>
 
       <div className="prose prose-sm max-w-none space-y-8 text-gray-900/90">
 
