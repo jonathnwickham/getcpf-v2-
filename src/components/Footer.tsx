@@ -59,7 +59,10 @@ const Footer = () => (
         </div>
       </div>
       <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-gray-600">© 2026 GET CPF. All rights reserved.</p>
+        <div>
+          <p className="text-xs text-gray-600">© 2026 GET CPF. All rights reserved.</p>
+          <p className="text-xs text-gray-600 mt-1">Data Protection Officer: jonathan@telosmedia.co</p>
+        </div>
         <p className="text-xs text-gray-600 max-w-md text-center sm:text-right">Not affiliated with the Brazilian Government or Receita Federal. We provide preparation guidance only.</p>
       </div>
     </div>
