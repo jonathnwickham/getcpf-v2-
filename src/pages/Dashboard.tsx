@@ -465,7 +465,19 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
 
   const handleDeleteAccount = async () => {
     setDeleting(true);
+    // Delete passport/document files from storage
+    try {
+      const { data: files } = await supabase.storage.from("documents").list(user.id);
+      if (files && files.length > 0) {
+        const filePaths = files.map((f: any) => `${user.id}/${f.name}`);
+        await supabase.storage.from("documents").remove(filePaths);
+      }
+    } catch {}
+    // Delete application data
     await supabase.from("applications").delete().eq("user_id", user.id);
+    // Delete checkout sessions
+    await supabase.from("checkout_sessions").delete().eq("email", user.email);
+    // Anonymize profile
     await supabase
       .from("profiles")
       .update({
@@ -473,6 +485,7 @@ const MyDataSection = ({ user, application }: { user: any; application: any }) =
         email: `deleted-${user.id.slice(0, 8)}@deleted.getcpf.com`,
         country_code: null,
         location: null,
+        plan: null,
       })
       .eq("id", user.id);
     await signOut();

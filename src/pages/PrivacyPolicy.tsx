@@ -17,7 +17,12 @@ const PrivacyPolicy = () => (
 
     <main className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-extrabold tracking-tight mb-2">Privacy Policy</h1>
-      <p className="text-sm text-gray-500 mb-12">Last updated: 1 April 2026</p>
+      <p className="text-sm text-gray-500 mb-4">Last updated: 1 April 2026</p>
+      <div className="flex gap-3 mb-12">
+        <a href="https://www.iubenda.com/privacy-policy/60979908" className="iubenda-white iubenda-noiframe iubenda-embed text-sm text-green-800 font-semibold hover:underline" title="Privacy Policy">View full Privacy Policy (iubenda)</a>
+        <span className="text-gray-300">|</span>
+        <a href="https://www.iubenda.com/privacy-policy/60979908/cookie-policy" className="iubenda-white iubenda-noiframe iubenda-embed text-sm text-green-800 font-semibold hover:underline" title="Cookie Policy">Cookie Policy</a>
+      </div>
 
       <div className="prose prose-sm max-w-none space-y-8 text-gray-900/90">
 
