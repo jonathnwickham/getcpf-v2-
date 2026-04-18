@@ -63,7 +63,7 @@ const Hero = ({ onOpenModal }: HeroProps) => {
             transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-lg text-gray-500 mt-6 leading-relaxed max-w-lg mx-auto"
           >
-            Everything foreigners in Brazil need to get their CPF on the first try. Five minutes of preparation. One visit. Done.
+            Everything you need as a foreigner in Brazil to get your CPF on the first try. Five minutes of preparation. One visit. Done.
           </motion.p>
 
           <motion.div
