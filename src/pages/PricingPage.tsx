@@ -626,8 +626,8 @@ const PricingPage = () => {
       </div>
 
       {/* Typewriter message */}
-      <div className="max-w-md mx-auto px-5 pb-16 pt-8">
-        <p className="text-base sm:text-lg font-normal text-gray-900 typewriter-text">Your CPF is closer than you think.</p>
+      <div className="max-w-md mx-auto px-5 pb-16 pt-8 flex justify-center">
+        <p className="text-base sm:text-lg font-normal text-gray-900 typewriter-text inline-block">Your CPF is closer than you think.</p>
       </div>
       <style>{`
         .typewriter-text {
@@ -635,9 +635,10 @@ const PricingPage = () => {
           white-space: nowrap;
           border-right: 2px solid #1a1a1a;
           width: 0;
+          max-width: fit-content;
           animation: typing 2.5s steps(35, end) 0.5s forwards, blink-caret 0.6s step-end infinite;
         }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes typing { from { width: 0 } to { width: 19em } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #1a1a1a } }
       `}</style>
     </div>
