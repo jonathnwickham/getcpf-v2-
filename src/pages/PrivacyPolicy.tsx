@@ -33,7 +33,7 @@ const PrivacyPolicy = () => (
             GET CPF is a document preparation service that helps foreigners navigate the Brazilian CPF registration process. We are <strong>not</strong> affiliated with the Brazilian Government, Receita Federal, or any government agency.
           </p>
           <p className="leading-relaxed mt-3">
-            <strong>Data Controller:</strong> GET CPF, operated by Jonathan, based in São Paulo, SP, Brazil.<br />
+            <strong>Data Controller:</strong> GET CPF, operated by Telos Media, based in South Africa.<br />
             <strong>Contact email:</strong>{" "}
             <a href="mailto:support@getcpf.com" className="text-green-800 hover:underline font-semibold">support@getcpf.com</a><br />
             <strong>Website:</strong>{" "}
@@ -129,8 +129,12 @@ const PrivacyPolicy = () => (
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li><strong>Supabase Inc.</strong> (United States). database hosting, authentication, and file storage (SOC 2 Type II certified, data encrypted at rest and in transit)</li>
             <li><strong>Fanbasis</strong> (United States). payment processing (we never see or store your card details)</li>
+            <li><strong>Cloudflare Inc.</strong> (United States). DNS and content delivery network</li>
+            <li><strong>Pirsch Analytics</strong> (Germany). privacy-friendly, cookie-free website analytics. No personal data is stored by Pirsch</li>
+            <li><strong>Google Fonts</strong> (United States). web font delivery. Google may collect IP addresses when fonts are loaded</li>
+            <li><strong>iubenda</strong> (Italy). privacy policy hosting, cookie consent management, and consent logging</li>
           </ul>
-          <p className="leading-relaxed mt-3">We ensure that appropriate Data Processing Agreements (DPAs) are in place with each processor. We remain strictly liable for the security of your data regardless of which processor handles it. No personal data is shared with any other third party.</p>
+          <p className="leading-relaxed mt-3">We ensure that appropriate Data Processing Agreements (DPAs) are in place with each processor. We remain strictly liable for the security of your data regardless of which processor handles it.</p>
         </section>
 
         {/* ── 8. SECURITY ── */}
@@ -156,8 +160,8 @@ const PrivacyPolicy = () => (
           <h2 className="text-xl font-bold mb-3">Data retention and automatic deletion</h2>
           <p className="leading-relaxed mb-3">We enforce strict retention limits to minimise the data we hold:</p>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
-            <li><strong>Sensitive identity data</strong> (passport number, parent names, date of birth) is <strong>automatically and permanently deleted 30 days after account creation</strong>, regardless of whether a CPF was issued.</li>
-            <li>Uploaded documents (passport photo, selfie, proof of address) are permanently deleted within 30 days of account creation, or immediately upon request.</li>
+            <li><strong>Sensitive identity data</strong> (passport number, parent names, date of birth) is <strong>automatically and permanently deleted 30 days after your CPF is issued</strong>.</li>
+            <li>Uploaded documents (passport photo, selfie, proof of address) are permanently deleted within 30 days of CPF issuance, or immediately upon request.</li>
             <li>Your account profile (email, name) remains accessible until you request deletion.</li>
             <li>Accounts that never completed a payment are flagged for full deletion after 90 days.</li>
             <li>Anonymous, aggregated data (e.g. number of users per country) may be retained indefinitely.</li>
@@ -185,11 +189,16 @@ const PrivacyPolicy = () => (
             </li>
           </ul>
 
+          <h3 className="text-base font-semibold mt-4 mb-2">Analytics</h3>
+          <ul className="list-disc pl-6 space-y-1.5 text-sm">
+            <li><strong>Pirsch Analytics</strong>. we use Pirsch for privacy-friendly website analytics. Pirsch does not use cookies, does not store personal data, and is fully GDPR/LGPD compliant. It collects only anonymous page view data.</li>
+          </ul>
+
           <h3 className="text-base font-semibold mt-4 mb-2">What we do not use</h3>
           <ul className="list-disc pl-6 space-y-1.5 text-sm">
             <li>No advertising or marketing cookies</li>
             <li>No third-party tracking cookies</li>
-            <li>No analytics cookies (Google Analytics, Meta Pixel, or similar)</li>
+            <li>No invasive analytics (Google Analytics, Meta Pixel, or similar)</li>
             <li>No social media cookies</li>
           </ul>
 

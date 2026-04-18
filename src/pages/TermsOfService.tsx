@@ -33,7 +33,7 @@ const TermsOfService = () => (
             If you do not agree, do not use the service. These terms constitute a legally binding agreement between you and GET CPF.
           </p>
           <p className="leading-relaxed mt-3">
-            GET CPF is operated by [Company Name] (Pty) Ltd (Registration No. XXXX/XXXXXX/XX), a company registered in the Republic of South Africa, with its registered address at [Address, City, Province, South Africa].
+            GET CPF is operated by Telos Media, based in South Africa, with contact email jonathan@telosmedia.co.
           </p>
         </section>
 
